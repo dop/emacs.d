@@ -1,0 +1,9 @@
+auto-save-list/
+ac-comphist.dat
+backups/
+elpa/
+eshell/
+org-clock-save.el
+personal_init.el
+tramp
+url/
