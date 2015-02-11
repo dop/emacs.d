@@ -162,7 +162,7 @@ Goes backward if ARG is negative; error if CHAR not found."
 (require 'package)
 
 (setq package-archives
-      '(;("gnu" . "http://elpa.gnu.org/packages/")
+      '(("gnu" . "http://elpa.gnu.org/packages/")
         ("melpa" . "http://melpa.org/packages/")
         ("org" . "http://orgmode.org/elpa/")
         ;; ("marmalade" . "http://marmalade-repo.org/packages/")
@@ -443,25 +443,6 @@ Goes backward if ARG is negative; error if CHAR not found."
 
 (global-set-key (kbd "C-x n i") 'narrow-to-region-indirect)
 
-;; Open files and goto lines like we see from g++ etc. i.e. file:line#
-;; (to-do "make `find-file-line-number' work for emacsclient as well")
-;; (to-do "make `find-file-line-number' check if the file exists")
-(defadvice find-file (around find-file-line-number
-                             (filename &optional wildcards)
-                             activate)
-  "Turn files like file.cpp:14 into file.cpp and going to the 14-th line."
-  (save-match-data
-    (let* ((matched (string-match "^\\(.*\\):\\([0-9]+\\):?$" filename))
-           (line-number (and matched
-                             (match-string 2 filename)
-                             (string-to-number (match-string 2 filename))))
-           (filename (if matched (match-string 1 filename) filename)))
-      ad-do-it
-      (when line-number
-        ;; goto-line is for interactive use
-        (goto-char (point-min))
-        (forward-line (1- line-number))))))
-
 
 
 ;;; Ido
@@ -598,7 +579,7 @@ Goes backward if ARG is negative; error if CHAR not found."
 (require 'git-gutter+)
 (require 'git-gutter-fringe+)
 
-(setq git-gutter-fr+-side 'right-fringe)
+(setq git-gutter-fr+-side 'left-fringe)
 (global-git-gutter+-mode 1)
 
 (define-fringe-bitmap 'git-gutter-fr+-added
@@ -887,17 +868,25 @@ Goes backward if ARG is negative; error if CHAR not found."
   (when (eq major-mode 'js2-mode)
     (flycheck-mode 1)
     (set-variable 'flycheck-checker 'javascript-jshint)
-    (set-variable 'flycheck-javascript-jshint-executable
+    (set-variable (make-local-variable 'flycheck-javascript-jshint-executable)
                   (if (eproject-attribute :jshint)
                       (concat (eproject-root) (eproject-attribute :jshint)))
                   "jshint")
-    (set-variable 'flycheck-jshintrc (dp/search-up-for ".jshintrc"))
+    (set-variable (make-local-variable 'flycheck-jshintrc)
+                  (dp/search-up-for ".jshintrc"))
     (when flycheck-jshintrc
       (let* ((json (json-read-file flycheck-jshintrc))
              (globals (mapcar 'car (cdr (assoc 'globals json)))))
+        (when (assoc 'node json)
+          (setq globals (append globals (list 'require 'module 'exports))))
+        (when (assoc 'jasmine json)
+          (setq globals (append globals
+                                (list 'describe 'ddescribe 'xdescribe 'it 'iit
+                                      'xit 'jasmine))))
         (set-variable 'js2-additional-externs
-                      (nconc (mapcar 'symbol-name globals)
-                             'js2-additional-externs))))))
+                      (mapcar 'symbol-name globals))
+        (if (< 0 (length globals))
+            (js2-reparse t))))))
 
 (add-to-list 'generic-project-file-visit-hook 'eproject-set-local-keys)
 (add-to-list 'generic-project-file-visit-hook 'eproject-jshint)
@@ -1554,9 +1543,9 @@ working with Drupal."
 
 (defun hotels-statics-e2e-tests ()
   (let ((command (if hotels-statics-be-loud
-                     (concat "(grunt e2e:normal && say 'great success' "
+                     (concat "(grunt protractor:normal && say 'great success' "
                              "|| say \"piece of shit that doesn't work\") &")
-                   "grunt e2e:normal &")))
+                   "grunt protractor:normal &")))
     (dp/eproject-shell-command command)))
 
 ;; (defun dp/fix-escape-sequences (ignore)
