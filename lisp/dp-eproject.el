@@ -51,7 +51,12 @@
         (progn
           (message (format "Command '%s' is already running." command))
           (switch-to-buffer name))
-      (shell-command command name))))
+      (let* ((path (eproject-attribute :path))
+             (paths (mapconcat (lambda (p) (concat (eproject-root) p))
+                               (if (listp path) path (list path))
+                               ":"))
+             (process-environment (cons (concat "PATH=" paths) process-environment)))
+        (shell-command command name)))))
 
 (defun eproject-jshint ()
   (when (eq major-mode 'js2-mode)
