@@ -279,14 +279,19 @@
                 helm-buffers-fuzzy-matching t
                 helm-split-window-in-side-p t))
 
-(use-package git-gutter-fringe+
-  :diminish git-gutter+-mode
+(use-package git-gutter+
   :bind (("C-c C-g r" . git-gutter+-revert-hunk)
          ("C-c C-g s" . git-gutter+-show-hunk))
+  :diminish git-gutter+-mode
+  :init (global-git-gutter+-mode t))
+
+(use-package git-gutter-fringe+
+  :init
+  (progn
+    (git-gutter+-toggle-fringe)
+    (git-gutter+-enable-fringe-display-mode))
   :config
   (progn
-    (use-package fringe-helper)
-    (use-package git-gutter+)
     (setq git-gutter-fr+-side 'left-fringe)
     (define-fringe-bitmap 'git-gutter-fr+-added
       (fringe-helper-convert
@@ -311,8 +316,7 @@
        ".XXX."
        ".XXX."
        ".....")
-      6 8 'center))
-  :init (global-git-gutter+-mode))
+      6 8 'center)))
 
 (use-package flycheck
   :commands flycheck-mode)
