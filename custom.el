@@ -7,8 +7,10 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ansi-color-faces-vector [default bold shadow italic underline bold bold-italic bold])
- '(ansi-color-names-vector ["#000000" "#8b0000" "#00ff00" "#ffa500" "#7b68ee" "#dc8cc3" "#93e0e3" "#dcdccc"])
+ '(ansi-color-faces-vector
+   [default bold shadow italic underline bold bold-italic bold])
+ '(ansi-color-names-vector
+   ["#000000" "#8b0000" "#00ff00" "#ffa500" "#7b68ee" "#dc8cc3" "#93e0e3" "#dcdccc"])
  '(backup-directory-alist (\` (("." \, (expand-file-name "~/.emacs.d/backups")))))
  '(browse-url-browser-function (quote browse-url-generic))
  '(browse-url-generic-program "open")
@@ -28,11 +30,32 @@
  '(frame-title-format "emacs [%b %*%+ %f]" t)
  '(geben-dbgp-default-proxy (quote ("127.0.0.1" 9001 "emacs" nil t)))
  '(global-column-enforce-mode t)
- '(haskell-indent-after-keywords (quote (("where" 2 0) ("of" 2) ("do" 4) ("mdo" 4) ("rec" 4) ("in" 4 0) ("{" 2) ("if" 4) "then" "else" ("let" 4))))
+ '(haskell-indent-after-keywords
+   (quote
+    (("where" 2 0)
+     ("of" 2)
+     ("do" 4)
+     ("mdo" 4)
+     ("rec" 4)
+     ("in" 4 0)
+     ("{" 2)
+     ("if" 4)
+     "then" "else"
+     ("let" 4))))
  '(haskell-indent-thenelse 1)
+ '(helm-autoresize-mode t)
  '(highlight-changes-colors (quote ("#d33682" "#6c71c4")))
  '(highlight-indentation-offset 2)
- '(highlight-tail-colors (quote (("#073642" . 0) ("#546E00" . 20) ("#00736F" . 30) ("#00629D" . 50) ("#7B6000" . 60) ("#8B2C02" . 70) ("#93115C" . 85) ("#073642" . 100))))
+ '(highlight-tail-colors
+   (quote
+    (("#073642" . 0)
+     ("#546E00" . 20)
+     ("#00736F" . 30)
+     ("#00629D" . 50)
+     ("#7B6000" . 60)
+     ("#8B2C02" . 70)
+     ("#93115C" . 85)
+     ("#073642" . 100))))
  '(icon-title-format "emacs [%b]" t)
  '(inhibit-startup-screen t)
  '(initial-scratch-message nil)
@@ -56,22 +79,51 @@
  '(search-highlight t)
  '(speedbar-use-images t)
  '(sqlplus-format-output-tables-flag t)
- '(syslog-debug-face (quote ((t :background unspecified :foreground "#2aa198" :weight bold))))
- '(syslog-error-face (quote ((t :background unspecified :foreground "#dc322f" :weight bold))))
+ '(syslog-debug-face
+   (quote
+    ((t :background unspecified :foreground "#2aa198" :weight bold))))
+ '(syslog-error-face
+   (quote
+    ((t :background unspecified :foreground "#dc322f" :weight bold))))
  '(syslog-hour-face (quote ((t :background unspecified :foreground "#859900"))))
- '(syslog-info-face (quote ((t :background unspecified :foreground "#268bd2" :weight bold))))
+ '(syslog-info-face
+   (quote
+    ((t :background unspecified :foreground "#268bd2" :weight bold))))
  '(syslog-ip-face (quote ((t :background unspecified :foreground "#b58900"))))
  '(syslog-su-face (quote ((t :background unspecified :foreground "#d33682"))))
- '(syslog-warn-face (quote ((t :background unspecified :foreground "#cb4b16" :weight bold))))
+ '(syslog-warn-face
+   (quote
+    ((t :background unspecified :foreground "#cb4b16" :weight bold))))
  '(tramp-auto-save-directory "~/.emacs.d/data/tramp-auto-save")
  '(tramp-persistency-file-name "/home/donatas/.emacs.d/data/tramp")
  '(transient-mark-mode 1)
  '(url-configuration-directory "~/.emacs.d/data/url/")
  '(vc-annotate-background nil)
- '(vc-annotate-color-map (quote ((20 . "#dc322f") (40 . "#CF4F1F") (60 . "#C26C0F") (80 . "#b58900") (100 . "#AB8C00") (120 . "#A18F00") (140 . "#989200") (160 . "#8E9500") (180 . "#859900") (200 . "#729A1E") (220 . "#609C3C") (240 . "#4E9D5B") (260 . "#3C9F79") (280 . "#2aa198") (300 . "#299BA6") (320 . "#2896B5") (340 . "#2790C3") (360 . "#268bd2"))))
+ '(vc-annotate-color-map
+   (quote
+    ((20 . "#dc322f")
+     (40 . "#CF4F1F")
+     (60 . "#C26C0F")
+     (80 . "#b58900")
+     (100 . "#AB8C00")
+     (120 . "#A18F00")
+     (140 . "#989200")
+     (160 . "#8E9500")
+     (180 . "#859900")
+     (200 . "#729A1E")
+     (220 . "#609C3C")
+     (240 . "#4E9D5B")
+     (260 . "#3C9F79")
+     (280 . "#2aa198")
+     (300 . "#299BA6")
+     (320 . "#2896B5")
+     (340 . "#2790C3")
+     (360 . "#268bd2"))))
  '(vc-annotate-very-old-color nil)
  '(warning-suppress-types (quote ((undo discard-info))))
- '(weechat-color-list (quote (unspecified "#002b36" "#073642" "#990A1B" "#dc322f" "#546E00" "#859900" "#7B6000" "#b58900" "#00629D" "#268bd2" "#93115C" "#d33682" "#00736F" "#2aa198" "#839496" "#657b83"))))
+ '(weechat-color-list
+   (quote
+    (unspecified "#002b36" "#073642" "#990A1B" "#dc322f" "#546E00" "#859900" "#7B6000" "#b58900" "#00629D" "#268bd2" "#93115C" "#d33682" "#00736F" "#2aa198" "#839496" "#657b83"))))
 
 ;; (custom-set-faces
 ;;  ;; custom-set-faces was added by Custom.
