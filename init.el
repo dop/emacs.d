@@ -21,6 +21,8 @@
 (setq mac-option-modifier 'alt)
 (setq mac-command-modifier 'meta)
 
+(setq gc-cons-threshold (* 20 1024 1024))
+
 ;; UTF-8 please
 (set-language-environment       "UTF-8")
 (setq locale-coding-system      'utf-8)
