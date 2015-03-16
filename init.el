@@ -209,13 +209,6 @@
           (global-company-mode)
           (bind-key "C-w" nil company-active-map)))
 
-;; (key-chord-mode 1)
-;; (key-chord-define-global "//" 'dp/comment-uncomment)
-;; (key-chord-define-global "kk" 'dp/kill-line-or-region)
-;; (key-chord-define-global ";;" 'helm-M-x)
-
-;; (key-chord-define emacs-lisp-mode-map ";;" 'dp/comment-uncomment)
-
 (use-package dictionary
   :bind ("C-c s" . dictionary-search))
 
