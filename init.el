@@ -12,7 +12,7 @@
 
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
-(menu-bar-mode -1)
+;; (menu-bar-mode 1)
 
 (put 'downcase-region 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
