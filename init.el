@@ -225,6 +225,11 @@
                   ido-default-file-method 'selected-window
                   ido-default-buffer-method 'selected-window)))
 
+(use-package typo
+  :config (progn
+            (add-to-list 'org-mode-hook 'typo-mode)
+            (add-to-list 'text-mode-hook 'typo-mode)))
+
 ;;; Org mode
 (use-package org
   :bind (("C-c l" . org-store-link)
