@@ -421,7 +421,10 @@
            ("C-}" . dp/php-next-function)
            ("C-{" . dp/php-previous-function)))
 
-(use-package sgml-mode
+(use-package nxml-mode
+  :config (add-to-list 'rng-schema-locating-files "~/.emacs.d/schemas.xml"))
+
+(use-package html-mode
   :mode "\\.html?\\'"
   :config (bind-keys
            :map sgml-mode-map
@@ -429,8 +432,8 @@
            ("C-}" sgml-skip-tag-forward)
            ("C-{" sgml-skip-tag-backward)))
 
-(use-package web-mode
-  :mode "\\.vm?\\'")
+;; (use-package web-mode
+;;   :mode "\\.vm?\\'")
 
 (use-package log-edit
   :config (add-hook 'log-edit-mode-hook 'flyspell-mode))
