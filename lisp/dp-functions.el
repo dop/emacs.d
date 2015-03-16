@@ -159,13 +159,13 @@ Goes backward if ARG is negative; error if CHAR not found."
   (list 'global 'require 'module 'exports))
 
 (defvar dp/jshint-browser-globals
-  (list 'global 'document 'window))
+  (list 'document 'window))
 
 (defvar dp/jshint-jasmine-globals
   (list 'describe 'ddescribe 'xdescribe
         'afterEach 'beforeEach
         'it 'iit 'xit
-        'expect
+        'expect 'spyOn
         'jasmine))
 
 (provide 'dp-functions)
