@@ -268,6 +268,7 @@
             (add-hook 'git-commit-mode-hook 'turn-on-flyspell)))
 
 (use-package helm
+  :diminish helm-mode
   :bind (("C-x b"   . helm-mini)
          ("C-x C-b" . helm-buffers-list)
          ("C-x C-f" . helm-find-files)
@@ -277,7 +278,12 @@
   :config (setq helm-ff-transformer-show-only-basename nil
                 helm-ls-git-show-abs-or-relative 'relative
                 helm-buffers-fuzzy-matching t
-                helm-split-window-in-side-p t))
+                helm-recentf-fuzzy-matching t
+                helm-M-x-fuzzy-match t
+                helm-split-window-in-side-p t)
+  :init (progn
+          (helm-mode t)
+          (helm-autoresize-mode t)))
 
 (use-package git-gutter+
   :bind (("C-c C-g r" . git-gutter+-revert-hunk)
