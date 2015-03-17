@@ -158,6 +158,7 @@
           (exec-path-from-shell-initialize)))
 
 (use-package hl-line
+  :disabled t
   :commands hl-line-mode
   :init (progn
           (add-hook 'prog-mode-hook 'hl-line-mode)
