@@ -243,10 +243,11 @@
 
 ;;; Org mode
 (use-package org
-  :bind (("C-c l" . org-store-link)
-         ("C-c a" . org-agenda))
-
+  :mode ("\\.org$" . org-mode)
+  ;; :bind (("C-c l" . org-store-link)
+  ;;        ("C-c a" . org-agenda))
   :config (progn
+            (add-hook 'org-mode-hook 'typo-mode)
             (org-clock-persistence-insinuate)
             (setq org-startup-indented t
                   org-hide-leading-stars t
