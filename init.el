@@ -218,7 +218,10 @@
   :diminish company-mode
   :init (progn
           (global-company-mode)
-          (bind-key "C-w" nil company-active-map)))
+          (bind-keys :map company-active-map
+                     ("C-w" . nil)
+                     ("C-n" . company-select-next)
+                     ("C-p" . company-select-previous))))
 
 (use-package dictionary
   :bind ("C-c s" . dictionary-search))
