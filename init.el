@@ -296,6 +296,7 @@
     (add-hook 'git-commit-mode-hook 'turn-on-flyspell)))
 
 (use-package helm
+  :disabled t
   :diminish helm-mode
   :bind (("C-x b"   . helm-mini)
          ("C-x C-b" . helm-buffers-list)
