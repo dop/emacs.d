@@ -3,6 +3,7 @@
 (require 'eproject-tasks)
 (require 'eproject-extras)
 (require 'json)
+(require 's)
 
 (defvar eproject-prefix "C-x p")
 
@@ -60,6 +61,8 @@
              (process-environment (cons path-variable process-environment)))
         (shell-command command name)))))
 
+(defalias 'pshell 'dp/eproject-shell-command)
+
 (defun eproject-jshint ()
   (when (eq major-mode 'js2-mode)
     (flycheck-mode 1)
@@ -81,5 +84,21 @@
                       (mapcar 'symbol-name globals))
         (if (< 0 (length globals))
             (js2-reparse t))))))
+
+(defun dp/git-find-file (&optional directory)
+  "Find file in repository using `ido-completing-read'."
+  (interactive (list (or (ignore-errors (eproject-root)) nil)))
+  (with-temp-buffer
+    (when directory (setq default-directory directory))
+    (call-process "git" nil t nil
+                  "ls-tree" "-z" "-r" "--name-only" "--full-tree"
+                  "HEAD")
+    (find-file
+     (concat default-directory
+             (ido-completing-read "Find file in repository: "
+                                  (s-split "\0" (buffer-string) t))))))
+
+(defun eproject-set-git-generic-keys ()
+  (local-set-key (kbd "C-x f") 'dp/git-find-file))
 
 (provide 'dp-eproject)

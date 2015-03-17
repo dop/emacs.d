@@ -274,9 +274,13 @@
 (use-package magit
   :diminish magit-auto-revert-mode
   :bind ("C-x g" . magit-status)
-  :config (progn
-            (setq magit-emacsclient-executable "/usr/local/Cellar/emacs-mac/HEAD/bin/emacsclient")
-            (add-hook 'git-commit-mode-hook 'turn-on-flyspell)))
+  :config
+  (progn
+    (bind-keys :map magit-mode-map
+               ("C-x f" . dp/git-find-file))
+    (setq magit-emacsclient-executable
+          "/usr/local/Cellar/emacs-mac/HEAD/bin/emacsclient")
+    (add-hook 'git-commit-mode-hook 'turn-on-flyspell)))
 
 (use-package helm
   :diminish helm-mode
@@ -397,31 +401,16 @@
             (use-package js2-refactor)
             (add-hook 'js2-mode-hook 'capitalized-words-mode)))
 
-
-(require 'dp-eproject)
-
 (use-package eproject
   :commands define-project-type
   :config (progn
+            (require 'dp-eproject)
             (eproject-set-key "t" 'eproject-tasks-run)
             (eproject-set-key "s" 'eproject-open-shell)
             (add-to-list 'generic-project-file-visit-hook 'eproject-set-local-keys)
-            (add-to-list 'generic-project-file-visit-hook 'eproject-jshint)))
-
-(defun songkick-server-task-unit ()
-  (compile "../node_modules/.bin/grunt test" t))
-
-(defun songkick-server-task-serve ()
-  (dp/eproject-shell-command "../node_modules/.bin/grunt &"))
-
-(defun songkick-server-task-mongod ()
-  (dp/eproject-shell-command "mongod --dbpath=/usr/local/var/mongodb &"))
-
-(defun songkick-client-task-unit ()
-  (compile "../node_modules/.bin/grunt karma:unit" t))
-
-(defun songkick-client-task-serve ()
-  (dp/eproject-shell-command "../node_modules/.bin/grunt serve --force &"))
+            (add-to-list 'generic-project-file-visit-hook 'eproject-jshint)
+            (add-to-list 'generic-git-project-file-visit-hook
+                         'eproject-set-git-generic-keys)))
 
 (use-package php-mode
   :mode "\\.\\(php[s345]?\\|inc\\|phtml\\)"
@@ -473,6 +462,5 @@
 
 (require 'dp-php)
 (require 'dp-haskell)
-
 
 ;;; init.el ends here
