@@ -119,6 +119,16 @@
 (use-package server
   :init (unless (server-running-p) (server-start)))
 
+(use-package moe-theme
+  :if window-system
+  :init (switch-to-theme 'moe-dark)
+  :config (custom-theme-set-faces
+           'moe-dark
+           '(git-gutter:added ((t (:inherit fringe :foreground "#d7ff5f"))))
+           '(git-gutter:deleted ((t (:inherit fringe :foreground "#ffafaf"))))
+           '(git-gutter:modified ((t (:inherit fringe :foreground "deep sky blue"))))
+           '(fringe ((t (:background "#303030"))))))
+
 (use-package solarized-theme
   :disabled t
   :if window-system
