@@ -226,23 +226,32 @@
 (use-package dictionary
   :bind ("C-c s" . dictionary-search))
 
-(use-package ido
-  :disabled t
-  :init (progn (ido-mode t)
-               (ido-everywhere t))
-  :config (progn
-            (icomplete-mode)
-            (use-package ido-ubiquitous)
-            (setq ido-enable-flex-matching t
-                  ido-create-new-buffer 'always
-                  ido-use-filename-at-point 'guess
-                  ido-default-file-method 'selected-window
-                  ido-default-buffer-method 'selected-window)))
+(use-package flx-isearch
+  :bind (("C-M-s" . flx-isearch-forward)
+         ("C-M-r" . flx-isearch-backward)))
 
-(use-package typo
-  :config (progn
-            (add-to-list 'org-mode-hook 'typo-mode)
-            (add-to-list 'text-mode-hook 'typo-mode)))
+(defun dp/ido-keys nil
+  (define-key ido-completion-map " " 'ido-restrict-to-matches))
+
+(use-package ido
+  ;; :disabled t
+  :init (ido-mode t)
+  :config
+  (progn
+    (icomplete-mode)
+    (ido-everywhere t)
+    (ido-ubiquitous-mode t)
+    (ido-vertical-mode t)
+    (flx-ido-mode t)
+    (add-to-list 'ido-setup-hook 'dp/ido-keys)
+    (setq ido-enable-flex-matching t
+          ido-use-faces nil
+          ido-create-new-buffer 'always
+          ido-use-filename-at-point 'guess
+          ido-default-file-method 'selected-window
+          ido-default-buffer-method 'selected-window)))
+
+(use-package smex)
 
 ;;; Org mode
 (use-package org
