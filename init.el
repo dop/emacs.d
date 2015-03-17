@@ -285,44 +285,39 @@
           (helm-mode t)
           (helm-autoresize-mode t)))
 
-(use-package git-gutter+
-  :bind (("C-c C-g r" . git-gutter+-revert-hunk)
-         ("C-c C-g s" . git-gutter+-show-hunk))
-  :diminish git-gutter+-mode
-  :init (global-git-gutter+-mode t))
-
-(use-package git-gutter-fringe+
-  :init
-  (progn
-    (git-gutter+-toggle-fringe)
-    (git-gutter+-enable-fringe-display-mode))
+(use-package git-gutter-fringe
+  :bind (("C-x v s" . git-gutter:stage-hunk)
+         ("C-x v r" . git-gutter:revert-hunk))
+  :init (global-git-gutter-mode t)
   :config
   (progn
-    (setq git-gutter-fr+-side 'left-fringe)
-    (define-fringe-bitmap 'git-gutter-fr+-added
-      (fringe-helper-convert
-       "..X.."
-       "..X.."
-       "XXXXX"
-       "..X.."
-       "..X..")
-      6 8 'center)
-    (define-fringe-bitmap 'git-gutter-fr+-deleted
-      (fringe-helper-convert
-       "....."
-       "....."
-       "XXXXX"
-       "....."
-       ".....")
-      6 8 'center)
-    (define-fringe-bitmap 'git-gutter-fr+-modified
-      (fringe-helper-convert
-       "....."
-       ".XXX."
-       ".XXX."
-       ".XXX."
-       ".....")
-      6 8 'center)))
+    (fringe-helper-define 'git-gutter-fr:added 'center
+      "........"
+      "...XX..."
+      "...XX..."
+      ".XXXXXX."
+      ".XXXXXX."
+      "...XX..."
+      "...XX..."
+      "........")
+    (fringe-helper-define 'git-gutter-fr:deleted 'center
+      "........"
+      "........"
+      "........"
+      ".XXXXXX."
+      ".XXXXXX."
+      "........"
+      "........"
+      "........")
+    (fringe-helper-define 'git-gutter-fr:modified 'center
+      "........"
+      "........"
+      "..XXXX.."
+      "..XXXX.."
+      "..XXXX.."
+      "..XXXX.."
+      "........"
+      "........")))
 
 (use-package flycheck
   :commands flycheck-mode)
