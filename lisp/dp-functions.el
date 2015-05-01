@@ -1,5 +1,26 @@
-(defun set-global-font (font-name &optional keep-size)
-  (set-frame-font font-name keep-size t))
+(require 'cl)
+
+(defvar dp/custom-user-faces nil
+  "Associated list of (FACE . SPEC) to apply to user theme")
+
+(defun dp/apply-custom-user-faces ()
+  (let (custom--inhibit-theme-enable)
+    (apply
+     #'custom-theme-set-faces
+     'user
+     (loop for (face . specs) in dp/custom-user-faces
+           collect (list face (list (list t specs)))))))
+
+(defun dp/reset-custom-user-faces ()
+  (let (custom--inhibit-theme-enable)
+    (loop for (face . _) in dp/custom-user-faces
+          do (ignore-errors
+               (face-spec-reset-face face)))))
+
+(defun disable-all-themes ()
+  ;; (dp/reset-custom-user-faces)
+  (dolist (enabled-theme custom-enabled-themes)
+    (disable-theme enabled-theme)))
 
 (defun toggle-theme (theme)
   "Enables or disables a THEME."
@@ -9,8 +30,8 @@
 
 (defun switch-to-theme (theme)
   "Enables THEME and disable all others."
-  (dolist (enabled-theme custom-enabled-themes)
-    (disable-theme enabled-theme))
+  (disable-all-themes)
+  ;; (when (eq theme 'user) (dp/apply-custom-user-faces))
   (load-theme theme t))
 
 (defun rename-file-and-buffer (new-name)
@@ -161,11 +182,55 @@ Goes backward if ARG is negative; error if CHAR not found."
 (defvar dp/jshint-browser-globals
   (list 'document 'window))
 
+(defvar dp/jshint-mocha-globals
+  (list 'describe 'it 'after 'before 'afterEach 'beforeEach))
+
 (defvar dp/jshint-jasmine-globals
   (list 'describe 'ddescribe 'xdescribe
         'afterEach 'beforeEach
         'it 'iit 'xit
         'expect 'spyOn
         'jasmine))
+
+(defun dp/toggle-ddescribe ()
+  (interactive)
+  (save-excursion
+    (search-backward-regexp "\\_<d?describe(" nil t)
+    (case (symbol-at-point)
+      ('describe (insert "d"))
+      ('ddescribe (delete-forward-char 1)))))
+
+(defun dp/toggle-iit ()
+  (interactive)
+  (save-excursion
+    (search-backward-regexp "\\_<i?it(" nil t)
+    (case (symbol-at-point)
+      ('it (insert "i"))
+      ('iit (delete-forward-char 1)))))
+
+(defsubst curry (function &rest arguments)
+  (lexical-let ((function function)
+                (arguments arguments))
+    (lambda (&rest more) (apply function (append arguments more)))))
+
+(defsubst rcurry (function &rest arguments)
+  (lexical-let ((function function)
+                (arguments arguments))
+    (lambda (&rest more) (apply function (append more arguments)))))
+
+(defsubst compose (function &rest more-functions)
+  (cl-reduce (lambda (f g)
+               (lexical-let ((f f) (g g))
+                 (lambda (&rest arguments)
+                   (funcall f (apply g arguments)))))
+             more-functions
+             :initial-value function))
+
+;;; color these functions like keywords
+(font-lock-add-keywords
+ 'emacs-lisp-mode
+ '(("(\\(compose\\)[ \t\n\r]" 1 font-lock-keyword-face)
+   ("(\\(curry\\)[ \t\n\r]" 1 font-lock-keyword-face)
+   ("(\\(rcurry\\)[ \t\n\r]" 1 font-lock-keyword-face)))
 
 (provide 'dp-functions)

@@ -18,4 +18,22 @@
 (global-set-key (kbd "C-c M-c") 'dp/convert-camelcase-to-constant)
 (global-set-key (kbd "C-c M-k") 'dp/convert-constant-to-camelcase)
 
+(global-set-key (kbd "C-x o") nil) ;; force myself to use M-o
+
+(global-set-key (kbd "M-1") 'dp/jump-to-window)
+(global-set-key (kbd "M-2") 'dp/jump-to-window)
+(global-set-key (kbd "M-3") 'dp/jump-to-window)
+(global-set-key (kbd "M-4") 'dp/jump-to-window)
+(global-set-key (kbd "M-5") 'dp/jump-to-window)
+(global-set-key (kbd "M-6") 'dp/jump-to-window)
+(global-set-key (kbd "M-7") 'dp/jump-to-window)
+(global-set-key (kbd "M-8") 'dp/jump-to-window)
+(global-set-key (kbd "M-9") 'dp/command-keys-vector)
+(global-set-key (kbd "M-0") 'delete-window)
+(global-set-key (kbd "M-o") 'other-window)
+
+(defun dp/command-keys-vector ()
+  (interactive)
+  (message (format "%S" (this-command-keys-vector))))
+
 (provide 'dp-key-bindings)

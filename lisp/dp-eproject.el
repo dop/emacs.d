@@ -45,21 +45,25 @@
         (concat (file-name-as-directory dir) file-name)
       nil)))
 
+(defun dp/eproject-shell-command-with-path (buffer-name command path)
+  (setq path (mapconcat (curry #'concat (eproject-root))
+                        (when (stringp path) (setq path (list path)))
+                        ":"))
+  (let* ((current-paths (mapcar (rcurry #'substring 5)
+                                (remove-if-not (curry #'string-match "^PATH=")
+                                               process-environment)))
+         (path-variable (concat "PATH=" path ":" (mapconcat 'identity current-paths ":")))
+         (process-environment (cons path-variable process-environment)))
+    (shell-command command buffer-name)))
+
 (defun dp/eproject-shell-command (command)
   (let* ((name (format "*%s <%s>*" (eproject-name) command))
          (process (get-buffer-process name)))
-    (if process
-        (progn
-          (message (format "Command '%s' is already running." command))
-          (switch-to-buffer name))
-      (let* ((path (eproject-attribute :path))
-             (new-paths (mapconcat (lambda (p) (concat (eproject-root) p)) (if (listp path) path (list path)) ":"))
-             (current-paths (mapcar (lambda (s) (substring s 5))
-                                    (remove-if-not (lambda (var) (string-match "^PATH=" var))
-                                                   process-environment)))
-             (path-variable (concat "PATH=" new-paths ":" (mapconcat 'identity current-paths ":")))
-             (process-environment (cons path-variable process-environment)))
-        (shell-command command name)))))
+    (unless process
+      (dp/eproject-shell-command-with-path name command (eproject-attribute :path)))
+    (with-current-buffer name
+      (face-remap-add-relative
+       'default '(:family "Source Code Pro" :height 120)))))
 
 (defalias 'pshell 'dp/eproject-shell-command)
 
@@ -78,6 +82,8 @@
              (globals (mapcar 'car (cdr (assoc 'globals json)))))
         (when (assoc 'node json)
           (setq globals (append globals dp/jshint-node-globals)))
+        (when (assoc 'mocha json)
+          (setq globals (append globals dp/jshint-mocha-globals)))
         (when (assoc 'jasmine json)
           (setq globals (append globals dp/jshint-jasmine-globals)))
         (set-variable 'js2-additional-externs

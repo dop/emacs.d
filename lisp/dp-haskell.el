@@ -9,16 +9,13 @@
 (use-package haskell-mode
   :mode "\\.l?hs$"
   :config (progn
-            (bind-keys
-             :map haskell-mode-map
-             ("C-c m" . haskell-align-imports)
-             ("C-c s" . haskell-sort-imports))
-            (setq haskell-program-name "ghci"
-                  haskell-indent-offset 4)
+            (bind-keys :map haskell-mode-map
+                       ("C-c m" . haskell-align-imports)
+                       ("C-c s" . haskell-sort-imports))
+            (setq haskell-program-name "ghci" haskell-indent-offset 4)
             (add-hook 'haskell-mode-hook 'capitalized-words-mode)
             (add-hook 'haskell-mode-hook 'haskell-indentation-mode)
-            (add-hook 'haskell-mode-hook 'inf-haskell-mode)
-            (add-hook 'haskell-mode-hook 'dp/setup-haskell-mode)))
+            (add-hook 'haskell-mode-hook 'inf-haskell-mode)))
 
 (define-project-type haskell (generic)
   (look-for ".haskell")

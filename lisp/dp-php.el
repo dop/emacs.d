@@ -56,7 +56,6 @@
             (re-search-forward re nil t)
             (setq matched-at (match-beginning 0)))
           (when matched-at
-            (point-stack-push)
             (goto-char matched-at)))
       (message "No name given."))))
 
