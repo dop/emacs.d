@@ -157,14 +157,16 @@
 (package-initialize)
 
 (require 'use-package)
+
 (require 'dp-window)
 (require 'dp-mode-line)
 (require 'dp-key-bindings)
 
-(use-package server
-  :init (unless (server-running-p) (server-start)))
+;; (use-package server
+;;   :init (unless (server-running-p) (server-start)))
 
 (use-package moe-theme
+  :disabled t
   :if window-system
   :init (switch-to-theme 'moe-dark)
   :config
@@ -194,7 +196,7 @@
           solarized-use-more-italic nil
           solarized-high-contrast-mode-line t
           solarized-use-variable-pitch t)
-    (switch-to-theme 'solarized-light)))
+    (switch-to-theme 'solarized-dark)))
 
 (use-package leuven-theme
   :disabled t
@@ -205,6 +207,7 @@
     (custom-theme-set-faces
      'leuven
      '(default ((t (:background "white" :foreground "#333333"))))
+     '(fringe ((t (:background "white" :foreground "light grey"))))
      '(mode-line ((t (:box (:line-width 2 :color "deep sky blue")
                            :background "deep sky blue"
                            :foreground "#ABDFFA"))))
@@ -240,19 +243,30 @@
       "#FF00FF" "#22EEEE" "#E6E1DC"])))
 
 (use-package cyberpunk-theme
-  :disabled t
   :if window-system
   :init (switch-to-theme 'cyberpunk)
-  :config (custom-theme-set-faces
-           'cyberpunk
-           '(mode-line
-             ((t (:foreground "#4c83ff"
-                  :background "#333333"
-                  :box (:line-width 1 :color "#333333")))))
-           '(mode-line-inactive
-             ((t (:foreground "#4d4d4d"
-                  :background "#1a1a1a"
-                  :box (:line-width 1 :color "#1a1a1a")))))))
+  :config
+  (custom-theme-set-faces
+   'cyberpunk
+   '(default ((t (:background "grey20" :foreground "light grey"))))
+   '(fringe ((t (:background "grey20" :foreground "dark grey"))))
+   '(vertical-border ((t (:foreground "grey25"))))
+   '(hl-line ((t (:background "grey25"))))
+   '(diff-refine-added ((t (:background "#005000"))))
+   '(diff-refine-removed ((t (:background "#6a0000"))))
+   '(mode-line
+     ((t (:foreground "white"
+                      :background "#4c83ff"
+                      :box (:line-width 2 :color "#4c83ff")))))
+   '(mode-line-inactive
+     ((t (:foreground "light grey"
+                      :background "grey25"
+                      :box (:line-width 2 :color "grey25"))))))
+  (custom-theme-set-variables
+   'cyberpunk
+   '(ansi-color-names-vector
+     ["#232323" "LightSalmon" "#A5C261" "#FFC66D" "#3070FF"
+      "#FF00FF" "#22EEEE" "#E6E1DC"])))
 
 (use-package exec-path-from-shell
   :init (when (memq window-system '(mac ns))
@@ -355,8 +369,7 @@
   :config
   (progn
     (setq ido-vertical-decorations
-          '("\n → "
-            "" "\n   " "\n   …" "[" "]" " [No match]" " [Matched]"
+          '("\n → " "" "\n   " "\n   …" "[" "]" " [No match]" " [Matched]"
             " [Not readable]" " [Too big]" " [Confirm]" "\n → " ""))
     (icomplete-mode)
     (ido-everywhere t)
@@ -407,6 +420,12 @@
 (use-package magit
   :diminish magit-auto-revert-mode
   :bind ("C-x g" . magit-status)
+  :init
+  (progn
+    (setq magit-emacsclient-executable
+          "/usr/local/Cellar/emacs-mac/HEAD/bin/emacsclient"
+          magit-last-seen-setup-instructions "1.4.0"
+          magit-auto-revert-mode t))
   :config
   (progn
     (bind-keys :map magit-mode-map
@@ -415,12 +434,9 @@
                ("M-2" . nil)
                ("M-3" . nil)
                ("M-4" . nil))
-    (setq magit-emacsclient-executable
-          "/usr/local/Cellar/emacs-mac/HEAD/bin/emacsclient")
     (add-hook 'git-commit-mode-hook 'turn-on-flyspell)))
 
 (use-package helm
-  :diminish helm-mode
   :bind (("C-c g" . helm-git-grep)
          ("C-c o" . helm-swoop))
   :config (setq helm-ff-transformer-show-only-basename nil
@@ -469,7 +485,16 @@
       "........")))
 
 (use-package flycheck
-  :commands flycheck-mode)
+  :commands flycheck-mode
+  ;; (progn
+  ;;   (flycheck-define-checker typescript
+  ;;     "A TypeScript syntax checker using tsc command."
+  ;;     :command ("tsc" "--out" "/dev/null" source)
+  ;;     :error-patterns
+  ;;     ((error line-start (file-name) "(" line "," column "): error "
+  ;;             (message) line-end))
+  ;;     :mode typescript-mode))
+  )
 
 (use-package css-eldoc
   :commands 'turn-on-css-eldoc
@@ -492,7 +517,7 @@
     (add-to-list 'sass-mode-hook 'turn-on-css-eldoc)))
 
 (use-package rainbow-mode
-  :diminish t
+  :diminish rainbow-mode
   :commands rainbow-mode
   :config (setq css-indent-offset 2)
   :init (progn
@@ -510,30 +535,35 @@
   (backward-char (- (current-column) 2)))
 
 (use-package dired
-  :config (progn
-            (dired-details-install)
-            (setq-default dired-details-hidden-string "--- ")
-            (defadvice dired-create-directory
-                (after revert-buffer-after-create activate)
-              (revert-buffer))
-            (defadvice wdired-abort-changes
-                (after revert-buffer-after-abort activate)
-              (revert-buffer)))
-  :init (bind-keys :map dired-mode-map
-                   ("C-a" . dired-back-to-start-of-files)))
+  :config
+  (progn
+    (bind-keys :map dired-mode-map
+               ("C-a" . dired-back-to-start-of-files))
+    (dired-details-install)
+    (setq-default dired-details-hidden-string "--- ")
+    (defadvice dired-create-directory
+        (after revert-buffer-after-create activate)
+      (revert-buffer))
+    (defadvice wdired-abort-changes
+        (after revert-buffer-after-abort activate)
+      (revert-buffer))))
 
 (use-package cap-words
   :diminish capitalized-words-mode
   :commands capitalized-words-mode)
 
+(use-package js2-refactor
+  :commands js2-refactor-mode
+  :config
+  (progn (js2r-add-keybindings-with-prefix "C-c C-m")))
+
 (use-package js2-mode
   :mode "\\.js$"
-  :init (add-hook 'js2-mode-hook (lambda () (setq mode-name "js²")))
+  :init
+  (add-hook 'js2-mode-hook (lambda () (setq mode-name "js2")))
   :config
   (progn
-    (require 'tern)
-    (require 'js2-refactor)
-    (js2r-add-keybindings-with-prefix "C-c C-m")
+    (add-hook 'js2-mode-hook 'js2-refactor-mode)
     (setq-default js2r-use-strict t)
     (setq-default js-indent-level 2
                   js2-basic-offset 2
@@ -549,13 +579,17 @@
 (use-package coffee-mode
   :mode "\\.coffee$")
 
+(use-package typescript
+  :mode ("\\.ts$" . typescript-mode)
+  :config (setq typescript-indent-level 2))
+
 (use-package eproject
   :diminish eproject-mode
   :commands define-project-type
   :config (progn
             (require 'dp-eproject)
             (eproject-set-key "t" 'eproject-tasks-run)
-            (eproject-set-key "s" 'eproject-open-shell)
+            (eproject-set-key "s" 'eproject-open-term)
             (add-to-list 'generic-project-file-visit-hook 'eproject-set-local-keys)
             (add-to-list 'generic-project-file-visit-hook 'eproject-jshint)
             (add-to-list 'generic-git-project-file-visit-hook

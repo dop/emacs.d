@@ -187,7 +187,7 @@ Goes backward if ARG is negative; error if CHAR not found."
 
 (defvar dp/jshint-jasmine-globals
   (list 'describe 'ddescribe 'xdescribe
-        'afterEach 'beforeEach
+        'afterEach 'beforeEach 'afterAll 'beforeAll
         'it 'iit 'xit
         'expect 'spyOn
         'jasmine))
