@@ -25,7 +25,7 @@
          (buf-name (concat "*" (eproject-name) " shell*"))
          (buf      (get-buffer buf-name)))
     (if buf (switch-to-buffer buf)
-      (dp/eproject-shell-with-path buf-name nil (eproject-attribute :path)))))
+      (dp/eproject-shell-command-with-path buf-name nil (eproject-attribute :path)))))
 
 (defun eproject-set-local-keys ()
   (mapc (lambda (action)
