@@ -29,8 +29,10 @@
 (global-set-key (kbd "M-7") 'dp/jump-to-window)
 (global-set-key (kbd "M-8") 'dp/jump-to-window)
 (global-set-key (kbd "M-9") 'dp/command-keys-vector)
-(global-set-key (kbd "M-0") 'delete-window)
+(global-set-key (kbd "M-0") 'dp/delete-window)
 (global-set-key (kbd "M-o") 'other-window)
+
+(global-set-key (kbd "C-x M-d") 'delete-this-buffer-and-file)
 
 (defun dp/command-keys-vector ()
   (interactive)

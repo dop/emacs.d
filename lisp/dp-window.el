@@ -46,4 +46,14 @@ if W1 should precede W2, nil otherwise."
       (set-window-buffer win1 buf2)
       (set-window-buffer win2 buf1))))
 
+(defun dp/delete-window (&optional window)
+  (interactive)
+  (let* ((onec (elt (kbd "C-1") 0))
+         (keys (this-command-keys-vector))
+         (k    (if (eq 2 (length keys))
+                   (- (elt keys 0) onec))))
+    (if k
+        (delete-window (dp/numbered-window-list k))
+      (delete-window window))))
+
 (provide 'dp-window)
