@@ -5,41 +5,46 @@
 
 (add-to-list 'load-path "~/.emacs.d/lisp")
 
+(require 'color)
 (require 'dp-functions)
 
 (set-face-attribute
  'default nil
- :family "Source Code Pro"
- :height 120
+ :family "MonacoB2"
+ :height 110
  :weight 'regular)
 
 (set-fontset-font t '(61440 . 61980) "FontAwesome")
 
-(disable-theme 'user)
-
 ;; (custom-theme-set-faces
 ;;  'user
-;;  '(default ((t (:background "gray20" :foreground "snow2"))))
-;;  '(diff-added ((t (:foreground "olive drab"))))
-;;  '(diff-removed ((t (:foreground "tomato"))))
-;;  '(git-gutter:added ((t (:foreground "yellow green"))))
+;;  '(default ((t (:foreground "black" :background "white"))))
+;;  '(diff-added ((t (:foreground "forest green"))))
+;;  '(diff-removed ((t (:foreground "red"))))
+;;  `(git-gutter:added ((t (:foreground "forest green"
+;;                          :background ,(color-lighten-name "forest green" 60)))))
 ;;  '(git-gutter:deleted ((t (:foreground "coral"))))
-;;  '(git-gutter:modified ((t (:foreground "light sky blue"))))
-;;  '(magit-item-highlight ((t (:background "gray25"))))
-;;  '(fringe ((t (:background "gray20"))))
-;;  '(hl-line ((t (:background "gray25"))))
-;;  '(vertical-border ((t (:foreground "gray25")))))
+;;  `(git-gutter:modified ((t (:foreground "deep sky blue"
+;;                             :background ,(color-lighten-name "sky blue" 22)))))
+;;  '(magit-item-highlight ((t (:background "beige"))))
+;;  '(fringe ((t (:background "white" :foreground "gray85"))))
+;;  `(hl-line ((t (:background ,(color-darken-name "honeydew" 3)))))
+;;  '(vertical-border ((t (:foreground "gray85"))))
+;;  '(column-enforce-face ((t (:background "pink")))))
 
-(setq dp/custom-user-faces
-      '((default . (:background "snow2" :foreground "gray20"))
-        (diff-added . (:foreground "olive drab"))
-        (diff-removed . (:foreground "tomato"))
-        (git-gutter:added . (:foreground "yellow green"))
-        (git-gutter:deleted . (:foreground "coral"))
-        (git-gutter:modified . (:foreground "light sky blue"))
-        (magit-item-highlight . (:background "cornsilk"))
-        (vertical-border . (:foreground "dark gray"))
-        (fringe . (:background "gray10"))))
+(custom-theme-set-faces
+ 'user
+ `(default ((t (:foreground "white" :background "black"))))
+ '(diff-added ((t (:foreground "forest green"))))
+ '(diff-removed ((t (:foreground "red"))))
+ `(git-gutter:added ((t (:foreground "forest green" :background "black"))))
+ '(git-gutter:deleted ((t (:foreground "coral"))))
+ `(git-gutter:modified ((t (:foreground "deep sky blue" :background "black"))))
+ `(magit-item-highlight ((t (:background ,(color-darken-name "honeydew" 90)))))
+ '(fringe ((t (:background "black" :foreground "gray50"))))
+ `(hl-line ((t (:background ,(color-darken-name "honeydew" 85)))))
+ '(vertical-border ((t (:foreground "gray15"))))
+ `(column-enforce-face ((t (:background ,(color-darken-name "dark red" 10))))))
 
 ;; (dp/apply-custom-user-faces)
 ;; (dp/reset-custom-user-faces)
@@ -130,7 +135,7 @@
 ;; Real emacs knights don't use shift to mark things
 (setq shift-select-mode nil)
 
-(add-hook 'post-command-hook 'set-cursor-according-to-mode t)
+;; (add-hook 'post-command-hook 'set-cursor-according-to-mode t)
 ;; (defun set-cursor-according-to-mode () (setq cursor-type 'box))
 ;; (remove-hook 'post-command-hook 'set-cursor-according-to-mode)
 
@@ -142,6 +147,7 @@
 (add-hook 'css-mode-hook 'turn-on-show-trailing-whitespace)
 
 (add-hook 'emacs-lisp-mode-hook (lambda () (setq mode-name "elisp")))
+(add-hook 'emacs-lisp-mode-hook 'elisp-slime-nav-mode)
 
 (require 'cl)
 (require 'package)
@@ -167,7 +173,6 @@
 
 (use-package moe-theme
   :disabled t
-  :if window-system
   :init (switch-to-theme 'moe-dark)
   :config
   (progn
@@ -214,6 +219,7 @@
      '(mode-line-inactive ((t (:box (:line-width 2 :color "gainsboro")
                                     :foreground "#F0F0EF"
                                     :background "gainsboro"))))
+     '(column-enforce-face ((t (:background "#FFDDDD"))))
      '(vertical-border ((t (:foreground "#f0f0ef")))))
     (custom-theme-set-variables
      'leuven
@@ -243,15 +249,16 @@
       "#FF00FF" "#22EEEE" "#E6E1DC"])))
 
 (use-package cyberpunk-theme
+  :disabled t
   :if window-system
   :init (switch-to-theme 'cyberpunk)
   :config
   (custom-theme-set-faces
    'cyberpunk
-   '(default ((t (:background "grey20" :foreground "light grey"))))
-   '(fringe ((t (:background "grey20" :foreground "dark grey"))))
-   '(vertical-border ((t (:foreground "grey25"))))
-   '(hl-line ((t (:background "grey25"))))
+   '(default ((t (:background "grey15" :foreground "white smoke"))))
+   '(fringe ((t (:background "grey15" :foreground "light grey"))))
+   '(vertical-border ((t (:foreground "grey20"))))
+   '(hl-line ((t (:background "grey20"))))
    '(diff-refine-added ((t (:background "#005000"))))
    '(diff-refine-removed ((t (:background "#6a0000"))))
    '(mode-line
@@ -267,6 +274,30 @@
    '(ansi-color-names-vector
      ["#232323" "LightSalmon" "#A5C261" "#FFC66D" "#3070FF"
       "#FF00FF" "#22EEEE" "#E6E1DC"])))
+
+(use-package material
+  :disabled t
+  :if window-system
+  :init
+  (require 'color)
+  (switch-to-theme 'material)
+  (let* ((dark-gray "#37474f")
+         (gray "#78909c")
+         (aqua "#81d4fa")
+         (red "#f36c60")
+         (dark-red (color-darken-name red 40))
+         (dark-aqua (color-darken-name aqua 15)))
+    (custom-theme-set-faces
+     'material
+     `(trailing-whitespace ((t (:background ,dark-red))))
+     `(column-enforce-face ((t (:background ,dark-red))))
+     `(region ((t (:background ,dark-aqua))))
+     `(fringe ((t (:foreground ,gray))))
+     `(mode-line ((t (:foreground "white" :background ,dark-aqua  :box (:line-width 2 :color ,dark-aqua)))))
+     `(mode-line-buffer-id ((t (:foreground "white" :weight bold))))
+     `(mode-line-inactive ((t (:inherit 'mode-line :background ,gray :box (:line-width 2 :color ,gray)))))
+     `(vertical-border ((t (:foreground ,gray))))
+     `(hl-line ((t (:background ,dark-gray)))))))
 
 (use-package exec-path-from-shell
   :init (when (memq window-system '(mac ns))
@@ -288,6 +319,9 @@
   :init (add-hook 'prog-mode-hook 'column-enforce-mode))
 
 (use-package editorconfig)
+
+(use-package ffap
+  :config (setq ffap-machine-p-known 'reject))
 
 (use-package ispell
   ;; :commands (ispell-word flyspell-buffer flyspell-mode)
@@ -311,7 +345,8 @@
   :init (bind-key "C-c e" 'macrostep-expand emacs-lisp-mode-map))
 
 (use-package rainbow-delimiters
-  :config (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode))
+  :config
+  (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 
 (use-package eldoc
   :diminish eldoc-mode
@@ -371,20 +406,21 @@
     (setq ido-vertical-decorations
           '("\n → " "" "\n   " "\n   …" "[" "]" " [No match]" " [Matched]"
             " [Not readable]" " [Too big]" " [Confirm]" "\n → " ""))
-    (icomplete-mode)
     (ido-everywhere t)
     (ido-ubiquitous-mode t)
     (ido-vertical-mode t)
     (flx-ido-mode t)
     (add-to-list 'ido-setup-hook 'dp/ido-keys)
     (setq ido-enable-flex-matching t
+          ido-vertical-define-keys 'C-n-and-C-p-only
           ido-use-faces nil
           ido-create-new-buffer 'always
           ido-use-filename-at-point 'guess
           ido-default-file-method 'selected-window
           ido-default-buffer-method 'selected-window)))
 
-(use-package smex)
+(use-package smex
+  :bind ("M-x" . smex))
 
 ;;; Org mode
 (use-package org
@@ -425,7 +461,11 @@
     (setq magit-emacsclient-executable
           "/usr/local/Cellar/emacs-mac/HEAD/bin/emacsclient"
           magit-last-seen-setup-instructions "1.4.0"
-          magit-auto-revert-mode t))
+          magit-highlight-whitespace t
+          magit-highlight-trailing-whitespace t
+          magit-highlight-indentation nil
+          magit-diff-refine-hunk nil
+          magit-auto-revert-mode nil))
   :config
   (progn
     (bind-keys :map magit-mode-map
@@ -556,6 +596,9 @@
   :commands js2-refactor-mode
   :config
   (progn (js2r-add-keybindings-with-prefix "C-c C-m")))
+
+(use-package json-mode
+  :mode "\\.\\(json\\|jshintrc\\|bowerrc\\)$")
 
 (use-package js2-mode
   :mode "\\.js$"
