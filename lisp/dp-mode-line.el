@@ -28,15 +28,21 @@
 (setq-default mode-line-modes
  '("%[" mode-name mode-line-process minor-mode-alist "%n" "%]"))
 
+;; (setq-default mode-line-format
+;;  (list "%e" " "
+;;        mode-line-modified " "
+;;        mode-line-buffer-identification " "
+;;        mode-line-misc-info
+;;        mode-line-modes
+;;        " "
+;;        (dp/mode-line-right
+;;         mode-line-position " "
+;;         dp/mode-line-window-number)))
+
 (setq-default mode-line-format
- (list "%e" " "
-       mode-line-modified " "
-       mode-line-buffer-identification " "
-       mode-line-misc-info
-       mode-line-modes
-       " "
-       (dp/mode-line-right
-        mode-line-position " "
-        dp/mode-line-window-number)))
+              (list "%e" mode-line-front-space mode-line-mule-info mode-line-client mode-line-modified mode-line-remote mode-line-frame-identification mode-line-buffer-identification "   " mode-line-position
+                    '(vc-mode vc-mode)
+                    "  " mode-line-modes mode-line-misc-info mode-line-end-spaces
+                    (dp/mode-line-right dp/mode-line-window-number)))
 
 (provide 'dp-mode-line)
