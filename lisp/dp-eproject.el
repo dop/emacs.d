@@ -54,6 +54,15 @@
         (concat (file-name-as-directory dir) file-name)
       nil)))
 
+(defun shell-with-name (new-name)
+  (let ((buf (get-buffer-create new-name)))
+    (shell buf)
+    buf))
+
+(defun shell-with-command (command &optional new-name)
+  (comint-send-string (get-buffer-process (shell-with-name new-name))
+                      (concat command "\n")))
+
 (defun multi-term-with-name (new-name)
   (multi-term)
   (let ((buf (car (last multi-term-buffer-list))))
@@ -75,8 +84,8 @@
          (path-variable (concat "PATH=" path ":" (mapconcat 'identity current-paths ":")))
          (process-environment (cons path-variable process-environment)))
     (if command
-        (multi-term-command command buffer-name)
-      (multi-term-with-name buffer-name))))
+        (shell-with-command command buffer-name)
+      (shell-with-name buffer-name))))
 
 (defun dp/eproject-shell-command (command)
   (let* ((name (format "*%s <%s>*" (eproject-name) command))
