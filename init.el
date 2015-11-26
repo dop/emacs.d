@@ -8,46 +8,36 @@
 (require 'color)
 (require 'dp-functions)
 
-(set-face-attribute
- 'default nil
- :family "MonacoB2"
- :height 110
- :weight 'regular)
+(defun set-font (name &optional size weight)
+  (set-face-attribute
+   'default nil
+   :family name
+   :height (or size 120)
+   :weight (or weight 'regular)))
+
+;; (set-font "Andale Mono")
+;; (set-font "Consolas")
+;; (set-font "Courier New" 120)
+;; (set-font "Courier" 120)
+(set-font "DejaVu LGC Sans Mono")
+;; (set-font "Inconsolata LGC")
+;; (set-font "Input Mono")
+;; (set-font "Input Mono Narrow")
+;; (set-font "Input Mono Condensed" 120 'light)
+;; (set-font "Input Mono Compressed" 120 'light)
+;; (set-font "M+ 1mn" 140 'light)
+;; (set-font "Menlo")
+;; (set-font "MonacoB2")
+;; (set-font "Oxygen Mono")
+;; (set-font "Fira Mono")
+;; (set-font "Source Code Pro")
+;; (set-font "Lucida Console")
+;; (set-font "Ubuntu Mono" 140)
 
 (set-fontset-font t '(61440 . 61980) "FontAwesome")
 
-;; (custom-theme-set-faces
-;;  'user
-;;  '(default ((t (:foreground "black" :background "white"))))
-;;  '(diff-added ((t (:foreground "forest green"))))
-;;  '(diff-removed ((t (:foreground "red"))))
-;;  `(git-gutter:added ((t (:foreground "forest green"
-;;                          :background ,(color-lighten-name "forest green" 60)))))
-;;  '(git-gutter:deleted ((t (:foreground "coral"))))
-;;  `(git-gutter:modified ((t (:foreground "deep sky blue"
-;;                             :background ,(color-lighten-name "sky blue" 22)))))
-;;  '(magit-item-highlight ((t (:background "beige"))))
-;;  '(fringe ((t (:background "white" :foreground "gray85"))))
-;;  `(hl-line ((t (:background ,(color-darken-name "honeydew" 3)))))
-;;  '(vertical-border ((t (:foreground "gray85"))))
-;;  '(column-enforce-face ((t (:background "pink")))))
-
-(custom-theme-set-faces
- 'user
- `(default ((t (:foreground "white" :background "black"))))
- '(diff-added ((t (:foreground "forest green"))))
- '(diff-removed ((t (:foreground "red"))))
- `(git-gutter:added ((t (:foreground "forest green" :background "black"))))
- '(git-gutter:deleted ((t (:foreground "coral"))))
- `(git-gutter:modified ((t (:foreground "deep sky blue" :background "black"))))
- `(magit-item-highlight ((t (:background ,(color-darken-name "honeydew" 90)))))
- '(fringe ((t (:background "black" :foreground "gray50"))))
- `(hl-line ((t (:background ,(color-darken-name "honeydew" 85)))))
- '(vertical-border ((t (:foreground "gray15"))))
- `(column-enforce-face ((t (:background ,(color-darken-name "dark red" 10))))))
-
-;; (dp/apply-custom-user-faces)
-;; (dp/reset-custom-user-faces)
+;; No more symlinks to indicated that file is being edited.
+(setq create-lockfiles nil)
 
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
@@ -135,7 +125,10 @@
 ;; Real emacs knights don't use shift to mark things
 (setq shift-select-mode nil)
 
-;; (add-hook 'post-command-hook 'set-cursor-according-to-mode t)
+;; increate text by 1
+(setq text-scale-mode-step 1.1)
+
+(add-hook 'post-command-hook 'set-cursor-according-to-mode t)
 ;; (defun set-cursor-according-to-mode () (setq cursor-type 'box))
 ;; (remove-hook 'post-command-hook 'set-cursor-according-to-mode)
 
@@ -171,37 +164,150 @@
 ;; (use-package server
 ;;   :init (unless (server-running-p) (server-start)))
 
-(use-package moe-theme
-  :disabled t
-  :init (switch-to-theme 'moe-dark)
-  :config
-  (progn
-    (custom-theme-set-faces
-     'moe-dark
-     '(hl-line ((t (:background "#3a3a3a"))))
-     '(flyspell-incorrect ((t (:foreground unspecified :background unspecified
-                               :underline (:color "#ef2929" :style wave)))))
-     '(magit-item-highlight ((t (:background "#444444"))))
-     '(git-gutter:added ((t (:inherit fringe :foreground "#d7ff5f"))))
-     '(git-gutter:deleted ((t (:inherit fringe :foreground "tomato"))))
-     '(git-gutter:modified ((t (:inherit fringe :foreground "deep sky blue"))))
-     '(fringe ((t (:background "#303030")))))
-    (custom-theme-set-variables
-     'moe-dark
-     '(ansi-color-names-vector
-       ["#303030" "#ef2929" "#afff00" "#fce94f" "#5fafd7"
-        "#ffafd7" "#87ffff" "#C6C6C6"]))))
-
 (use-package solarized-theme
   :disabled t
   :if window-system
   :init
   (progn
     (setq solarized-use-less-bold t
-          solarized-use-more-italic nil
+          solarized-use-more-italic t
           solarized-high-contrast-mode-line t
           solarized-use-variable-pitch t)
-    (switch-to-theme 'solarized-dark)))
+    (switch-to-theme 'solarized-dark)
+    (let* ((variant 'dark)
+           (s-base03    "#002b36")
+           (s-base02    "#073642")
+           ;; emphasized content
+           (s-base01    "#586e75")
+           ;; primary content
+           (s-base00    "#657b83")
+           (s-base0     "#839496")
+           ;; comments
+           (s-base1     "#93a1a1")
+           ;; background highlight light
+           (s-base2     "#eee8d5")
+           ;; background light
+           (s-base3     "#fdf6e3")
+
+           ;; Solarized accented colors
+           (yellow    "#b58900")
+           (orange    "#cb4b16")
+           (red       "#dc322f")
+           (magenta   "#d33682")
+           (violet    "#6c71c4")
+           (blue      "#268bd2")
+           (cyan      "#2aa198")
+           (green     "#859900")
+
+           ;; Darker and lighter accented colors
+           ;; Only use these in exceptional circumstances!
+           (yellow-d  "#7B6000")
+           (yellow-l  "#DEB542")
+           (orange-d  "#8B2C02")
+           (orange-l  "#F2804F")
+           (red-d     "#990A1B")
+           (red-l     "#FF6E64")
+           (magenta-d "#93115C")
+           (magenta-l "#F771AC")
+           (violet-d  "#3F4D91")
+           (violet-l  "#9EA0E5")
+           (blue-d    "#00629D")
+           (blue-l    "#69B7F0")
+           (cyan-d    "#00736F")
+           (cyan-l    "#69CABF")
+           (green-d   "#546E00")
+           (green-l   "#B4C342")
+
+           ;; Solarized palette names, use these instead of -fg -bg...
+           (base0 (if (eq variant 'light) s-base00 s-base0))
+           (base00 (if (eq variant 'light) s-base0 s-base00))
+           (base1 (if (eq variant 'light) s-base01 s-base1))
+           (base01 (if (eq variant 'light) s-base1 s-base01))
+           (base2 (if (eq variant 'light) s-base02 s-base2))
+           (base02 (if (eq variant 'light) s-base2 s-base02))
+           (base3 (if (eq variant 'light) s-base03 s-base3))
+           (base03 (if (eq variant 'light) s-base3 s-base03))
+
+           (s-line (if (eq variant 'light) "#cccec4" "#284b54"))
+
+           ;; Light/Dark adaptive higher/lower contrast accented colors
+           ;;
+           ;; NOTE Only use these in exceptional cirmumstances!
+           (yellow-hc (if (eq variant 'light) yellow-d yellow-l))
+           (yellow-lc (if (eq variant 'light) yellow-l yellow-d))
+           (orange-hc (if (eq variant 'light) orange-d orange-l))
+           (orange-lc (if (eq variant 'light) orange-l orange-d))
+           (red-hc (if (eq variant 'light) red-d red-l))
+           (red-lc (if (eq variant 'light) red-l red-d))
+           (magenta-hc (if (eq variant 'light) magenta-d magenta-l))
+           (magenta-lc (if (eq variant 'light) magenta-l magenta-d))
+           (violet-hc (if (eq variant 'light) violet-d violet-l))
+           (violet-lc (if (eq variant 'light) violet-l violet-d))
+           (blue-hc (if (eq variant 'light) blue-d blue-l))
+           (blue-lc (if (eq variant 'light) blue-l blue-d))
+           (cyan-hc (if (eq variant 'light) cyan-d cyan-l))
+           (cyan-lc (if (eq variant 'light) cyan-l cyan-d))
+           (green-hc (if (eq variant 'light) green-d green-l))
+           (green-lc (if (eq variant 'light) green-l green-d))
+
+           ;; customize based face properties
+           (s-maybe-bold (if solarized-use-less-bold
+                             'unspecified 'bold))
+           (s-maybe-italic (if solarized-use-more-italic
+                               'italic 'normal))
+           (s-variable-pitch (if solarized-use-variable-pitch
+                                 'variable-pitch 'default))
+           (s-fringe-bg (if solarized-distinct-fringe-background
+                            base02 base03))
+           (s-fringe-fg base01)
+
+
+           (s-header-line-fg (if solarized-high-contrast-mode-line
+                                 base1 base0))
+           (s-header-line-bg (if solarized-high-contrast-mode-line
+                                 base02 base03))
+           (s-header-line-underline (if solarized-high-contrast-mode-line
+                                        nil base02))
+
+           (s-mode-line-fg (if solarized-high-contrast-mode-line
+                               base03 base0))
+           (s-mode-line-bg (if solarized-high-contrast-mode-line
+                               base0 base02))
+           (s-mode-line-underline (if solarized-high-contrast-mode-line
+                                      nil s-line))
+
+           (s-mode-line-buffer-id-fg (if solarized-high-contrast-mode-line
+                                         'unspecified base1))
+           (s-mode-line-inactive-fg (if solarized-high-contrast-mode-line
+                                        base0 base01))
+           (s-mode-line-inactive-bg (if solarized-high-contrast-mode-line
+                                        base02 base03))
+           (s-mode-line-inactive-bc (if solarized-high-contrast-mode-line
+                                        base02 base02)))
+      (custom-theme-set-faces
+       'solarized-dark
+       `(font-lock-comment-face ((t (:foreground ,base01 :slant italic))))
+       `(mode-line
+         ((t (:inverse-video unspecified
+              :overline nil
+              :underline nil
+              :foreground ,s-mode-line-fg
+              :background ,s-mode-line-bg
+              :box (:line-width 2
+                    :color ,s-mode-line-bg
+                    :style unspecified)))))
+       `(mode-line-buffer-id
+         ((t (:foreground ,s-mode-line-buffer-id-fg
+              :weight bold))))
+       `(mode-line-inactive
+         ((t (:inverse-video unspecified
+              :overline nil
+              :underline nil
+              :foreground ,s-mode-line-inactive-fg
+              :background ,s-mode-line-inactive-bg
+              :box (:line-width 2
+                    :color ,s-mode-line-inactive-bg
+                    :style unspecified)))))))))
 
 (use-package leuven-theme
   :disabled t
@@ -249,31 +355,40 @@
       "#FF00FF" "#22EEEE" "#E6E1DC"])))
 
 (use-package cyberpunk-theme
-  :disabled t
   :if window-system
   :init (switch-to-theme 'cyberpunk)
   :config
-  (custom-theme-set-faces
-   'cyberpunk
-   '(default ((t (:background "grey15" :foreground "white smoke"))))
-   '(fringe ((t (:background "grey15" :foreground "light grey"))))
-   '(vertical-border ((t (:foreground "grey20"))))
-   '(hl-line ((t (:background "grey20"))))
-   '(diff-refine-added ((t (:background "#005000"))))
-   '(diff-refine-removed ((t (:background "#6a0000"))))
-   '(mode-line
-     ((t (:foreground "white"
-                      :background "#4c83ff"
-                      :box (:line-width 2 :color "#4c83ff")))))
-   '(mode-line-inactive
-     ((t (:foreground "light grey"
-                      :background "grey25"
-                      :box (:line-width 2 :color "grey25"))))))
+  (let ((grey-sky-blue (color-desaturate-name (color-darken-name "#4c83ff" 12) 50)))
+    (custom-theme-set-faces
+     'cyberpunk
+     '(default ((t (:background "grey10" :foreground "white smoke"))))
+     '(fringe ((t (:background "grey10" :foreground "light grey"))))
+     '(vertical-border ((t (:foreground "grey20"))))
+     '(hl-line ((t (:background "grey20"))))
+     '(diff-refine-added ((t (:background "#005000"))))
+     '(diff-refine-removed ((t (:background "#6a0000"))))
+     `(mode-line
+       ((t (:foreground "white"
+                        :background ,grey-sky-blue
+                        :box (:line-width 4 :color ,grey-sky-blue)))))
+     '(mode-line-inactive
+       ((t (:foreground "light grey"
+                        :background "grey25"
+                        :box (:line-width 4 :color "grey25")))))))
   (custom-theme-set-variables
    'cyberpunk
    '(ansi-color-names-vector
      ["#232323" "LightSalmon" "#A5C261" "#FFC66D" "#3070FF"
       "#FF00FF" "#22EEEE" "#E6E1DC"])))
+
+(use-package darcula
+  :disabled t
+  :if window-system
+  :init
+  (switch-to-theme 'darcula)
+  (custom-theme-set-faces
+     'darcula
+     `(hl-line ((t (:background "black"))))))
 
 (use-package material
   :disabled t
@@ -303,6 +418,9 @@
   :init (when (memq window-system '(mac ns))
           (exec-path-from-shell-initialize)))
 
+(use-package beacon-mode
+  :init (beacon-mode t))
+
 (use-package hl-line
   :commands hl-line-mode
   :init (progn
@@ -313,10 +431,10 @@
   :diminish undo-tree-mode
   :init (global-undo-tree-mode t))
 
-(use-package column-enforce-mode
-  :diminish column-enforce-mode
-  :commands column-enforce-mode
-  :init (add-hook 'prog-mode-hook 'column-enforce-mode))
+;; (use-package column-enforce-mode
+;;   :diminish column-enforce-mode
+;;   :commands column-enforce-mode
+;;   :init (add-hook 'prog-mode-hook 'column-enforce-mode))
 
 (use-package editorconfig)
 
@@ -344,9 +462,9 @@
   :commands macrostep-expand
   :init (bind-key "C-c e" 'macrostep-expand emacs-lisp-mode-map))
 
-(use-package rainbow-delimiters
-  :config
-  (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
+;; (use-package rainbow-delimiters
+;;   :config
+;;   (remove-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 
 (use-package eldoc
   :diminish eldoc-mode
@@ -375,6 +493,7 @@
   :bind ("C-c r" . vr/replace))
 
 (use-package company
+  :disabled t
   :diminish company-mode
   :init (progn
           (global-company-mode t)
@@ -387,6 +506,10 @@
                      ("C-n" . company-select-next)
                      ("C-p" . company-select-previous)))
   :config (setq company-idle-delay 0.1))
+
+(use-package auto-complete
+  :diminish auto-complete-mode
+  :init (add-hook 'prog-mode-hook 'auto-complete-mode))
 
 (use-package dictionary
   :bind ("C-c s" . dictionary-search))
@@ -465,7 +588,7 @@
           magit-highlight-trailing-whitespace t
           magit-highlight-indentation nil
           magit-diff-refine-hunk nil
-          magit-auto-revert-mode nil))
+          magit-auto-revert-mode t))
   :config
   (progn
     (bind-keys :map magit-mode-map
@@ -600,10 +723,15 @@
 (use-package json-mode
   :mode "\\.\\(json\\|jshintrc\\|bowerrc\\)$")
 
+(use-package ac-js2
+  :commands ac-js2-mode)
+
 (use-package js2-mode
   :mode "\\.js$"
   :init
-  (add-hook 'js2-mode-hook (lambda () (setq mode-name "js2")))
+  (progn
+    (add-hook 'js2-mode-hook (lambda () (setq mode-name "js2")))
+    (add-hook 'js2-mode-hook (lambda () (ac-js2-mode t))))
   :config
   (progn
     (add-hook 'js2-mode-hook 'js2-refactor-mode)
@@ -626,6 +754,14 @@
   :mode ("\\.ts$" . typescript-mode)
   :config (setq typescript-indent-level 2))
 
+(use-package skewer-mode
+  :commands (skewer-run-phantomjs run-skewer)
+  :config
+  (setq phantomjs-program-name "/usr/local/bin/phantomjs"))
+
+(use-package elm-mode
+  :mode "\\.elm$")
+
 (use-package eproject
   :diminish eproject-mode
   :commands define-project-type
@@ -640,14 +776,23 @@
 
 (use-package php-mode
   :mode "\\.\\(php[s345]?\\|inc\\|phtml\\)"
-  :config (bind-keys
-           :map php-mode-map
-           ("C-c j" . dp/php-jump-to-function-definition)
-           ("C-}" . dp/php-next-function)
-           ("C-{" . dp/php-previous-function)))
+  :config
+  (bind-keys
+   :map php-mode-map
+   ("C-c j" . dp/php-jump-to-function-definition)
+   ("C-}" . dp/php-next-function)
+   ("C-{" . dp/php-previous-function))
+  :init
+  (add-to-list 'php-mode-hook (lambda () (setq tab-width 2 c-basic-offset 2))))
 
 (use-package nxml-mode
   :config (add-to-list 'rng-schema-locating-files "~/.emacs.d/schemas.xml"))
+
+(use-package mmm-mode
+  :commands (mmm-mode mmm-mode-on)
+  :init
+  (setq mmm-global-mode 'auto)
+  (require 'mmm-defaults))
 
 (use-package html-mode
   :mode "\\.html?\\'"
