@@ -7,3 +7,12 @@ org-clock-save.el
 personal_init.el
 tramp
 url/
+.cask/
+/.litable-lists.el
+/.mc-lists.el
+/abbrev_defs
+/data/
+/ensime/
+/quelpa/
+/recentf
+/validator/
