@@ -4,7 +4,6 @@
 (require 'eproject-extras)
 (require 'json)
 (require 's)
-(require 'multi-term)
 
 (defvar eproject-prefix "C-x p")
 
@@ -17,7 +16,8 @@
   (let ((default-directory (eproject-root))
         (name (eproject-name)))
     (let ((buf (get-buffer-create (concat "*" name " shell*"))))
-      (shell buf))))
+      (with-current-buffer (shell buf)
+        (setq comint-input-ignoredups t)))))
 
 (defun eproject-open-term ()
   (interactive)
@@ -99,7 +99,8 @@
 (defalias 'pshell 'dp/eproject-shell-command)
 
 (defun eproject-jshint ()
-  (when (eq major-mode 'js2-mode)
+  (when (or (eq major-mode 'js2-mode)
+            (eq major-mode 'js2-jsx-mode))
     (flycheck-mode 1)
     (set-variable 'flycheck-checker 'javascript-jshint)
     (set-variable (make-local-variable 'flycheck-javascript-jshint-executable)
@@ -124,9 +125,10 @@
 
 (defun dp/git-find-file (&optional directory)
   "Find file in repository using `ido-completing-read'."
-  (interactive (list (or (ignore-errors (eproject-root)) nil)))
+  (interactive (list (or (ignore-errors (file-name-directory (dp/search-up-for ".git")))
+                         nil)))
   (with-temp-buffer
-    (when directory (setq default-directory directory))
+    (setq default-directory directory)
     (call-process "git" nil t nil
                   "ls-tree" "-z" "-r" "--name-only" "--full-tree"
                   "HEAD")
@@ -134,6 +136,10 @@
      (concat default-directory
              (ido-completing-read "Find file in repository: "
                                   (s-split "\0" (buffer-string) t))))))
+
+(defun dp/trace (label value)
+  "Echo LABEL and VALUE to *Messages* buffer and return VALUE."
+  (message (format "%s: %S" label value)) value)
 
 (defun eproject-set-git-generic-keys ()
   (local-set-key (kbd "C-x f") 'dp/git-find-file))

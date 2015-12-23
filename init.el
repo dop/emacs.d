@@ -17,24 +17,46 @@
 
 ;; (set-font "Andale Mono")
 ;; (set-font "Consolas")
-;; (set-font "Courier New" 120)
+;; (set-font "Courier New")
 ;; (set-font "Courier" 120)
-(set-font "DejaVu LGC Sans Mono")
-;; (set-font "Inconsolata LGC")
-;; (set-font "Input Mono")
-;; (set-font "Input Mono Narrow")
-;; (set-font "Input Mono Condensed" 120 'light)
-;; (set-font "Input Mono Compressed" 120 'light)
-;; (set-font "M+ 1mn" 140 'light)
+(set-font "Fira Mono")
+;; (set-font "DejaVu LGC Sans Mono")
 ;; (set-font "Menlo")
-;; (set-font "MonacoB2")
-;; (set-font "Oxygen Mono")
-;; (set-font "Fira Mono")
-;; (set-font "Source Code Pro")
+;; (set-font "Hack")
+;; (set-font "Inconsolata LGC")
+;; (set-font "Input Mono Compressed" 120 'light)
+;; (set-font "Input Mono Condensed" 120 'light)
+;; (set-font "Input Mono Narrow")
+;; (set-font "Input Mono")
 ;; (set-font "Lucida Console")
+;; (set-font "M+ 1mn")
+;; (set-font "MonacoB")
+;; (set-font "Oxygen Mono")
+;; (set-font "Source Code Pro")
 ;; (set-font "Ubuntu Mono" 140)
+;; (set-font "Iosevka")
+
+(custom-theme-set-faces
+ 'user
+ `(cursor ((t (:background "red"))))
+ `(vertical-border ((t (:foreground "gray30"))))
+ `(default ((t (:foreground "white" :background "#232624"))))
+ `(fringe ((t (:foreground "white" :background "#232624"))))
+ `(font-lock-comment-face ((t (:foreground "gray55"))))
+ `(font-lock-string-face ((t (:foreground "cornsilk"))))
+ `(font-lock-doc-face ((t (:foreground "sandy brown"))))
+ `(font-lock-function-name-face ((t (:foreground "aquamarine"))))
+ `(font-lock-variable-name-face ((t (:foreground "white"))))
+ `(font-lock-keyword-face ((t (:foreground "moccasin"))))
+ `(dired-directory ((t (:foreground "moccasin")))))
 
 (set-fontset-font t '(61440 . 61980) "FontAwesome")
+
+(defun a ())
+(setq insert-directory-program "/usr/local/bin/gls")
+(setq dired-listing-switches "-alGhF --group-directories-first")
+
+(setq-default comint-input-ignoredups t)
 
 ;; No more symlinks to indicated that file is being edited.
 (setq create-lockfiles nil)
@@ -128,7 +150,7 @@
 ;; increate text by 1
 (setq text-scale-mode-step 1.1)
 
-(add-hook 'post-command-hook 'set-cursor-according-to-mode t)
+;; (add-hook 'post-command-hook 'set-cursor-according-to-mode t)
 ;; (defun set-cursor-according-to-mode () (setq cursor-type 'box))
 ;; (remove-hook 'post-command-hook 'set-cursor-according-to-mode)
 
@@ -287,6 +309,7 @@
       (custom-theme-set-faces
        'solarized-dark
        `(font-lock-comment-face ((t (:foreground ,base01 :slant italic))))
+       `(ensime-implicit-highlight ((t (:underline (:style line :color ,base01)))))
        `(mode-line
          ((t (:inverse-video unspecified
               :overline nil
@@ -326,6 +349,8 @@
                                     :foreground "#F0F0EF"
                                     :background "gainsboro"))))
      '(column-enforce-face ((t (:background "#FFDDDD"))))
+     '(hl-tags-face ((t (:background nil :underline (:style line :color "grey80")))))
+     '(mmm-default-submode-face ((t :background "gray95")))
      '(vertical-border ((t (:foreground "#f0f0ef")))))
     (custom-theme-set-variables
      'leuven
@@ -334,27 +359,8 @@
      '(ansi-color-names-vector
        ["black" "red3" "ForestGreen" "yellow3" "blue" "magenta3" "DeepSkyBlue" "gray50"]))))
 
-(use-package railscasts-theme
-  :disabled t
-  :if window-system
-  :init (switch-to-theme 'railscasts)
-  :config
-  (custom-theme-set-faces
-   'railscasts
-   '(diff-added ((t (:foreground "#A5C261"))))
-   '(diff-removed ((t (:foreground "LightSalmon"))))
-   '(magit-item-highlight ((t (:background "#404040"))))
-   '(aw-leading-char-face ((t (:foreground "red"))))
-   '(mode-line-buffer-id ((t (:bold t :foreground "#232323" :background "#A5BAF1"))))
-   '(mode-line-inactive ((t (:box nil :background "#404040"))))
-   '(vertical-border ((t (:foreground "#404040")))))
-  (custom-theme-set-variables
-   'railscasts
-   '(ansi-color-names-vector
-     ["#232323" "LightSalmon" "#A5C261" "#FFC66D" "#3070FF"
-      "#FF00FF" "#22EEEE" "#E6E1DC"])))
-
 (use-package cyberpunk-theme
+  :disabled t
   :if window-system
   :init (switch-to-theme 'cyberpunk)
   :config
@@ -381,49 +387,16 @@
      ["#232323" "LightSalmon" "#A5C261" "#FFC66D" "#3070FF"
       "#FF00FF" "#22EEEE" "#E6E1DC"])))
 
-(use-package darcula
-  :disabled t
-  :if window-system
-  :init
-  (switch-to-theme 'darcula)
-  (custom-theme-set-faces
-     'darcula
-     `(hl-line ((t (:background "black"))))))
-
-(use-package material
-  :disabled t
-  :if window-system
-  :init
-  (require 'color)
-  (switch-to-theme 'material)
-  (let* ((dark-gray "#37474f")
-         (gray "#78909c")
-         (aqua "#81d4fa")
-         (red "#f36c60")
-         (dark-red (color-darken-name red 40))
-         (dark-aqua (color-darken-name aqua 15)))
-    (custom-theme-set-faces
-     'material
-     `(trailing-whitespace ((t (:background ,dark-red))))
-     `(column-enforce-face ((t (:background ,dark-red))))
-     `(region ((t (:background ,dark-aqua))))
-     `(fringe ((t (:foreground ,gray))))
-     `(mode-line ((t (:foreground "white" :background ,dark-aqua  :box (:line-width 2 :color ,dark-aqua)))))
-     `(mode-line-buffer-id ((t (:foreground "white" :weight bold))))
-     `(mode-line-inactive ((t (:inherit 'mode-line :background ,gray :box (:line-width 2 :color ,gray)))))
-     `(vertical-border ((t (:foreground ,gray))))
-     `(hl-line ((t (:background ,dark-gray)))))))
-
 (use-package exec-path-from-shell
   :init (when (memq window-system '(mac ns))
           (exec-path-from-shell-initialize)))
 
-(use-package beacon-mode
-  :init (beacon-mode t))
-
 (use-package hl-line
+  :disabled t
   :commands hl-line-mode
   :init (progn
+          (set-face-attribute 'hl-line nil :inherit 'highlight
+                              :background (color-lighten-name "darkseagreen2" 9))
           (add-hook 'prog-mode-hook 'hl-line-mode)
           (add-hook 'html-mode-hook 'hl-line-mode)))
 
@@ -490,7 +463,8 @@
   :init (wrap-region-global-mode))
 
 (use-package visual-regexp
-  :bind ("C-c r" . vr/replace))
+  :bind ("C-c r" . vr/replace)
+  :init (require 'visual-regexp-steroids))
 
 (use-package company
   :disabled t
@@ -508,8 +482,9 @@
   :config (setq company-idle-delay 0.1))
 
 (use-package auto-complete
+  :disabled t
   :diminish auto-complete-mode
-  :init (add-hook 'prog-mode-hook 'auto-complete-mode))
+  :init (remove-hook 'prog-mode-hook 'auto-complete-mode))
 
 (use-package dictionary
   :bind ("C-c s" . dictionary-search))
@@ -577,8 +552,16 @@
                   org-src-preserve-indentation t)))
 
 (use-package magit
-  :diminish magit-auto-revert-mode
-  :bind ("C-x g" . magit-status)
+  ;; :diminish magit-auto-revert-mode
+  :bind (("C-x g" . magit-status)
+         ("C-x f" . dp/git-find-file))
+  :config
+  (bind-keys
+   :map magit-mode-map
+   ("M-1" . nil)
+   ("M-2" . nil)
+   ("M-3" . nil)
+   ("M-4" . nil))
   :init
   (progn
     (setq magit-emacsclient-executable
@@ -588,15 +571,7 @@
           magit-highlight-trailing-whitespace t
           magit-highlight-indentation nil
           magit-diff-refine-hunk nil
-          magit-auto-revert-mode t))
-  :config
-  (progn
-    (bind-keys :map magit-mode-map
-               ("C-x f" . dp/git-find-file)
-               ("M-1" . nil)
-               ("M-2" . nil)
-               ("M-3" . nil)
-               ("M-4" . nil))
+          magit-revert-buffers nil)
     (add-hook 'git-commit-mode-hook 'turn-on-flyspell)))
 
 (use-package helm
@@ -711,6 +686,23 @@
         (after revert-buffer-after-abort activate)
       (revert-buffer))))
 
+(use-package purescript-mode
+  :mode "\\.purs$"
+  :init
+  (add-hook 'purescript-mode-hook 'turn-on-purescript-indentation))
+
+(require 'eproject)
+
+(define-project-type maven (generic)
+  (look-for "pom.xml")
+  :relevant-files ("\\.scala$" "\\.java$" "\\.xml$"))
+
+(use-package scala-mode2
+  :config
+  (setq scala-indent:align-parameters t)
+  :init
+  (add-hook 'scala-mode-hook 'ensime-scala-mode-hook))
+
 (use-package cap-words
   :diminish capitalized-words-mode
   :commands capitalized-words-mode)
@@ -723,8 +715,7 @@
 (use-package json-mode
   :mode "\\.\\(json\\|jshintrc\\|bowerrc\\)$")
 
-(use-package ac-js2
-  :commands ac-js2-mode)
+(use-package ac-js2 :commands ac-js2-mode)
 
 (use-package js2-mode
   :mode "\\.js$"
@@ -765,25 +756,25 @@
 (use-package eproject
   :diminish eproject-mode
   :commands define-project-type
-  :config (progn
-            (require 'dp-eproject)
-            (eproject-set-key "t" 'eproject-tasks-run)
-            (eproject-set-key "s" 'eproject-open-term)
-            (add-to-list 'generic-project-file-visit-hook 'eproject-set-local-keys)
-            (add-to-list 'generic-project-file-visit-hook 'eproject-jshint)
-            (add-to-list 'generic-git-project-file-visit-hook
-                         'eproject-set-git-generic-keys)))
+  :init
+  (progn
+    (require 'dp-eproject)
+    (eproject-set-key "t" 'eproject-tasks-run)
+    (eproject-set-key "s" 'eproject-open-term)
+    (add-to-list 'generic-project-file-visit-hook 'eproject-set-local-keys)
+    (add-to-list 'generic-project-file-visit-hook 'eproject-jshint)
+    (add-to-list 'generic-git-project-file-visit-hook 'eproject-set-git-generic-keys)))
 
 (use-package php-mode
   :mode "\\.\\(php[s345]?\\|inc\\|phtml\\)"
   :config
-  (bind-keys
-   :map php-mode-map
-   ("C-c j" . dp/php-jump-to-function-definition)
-   ("C-}" . dp/php-next-function)
-   ("C-{" . dp/php-previous-function))
-  :init
-  (add-to-list 'php-mode-hook (lambda () (setq tab-width 2 c-basic-offset 2))))
+  (progn
+    (bind-keys
+     :map php-mode-map
+     ("C-c j" . dp/php-jump-to-function-definition)
+     ("C-}" . dp/php-next-function)
+     ("C-{" . dp/php-previous-function))
+    (add-to-list 'php-mode-hook (lambda () (setq tab-width 2 c-basic-offset 2)))))
 
 (use-package nxml-mode
   :config (add-to-list 'rng-schema-locating-files "~/.emacs.d/schemas.xml"))
@@ -794,42 +785,54 @@
   (setq mmm-global-mode 'auto)
   (require 'mmm-defaults))
 
+(use-package hl-tags-mode
+  :commands hl-tags-mode
+  :config
+  (set-face-attribute 'hl-tags-face nil :background nil :underline '(:style line :color "red")))
+
 (use-package html-mode
   :mode "\\.html?\\'"
-  :config (bind-keys
-           :map html-mode-map
-           ("C-c =" . mc/mark-sgml-tag-pair)
-           ("C-}" . sgml-skip-tag-forward)
-           ("C-{" . sgml-skip-tag-backward)))
+  :config
+  (bind-keys
+   :map html-mode-map
+   ("C-c =" . mc/mark-sgml-tag-pair)
+   ("C-}" . sgml-skip-tag-forward)
+   ("C-{" . sgml-skip-tag-backward))
+  (add-to-list 'sgml-mode-hook 'hl-tags-mode)
+  (defadvice sgml-delete-tag (after reident activate)
+    (indent-region (point-min) (point-max))))
 
-;; (use-package web-mode
-;;   :mode "\\.vm?\\'")
+(use-package yasnippet
+  :init
+  (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
+  (setq yas-prompt-functions '(yas-ido-prompt yas-completing-prompt))
+  (yas-global-mode t))
 
 (use-package log-edit
   :config (add-hook 'log-edit-mode-hook 'flyspell-mode))
 
 (use-package vc-svn
-  :config (progn
-            (defadvice vc-svn-checkin
-                (before escape-filepaths
-                        (files rev comment &optional extra-args-ignored)
-                        activate)
-              "If filename includes @, add @ at the end of it."
-              (ad-set-arg 0 (mapcar (lambda (file)
-                                      (if (string-match "@" file)
-                                          (concat file "@")
-                                        file))
-                                    (ad-get-arg 0))))
-            (defadvice vc-svn-register
-                (before escape-filepaths
-                        (files rev comment &optional extra-args-ignored)
-                        activate)
-              "If filename includes @, add @ at the end of it."
-              (ad-set-arg 0 (mapcar (lambda (file)
-                                      (if (string-match "@" file)
-                                          (concat file "@")
-                                        file))
-                                    (ad-get-arg 0))))))
+  :config
+  (defadvice vc-svn-checkin
+      (before escape-filepaths
+              (files rev comment &optional extra-args-ignored)
+              activate)
+    "If filename includes @, add @ at the end of it."
+    (ad-set-arg 0 (mapcar (lambda (file)
+                            (if (string-match "@" file)
+                                (concat file "@")
+                              file))
+                          (ad-get-arg 0))))
+  (defadvice vc-svn-register
+      (before escape-filepaths
+              (files rev comment &optional extra-args-ignored)
+              activate)
+    "If filename includes @, add @ at the end of it."
+    (ad-set-arg 0 (mapcar (lambda (file)
+                            (if (string-match "@" file)
+                                (concat file "@")
+                              file))
+                          (ad-get-arg 0)))))
 
 (require 'dp-php)
 (require 'dp-haskell)

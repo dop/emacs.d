@@ -22,11 +22,11 @@
                                  dp/mode-line-right-length))))))
     ,@format))
 
-(setq-default mode-line-position
- '(line-number-mode ("%l" (column-number-mode ":%c"))))
+;; (setq-default mode-line-position
+;;  '(line-number-mode ("%l" (column-number-mode ":%c"))))
 
-(setq-default mode-line-modes
- '("%[" mode-name mode-line-process minor-mode-alist "%n" "%]"))
+;; (setq-default mode-line-modes
+;;  '("%[" mode-name mode-line-process minor-mode-alist "%n" "%]"))
 
 ;; (setq-default mode-line-format
 ;;  (list "%e" " "
@@ -39,10 +39,13 @@
 ;;         mode-line-position " "
 ;;         dp/mode-line-window-number)))
 
-(setq-default mode-line-format
-              (list "%e" mode-line-front-space mode-line-mule-info mode-line-client mode-line-modified mode-line-remote mode-line-frame-identification mode-line-buffer-identification "   " mode-line-position
-                    '(vc-mode vc-mode)
-                    "  " mode-line-modes mode-line-misc-info mode-line-end-spaces
-                    (dp/mode-line-right dp/mode-line-window-number)))
+(setq-default
+ mode-line-format
+ (list "%e" mode-line-front-space mode-line-mule-info mode-line-client mode-line-modified mode-line-remote
+       mode-line-frame-identification
+       dp/mode-line-window-number
+       mode-line-buffer-identification "   " mode-line-position
+       '(vc-mode vc-mode)
+       "  " mode-line-modes mode-line-misc-info mode-line-end-spaces))
 
 (provide 'dp-mode-line)

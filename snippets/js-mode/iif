@@ -1,7 +1,8 @@
 # -*- mode: snippet; require-final-newline: nil -*-
-# name: after
-# key: after
+# name: iif
+# key: iif
 # --
-afterEach(function () {
+(function () {
+  'use strict';
   $0
-});
+})();
