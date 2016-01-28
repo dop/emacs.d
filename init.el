@@ -550,36 +550,55 @@
 (use-package smex
   :bind ("M-x" . smex))
 
+(use-package htmlize)
+
+(defun dp/org-set-source-code-background (exporter)
+  "Insert custom inline css to automatically set the background
+of code to whatever theme I'm using's background"
+  (when (and (eq exporter 'html)
+             (featurep 'htmlize))
+    (let* ((my-pre-bg (face-background 'default))
+           (my-pre-fg (face-foreground 'default)))
+      (setq
+       org-html-head-extra
+       (concat
+        org-html-head-extra
+        (format "<style type=\"text/css\">\n pre.src {background-color: %s; color: %s;}</style>\n"
+                my-pre-bg my-pre-fg))))))
+
 ;;; Org mode
 (use-package org
   :mode ("\\.org$" . org-mode)
   ;; :bind (("C-c l" . org-store-link)
   ;;        ("C-c a" . org-agenda))
-  :config (progn
-            (add-hook 'org-mode-hook 'typo-mode)
-            (org-clock-persistence-insinuate)
-            (setq org-startup-indented t
-                  org-hide-leading-stars t
-                  org-todo-keywords '((sequence "TODO(t)" "FEEDBACK(f@)" "RECURRING(r)"
-                                                "APPROVE(a)" "POSTPONED(p)"
-                                                "|"
-                                                "DONE(d!/!)" "CANCELLED(c@/!)"))
-                  org-todo-keyword-faces '(("CANCELLED" :foreground "dark gray" :weight bold)
-                                           ("POSTPONED" :foreground "sky blue" :weight bold)
-                                           ("FEEDBACK" :foreground "dark orange" :weight bold)
-                                           ("APPROVE" :foreground "cornflower blue" :weight bold))
-                  org-use-fast-todo-selection t
-                  org-treat-S-cursor-todo-selection-as-state-change nil
-                  org-clock-persist t
-                  org-clock-in-resume t
-                  org-clock-out-remove-zero-time-clocks t
-                  org-clock-out-when-done t
-                  org-clock-persist-query-resume t
-                  org-clock-auto-clock-resolution 'when-no-clock-is-running
-                  org-clock-report-include-clocking-task t
-                  org-time-clocksum-format '(:hours "%d" :require-hours t :minutes ":%02d" :require-minutes t)
-                  org-src-fontify-natively t
-                  org-src-preserve-indentation t)))
+  :config
+  (progn
+    (add-hook 'org-mode-hook 'typo-mode)
+    (org-clock-persistence-insinuate)
+    (setq org-startup-indented t
+          org-startup-folded t
+          org-hide-leading-stars t
+          org-todo-keywords '((sequence "TODO(t)" "FEEDBACK(f@)" "RECURRING(r)"
+                                        "APPROVE(a)" "POSTPONED(p)"
+                                        "|"
+                                        "DONE(d!/!)" "CANCELLED(c@/!)"))
+          org-todo-keyword-faces '(("CANCELLED" :foreground "dark gray" :weight bold)
+                                   ("POSTPONED" :foreground "sky blue" :weight bold)
+                                   ("FEEDBACK" :foreground "dark orange" :weight bold)
+                                   ("APPROVE" :foreground "cornflower blue" :weight bold))
+          org-use-fast-todo-selection t
+          org-treat-S-cursor-todo-selection-as-state-change nil
+          org-clock-persist t
+          org-clock-in-resume t
+          org-clock-out-remove-zero-time-clocks t
+          org-clock-out-when-done t
+          org-clock-persist-query-resume t
+          org-clock-auto-clock-resolution 'when-no-clock-is-running
+          org-clock-report-include-clocking-task t
+          org-time-clocksum-format '(:hours "%d" :require-hours t :minutes ":%02d" :require-minutes t)
+          org-src-fontify-natively t
+          org-src-preserve-indentation t)
+    (add-hook 'org-export-before-processing-hook 'dp/org-set-source-code-background)))
 
 (use-package magit
   ;; :diminish magit-auto-revert-mode
