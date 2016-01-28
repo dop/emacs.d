@@ -1,5 +1,9 @@
 (require 'cl)
 
+(defun color-name-to-rgb-255 (name)
+  (mapcar (compose #'round (curry #'* 255))
+          (color-name-to-rgb name)))
+
 (defvar dp/custom-user-faces nil
   "Associated list of (FACE . SPEC) to apply to user theme")
 
