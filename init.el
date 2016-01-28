@@ -8,51 +8,25 @@
 (require 'color)
 (require 'dp-functions)
 
-(defun set-font (name &optional size weight)
-  (set-face-attribute
-   'default nil
-   :family name
-   :height (or size 120)
-   :weight (or weight 'regular)))
+(when (window-system)
+  (set-frame-font (font-spec :family "Inconsolata LGC" :size 12 :weight 'normal)))
 
-;; (set-font "Andale Mono")
-;; (set-font "Consolas")
-;; (set-font "Courier New")
-;; (set-font "Courier" 120)
-(set-font "Fira Mono")
-;; (set-font "DejaVu LGC Sans Mono")
-;; (set-font "Menlo")
-;; (set-font "Hack")
-;; (set-font "Inconsolata LGC")
-;; (set-font "Input Mono Compressed" 120 'light)
-;; (set-font "Input Mono Condensed" 120 'light)
-;; (set-font "Input Mono Narrow")
-;; (set-font "Input Mono")
-;; (set-font "Lucida Console")
-;; (set-font "M+ 1mn")
-;; (set-font "MonacoB")
-;; (set-font "Oxygen Mono")
-;; (set-font "Source Code Pro")
-;; (set-font "Ubuntu Mono" 140)
-;; (set-font "Iosevka")
-
-(custom-theme-set-faces
- 'user
- `(cursor ((t (:background "red"))))
- `(vertical-border ((t (:foreground "gray30"))))
- `(default ((t (:foreground "white" :background "#232624"))))
- `(fringe ((t (:foreground "white" :background "#232624"))))
- `(font-lock-comment-face ((t (:foreground "gray55"))))
- `(font-lock-string-face ((t (:foreground "cornsilk"))))
- `(font-lock-doc-face ((t (:foreground "sandy brown"))))
- `(font-lock-function-name-face ((t (:foreground "aquamarine"))))
- `(font-lock-variable-name-face ((t (:foreground "white"))))
- `(font-lock-keyword-face ((t (:foreground "moccasin"))))
- `(dired-directory ((t (:foreground "moccasin")))))
+;; (custom-theme-set-faces
+;;  'user
+;;  `(cursor ((t (:background "red"))))
+;;  `(vertical-border ((t (:foreground "gray30"))))
+;;  `(default ((t (:foreground "white" :background "#232624"))))
+;;  `(fringe ((t (:foreground "white" :background "#232624"))))
+;;  `(font-lock-comment-face ((t (:foreground "gray55"))))
+;;  `(font-lock-string-face ((t (:foreground "cornsilk"))))
+;;  `(font-lock-doc-face ((t (:foreground "sandy brown"))))
+;;  `(font-lock-function-name-face ((t (:foreground "aquamarine"))))
+;;  `(font-lock-variable-name-face ((t (:foreground "white"))))
+;;  `(font-lock-keyword-face ((t (:foreground "moccasin"))))
+;;  `(dired-directory ((t (:foreground "moccasin")))))
 
 (set-fontset-font t '(61440 . 61980) "FontAwesome")
 
-(defun a ())
 (setq insert-directory-program "/usr/local/bin/gls")
 (setq dired-listing-switches "-alGhF --group-directories-first")
 
@@ -63,7 +37,7 @@
 
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
-;; (menu-bar-mode 1)
+(when (not (window-system)) (menu-bar-mode -1))
 
 (put 'downcase-region 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
@@ -150,7 +124,7 @@
 ;; increate text by 1
 (setq text-scale-mode-step 1.1)
 
-;; (add-hook 'post-command-hook 'set-cursor-according-to-mode t)
+(add-hook 'post-command-hook 'set-cursor-according-to-mode t)
 ;; (defun set-cursor-according-to-mode () (setq cursor-type 'box))
 ;; (remove-hook 'post-command-hook 'set-cursor-according-to-mode)
 
@@ -623,16 +597,7 @@
       "........")))
 
 (use-package flycheck
-  :commands flycheck-mode
-  ;; (progn
-  ;;   (flycheck-define-checker typescript
-  ;;     "A TypeScript syntax checker using tsc command."
-  ;;     :command ("tsc" "--out" "/dev/null" source)
-  ;;     :error-patterns
-  ;;     ((error line-start (file-name) "(" line "," column "): error "
-  ;;             (message) line-end))
-  ;;     :mode typescript-mode))
-  )
+  :commands flycheck-mode)
 
 (use-package css-eldoc
   :commands 'turn-on-css-eldoc
@@ -713,7 +678,7 @@
   (progn (js2r-add-keybindings-with-prefix "C-c C-m")))
 
 (use-package json-mode
-  :mode "\\.\\(json\\|jshintrc\\|bowerrc\\)$")
+  :mode "\\.\\(json\\|babelrc\\|jshintrc\\|bowerrc\\|json\\.erb\\)\\'")
 
 (use-package ac-js2 :commands ac-js2-mode)
 
@@ -782,7 +747,10 @@
 (use-package mmm-mode
   :commands (mmm-mode mmm-mode-on)
   :init
+  (require 'mmm-vars)
+  (require 'mmm-erb)
   (setq mmm-global-mode 'auto)
+  (mmm-add-mode-ext-class 'json-mode "\\.json\\.erb\\'" 'erb)
   (require 'mmm-defaults))
 
 (use-package hl-tags-mode
@@ -810,6 +778,10 @@
 
 (use-package log-edit
   :config (add-hook 'log-edit-mode-hook 'flyspell-mode))
+
+(use-package olivetti
+  :commands olivetti-mode
+  :init (setq-default olivetti-body-width 120))
 
 (use-package vc-svn
   :config

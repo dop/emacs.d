@@ -36,14 +36,14 @@
    (quote
     (("where" 2 0)
      ("of" 2)
-     ("do" 4)
-     ("mdo" 4)
-     ("rec" 4)
-     ("in" 4 0)
+     ("do" 2)
+     ("mdo" 2)
+     ("rec" 2)
+     ("in" 2 0)
      ("{" 2)
-     ("if" 4)
+     ("if" 2)
      "then" "else"
-     ("let" 4))))
+     ("let" 2))))
  '(haskell-indent-thenelse 1)
  '(helm-autoresize-mode t)
  '(highlight-changes-colors (quote ("#d33682" "#6c71c4")))
@@ -93,6 +93,10 @@
  '(pos-tip-foreground-color "#93a1a1")
  '(query-replace-highlight t)
  '(require-final-newline t)
+ '(safe-local-variable-values
+   (quote
+    ((js2-missing-semi-one-line-override . t)
+     (js2-strict-missing-semi-warning))))
  '(scroll-bar-mode nil)
  '(scss-compile-at-save nil)
  '(search-highlight t)
@@ -134,12 +138,4 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:background "black" :foreground "white"))))
- '(cursor ((t (:background "red"))))
- '(font-lock-comment-face ((t (:foreground "gray30"))))
- '(font-lock-function-name-face ((t (:foreground "#c3e0f9"))))
- '(font-lock-keyword-face ((t (:foreground "#3899ec"))))
- '(font-lock-variable-name-face ((t (:foreground "white"))))
- '(fring ((t (:background "black" :foreground "gray"))))
- '(fringe ((t (:background "black" :foreground "gray"))))
- '(vertical-border ((t (:foreground "gray20")))))
+ '(cursor ((t (:background "red")))))

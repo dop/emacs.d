@@ -14,6 +14,8 @@
 (global-set-key (kbd "M-z") 'dp/zap-to-char)
 (global-set-key (kbd "M-Z") 'zap-to-char)
 
+(global-set-key (kbd "M-/") 'hippie-expand)
+
 (global-set-key (kbd "C-x n i") 'narrow-to-region-indirect)
 
 (global-set-key (kbd "C-c M-c") 'dp/convert-camelcase-to-constant)
