@@ -790,6 +790,12 @@ of code to whatever theme I'm using's background"
   :config
   (setq phantomjs-program-name "/usr/local/bin/phantomjs"))
 
+(use-package docker
+  :bind ("C-c d" . dp/docker-machine-select)
+  :config (require 'dp-docker-machine))
+
+(use-package docker-tramp)
+
 (use-package elm-mode
   :mode "\\.elm$")
 
