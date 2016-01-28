@@ -1,9 +1,12 @@
-;;; Eproject
+;; -*- lexical-binding: t -*-
+
 (require 'eproject)
 (require 'eproject-tasks)
 (require 'eproject-extras)
 (require 'json)
 (require 's)
+(require 'f)
+(require 'dash)
 
 (defvar eproject-prefix "C-x p")
 
@@ -47,7 +50,7 @@
 (defun dp/search-up-for (file-name)
   "Search up file directory tree for a first occurance of file."
   (let ((dir (eproject--scan-parents-for
-              (file-name-directory (buffer-file-name))
+              (file-name-directory (or (buffer-file-name) default-directory))
               (lambda (dir)
                 (file-exists-p (concat (file-name-as-directory dir) file-name))))))
     (if dir
@@ -125,17 +128,64 @@
 
 (defun dp/git-find-file (&optional directory)
   "Find file in repository using `ido-completing-read'."
-  (interactive (list (or (ignore-errors (file-name-directory (dp/search-up-for ".git")))
-                         nil)))
-  (with-temp-buffer
-    (setq default-directory directory)
-    (call-process "git" nil t nil
-                  "ls-tree" "-z" "-r" "--name-only" "--full-tree"
-                  "HEAD")
-    (find-file
-     (concat default-directory
-             (ido-completing-read "Find file in repository: "
-                                  (s-split "\0" (buffer-string) t))))))
+  (interactive (list (ignore-errors (file-name-directory (dp/search-up-for ".git")))))
+  (find-file
+   (concat directory
+           (ido-completing-read
+            "Find file in repository: "
+            (dp/git-find-all-files directory)))))
+
+(defun dp/git-find-all-files (directory &optional fullpath)
+  (let ((files (with-temp-buffer
+                 (setq default-directory directory)
+                 (call-process "git" nil t nil
+                               "ls-tree" "-z" "-r" "--name-only" "--full-tree"
+                               "HEAD")
+                 (s-split "\0" (buffer-string) t))))
+    (if fullpath
+        (-map (curry 'concat directory) files)
+      files)))
+
+(defun dp/git-find-files (regexp directory)
+  (-filter (curry 's-match regexp)
+           (dp/git-find-all-files directory t)))
+
+(defun ng/find-spec-file (&optional buffer directory)
+  (interactive (list
+                (current-buffer)
+                (ignore-errors (file-name-directory (dp/search-up-for ".git")))))
+  (let ((filepath (buffer-file-name buffer))
+        spec-filename
+        results)
+    (if (not filepath)
+        (error (format "Current buffer %s is not visiting any file" (buffer-name buffer)))
+      (setq spec-filename (concat (file-name-base filepath)
+                                  ".spec."
+                                  (file-name-extension filepath)))
+      (setq results (dp/git-find-files spec-filename directory))
+      (if (null results)
+          (error (format "Cannot find file %s" spec-filename))
+        (find-file (nth 0 results))))
+    ))
+
+(defun ng/find-implementation-file (&optional buffer directory)
+  (interactive (list
+                (current-buffer)
+                (ignore-errors (file-name-directory (dp/search-up-for ".git")))))
+  (let ((spec-filename (f-filename (buffer-file-name buffer)))
+        filename
+        results)
+    (if (not spec-filename)
+        (error (format "Current buffer %s is not visiting any file" (buffer-name buffer)))
+      (setq filename (s-replace ".spec." "." spec-filename))
+      (setq results (dp/git-find-files filename directory))
+      (if (null results)
+          (error (format "Cannot find file %s" filename))
+        (find-file (nth 0 results))))
+    ))
+
+(global-set-key (kbd "C-x o s") 'ng/find-spec-file)
+(global-set-key (kbd "C-x o f") 'ng/find-implementation-file)
 
 (defun dp/trace (label value)
   "Echo LABEL and VALUE to *Messages* buffer and return VALUE."
