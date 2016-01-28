@@ -488,20 +488,28 @@
   :bind ("C-c r" . vr/replace)
   :init (require 'visual-regexp-steroids))
 
+(defun yasnippet-or-company-complete ()
+  (interactive)
+  (if (featurep 'yasnippet)
+      (let ((yas-fallback-behavior #'company-complete-selection))
+        (yas/expand))
+    (company-complete-selection)))
+
 (use-package company
-  :disabled t
   :diminish company-mode
-  :init (progn
-          (global-company-mode t)
-          (bind-keys :map company-active-map
-                     ("C-w" . nil)
-                     ([return] . nil)
-                     ([tab] . company-complete-selection)
-                     ("TAB" . company-complete-selection)
-                     ("RET" . nil)
-                     ("C-n" . company-select-next)
-                     ("C-p" . company-select-previous)))
-  :config (setq company-idle-delay 0.1))
+  :init
+  (progn
+    (global-company-mode t)
+    (bind-keys :map company-active-map
+               ("C-w" . nil)
+               ([return] . nil)
+               ([tab] . yasnippet-or-company-complete)
+               ("TAB" . yasnippet-or-company-complete)
+               ("RET" . nil)
+               ("C-n" . company-select-next)
+               ("C-p" . company-select-previous)))
+  :config
+  (setq company-idle-delay 0.1))
 
 (use-package auto-complete
   :disabled t
