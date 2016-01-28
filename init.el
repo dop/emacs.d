@@ -160,6 +160,54 @@
 ;; (use-package server
 ;;   :init (unless (server-running-p) (server-start)))
 
+(use-package monokai :if window-system :init (switch-to-theme 'monokai))
+
+(use-package darcula :disabled t :if window-system :init (switch-to-theme 'darcula))
+
+(use-package zenburn
+  :disabled t
+  :if window-system
+  :init
+  (switch-to-theme 'zenburn)
+  (custom-theme-set-faces
+   'zenburn
+   `(isearch ((t (:bold nil :inherit highlight))))
+   `(lazy-highlight ((t (:background "#7B6000"))))
+   `(highlight ((t (:background "#CB4B16"))))
+   `(font-lock-comment-face ((t (:foreground "#7F9F7F" :slant italic))))
+   `(font-lock-variable-name-face ((t (:foreground unspecified))))
+   `(font-lock-keyword-face ((t (:foreground "#F0DFAF" :bold nil))))
+   `(font-lock-builtin-face ((t (:bold nil :slant italic :inherit default))))
+   `(vertical-border ((t (:foreground "#4F4F4F"))))
+   `(fringe ((t (:background "#3F3F3F"))))
+   `(js2-error ((t (:background "#AA0000"))))
+   `(js2-warning ((t (:background ,(color-darken-name "#7b6000" 5) :underline nil))))
+   `(js2-external-variable ((t (:background ,(color-darken-name "#CB4B16" 10)))))
+   `(org-level-1 ((t (:foreground "#DFAF8F" :height 1.5 :overline "#4F4F4F"))))
+   `(org-level-2 ((t (:foreground "#BFEBBF" :height 1.3 :overline "#4F4F4F"))))
+   `(org-level-3 ((t (:foreground "#7CB8BB" :height 1.2 :overline "#4F4F4F"))))
+   `(mode-line
+     ((t (:inverse-video unspecified
+          :overline nil
+          :underline nil
+          :foreground "#8FB28F"
+          :background "#2B2B2B"
+          :box (:line-width 3
+                :color "#2B2B2B"
+                :style unspecified)))))
+   `(mode-line-buffer-id
+     ((t (:foreground "#F0DFAF"
+          :weight bold))))
+   `(mode-line-inactive
+     ((t (:inverse-video unspecified
+          :overline nil
+          :underline nil
+          :foreground "#5F7F5F"
+          :background "#383838"
+          :box (:line-width 3
+                :color "#383838"
+                :style unspecified)))))))
+
 (use-package solarized-theme
   :disabled t
   :if window-system
