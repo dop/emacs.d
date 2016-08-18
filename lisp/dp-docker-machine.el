@@ -6,7 +6,7 @@
   (->> (-drop 1 (s-lines (shell-command-to-string "docker-machine ls")))
        (-map (lambda (s) (s-split " " s t)))
        (-filter #'identity)
-       (-map #'dp/machine-line-to-plist)))
+       (-map #'dp/docker-machine-line-to-plist)))
 
 (defun dp/docker-machine-line-to-plist (line)
   (pcase line
@@ -33,7 +33,7 @@
 (defun dp/docker-machine-select (&optional name)
   (interactive (list (ido-completing-read
                       "Docker machine"
-                      (-map (lambda (m) (plist-get m :name)) (dp/get-docker-machines)))))
+                      (-map (lambda (m) (plist-get m :name)) (dp/docker-machines-get)))))
   (let ((config (dp/docker-machine-env name)))
     (-map (curry #'apply #'setenv) config)
     (message (s-join "\n" (-map (curry #'s-join "=") config)))))

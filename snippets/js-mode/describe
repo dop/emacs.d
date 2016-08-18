@@ -1,8 +1,8 @@
 # -*- mode: snippet; require-final-newline: nil -*-
 # name: describe
-# key: describe
+# key: desc
 # binding: direct-keybinding
 # --
 describe('${1:Section}', function () {
-   $0
+        $0
 });

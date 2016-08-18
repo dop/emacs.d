@@ -1,4 +1,24 @@
 (require 'cl)
+(require 'url)
+
+(defun urlencode (params)
+  (let ((pairs (loop for (name . value) in params
+                     collect (format "%s=%s" (url-hexify-string name) (url-hexify-string value)))))
+    (mapconcat 'identity pairs "&")))
+
+(defun eval-dwim (&optional start end eval-last-sexp-arg-internal)
+  "Replace the preceding sexp with its value."
+  (interactive "r\nP")
+  (let ((expr (if (and start end)
+                  (kill-region start end)
+                (backward-kill-sexp))))
+    (condition-case nil
+        (prin1 (eval (read (current-kill 0)))
+               (current-buffer))
+      (error (message "Invalid expression")
+             (insert (current-kill 0))))))
+
+(global-set-key (kbd "C-x C-e") 'eval-last-sexp)
 
 (defun color-name-to-rgb-255 (name)
   (mapcar (compose #'round (curry #'* 255))
@@ -80,7 +100,7 @@
   (download-to-buffer url (current-buffer) nil))
 
 (defun download-to-buffer (url buf &optional with-headers)
-  "Downloads URL into buffer buf."
+  "Downloads URL into buffer BUF."
   (let ((data (url-retrieve-synchronously url)))
     (if data
         (with-current-buffer buf
@@ -91,6 +111,9 @@
               (kill-line)))
           (save-excursion
             (insert-buffer-substring data))))))
+
+(defun dp/url-retrieve ()
+  )
 
 (defun dp/zap-to-char (arg char)
   "Kill up to and including ARGth occurrence of CHAR.
@@ -180,16 +203,16 @@ Goes backward if ARG is negative; error if CHAR not found."
   (interactive "P")
   (dp/with-region-or-thing-at-point 'dp/constant-to-camelcase arg))
 
-(defvar dp/jshint-node-globals
+(defvar dp/js-node-globals
   (list 'global 'require 'module 'exports))
 
-(defvar dp/jshint-browser-globals
+(defvar dp/js-browser-globals
   (list 'document 'window))
 
-(defvar dp/jshint-mocha-globals
+(defvar dp/js-mocha-globals
   (list 'describe 'it 'after 'before 'afterEach 'beforeEach))
 
-(defvar dp/jshint-jasmine-globals
+(defvar dp/js-jasmine-globals
   (list 'describe 'ddescribe 'xdescribe
         'afterEach 'beforeEach 'afterAll 'beforeAll
         'it 'iit 'xit
@@ -211,6 +234,7 @@ Goes backward if ARG is negative; error if CHAR not found."
     (case (symbol-at-point)
       ('it (insert "i"))
       ('iit (delete-forward-char 1)))))
+
 
 (defsubst curry (function &rest arguments)
   (lexical-let ((function function)
@@ -236,5 +260,30 @@ Goes backward if ARG is negative; error if CHAR not found."
  '(("(\\(compose\\)[ \t\n\r]" 1 font-lock-keyword-face)
    ("(\\(curry\\)[ \t\n\r]" 1 font-lock-keyword-face)
    ("(\\(rcurry\\)[ \t\n\r]" 1 font-lock-keyword-face)))
+
+
+(defun endless/comment-line-or-region (n)
+  "Comment or uncomment current line and leave point after it.
+With positive prefix, apply to N lines including current one.
+With negative prefix, apply to -N lines above.  If region is
+active, apply to active region instead."
+  (interactive "p")
+  (if (use-region-p)
+      (comment-or-uncomment-region
+       (region-beginning) (region-end))
+    (let ((range
+           (list (line-beginning-position)
+                 (goto-char (line-end-position n)))))
+      (comment-or-uncomment-region
+       (apply #'min range)
+       (apply #'max range)))
+    (forward-line 1)
+    (back-to-indentation)))
+
+
+(defun yasnippet-or-company-complete ()
+  (interactive)
+  (unless (and (featurep 'yasnippet) (yas-expand))
+    (company-complete-selection)))
 
 (provide 'dp-functions)
