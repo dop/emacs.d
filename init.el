@@ -439,7 +439,12 @@
 
 (use-package wrap-region
   :diminish wrap-region-mode
-  :init (wrap-region-global-mode))
+  :init (wrap-region-global-mode)
+  :config
+  (progn
+    (dolist (mode '(js2-mode js-mode js2-jsx-mode typescript-mode flowtype-mode))
+      (wrap-region-add-wrapper "`" "`" nil mode)
+      (wrap-region-add-wrapper "_" "_" nil mode))))
 
 (use-package paredit
   :config
@@ -648,37 +653,31 @@ of code to whatever theme I'm using's background"
 (defun assoc-set (key value list)
   (append `((,key . ,value)) (assq-delete-all key list)))
 
+(defun assocdr (key list)
+  (cdr (assoc key list)))
+
 (defun flycheck-parse-flow (output checker buffer)
   (let ((json-array-type 'list))
     (let ((o (json-read-from-string output)))
       (mapcar #'(lambda (message)
                   (flycheck-error-new
-                   :line (cdr (assoc 'line message))
-                   :column (cdr (assoc 'start message))
+                   :line (assocdr 'line message)
+                   :column (assocdr 'start message)
                    :level 'error
-                   :message (cdr (assoc 'descr message))
+                   :message (assocdr 'descr message)
                    :filename (f-relative
-                              (cdr (assoc 'path message))
+                              (assocdr 'path message)
                               (f-dirname (file-truename
                                           (buffer-file-name))))
                    :buffer buffer
                    :checker checker))
-              (-reduce-from (lambda (a b)
-                              (let* ((len (length a))
-                                     (last (nth (- len 1) a))
-                                     (type (cdr (assoc 'type b)))
-                                     (descr1 (cdr (assoc 'descr last)))
-                                     (descr2 (cdr (assoc 'descr b))))
-                                (cond
-                                 ((string= type "Comment")
-                                  (setf (nth (- len 1) a)
-                                        (assoc-set 'descr (concat descr1 ". " descr2) last))
-                                  a)
-                                 (t
-                                  (append a (list b))))))
-                            '()
-                            (-mapcat (lambda (err) (cdr (assoc 'message err)))
-                                     (cdr (assoc 'errors o))))))))
+              (-mapcat (lambda (err)
+                         (let* ((messages (assocdr 'message err))
+                                (first-message (first messages)))
+                           (list (assoc-set 'descr
+                                            (s-join " " (-map (lambda (message) (assocdr 'descr message)) messages))
+                                            first-message))))
+                       (assocdr 'errors o))))))
 
 
 
@@ -796,14 +795,12 @@ of code to whatever theme I'm using's background"
   (add-hook 'js2-mode-hook #'subword-mode)
   (add-hook 'js2-mode-hook #'ac-js2-mode)
   (add-hook 'js2-mode-hook #'js2-refactor-mode)
+  (add-hook 'js2-mode-hook #'flycheck-mode)
   (setq-default js2r-use-strict t)
   (setq-default js-indent-level 2
                 js2-basic-offset 2
                 js2-bounce-indent-p t
-                js2-include-jslint-globals t)
-  (require 'wrap-region)
-  (wrap-region-add-wrapper "`" "`" nil 'js2-mode)
-  (wrap-region-add-wrapper "_" "_" nil 'js2-mode))
+                js2-include-jslint-globals t))
 
 (use-package js2-jsx-mode
   :disabled t
@@ -823,6 +820,14 @@ of code to whatever theme I'm using's background"
   :mode ("\\.ts$" . typescript-mode)
   :config
   (setq typescript-indent-level 2))
+
+(define-derived-mode flowtype-mode typescript-mode "flowtype")
+(add-to-list 'auto-mode-alist
+             `(,(concat (expand-file-name "~/Projects/hotels/hotels-world-dominance/client/") ".+\\.js\\'") . flowtype-mode))
+(add-hook 'flowtype-mode-hook #'subword-mode)
+(add-hook 'flowtype-mode-hook #'flycheck-mode)
+(flycheck-add-mode 'javascript-flow 'flowtype-mode)
+(flycheck-add-mode 'javascript-eslint 'flowtype-mode)
 
 (use-package skewer-mode
   :commands (skewer-run-phantomjs run-skewer skewer-mode)
@@ -874,6 +879,7 @@ of code to whatever theme I'm using's background"
     (add-hook 'generic-project-file-visit-hook 'eproject-set-local-keys)
     (add-hook 'generic-project-file-visit-hook 'eproject-eslint)
     (add-hook 'generic-project-file-visit-hook 'eproject-jshint)
+    (add-hook 'generic-project-file-visit-hook 'eproject-flowtype)
     (add-hook 'generic-git-project-file-visit-hook 'eproject-set-git-generic-keys)))
 
 (use-package php-mode
