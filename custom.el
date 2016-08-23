@@ -185,13 +185,3 @@
    ["#073642" "#dc322f" "#859900" "#b58900" "#268bd2" "#d33682" "#2aa198" "#eee8d5"])
  '(xterm-color-names-bright
    ["#002b36" "#cb4b16" "#586e75" "#657b83" "#839496" "#6c71c4" "#93a1a1" "#fdf6e3"]))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:foreground unspecified :background unspecified))))
- '(cursor ((t (:foreground "black" :background "red"))))
- '(fringe ((t (:background "white"))))
- '(mode-line ((t (:overline "black" :underline nil :foreground "black" :background "white" :box (:line-width 5 :color "white" :style unspecified)))))
- '(mode-line-inactive ((t (:overline "gray" :underline nil :foreground "gray" :background "white" :box (:line-width 5 :color "white" :style unspecified))))))
