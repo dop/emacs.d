@@ -358,18 +358,24 @@
   (unless (or (string-prefix-p "/" name)
               (string-prefix-p "./" name)
               (string-prefix-p "../" name)
-              (not (s-match "'[^']+'" (thing-at-point 'sexp))))
+              (not (or (s-match "^import.+from\s+'" (thing-at-point 'sentence))
+                       (s-match "require('[^']+')" (thing-at-point 'sentence)))))
     (let ((base (locate-dominating-file default-directory "node_modules")))
       (-first #'file-exists-p
               (list (concat base "node_modules/" name ".js")
                     (concat base "node_modules/" name "/index.js")
-                    (concat base "node_modules/" name))))))
+                    (concat base "node_modules/" name)
+                    (concat base name ".js")
+                    (concat base name "/index.js")
+                    (concat base name))))))
 
 (use-package ffap
   :config
   (setq ffap-machine-p-known 'reject)
   (add-to-list 'ffap-alist '(js-mode . davazp/ffap-nodejs-module) t)
-  (add-to-list 'ffap-alist '(js2-mode . davazp/ffap-nodejs-module) t))
+  (add-to-list 'ffap-alist '(js2-mode . davazp/ffap-nodejs-module) t)
+  (add-to-list 'ffap-alist '(typescript-mode . davazp/ffap-nodejs-module) t)
+  (add-to-list 'ffap-alist '(flowtype-mode . davazp/ffap-nodejs-module) t))
 
 (use-package ispell
   ;; :commands (ispell-word flyspell-buffer flyspell-mode)
@@ -828,6 +834,24 @@ of code to whatever theme I'm using's background"
 (add-hook 'flowtype-mode-hook #'flycheck-mode)
 (flycheck-add-mode 'javascript-flow 'flowtype-mode)
 (flycheck-add-mode 'javascript-eslint 'flowtype-mode)
+
+(define-key flowtype-mode-map "\C-c\C-t" #'dp/flow-type-at-pos)
+
+(defun column-number-at-pos ()
+  (- (point) (point-at-bol)))
+
+(defun dp/flow-type-at-pos ()
+  (interactive)
+  (let* ((flow-bin (concat (eproject-root) (eproject-attribute :flowtype)))
+         (command (concat flow-bin " type-at-pos --json " (buffer-file-name)
+                          " "
+                          (number-to-string (line-number-at-pos))
+                          " "
+                          (number-to-string (1+ (column-number-at-pos))))))
+    (message "%s: %s"
+             (symbol-at-point)
+             (assocdr 'type
+                      (json-read-from-string (shell-command-to-string command))))))
 
 (use-package skewer-mode
   :commands (skewer-run-phantomjs run-skewer skewer-mode)
