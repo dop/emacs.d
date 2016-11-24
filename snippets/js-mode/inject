@@ -1,0 +1,8 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: inject
+# key: inject
+# --
+inject(function ($injector) {
+  ${1:$controller} = $injector.get('$1');
+  $0
+});

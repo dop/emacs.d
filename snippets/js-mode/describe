@@ -4,5 +4,7 @@
 # binding: direct-keybinding
 # --
 describe('${1:Section}', function () {
-        $0
+  'use strict';
+
+  $0
 });
