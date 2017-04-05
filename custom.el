@@ -8,24 +8,16 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(ansi-color-faces-vector
-   [default default default italic underline success warning error])
+   [default bold shadow italic underline bold bold-italic bold])
  '(ansi-color-names-vector
-   ["black" "red3" "ForestGreen" "yellow3" "blue" "magenta3" "DeepSkyBlue" "gray50"])
+   ["#1F1611" "#660000" "#144212" "#EFC232" "#5798AE" "#BE73FD" "#93C1BC" "#E6E1DC"])
+ '(ansi-term-color-vector
+   [term term-color-black term-color-red term-color-green term-color-yellow term-color-blue term-color-magenta term-color-cyan term-color-white] t)
  '(backup-directory-alist (\` (("." \, (expand-file-name "~/.emacs.d/backups")))))
  '(browse-url-browser-function (quote browse-url-generic))
  '(browse-url-generic-program "open")
  '(c-block-comment-prefix "* ")
  '(compilation-message-face (quote default))
- '(cua-auto-tabify-rectangles nil)
- '(cua-enable-cua-keys nil)
- '(cua-global-mark-cursor-color "#2aa198")
- '(cua-mode nil nil (cua-base))
- '(cua-normal-cursor-color "#839496")
- '(cua-overwrite-cursor-color "#b58900")
- '(cua-read-only-cursor-color "#859900")
- '(custom-safe-themes
-   (quote
-    ("82d2cac368ccdec2fcc7573f24c3f79654b78bf133096f9b40c20d97ec1d8016" default)))
  '(delete-selection-mode nil)
  '(dired-listing-switches "-alF")
  '(display-time-24hr-format t t)
@@ -52,11 +44,12 @@
      (package :foreground "#cc7832")
      (deprecated :strike-through "#a9b7c6"))))
  '(eshell-directory-name "~/.emacs.d/data/eshell/")
- '(fci-rule-color "#383838")
+ '(fci-rule-character-color "#452E2E")
+ '(fci-rule-color "#452E2E")
  '(fill-column 80)
  '(frame-title-format "emacs [%b %*%+ %f]" t)
  '(geben-dbgp-default-proxy (quote ("127.0.0.1" 9001 "emacs" nil t)))
- '(global-column-enforce-mode t)
+ '(global-column-enforce-mode nil)
  '(haskell-indent-after-keywords
    (quote
     (("where" 2 0)
@@ -95,6 +88,7 @@
  '(hl-fg-colors
    (quote
     ("#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36")))
+ '(hl-sexp-background-color "#efebe9")
  '(icon-title-format "emacs [%b]" t)
  '(inhibit-startup-screen t)
  '(initial-scratch-message nil)
@@ -109,6 +103,7 @@
  '(max-lisp-eval-depth 4096)
  '(max-specpdl-size 8192)
  '(mouse-sel-retain-highlight t)
+ '(neo-window-width 40)
  '(nrepl-message-colors
    (quote
     ("#dc322f" "#cb4b16" "#b58900" "#546E00" "#B4C342" "#00629D" "#2aa198" "#d33682" "#6c71c4")))
@@ -117,14 +112,19 @@
  '(org-startup-folded t)
  '(package-selected-packages
    (quote
-    (elm-mode quelpa-use-package flycheck-elm enlive request flycheck-flow smartparens php-mode js2-highlight-vars zenburn-theme yaml-mode xterm-color wrap-region windata whitespace-cleanup-mode wgrep web-mode w3m visual-regexp-steroids visual-fill-column utop unicode-fonts undo-tree typo tuareg tss tree-mode syntax-subword sql-indent solarized-theme smex scss-mode sass-mode restclient rainbow-mode rainbow-delimiters queue psci psc-ide popwin paredit ox-reveal ox-pandoc ox-ioslide ox-impress-js org-plus-contrib olivetti ocp-indent nodejs-repl nginx-mode neotree monokai-theme monochrome-theme mongo mmm-mode markdown-mode magit macrostep litable leuven-theme js2-refactor inf-mongo ido-vertical-mode ibuffer-vc ibuffer-projectile hungry-delete htmlize hl-line+ helm-swoop helm-ls-git helm-git-grep helm-css-scss haskell-mode graphviz-dot-mode goto-chg git-gutter-fringe flycheck-ocaml flycheck-color-mode-line flx-isearch flx-ido expand-region exec-path-from-shell eproject epresent ensime elisp-slime-nav editorconfig dropdown-list drag-stuff dockerfile-mode docker-tramp docker dired-details dictionary dash-functional darcula-theme cyberpunk-theme csv-mode css-eldoc command-log-mode column-enforce-mode color-theme-sanityinc-tomorrow clojure-mode-extra-font-locking ace-jump-mode ac-js2)))
+    (async god god-mode rg darktooth-theme gruvbox-theme ir-black-theme inkpot-theme bubbleberry-theme material-theme github-theme birds-of-paradise-plus-theme rust-mode underwater-theme ujelly-theme ubuntu-theme twilight-theme typing ts-comint tide idea-darkula-theme helm-themes js2-refactor xterm-color groovy-mode gradle-mode zerodark-theme paren-face graphql-mode org-present org-presie multi-term fic-mode hl-todo json-mode js-comint color-theme-modern git-timemachine typescript-mode ido-ubiquitous paradox window-number elm-mode quelpa-use-package flycheck-elm enlive request smartparens php-mode js2-highlight-vars zenburn-theme yaml-mode wrap-region windata whitespace-cleanup-mode wgrep visual-regexp-steroids visual-fill-column utop unicode-fonts undo-tree typo tuareg tss tree-mode syntax-subword sql-indent solarized-theme smex scss-mode sass-mode restclient rainbow-mode queue popwin paredit ox-reveal ox-pandoc ox-ioslide ox-impress-js org-plus-contrib olivetti nodejs-repl nginx-mode neotree monokai-theme mongo mmm-mode markdown-mode macrostep litable inf-mongo ido-vertical-mode ibuffer-vc ibuffer-projectile hungry-delete htmlize hl-line+ helm-swoop helm-ls-git helm-git-grep helm-css-scss haskell-mode graphviz-dot-mode goto-chg git-gutter-fringe flycheck-color-mode-line flx-isearch flx-ido expand-region exec-path-from-shell eproject epresent ensime elisp-slime-nav editorconfig dropdown-list drag-stuff dockerfile-mode docker-tramp docker dired-details dictionary dash-functional cyberpunk-theme csv-mode css-eldoc command-log-mode color-theme-sanityinc-tomorrow clojure-mode-extra-font-locking ace-jump-mode)))
+ '(paradox-github-token t)
+ '(pdf-view-midnight-colors (quote ("#DCDCCC" . "#383838")))
  '(pos-tip-background-color "#073642")
  '(pos-tip-foreground-color "#93a1a1")
  '(query-replace-highlight t)
  '(require-final-newline t)
  '(safe-local-variable-values
    (quote
-    ((eval defalias js2-mode js2-jsx-mode)
+    ((js2-strict-inconsistent-return-warning)
+     (js2-strict-trailing-comma-warning)
+     (js2-basic-offset . 4)
+     (eval defalias js2-mode js2-jsx-mode)
      (sgml-basic-offset . 4)
      (js2-missing-semi-one-line-override . t)
      (js2-strict-missing-semi-warning))))
@@ -149,13 +149,12 @@
  '(syslog-warn-face
    (quote
     ((t :background unspecified :foreground "#cb4b16" :weight bold))))
- '(term-default-bg-color "#002b36")
- '(term-default-fg-color "#839496")
  '(tramp-auto-save-directory "~/.emacs.d/data/tramp-auto-save")
  '(tramp-persistency-file-name "/home/donatas/.emacs.d/data/tramp")
  '(transient-mark-mode 1)
  '(url-configuration-directory "~/.emacs.d/data/url/")
  '(vc-annotate-background "#2B2B2B")
+ '(vc-annotate-background-mode nil)
  '(vc-annotate-color-map
    (quote
     ((20 . "#BC8383")
@@ -177,11 +176,10 @@
      (340 . "#94BFF3")
      (360 . "#DC8CC3"))))
  '(vc-annotate-very-old-color "#DC8CC3")
- '(warning-suppress-types (quote ((undo discard-info))))
- '(weechat-color-list
-   (quote
-    (unspecified "#002b36" "#073642" "#990A1B" "#dc322f" "#546E00" "#859900" "#7B6000" "#b58900" "#00629D" "#268bd2" "#93115C" "#d33682" "#00736F" "#2aa198" "#839496" "#657b83")))
- '(xterm-color-names
-   ["#073642" "#dc322f" "#859900" "#b58900" "#268bd2" "#d33682" "#2aa198" "#eee8d5"])
- '(xterm-color-names-bright
-   ["#002b36" "#cb4b16" "#586e75" "#657b83" "#839496" "#6c71c4" "#93a1a1" "#fdf6e3"]))
+ '(warning-suppress-types (quote ((undo discard-info)))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

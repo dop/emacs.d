@@ -4,6 +4,7 @@
 (load custom-file)
 
 (add-to-list 'load-path "~/.emacs.d/lisp")
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 
 (require 'cl)
 (require 'package)
@@ -18,6 +19,11 @@
 (setq package-enable-at-startup nil)
 (package-initialize)
 
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
+(require 'subr-x)
 (require 'f)
 (require 'dash)
 (require 'json)
@@ -25,32 +31,8 @@
 (require 'color)
 (require 'dp-functions)
 
-(mac-auto-operator-composition-mode t)
-
-(let ((disable nil)
-      (reversed nil))
-  (cl-flet ((color (value &optional reversed-value)
-                   (if disable nil (if reversed (or reversed-value value) value))))
-    (let ((bg              (color "white" "#202420"))
-          (fg              (color "#202420" "white"))
-          (white           (color "white" "black"))
-          (black           (color "black" "white"))
-          (gray            (color "gray" "gray40"))
-          (red             (color "red"))
-          (pink            (color "hot pink"))
-          (very-light-gray (color "#f5f5f5" "#202420")))
-      (custom-theme-set-faces
-       'user
-       `(default ((t (:foreground ,fg :background ,bg))))
-       `(cursor ((t (:foreground ,black :background ,red))))
-       `(fringe ((t (:background ,bg))))
-       `(trailing-whitespace ((t (:background ,pink))))
-       `(font-lock-comment-face ((t (:foreground ,gray :slant italic))))
-       `(vertical-border ((t (:foreground ,fg))))
-       `(mode-line
-         ((t (:overline ,gray :underline nil :foreground ,black :background ,very-light-gray :box (:line-width 3 :color ,very-light-gray :style unspecified)))))
-       `(mode-line-inactive
-         ((t (:overline ,gray :underline nil :foreground ,gray :background ,very-light-gray :box (:line-width 3 :color ,very-light-gray :style unspecified)))))))))
+(when (fboundp 'mac-auto-operator-composition-mode)
+  (mac-auto-operator-composition-mode t))
 
 (setq insert-directory-program "/usr/local/bin/gls")
 (setq dired-listing-switches "-alGhF --group-directories-first")
@@ -70,6 +52,9 @@
 (when (not (window-system)) (menu-bar-mode -1))
 (blink-cursor-mode t)
 
+;; Do not split windows
+(setq split-height-threshold nil split-width-threshold nil)
+
 (put 'downcase-region 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
@@ -77,6 +62,9 @@
 
 (setq mac-option-modifier 'alt)
 (setq mac-command-modifier 'meta)
+
+(setq cua-enable-cua-keys t)
+(setq cua-prefix-override-inhibit-delay nil)
 
 (setq gc-cons-threshold (* 20 1024 1024))
 
@@ -149,14 +137,12 @@
 (winner-mode t)
 
 ;; Real emacs knights don't use shift to mark things
-(setq shift-select-mode nil)
+(setq shift-select-mode t)
 
 ;; increate text by 1
 (setq text-scale-mode-step 1.1)
 
-(global-set-key "\C-c\C-d" "\C-a\C- \C-n\M-w\C-y\C-p\M-m")
-
-;; (add-hook 'post-command-hook 'set-cursor-according-to-mode t)
+(add-hook 'post-command-hook 'set-cursor-according-to-mode t)
 ;; (defun set-cursor-according-to-mode () (setq cursor-type 'box))
 ;; (remove-hook 'post-command-hook 'set-cursor-according-to-mode)
 
@@ -179,22 +165,9 @@
 ;; (use-package server
 ;;   :init (unless (server-running-p) (server-start)))
 
-(use-package monokai
+(use-package zerodark
   :disabled t
-  :if window-system
-  :init (switch-to-theme 'monokai)
-  (custom-theme-set-faces
-   'monokai
-   `(font-lock-comment-face ((t (:foreground "#75715E" :slant normal))))
-   `(font-lock-variable-name-face ((t (:foreground unspecified))))
-   `(org-level-1 ((t (:foreground "#FD971F" :height 1.5 :overline "#4F4F4F"))))
-   `(org-level-2 ((t (:foreground "#A6E22E" :height 1.3 :overline "#4F4F4F"))))
-   `(org-level-3 ((t (:foreground "#66D9EF" :height 1.2 :overline "#4F4F4F"))))))
-
-(use-package darcula
-  :disabled t
-  :if window-system
-  :init (switch-to-theme 'darcula))
+  :init (switch-to-theme 'zerodark))
 
 (use-package zenburn
   :disabled t
@@ -203,6 +176,7 @@
   (switch-to-theme 'zenburn)
   (custom-theme-set-faces
    'zenburn
+   `(cursor ((t (:background "red"))))
    `(isearch ((t (:bold nil :inherit highlight))))
    `(lazy-highlight ((t (:background "#7B6000"))))
    `(highlight ((t (:background "#CB4B16"))))
@@ -250,6 +224,7 @@
    'dark
    (custom-theme-set-faces
     'solarized-dark
+    '(cursor ((t (:background "red"))))
     `(magit-diff-removed-highlight ((t (:inherit diff-removed :background ,base02))))
     `(magit-diff-added-highlight ((t (:inherit diff-added :background ,base02))))
     `(magit-diff-removed ((t (:inherit diff-removed))))
@@ -268,17 +243,18 @@
     (custom-theme-set-faces
      'leuven
      '(default ((t (:background "white" :foreground "#333333"))))
+     '(cursor ((t (:background "red"))))
      '(fringe ((t (:background "white" :foreground "light grey"))))
-     '(mode-line ((t (:box (:line-width 5
-                            :color "gray50")
+     '(mode-line ((t (:box (:line-width 3 :color "gray50")
                             :background "gray50"
                             :foreground "khaki"))))
-     '(mode-line-inactive ((t (:box (:line-width 5 :color "gainsboro")
+     '(mode-line-inactive ((t (:box (:line-width 3 :color "gainsboro")
                                     :foreground "#F0F0EF"
                                     :background "gainsboro"))))
      '(column-enforce-face ((t (:background "#FFDDDD"))))
      '(hl-tags-face ((t (:background nil :underline (:style line :color "grey80")))))
      '(mmm-default-submode-face ((t :background "gray95")))
+     `(js2-error ((t (:box nil :background "#FFE1E1"))))
      '(vertical-border ((t (:foreground "#f0f0ef")))))
     (custom-theme-set-variables
      'leuven
@@ -300,8 +276,8 @@
   :disabled t
   :commands linum-mode
   :init
-  (add-hook 'prog-mode-hook 'linum-mode)
-  (add-hook 'sgml-mode-hook 'linum-mode)
+  (remove-hook 'prog-mode-hook 'linum-mode)
+  (remove-hook 'sgml-mode-hook 'linum-mode)
   :config
   (setq linum-format
         (lambda (line)
@@ -310,16 +286,20 @@
                  (fmt (concat "%" (number-to-string (1+ width)) "d")))
             (propertize (format fmt line) 'face 'linum)))))
 
-(use-package cursor-chg
-  :disabled t
+(use-package fic-mode
+  :commands fic-mode
   :config
-  (change-cursor-mode -1)
-  (toggle-cursor-type-when-idle -1))
+  (add-hook 'prog-mode-hook 'fic-mode))
 
 (use-package unicode-fonts
   :disabled t
   :config
   (unicode-fonts-setup))
+
+(use-package grep
+  :defer t
+  :config
+  (add-to-list 'grep-find-ignored-directories "node_modules"))
 
 (use-package exec-path-from-shell
   :init (when (memq window-system '(mac ns))
@@ -343,14 +323,18 @@
               ("C-c u" . undo-tree-visualize)
               ("C-x u" . nil)))
 
-;; (use-package column-enforce-mode
-;;   :diminish column-enforce-mode
-;;   :commands column-enforce-mode
-;;   :init (add-hook 'prog-mode-hook 'column-enforce-mode))
+(use-package column-enforce-mode
+  :disabled t
+  :diminish column-enforce-mode
+  :commands column-enforce-mode
+  :init (add-hook 'prog-mode-hook 'column-enforce-mode))
 
 (use-package markdown-mode
+  :mode "\\.md'"
   :init
-  (setq markdown-command "pandoc -f markdown -t html"))
+  (setq markdown-command "pandoc -f markdown -t html")
+  :config
+  (add-hook 'markdown-mode-hook 'flyspell-mode))
 
 (use-package editorconfig)
 
@@ -374,6 +358,7 @@
   (setq ffap-machine-p-known 'reject)
   (add-to-list 'ffap-alist '(js-mode . davazp/ffap-nodejs-module) t)
   (add-to-list 'ffap-alist '(js2-mode . davazp/ffap-nodejs-module) t)
+  (add-to-list 'ffap-alist '(js2-jsx-mode . davazp/ffap-nodejs-module) t)
   (add-to-list 'ffap-alist '(typescript-mode . davazp/ffap-nodejs-module) t)
   (add-to-list 'ffap-alist '(flowtype-mode . davazp/ffap-nodejs-module) t))
 
@@ -386,6 +371,16 @@
                   ("lithuanian" "[a-zA-ZąčęėįšųūžĄČĘĖĮŠŲŪŽ]" "[^a-zA-ZąčęėįšųūžĄČĘĖĮŠŲŪŽ]" "" nil ("-l" "lt") nil utf-8))
                 ispell-program-name "/usr/local/bin/aspell"))
 
+(use-package paren-face
+  :disabled t
+  :init
+  (global-paren-face-mode -1)
+  :config
+  (setq paren-face-regexp "[\])(\[{};]")
+  (add-to-list 'paren-face-modes 'js2-mode)
+  (add-to-list 'paren-face-modes 'js2-jsx-mode)
+  (add-to-list 'paren-face-modes 'js-mode))
+
 (defun dp/xterm-color-compilation-filter ()
   (let* ((inhibit-read-only t)
          (start compilation-filter-start)
@@ -397,8 +392,13 @@
 (use-package xterm-color
   :init
   (add-hook 'comint-preoutput-filter-functions 'xterm-color-filter)
-  (setq font-lock-unfontify-region-function 'xterm-color-unfontify-region)
-  (add-hook 'compilation-filter-hook 'dp/xterm-color-compilation-filter))
+  (add-hook 'compilation-filter-hook 'dp/xterm-color-compilation-filter)
+  (setq comint-output-filter-functions (remove 'ansi-color-process-output comint-output-filter-functions)))
+
+(use-package multi-term
+  :config
+  (define-key term-raw-map "\C-c\C-l" 'term-line-mode)
+  (define-key term-raw-map "\C-c\C-k" 'term-char-mode))
 
 (use-package multiple-cursors
   :bind (("C-M-." . mc/mark-next-like-this)
@@ -423,6 +423,7 @@
   :config (add-hook 'emacs-lisp-mode-hook 'eldoc-mode))
 
 (use-package saveplace
+  :disabled t
   :init
   (setq-default save-place t)
   (setq save-place-file "~/.emacs.d/data/places"))
@@ -432,6 +433,7 @@
   :init (desktop-save-mode t))
 
 (use-package savehist-mode
+  :disabled t
   :init (savehist-mode t))
 
 (use-package uniquify
@@ -442,6 +444,17 @@
 
 ;; (require 'drag-stuff)
 ;; (drag-stuff-global-mode t)
+
+;; (use-package swiper
+;;   :ensure t)
+
+;; (use-package ivy
+;;   :ensure t
+;;   :config
+;;   (setq ivy-re-builders-alist '((t . ivy--regex-ignore-order))))
+
+;; (use-package counsel
+;;   :ensure t)
 
 (use-package wrap-region
   :diminish wrap-region-mode
@@ -457,6 +470,7 @@
   (add-hook 'emacs-lisp-mode #'paredit-mode))
 
 (use-package smartparens
+  :disabled t
   :bind ("M-p" . sp-rewrap-sexp))
 
 (use-package visual-regexp
@@ -485,6 +499,7 @@
   :init (remove-hook 'prog-mode-hook 'auto-complete-mode))
 
 (use-package dictionary
+  :commands dictionary-search
   :bind ("C-c s" . dictionary-search))
 
 (use-package flx-isearch
@@ -492,7 +507,6 @@
          ("C-M-r" . flx-isearch-backward)))
 
 (use-package ido
-  :commands ido-mode
   :init (ido-mode t)
   :config
   (defun dp/ido-keys ()
@@ -520,6 +534,7 @@
 (use-package htmlize)
 
 (use-package elisp-slime-nav-mode
+  :commands elisp-slime-nav-mode
   :diminish elisp-slime-nav-mode
   :init
   (add-hook 'emacs-lisp-mode-hook 'elisp-slime-nav-mode))
@@ -529,7 +544,6 @@
   :bind (("C-c C-x C-o" . org-clock-out)
          ("C-c C-x C-j" . org-clock-goto)
          ("C-c a" . org-agenda))
-
   :config
   (defun dp/org-set-source-code-background (exporter)
     "Insert custom inline css to automatically set the background
@@ -544,7 +558,6 @@ of code to whatever theme I'm using's background"
           org-html-head-extra
           (format "<style type=\"text/css\">\n pre.src {background-color: %s; color: %s;}</style>\n"
                   my-pre-bg my-pre-fg))))))
-
   (org-clock-persistence-insinuate)
   (setq org-startup-indented t
         org-agenda-files '("~/Org/journal.org")
@@ -593,12 +606,11 @@ of code to whatever theme I'm using's background"
           magit-highlight-trailing-whitespace t
           magit-highlight-indentation nil
           magit-diff-refine-hunk nil
-          magit-revert-buffers nil)
+          magit-revert-buffers t)
     (add-hook 'git-commit-mode-hook 'turn-on-flyspell)))
 
 (use-package helm
-  :bind (("C-c g" . helm-git-grep)
-         ("M-s o" . helm-swoop))
+  :bind (("C-c g" . helm-git-grep))
   :config (setq helm-ff-transformer-show-only-basename nil
                 helm-ls-git-show-abs-or-relative 'relative
                 helm-buffers-fuzzy-matching t
@@ -648,12 +660,65 @@ of code to whatever theme I'm using's background"
 (use-package flycheck
   :commands (flycheck-mode flycheck-add-mode)
   :config
+
+  (flycheck-def-config-file-var flycheck-eslintrc
+      javascript-eslint ".eslintrc" :safe #'stringp)
+
+  (defun flycheck-eslint-config-exists-p ()
+    "Whether there is an eslint config for the current buffer."
+    (let* ((executable (flycheck-find-checker-executable 'javascript-eslint))
+           (exitcode (and executable (call-process executable nil nil nil
+                                                   "--print-config" "."))))
+      (or flycheck-eslintrc
+          (eq exitcode 0))))
+
+  (flycheck-define-checker javascript-eslint
+    "A Javascript syntax and style checker using eslint.
+
+See URL `https://github.com/eslint/eslint'."
+    :command ("eslint" "--format=checkstyle"
+              (option "-c" flycheck-eslintrc)
+              (option-list "--rulesdir" flycheck-eslint-rules-directories)
+              "--stdin" "--stdin-filename" source-original)
+    :standard-input t
+    :error-parser flycheck-parse-checkstyle
+    :error-filter
+    (lambda (errors)
+      (seq-do (lambda (err)
+                ;; Parse error ID from the error message
+                (setf (flycheck-error-message err)
+                      (replace-regexp-in-string
+                       (rx " ("
+                           (group (one-or-more (not (any ")"))))
+                           ")" string-end)
+                       (lambda (s)
+                         (setf (flycheck-error-id err)
+                               (match-string 1 s))
+                         "")
+                       (flycheck-error-message err))))
+              (flycheck-sanitize-errors errors))
+      errors)
+    :enabled (lambda () (flycheck-eslint-config-exists-p))
+    :modes (js-mode js-jsx-mode js2-mode js2-jsx-mode js3-mode rjsx-mode)
+    :next-checkers ((warning . javascript-jscs))
+    :verify
+    (lambda (_)
+      (let* ((default-directory
+               (flycheck-compute-working-directory 'javascript-eslint))
+             (have-config (flycheck-eslint-config-exists-p)))
+        (list
+         (flycheck-verification-result-new
+          :label "config file"
+          :message (if have-config "found" "missing")
+          :face (if have-config 'success '(bold error)))))))
+
   (flycheck-define-checker javascript-flow
     "Static type checking using Flow."
     :command ("flow" "check-contents" "--json" source-original)
     :standard-input t
     :error-parser flycheck-parse-flow
-    :modes (js2-mode typescript-mode js-mode))
+    :next-checkers (javascript-eslint)
+    :modes (js2-mode typescript-mode js-mode flowtype-mode))
   (add-to-list 'flycheck-checkers 'javascript-flow))
 
 (defun assoc-set (key value list)
@@ -664,28 +729,29 @@ of code to whatever theme I'm using's background"
 
 (defun flycheck-parse-flow (output checker buffer)
   (let ((json-array-type 'list))
-    (let ((o (json-read-from-string output)))
-      (mapcar #'(lambda (message)
-                  (flycheck-error-new
-                   :line (assocdr 'line message)
-                   :column (assocdr 'start message)
-                   :level 'error
-                   :message (assocdr 'descr message)
-                   :filename (f-relative
-                              (assocdr 'path message)
-                              (f-dirname (file-truename
-                                          (buffer-file-name))))
-                   :buffer buffer
-                   :checker checker))
-              (-mapcat (lambda (err)
-                         (let* ((messages (assocdr 'message err))
-                                (first-message (first messages)))
-                           (list (assoc-set 'descr
-                                            (s-join " " (-map (lambda (message) (assocdr 'descr message)) messages))
-                                            first-message))))
-                       (assocdr 'errors o))))))
-
-
+    (condition-case nil
+        (let ((o (json-read-from-string output)))
+          (mapcar #'(lambda (message)
+                      (flycheck-error-new
+                       :line (assocdr 'line message)
+                       :column (assocdr 'start message)
+                       :level 'error
+                       :message (assocdr 'descr message)
+                       :filename (f-relative
+                                  (assocdr 'path message)
+                                  (f-dirname (file-truename
+                                              (buffer-file-name))))
+                       :buffer buffer
+                       :checker checker))
+                  (-mapcat (lambda (err)
+                             (let* ((messages (assocdr 'message err))
+                                    (first-message (first messages)))
+                               (list (assoc-set 'descr
+                                                (s-join " " (-map (lambda (message) (assocdr 'descr message)) messages))
+                                                first-message))))
+                           (assocdr 'errors o))))
+      (error
+       (message (concat "could not read output: " output))))))
 
 (use-package css-eldoc
   :commands 'turn-on-css-eldoc
@@ -724,8 +790,6 @@ of code to whatever theme I'm using's background"
           (add-hook 'scss-mode-hook 'rainbow-mode)
           (add-hook 'css-mode-hook 'rainbow-mode)))
 
-;;; Dired
-
 (use-package dired-details
   :commands dired-details-install)
 
@@ -735,30 +799,33 @@ of code to whatever theme I'm using's background"
 
 (use-package dired
   :config
-  (progn
-    (bind-keys :map dired-mode-map
-               ("C-a" . dired-back-to-start-of-files))
-    (dired-details-install)
-    (setq-default dired-details-hidden-string "--- ")
-    (defadvice dired-create-directory
-        (after revert-buffer-after-create activate)
-      (revert-buffer))
-    (defadvice wdired-abort-changes
-        (after revert-buffer-after-abort activate)
-      (revert-buffer))))
+  (require 'dp-ediff)
+  (bind-keys :map dired-mode-map
+             ("C-a" . dired-back-to-start-of-files)
+             ("e" . dp/ediff-files))
+  (dired-details-install)
+  (setq-default dired-details-hidden-string "--- ")
+  (defadvice dired-create-directory
+      (after revert-buffer-after-create activate)
+    (revert-buffer))
+  (defadvice wdired-abort-changes
+      (after revert-buffer-after-abort activate)
+    (revert-buffer)))
 
 (use-package purescript-mode
-  :mode "\\.purs$"
+  :mode "\\.purs'"
   :init
   (add-hook 'purescript-mode-hook 'turn-on-purescript-indentation))
 
 (use-package scala-mode2
+  :mode "\\.scala'"
   :config
   (setq scala-indent:align-parameters nil)
   :init
   (add-hook 'scala-mode-hook 'ensime-scala-mode-hook))
 
 (use-package ensime
+  :commands ensime
   :pin melpa-stable)
 
 (use-package subword-mode
@@ -771,7 +838,9 @@ of code to whatever theme I'm using's background"
   (progn (js2r-add-keybindings-with-prefix "C-c C-m")))
 
 (use-package json-mode
-  :mode "\\.\\(json\\|babelrc\\|jshintrc\\|bowerrc\\|json\\.erb\\)\\'")
+  :mode "\\.\\(json\\|babelrc\\|jshintrc\\|eslintrc\\|bowerrc\\|json\\.erb\\|watchmanconfig\\)\\'"
+  :config
+  (add-hook 'json-mode-hook 'flycheck-mode))
 
 (defun js-to-json (start end &optional arg)
   (interactive "r\nP")
@@ -783,34 +852,42 @@ of code to whatever theme I'm using's background"
               (when arg (json-mode-beautify))
               (buffer-string)))))
 
-(use-package ac-js2 :commands ac-js2-mode)
-
 (use-package syntax-subword-mode
   :disabled t
   :commands syntax-subword-mode)
+
+(require 'flowtype-mode)
+
+(require 'prettier-js)
+(setq-default prettier-args '("--single-quote"
+                              "--no-bracket-spacing"
+                              "--jsx-bracket-same-line"
+                              "--trailing-comma=es5"))
 
 (use-package js2-mode
   :mode "\\.js\\'"
   :commands js2-mode
   :bind (:map js2-mode-map
+              ([tab] . nil)
+              ("C-c C-c" . dp/eproject-run-test-file)
               ("C-w" . backward-kill-word)
               ("M-d" . kill-word)
               ("M-<up>" . js2r-move-line-up)
               ("M-<down>" . js2r-move-line-down))
   :config
   (add-hook 'js2-mode-hook #'subword-mode)
-  (add-hook 'js2-mode-hook #'ac-js2-mode)
+  ;; (remove-hook 'js2-mode-hook #'ac-js2-mode)
   (add-hook 'js2-mode-hook #'js2-refactor-mode)
   (add-hook 'js2-mode-hook #'flycheck-mode)
   (setq-default js2r-use-strict t)
   (setq-default js-indent-level 2
                 js2-basic-offset 2
-                js2-bounce-indent-p t
+                js-switch-indent-offset 2
+                js2-bounce-indent-p nil
                 js2-include-jslint-globals t))
 
 (use-package js2-jsx-mode
-  :disabled t
-  :mode "\\.js\\'"
+  :mode "\\.jsx\\'"
   :init
   (flycheck-add-mode 'javascript-jshint 'js2-jsx-mode))
 
@@ -823,35 +900,13 @@ of code to whatever theme I'm using's background"
   :mode "\\.coffee$")
 
 (use-package typescript-mode
-  :mode ("\\.ts$" . typescript-mode)
+  :mode "\\.tsx?$"
   :config
-  (setq typescript-indent-level 2))
-
-(define-derived-mode flowtype-mode typescript-mode "flowtype")
-(add-to-list 'auto-mode-alist
-             `(,(concat (expand-file-name "~/Projects/hotels/hotels-world-dominance/client/") ".+\\.js\\'") . flowtype-mode))
-(add-hook 'flowtype-mode-hook #'subword-mode)
-(add-hook 'flowtype-mode-hook #'flycheck-mode)
-(flycheck-add-mode 'javascript-flow 'flowtype-mode)
-(flycheck-add-mode 'javascript-eslint 'flowtype-mode)
-
-(define-key flowtype-mode-map "\C-c\C-t" #'dp/flow-type-at-pos)
-
-(defun column-number-at-pos ()
-  (- (point) (point-at-bol)))
-
-(defun dp/flow-type-at-pos ()
-  (interactive)
-  (let* ((flow-bin (concat (eproject-root) (eproject-attribute :flowtype)))
-         (command (concat flow-bin " type-at-pos --json " (buffer-file-name)
-                          " "
-                          (number-to-string (line-number-at-pos))
-                          " "
-                          (number-to-string (1+ (column-number-at-pos))))))
-    (message "%s: %s"
-             (symbol-at-point)
-             (assocdr 'type
-                      (json-read-from-string (shell-command-to-string command))))))
+  (setq-default typescript-indent-level 2)
+  (add-hook 'typescript-mode-hook #'subword-mode)
+  (add-hook 'typescript-mode-hook #'tide-mode)
+  (add-hook 'typescript-mode-hook #'tide-hl-identifier-mode)
+  (add-hook 'typescript-mode-hook #'flycheck-mode))
 
 (use-package skewer-mode
   :commands (skewer-run-phantomjs run-skewer skewer-mode)
@@ -893,18 +948,18 @@ of code to whatever theme I'm using's background"
   :diminish eproject-mode
   :commands define-project-type
   :init
-  (progn
-    (require 'dp-eproject)
-    (define-project-type maven (generic)
-      (look-for "pom.xml")
-      :relevant-files ("\\.scala$" "\\.java$" "\\.xml$"))
-    (eproject-set-key "t" 'eproject-tasks-run)
-    (eproject-set-key "s" 'eproject-open-term)
-    (add-hook 'generic-project-file-visit-hook 'eproject-set-local-keys)
-    (add-hook 'generic-project-file-visit-hook 'eproject-eslint)
-    (add-hook 'generic-project-file-visit-hook 'eproject-jshint)
-    (add-hook 'generic-project-file-visit-hook 'eproject-flowtype)
-    (add-hook 'generic-git-project-file-visit-hook 'eproject-set-git-generic-keys)))
+  (require 'flycheck)
+  (require 'dp-eproject)
+  (define-project-type maven (generic)
+    (look-for "pom.xml")
+    :relevant-files ("\\.scala$" "\\.java$" "\\.xml$"))
+  (eproject-set-key "t" 'eproject-tasks-run)
+  (eproject-set-key "s" 'eproject-open-term)
+  (add-hook 'generic-project-file-visit-hook 'eproject-set-local-keys)
+  (add-hook 'generic-project-file-visit-hook 'eproject-eslint)
+  (add-hook 'generic-project-file-visit-hook 'eproject-jshint)
+  (add-hook 'generic-project-file-visit-hook 'eproject-flowtype)
+  (add-hook 'generic-git-project-file-visit-hook 'eproject-set-git-generic-keys))
 
 (use-package php-mode
   :mode "\\.\\(php[s345]?\\|inc\\|phtml\\)"
@@ -915,6 +970,7 @@ of code to whatever theme I'm using's background"
    ("C-}" . dp/php-next-function)
    ("C-{" . dp/php-previous-function))
 
+  (require 'flycheck)
   (add-to-list 'flycheck-disabled-checkers 'php-phplint)
 
   (defun basic-php-settings ()
@@ -925,75 +981,92 @@ of code to whatever theme I'm using's background"
   (add-to-list 'php-mode-hook #'flycheck-mode-on-safe))
 
 (use-package nxml-mode
-  :config (add-to-list 'rng-schema-locating-files "~/.emacs.d/schemas.xml"))
+  :config
+  (add-to-list 'rng-schema-locating-files "~/.emacs.d/schemas.xml")
+  (setq nxml-child-indent 4
+        nxml-attribute-indent 4))
 
 (use-package utop
+  :commands utop
   :config
   (setq utop-command "opam config exec -- utop -emacs"))
-
-(use-package tuareg
-  :config
-  (require 'ocp-indent)
-  (ocp-setup-indent))
 
 (setq *opam-prefix*
       (substring (shell-command-to-string "opam config var prefix 2> /dev/null") 0 -1))
 
-(defun dp/opam-bin (name &optional flags)
-  (let ((command (concat *opam-prefix* "/bin/" name)))
-    (if flags
-        (concat command " " (s-join " " args))
-      command)))
+(setq *opam-share*
+      (substring (shell-command-to-string "opam config var share 2> /dev/null") 0 -1))
 
-(defun dp/reason-mode-setup ()
-  (setq merlin-default-flags '("-pp" "ocamlmerlin-reason"))
-  (add-hook 'before-save-hook 'refmt-before-save)
-  (merlin-mode))
-
-(defun dp/reason-setup ()
-  (add-to-list 'load-path (concat *opam-prefix* "/share/emacs/site-lisp"))
-  (setq refmt-command (dp/opam-bin "refmt"))
-  (setq merlin-command (dp/opam-bin "ocamlmerlin"))
-  (require 'reason-mode)
+(use-package tuareg
+  :mode ("\\.ml\\'" . tuareg-mode)
+  :config
+  (add-to-list 'load-path (concat *opam-share* "/emacs/site-lisp"))
+  (require 'ocp-indent)
+  (ocp-setup-indent)
   (require 'merlin)
-  (require 'merlin-company)
-  (add-hook 'reason-mode-hook #'dp/reason-mode-setup))
+  (add-hook 'tuareg-mode-hook #'merlin-mode t)
+  (add-hook 'caml-mode-hook #'merlin-mode t))
 
-(dp/reason-setup)
+;; (defun dp/opam-bin (name &optional flags)
+;;   (let ((command (concat *opam-prefix* "/bin/" name)))
+;;     (if flags
+;;         (concat command " " (s-join " " args))
+;;       command)))
+
+;; (defun dp/reason-mode-setup ()
+;;   (setq merlin-default-flags '("-pp" "ocamlmerlin-reason"))
+;;   (add-hook 'before-save-hook 'refmt-before-save)
+;;   (merlin-mode))
+
+;; (defun dp/reason-setup ()
+;;   (add-to-list 'load-path (concat *opam-prefix* "/share/emacs/site-lisp"))
+;;   (setq refmt-command (dp/opam-bin "refmt"))
+;;   (setq merlin-command (dp/opam-bin "ocamlmerlin"))
+;;   (require 'reason-mode)
+;;   (require 'merlin)
+;;   (require 'merlin-company)
+;;   (add-hook 'reason-mode-hook #'dp/reason-mode-setup))
+
+;; (dp/reason-setup)
 
 (use-package mmm-mode
-  :disabled t
   :commands (mmm-mode mmm-mode-on)
-  :init
+  :config
+  (require 'mmm-defaults)
   (require 'mmm-vars)
   (require 'mmm-erb)
   (setq mmm-global-mode nil)
-  (mmm-add-mode-ext-class 'json-mode "\\.json\\.erb\\'" 'erb)
-  (require 'mmm-defaults))
+  (mmm-add-mode-ext-class 'sgml-mode nil 'html-js)
+  (mmm-add-mode-ext-class 'sgml-mode nil 'html-css)
+  (mmm-add-mode-ext-class 'json-mode "\\.json\\.erb\\'" 'erb))
 
 (use-package hl-tags-mode
   :commands hl-tags-mode
   :config
-  (set-face-attribute 'hl-tags-face nil :background nil :underline '(:style line :color "red")))
+  (set-face-attribute 'hl-tags-face nil :underline nil))
 
-(use-package html-mode
+(use-package sgml-mode
   :mode "\\.html?\\'"
+  :bind (:map sgml-mode-map
+              ("C-c =" . mc/mark-sgml-tag-pair)
+              ("C-}" . sgml-skip-tag-forward)
+              ("C-{" . sgml-skip-tag-backward))
+  :init
+  (add-hook 'sgml-mode-hook #'hl-tags-mode)
   :config
-  (bind-keys
-   :map html-mode-map
-   ("C-c =" . mc/mark-sgml-tag-pair)
-   ("C-}" . sgml-skip-tag-forward)
-   ("C-{" . sgml-skip-tag-backward))
-  (add-to-list 'sgml-mode-hook 'hl-tags-mode)
   (defadvice sgml-delete-tag (after reident activate)
     (indent-region (point-min) (point-max))))
 
 (use-package yasnippet
-  :disabled t
+  :commands (yas-minor-mode yas-global-mode)
   :init
   (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
   (setq yas-prompt-functions '(yas-ido-prompt yas-completing-prompt))
-  (yas-global-mode -1))
+  :config
+  (yas-reload-all)
+  (define-key yas-minor-mode-map (kbd "C-;") 'yas-expand)
+  (define-key yas-minor-mode-map [tab] nil)
+  (add-hook 'html-mode-hook 'yas-minor-mode))
 
 (use-package log-edit
   :config (add-hook 'log-edit-mode-hook 'flyspell-mode))
@@ -1026,22 +1099,32 @@ of code to whatever theme I'm using's background"
                           (ad-get-arg 0)))))
 
 (use-package csv-mode :mode "\\.csv\\'")
+
 (use-package yaml-mode :mode "\\.yml\\'")
 
 (use-package command-log-mode
+  :commands (command-log-mode clm/open-command-log-buffer)
   :config
   (setq command-log-mode-auto-show t))
+
+(use-package inf-lisp
+  :defer t
+  :config
+  (setq-default inferior-lisp-program "sbcl"))
 
 ;; (require 'dp-php)
 ;; (require 'dp-haskell)
 
-;; (defun dp/face (face &rest attributes)
-;;   `(,face ((t ,(-reduce-from
-;;                 (lambda (value prop) (plist-put value (car prop) (cadr prop)))
-;;                 (custom-face-attributes-get face nil)
-;;                 (-partition-all 2 attributes))))))
-
 (when (window-system)
-  (set-frame-font (font-spec :family "SF Mono" :size 12 :antialias t)))
+  ;; (set-frame-font (font-spec :family "Inconsolata LGC" :size 12))
+  ;; (set-frame-font (font-spec :family "Monaco" :size 12))
+  ;; (set-frame-font (font-spec :family "Consolas" :size 13))
+  (set-frame-font (font-spec :family "M+ 1mn" :size 14 :weight 'light))
+  ;; (set-frame-font (font-spec :family "Source Code Pro" :size 12))
+  )
+
+;; (switch-to-theme 'cyberpunk)
+(switch-to-theme 'gruvbox)
+;; (darktooth-modeline)
 
 ;;; init.el ends here

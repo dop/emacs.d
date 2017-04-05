@@ -92,7 +92,7 @@
         (overwrite-mode
          (setq cursor-type 'hbar))
         (t
-         (setq cursor-type 'bar))))
+         (setq cursor-type '(bar . 2)))))
 
 (defun download-to-current-buffer (url)
   "Downloads URL into current buffer."
@@ -207,17 +207,27 @@ Goes backward if ARG is negative; error if CHAR not found."
   (list 'global 'require 'module 'exports))
 
 (defvar dp/js-browser-globals
-  (list 'document 'window))
+  (list 'document 'window 'location))
 
 (defvar dp/js-mocha-globals
-  (list 'describe 'it 'after 'before 'afterEach 'beforeEach))
+  (list 'describe 'it 'after 'before 'afterEach 'beforeEach
+        ))
 
 (defvar dp/js-jasmine-globals
   (list 'describe 'ddescribe 'xdescribe
         'afterEach 'beforeEach 'afterAll 'beforeAll
         'it 'iit 'xit
         'expect 'spyOn
-        'jasmine))
+        'jasmine
+        ))
+
+(defvar dp/js-jest-globals
+  (list 'describe 'fdescribe 'xdescribe
+        'afterEach 'beforeEach 'afterAll 'beforeAll
+        'it 'fit 'xit
+        'expect
+        'jest
+        ))
 
 (defun dp/toggle-ddescribe ()
   (interactive)
@@ -279,7 +289,6 @@ active, apply to active region instead."
        (apply #'max range)))
     (forward-line 1)
     (back-to-indentation)))
-
 
 (defun yasnippet-or-company-complete ()
   (interactive)

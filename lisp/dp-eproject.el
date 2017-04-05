@@ -77,7 +77,7 @@
   (comint-send-string (multi-term-with-name new-name)
                       (concat command "\n")))
 
-(defun dp/eproject-shell-command-with-path (buffer-name command path)
+(defun dp/eproject-shell-command-with-path (buffer-name command path &optional dir)
   (setq path (mapconcat (curry #'concat (eproject-root))
                         (when (stringp path) (setq path (list path)))
                         ":"))
@@ -87,27 +87,34 @@
          (path-variable (concat "PATH=" path ":" (mapconcat 'identity current-paths ":")))
          (process-environment (cons path-variable process-environment)))
     (if command
-        (shell-with-command command buffer-name)
+        (progn
+          (when dir
+            (shell-with-command (format "cd \"%s\"" dir) buffer-name))
+          (shell-with-command command buffer-name))
       (shell-with-name buffer-name))))
 
-(defun dp/eproject-shell-command (command)
-  (let* ((name (format "*%s <%s>*" (eproject-name) command))
+(defun dp/eproject-shell-command (command &optional buffer-name dir)
+  (let* ((name (or buffer-name (format "*%s <%s>*" (eproject-name) command)))
          (process (get-buffer-process name)))
     (if process
         (progn
           (unless (get-buffer-window name) (switch-to-buffer name))
           (comint-send-string process (concat command "\n")))
-      (dp/eproject-shell-command-with-path name command (eproject-attribute :path)))))
+      (dp/eproject-shell-command-with-path name command (eproject-attribute :path) dir))))
 
 (defalias 'pshell 'dp/eproject-shell-command)
 
 (defun dp/js2-add-globals (env &optional globals)
   (when (assoc 'node env)
     (setq globals (append globals dp/js-node-globals)))
+  (when (assoc 'browser env)
+    (setq globals (append globals dp/js-browser-globals)))
   (when (assoc 'mocha env)
     (setq globals (append globals dp/js-mocha-globals)))
   (when (assoc 'jasmine env)
     (setq globals (append globals dp/js-jasmine-globals)))
+  (when (assoc 'jest env)
+    (setq globals (append globals dp/js-jest-globals)))
   (set-variable 'js2-additional-externs (mapcar 'symbol-name globals))
   (when (and globals (eq major-mode 'js2-mode))
     (js2-reparse t))
@@ -128,23 +135,28 @@
     (add-to-list 'flycheck-disabled-checkers 'javascript-jshint)))
 
 (defun eproject-eslint ()
-  (if-let ((eslintrc-file (dp/search-up-for ".eslintrc.json"))
+  (if-let ((eslintrc-file (or (if-let ((custom-eslintrc (eproject-attribute :eslintrc)))
+                                  (concat (eproject-root) custom-eslintrc))
+                              (dp/search-up-for ".eslintrc")
+                              (dp/search-up-for ".eslintrc.json")))
            (eslint (eproject-attribute :eslint)))
       (progn
-        (set-variable (make-local-variable 'flycheck-javascript-eslint-executable)
-                      (concat (eproject-root) eslint))
-        (set-variable (make-local-variable 'flycheck-eslintrc) eslintrc-file)
-        (when (and flycheck-eslintrc (or (eq major-mode 'js2-mode)
-                                         (eq major-mode 'js2-jsx-mode)))
-          (let* ((json (json-read-file flycheck-eslintrc))
-                 (globals (mapcar 'car (cdr (assoc 'globals json))))
-                 (env (assoc 'env json)))
-            (dp/js2-add-globals env globals))))
-    (add-to-list 'flycheck-disabled-checkers 'javascript-eslint)))
+        (setq-local flycheck-javascript-eslint-executable
+                    (concat (eproject-root) eslint))
+        (setq-local flycheck-eslintrc eslintrc-file)
+        (let* ((json (json-read-file flycheck-eslintrc))
+               (globals (mapcar 'car (cdr (assoc 'globals json))))
+               (env (assoc 'env json)))
+          (dp/js2-add-globals env globals)))
+    (add-to-list 'flycheck-disabled-checkers 'javascript-eslint)
+    (when (not eslintrc-file)
+      (message "Disabling eslint, cannot find .eslintrc file."))
+    (when (not eslint)
+      (message "Disabling eslint, cannot find eslint executable."))))
 
 (defun eproject-flowtype ()
   (if-let ((flowconfig (dp/search-up-for ".flowconfig"))
-           (flow-bin (eproject-attribute :flowtype)))
+           (flow-bin (eproject-attribute :flow)))
       (set-variable (make-local-variable 'flycheck-javascript-flow-executable)
                     (concat (eproject-root) flow-bin))
     (add-to-list 'flycheck-disabled-checkers 'javascript-flow)))
@@ -208,6 +220,22 @@
 
 (global-set-key (kbd "C-c t") 'ng/find-spec-file)
 (global-set-key (kbd "C-c f") 'ng/find-implementation-file)
+
+(defun dp/eproject-run-test-file ()
+  (interactive)
+  (let ((mocha (eproject-attribute :mocha))
+        (jest  (eproject-attribute :jest)))
+    (cond
+     (mocha (dp/run-test-in 'mocha mocha))
+     (jest (dp/run-test-in 'mocha jest)))))
+
+(defun dp/run-test-in (runner command-list)
+  (pcase-let ((`(,command . ,args) command-list))
+    (let ((file-name (buffer-file-name)))
+      (dp/eproject-shell-command
+       (format "%s %s %s" command (s-join " " args) file-name)
+       (format "*%s %s*" (eproject-attribute :name) (symbol-name runner))
+       (eproject-root)))))
 
 (defun dp/trace (label value)
   "Echo LABEL and VALUE to *Messages* buffer and return VALUE."
