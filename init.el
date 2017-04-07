@@ -160,6 +160,13 @@
 ;; (require 'quelpa nil t)
 ;; (require 'quelpa-use-package)
 
+(use-package paradox
+  :ensure t
+  :commands (paradox-list-packages))
+
+(defalias 'list-packages 'paradox-list-packages)
+(defalias 'package-list-packages 'paradox-list-packages)
+
 ;; (use-package server
 ;;   :init (unless (server-running-p) (server-start)))
 
