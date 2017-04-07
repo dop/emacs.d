@@ -300,6 +300,19 @@
   :config
   (add-to-list 'grep-find-ignored-directories "node_modules"))
 
+(use-package eshell-fringe-status
+  :ensure t
+  :commands eshell-fringe-status-mode)
+
+(use-package eshell-git-prompt
+  :disabled t
+  :commands eshell-git-prompt-use-theme)
+
+(use-package eshell
+  :defer t
+  :config
+  (add-hook 'eshell-mode-hook 'eshell-fringe-status-mode))
+
 (use-package exec-path-from-shell
   :init (when (memq window-system '(mac ns))
           (exec-path-from-shell-initialize)))
