@@ -545,6 +545,21 @@
 
 (use-package htmlize)
 
+(defun eval-and-replace ()
+  "Replace the preceding sexp with its evaluated value."
+  (interactive)
+  (backward-kill-sexp)
+  (condition-case nil
+      (prin1 (eval (read (current-kill 0)))
+             (current-buffer))
+    (error (message "Invalid expression")
+           (insert (current-kill 0)))))
+
+(use-package elisp-mode
+  :defer t
+  :config
+  (define-key emacs-lisp-mode-map "\C-c\C-e" #'eval-and-replace))
+
 (use-package elisp-slime-nav-mode
   :commands elisp-slime-nav-mode
   :diminish elisp-slime-nav-mode
