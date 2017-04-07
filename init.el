@@ -217,7 +217,6 @@
                 :style unspecified)))))))
 
 (use-package solarized-theme
-  :disabled t
   :if window-system
   :init
   (setq solarized-use-less-bold t
@@ -229,13 +228,8 @@
    'dark
    (custom-theme-set-faces
     'solarized-dark
-    '(cursor ((t (:background "red"))))
-    `(magit-diff-removed-highlight ((t (:inherit diff-removed :background ,base02))))
-    `(magit-diff-added-highlight ((t (:inherit diff-added :background ,base02))))
-    `(magit-diff-removed ((t (:inherit diff-removed))))
-    `(magit-diff-added ((t (:inherit diff-added))))
+    '(cursor ((t (:background "green"))))
     `(mmm-default-submode-face ((t (:background ,base02))))
-    `(font-lock-comment-face ((t (:foreground ,base01 :slant italic))))
     `(ensime-implicit-highlight ((t (:underline (:style line :color ,base01)))))
     `(vc-locally-added-state ((t (:foreground ,green-l)))))))
 
@@ -1121,15 +1115,6 @@ See URL `https://github.com/eslint/eslint'."
 ;; (require 'dp-haskell)
 
 (when (window-system)
-  ;; (set-frame-font (font-spec :family "Inconsolata LGC" :size 12))
-  ;; (set-frame-font (font-spec :family "Monaco" :size 12))
-  ;; (set-frame-font (font-spec :family "Consolas" :size 13))
-  (set-frame-font (font-spec :family "M+ 1mn" :size 14 :weight 'light))
-  ;; (set-frame-font (font-spec :family "Source Code Pro" :size 12))
-  )
-
-;; (switch-to-theme 'cyberpunk)
-(switch-to-theme 'gruvbox)
-;; (darktooth-modeline)
+  (set-frame-font (font-spec :family "Monaco" :size 12)))
 
 ;;; init.el ends here
