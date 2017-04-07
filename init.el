@@ -618,43 +618,65 @@ of code to whatever theme I'm using's background"
                 helm-split-window-in-side-p t))
 
 (use-package git-gutter
-  :disabled t
   :diminish git-gutter-mode
   :bind (("C-x v s" . git-gutter:stage-hunk)
          ("C-x v r" . git-gutter:revert-hunk)
          ("C-x v p" . git-gutter:popup-hunk))
-  :init (progn
-          (require 'git-gutter-fringe)
-          (global-git-gutter-mode t))
+  :init
+  (global-git-gutter-mode t)
   :config
-  (progn
-    (fringe-helper-define 'git-gutter-fr:added 'center
-                          "........"
-                          "...X...."
-                          "...X...."
-                          ".XXXXX.."
-                          "...X...."
-                          "...X...."
-                          "........"
-                          "........")
-    (fringe-helper-define 'git-gutter-fr:deleted 'center
-                          "........"
-                          "........"
-                          "........"
-                          ".XXXXXX."
-                          ".XXXXXX."
-                          "........"
-                          "........"
-                          "........")
-    (fringe-helper-define 'git-gutter-fr:modified 'center
-                          "........"
-                          "........"
-                          "..XXXX.."
-                          "..X..X.."
-                          "..X..X.."
-                          "..XXXX.."
-                          "........"
-                          "........")))
+  (require 'git-gutter-fringe)
+  (fringe-helper-define 'git-gutter-fr:added 'center
+    "XXX....."
+    "XXX....."
+    "XXX....."
+    "XXX....."
+    "XXX....."
+    "XXX....."
+    "XXX....."
+    "XXX....."
+    "XXX....."
+    "XXX....."
+    "XXX....."
+    "XXX....."
+    "XXX....."
+    "XXX....."
+    "XXX....."
+    "XXX.....")
+  (fringe-helper-define 'git-gutter-fr:deleted 'center
+    "XXX....."
+    "XXX....."
+    "XXX....."
+    "XXX....."
+    "XXX....."
+    "XXX....."
+    "XXX....."
+    "XXX....."
+    "XXX....."
+    "XXX....."
+    "XXX....."
+    "XXX....."
+    "XXX....."
+    "XXX....."
+    "XXX....."
+    "XXX.....")
+  (fringe-helper-define 'git-gutter-fr:modified 'center
+    "XXX....."
+    "XXX....."
+    "XXX....."
+    "XXX....."
+    "XXX....."
+    "XXX....."
+    "XXX....."
+    "XXX....."
+    "XXX....."
+    "XXX....."
+    "XXX....."
+    "XXX....."
+    "XXX....."
+    "XXX....."
+    "XXX....."
+    "XXX....."))
 
 (use-package flycheck
   :commands (flycheck-mode flycheck-add-mode)
