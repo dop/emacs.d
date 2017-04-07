@@ -1141,6 +1141,10 @@ See URL `https://github.com/eslint/eslint'."
   :config
   (setq command-log-mode-auto-show t))
 
+(use-package evil
+  :ensure t
+  :defer t)
+
 (use-package inf-lisp
   :defer t
   :config
