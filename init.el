@@ -12,8 +12,6 @@
 (setq package-archives
       '(("gnu" . "http://elpa.gnu.org/packages/")
         ("melpa" . "http://melpa.org/packages/")
-        ("marmalade" . "http://marmalade-repo.org/packages/")
-        ("org" . "http://orgmode.org/elpa/")
         ("melpa-stable" . "https://stable.melpa.org/packages/")))
 
 (setq package-enable-at-startup nil)
