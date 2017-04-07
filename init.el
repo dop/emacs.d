@@ -298,7 +298,8 @@
 (use-package grep
   :defer t
   :config
-  (add-to-list 'grep-find-ignored-directories "node_modules"))
+  (add-to-list 'grep-find-ignored-directories "node_modules")
+  (add-to-list 'grep-find-ignored-directories "bower_components"))
 
 (use-package eshell-fringe-status
   :ensure t
@@ -542,6 +543,7 @@
 
 (use-package smex
   :bind ("M-x" . smex))
+
 
 (use-package htmlize)
 
