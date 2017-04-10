@@ -84,8 +84,7 @@
       initial-scratch-message nil ; No message in *scratch* buffer.
       fill-column 80 ; Up to 80 charecters per line.
       query-replace-highlight t
-      search-highlight t
-      epg-gpg-program "/usr/local/bin/gpg")
+      search-highlight t)
 
 (setq-default indicate-empty-lines t
               indicate-buffer-boundaries 'left)
@@ -160,6 +159,11 @@
 (use-package paradox
   :ensure t
   :commands (paradox-list-packages))
+
+(use-package epg
+  :defer t
+  :config
+  (setf epa-pinentry-mode 'loopback))
 
 (use-package zenburn-theme
   :disabled t
