@@ -8,13 +8,17 @@
           (white           (color "white" "black"))
           (black           (color "black" "white"))
           (gray            (color "gray" "gray40"))
-          (khaki           (color "gray73" "gray30"))
-          (red             (color "red"))
+          (dark-gray       (color "gray50" "gray50"))
+
           (pink            (color "hot pink" "pink"))
           (blue            (color "deep sky blue"))
           (green           (color "yellow green"))
           (red             (color "tomato"))
           (lightpink       (color "misty rose" "pink"))
+
+          (light-green     (color "#c8ffcf" "#1f4c1f"))
+          (light-blue      (color "PaleTurquoise1" "blue"))
+
           (very-light-gray (color "#f5f5f5" "#202420")))
       (custom-theme-set-faces
        'dp
@@ -22,12 +26,13 @@
        `(cursor ((t (:foreground ,black :background "red"))))
        `(fringe ((t (:background ,bg))))
        `(vertical-border ((t (:foreground ,gray))))
-       `(parenthesis ((t (:foreground ,(if reversed
-                                           (color-lighten-name bg 30)
-                                         (color-darken-name bg 30))))))
-       `(trailing-whitespace ((t (:background ,pink))))
 
-       `(font-lock-comment-face ((t (:foreground ,khaki :slant normal))))
+       `(highlight ((t (:background ,light-green))))
+       `(region ((t (:background ,light-blue))))
+       `(trailing-whitespace ((t (:background "misty rose"))))
+       `(parenthesis ((t (:foreground ,(if reversed (color-lighten-name bg 30) (color-darken-name bg 30))))))
+
+       `(font-lock-comment-face ((t (:foreground ,dark-gray :slant normal))))
        `(font-lock-constant-face ((t (:foreground ,pink))))
 
        `(mmm-default-submode-face ((t (:background ,very-light-gray))))
@@ -45,7 +50,11 @@
        `(mode-line-inactive
          ((t (:overline ,gray :underline nil :foreground ,gray :background ,very-light-gray
                         :box (:line-width 3 :color ,very-light-gray :style unspecified)))))
+
        `(hl-tags-face ((t (:inherit highlight))))
+
+       `(warning ((t (:background "light yellow" :underline (:color "orange" :style wave)))))
+       `(error ((t (:background "misty rose" :foreground ,red))))
        ))))
 
 (apply-my-theme)
