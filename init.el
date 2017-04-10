@@ -861,6 +861,10 @@ See URL `https://github.com/eslint/eslint'."
                               "--jsx-bracket-same-line"
                               "--trailing-comma=es5"))
 
+(use-package js2-highlight-vars
+  :ensure t
+  :commands js2-highlight-vars-mode)
+
 (use-package js2-mode
   :ensure t
   :mode "\\.js\\'"
@@ -877,6 +881,7 @@ See URL `https://github.com/eslint/eslint'."
   ;; (remove-hook 'js2-mode-hook #'ac-js2-mode)
   (add-hook 'js2-mode-hook #'js2-refactor-mode)
   (add-hook 'js2-mode-hook #'flycheck-mode)
+  (add-hook 'js2-mode-hook #'js2-highlight-vars-mode)
   (setq-default js2r-use-strict t)
   (setq-default js-indent-level 2
                 js2-basic-offset 2
