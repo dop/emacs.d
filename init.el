@@ -209,7 +209,7 @@
   :if window-system
   :init
   (setq solarized-use-less-bold t
-        solarized-use-more-italic nil
+        solarized-use-more-italic t
         solarized-high-contrast-mode-line t
         solarized-use-variable-pitch nil)
   (switch-to-theme 'solarized-dark)
@@ -220,6 +220,7 @@
     '(cursor ((t (:background "green"))))
     `(mmm-default-submode-face ((t (:background ,base02))))
     `(ensime-implicit-highlight ((t (:underline (:style line :color ,base01)))))
+    `(hl-tags-face ((t (:inverse-video t))))
     `(vc-locally-added-state ((t (:foreground ,green-l)))))))
 
 (use-package leuven-theme
