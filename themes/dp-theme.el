@@ -32,7 +32,7 @@
        `(trailing-whitespace ((t (:background "misty rose"))))
        `(parenthesis ((t (:foreground ,(if reversed (color-lighten-name bg 30) (color-darken-name bg 30))))))
 
-       `(font-lock-comment-face ((t (:foreground ,dark-gray :slant normal))))
+       `(font-lock-comment-face ((t (:foreground ,dark-gray :slant italic))))
        `(font-lock-constant-face ((t (:foreground ,pink))))
 
        `(mmm-default-submode-face ((t (:background ,very-light-gray))))

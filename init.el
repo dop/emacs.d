@@ -234,6 +234,13 @@
                 :box (:line-width 1 :color ,s-mode-line-bg)))))
     `(js2-highlight-vars-face ((t (:inherit highlight :underline ,base1))))
     `(js2-highlight-vars-second-face ((t (:inherit highlight :underline ,base1))))
+
+    `(font-lock-variable-name-face ((t (:inherit default))))
+    `(font-lock-function-name-face ((t (:foreground ,blue))))
+    `(tuareg-font-lock-governing-face ((t (:inherit font-lock-keyword-face))))
+    `(tuareg-font-lock-label-face ((t (:foreground ,base01))))
+    `(mmm-default-submode-face ((t (:background ,base02))))
+
     `(ensime-implicit-highlight ((t (:underline (:style line :color ,base01)))))
     `(hl-tags-face ((t (:background ,(color-lighten-name base02 5)))))
     `(vc-locally-added-state ((t (:foreground ,green-l)))))))
