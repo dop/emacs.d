@@ -221,10 +221,21 @@
    'dark
    (custom-theme-set-faces
     'solarized-dark
-    '(cursor ((t (:background "green"))))
-    `(mmm-default-submode-face ((t (:background ,base02))))
+    '(cursor ((t (:background "red"))))
+    `(mmm-default-submode-face ((t (:background nil))))
+    `(mode-line
+      ((,class (:foreground ,s-mode-line-fg
+                :background ,s-mode-line-bg
+                :box (:line-width 1 :color ,s-mode-line-bg)))))
+    `(mode-line-buffer-id ((,class (:foreground ,s-mode-line-buffer-id-fg :weight bold))))
+    `(mode-line-inactive
+      ((,class (:foreground ,s-mode-line-bg
+                :background ,s-mode-line-fg
+                :box (:line-width 1 :color ,s-mode-line-bg)))))
+    `(js2-highlight-vars-face ((t (:inherit highlight :underline ,base1))))
+    `(js2-highlight-vars-second-face ((t (:inherit highlight :underline ,base1))))
     `(ensime-implicit-highlight ((t (:underline (:style line :color ,base01)))))
-    `(hl-tags-face ((t (:inverse-video t))))
+    `(hl-tags-face ((t (:background ,(color-lighten-name base02 5)))))
     `(vc-locally-added-state ((t (:foreground ,green-l)))))))
 
 (use-package leuven-theme
