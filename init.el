@@ -867,7 +867,12 @@ See URL `https://github.com/eslint/eslint'."
 
 (use-package js2-highlight-vars
   :ensure t
-  :commands js2-highlight-vars-mode)
+  :commands js2-highlight-vars-mode
+  :config
+  (defun js2--do-highlight-vars-ignore-errors (js2--do-highlight-vars)
+    (ignore-errors
+      (funcall js2--do-highlight-vars)))
+  (advice-add 'js2--do-highlight-vars :around #'js2--do-highlight-vars-ignore-errors))
 
 (use-package js2-mode
   :ensure t
