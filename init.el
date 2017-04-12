@@ -626,57 +626,12 @@ of code to whatever theme I'm using's background"
   (global-git-gutter-mode t)
   :config
   (require 'git-gutter-fringe)
-  (fringe-helper-define 'git-gutter-fr:added 'center
-    "XXXX...."
-    "XXXX...."
-    "XXXX...."
-    "XXXX...."
-    "XXXX...."
-    "XXXX...."
-    "XXXX...."
-    "XXXX...."
-    "XXXX...."
-    "XXXX...."
-    "XXXX...."
-    "XXXX...."
-    "XXXX...."
-    "XXXX...."
-    "XXXX...."
-    "XXXX....")
-  (fringe-helper-define 'git-gutter-fr:deleted 'center
-    "XXXX...."
-    "XXXX...."
-    "XXXX...."
-    "XXXX...."
-    "XXXX...."
-    "XXXX...."
-    "XXXX...."
-    "XXXX...."
-    "XXXX...."
-    "XXXX...."
-    "XXXX...."
-    "XXXX...."
-    "XXXX...."
-    "XXXX...."
-    "XXXX...."
-    "XXXX....")
-  (fringe-helper-define 'git-gutter-fr:modified 'center
-    "XXXX...."
-    "XXXX...."
-    "XXXX...."
-    "XXXX...."
-    "XXXX...."
-    "XXXX...."
-    "XXXX...."
-    "XXXX...."
-    "XXXX...."
-    "XXXX...."
-    "XXXX...."
-    "XXXX...."
-    "XXXX...."
-    "XXXX...."
-    "XXXX...."
-    "XXXX...."))
+  (let ((rows (-repeat 32 "XXXX....")))
+    (eval
+     `(progn
+        (fringe-helper-define 'git-gutter-fr:added 'center ,@rows)
+        (fringe-helper-define 'git-gutter-fr:deleted 'center ,@rows)
+        (fringe-helper-define 'git-gutter-fr:modified 'center ,@rows)))))
 
 (use-package flycheck
   :ensure t
