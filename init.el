@@ -223,6 +223,7 @@
     'solarized-dark
     '(cursor ((t (:background "red"))))
     `(mmm-default-submode-face ((t (:background nil))))
+    `(comint-highlight-prompt ((t (:foreground ,base2))))
     `(mode-line
       ((,class (:foreground ,s-mode-line-fg
                 :background ,s-mode-line-bg
