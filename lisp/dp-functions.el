@@ -86,13 +86,15 @@
         (kill-buffer buffer)
         (message "File '%s' successfully removed" filename)))))
 
-(defun set-cursor-according-to-mode ()
-  (cond (buffer-read-only
-         (setq cursor-type 'box))
-        (overwrite-mode
-         (setq cursor-type 'hbar))
-        (t
-         (setq cursor-type '(bar . 2)))))
+(defun set-cursor-according-to-mode (&optional type)
+  (if type
+      (setq cursor-type type)
+    (cond (buffer-read-only
+           (setq cursor-type 'box))
+          (overwrite-mode
+           (setq cursor-type 'hbar))
+          (t
+           (setq cursor-type '(bar . 1))))))
 
 (defun download-to-current-buffer (url)
   "Downloads URL into current buffer."

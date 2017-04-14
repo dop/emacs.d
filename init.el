@@ -50,7 +50,6 @@
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
 (when (not (window-system)) (menu-bar-mode -1))
-(blink-cursor-mode t)
 
 ;; Do not split windows
 (setq split-height-threshold nil split-width-threshold nil)
@@ -141,8 +140,10 @@
 ;; increate text by 1
 (setq text-scale-mode-step 1.1)
 
-;; (add-hook 'post-command-hook 'set-cursor-according-to-mode t)
-;; (defun set-cursor-according-to-mode () (setq cursor-type 'box))
+(add-hook 'post-self-insert-hook 'set-cursor-according-to-mode)
+(setq set-cursor-according-to-mode-timer
+      (run-with-idle-timer 1 t #'set-cursor-according-to-mode 'box))
+;; (cancel-timer set-cursor-according-to-mode-timer)
 ;; (remove-hook 'post-command-hook 'set-cursor-according-to-mode)
 
 (defun turn-on-show-trailing-whitespace ()
