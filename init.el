@@ -535,6 +535,9 @@
   :config
   (add-hook 'emacs-lisp-mode-hook #'elisp-slime-nav-mode))
 
+(use-package org-bullets
+  :ensure t)
+
 (use-package org
   :ensure t
   :mode ("\\.org$" . org-mode)
@@ -542,6 +545,7 @@
          ("C-c C-x C-j" . org-clock-goto)
          ("C-c a" . org-agenda))
   :config
+  (add-hook 'org-mode-hook 'org-bullets-mode)
   (defun dp/org-set-source-code-background (exporter)
     "Insert custom inline css to automatically set the background
 of code to whatever theme I'm using's background"
