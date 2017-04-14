@@ -1091,6 +1091,7 @@ See URL `https://github.com/eslint/eslint'."
 ;; (require 'dp-haskell)
 
 (when (window-system)
-  (set-frame-font (font-spec :family "Monaco" :size 12)))
+  (setq default-frame-alist '((font . "Consolas-13")))
+  (set-frame-font (font-spec :family "Consolas" :size 13)))
 
 ;;; init.el ends here
