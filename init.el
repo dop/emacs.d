@@ -157,6 +157,9 @@
 (require 'dp-mode-line)
 (require 'dp-key-bindings)
 
+(use-package ibuffer
+  :bind (("C-x C-b" . ibuffer)))
+
 (use-package paradox
   :ensure t
   :commands (paradox-list-packages))
