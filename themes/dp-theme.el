@@ -1,9 +1,9 @@
 (deftheme dp "My Color Theme")
 
-(defun apply-my-theme (&optional reversed disable)
+(let ((reversed nil))
   (cl-flet ((color (value &optional reversed-value)
-                   (if disable nil (if reversed (or reversed-value value) value))))
-    (let ((bg              (color "white" "#202420"))
+                   (if reversed (or reversed-value value) value)))
+    (let ((bg              (color "#d7dfd7" "#202420"))
           (fg              (color "#202420" "white"))
           (white           (color "white" "black"))
           (black           (color "black" "white"))
@@ -37,6 +37,10 @@
 
        `(mmm-default-submode-face ((t (:background ,very-light-gray))))
 
+       `(org-level-1 ((t (:height 160 :weight bold :inherit outline-1))))
+       `(org-level-2 ((t (:height 140 :weight bold :inherit outline-2))))
+       `(org-level-3 ((t (:height 120 :weight bold :inherit outline-3))))
+
        `(git-gutter:modified ((t (:foreground ,blue))))
        `(git-gutter:added ((t (:foreground ,green))))
        `(git-gutter:deleted ((t (:foreground ,red))))
@@ -54,9 +58,7 @@
        `(hl-tags-face ((t (:inherit highlight))))
 
        `(warning ((t (:background "light yellow" :underline (:color "orange" :style wave)))))
-       `(error ((t (:background "misty rose" :foreground ,red))))
+       `(error ((t (:foreground "misty rose" :background ,red))))
        ))))
-
-(apply-my-theme)
 
 (provide-theme 'dp)
