@@ -94,7 +94,10 @@
           (overwrite-mode
            (setq cursor-type 'hbar))
           (t
-           (setq cursor-type '(bar . 1))))))
+           (setq cursor-type '(bar . 1)))))
+  ;; Hack to reliably display new cursor type.
+  (internal-show-cursor nil nil)
+  (internal-show-cursor nil t))
 
 (defun download-to-current-buffer (url)
   "Downloads URL into current buffer."

@@ -140,7 +140,7 @@
 ;; increate text by 1
 (setq text-scale-mode-step 1.1)
 
-(add-hook 'post-self-insert-hook 'set-cursor-according-to-mode)
+(add-hook 'post-self-insert-hook #'set-cursor-according-to-mode)
 (setq set-cursor-according-to-mode-timer
       (run-with-idle-timer 1 t #'set-cursor-according-to-mode 'box))
 ;; (cancel-timer set-cursor-according-to-mode-timer)
