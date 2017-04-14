@@ -3,8 +3,6 @@
 # key: desc
 # binding: direct-keybinding
 # --
-describe('${1:Section}', function () {
-  'use strict';
-
+describe('${1:Section}', () => {
   $0
 });
