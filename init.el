@@ -144,7 +144,6 @@
 (setq set-cursor-according-to-mode-timer
       (run-with-idle-timer 1 t #'set-cursor-according-to-mode 'box))
 ;; (cancel-timer set-cursor-according-to-mode-timer)
-;; (remove-hook 'post-command-hook 'set-cursor-according-to-mode)
 
 (defun turn-on-show-trailing-whitespace ()
   (setq show-trailing-whitespace t))

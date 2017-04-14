@@ -86,18 +86,15 @@
         (kill-buffer buffer)
         (message "File '%s' successfully removed" filename)))))
 
+
 (defun set-cursor-according-to-mode (&optional type)
-  (if type
-      (setq cursor-type type)
-    (cond (buffer-read-only
-           (setq cursor-type 'box))
-          (overwrite-mode
-           (setq cursor-type 'hbar))
-          (t
-           (setq cursor-type '(bar . 1)))))
-  ;; Hack to reliably display new cursor type.
-  (internal-show-cursor nil nil)
-  (internal-show-cursor nil t))
+  (let ((next-cursor-type
+         (cond
+          (type)
+          (buffer-read-only 'hbar)
+          (t '(bar . 1)))))
+    (unless (equal next-cursor-type cursor-type)
+      (setq cursor-type next-cursor-type))))
 
 (defun download-to-current-buffer (url)
   "Downloads URL into current buffer."
