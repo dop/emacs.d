@@ -976,13 +976,23 @@ See URL `https://github.com/eslint/eslint'."
 
 (use-package utop
   :ensure t
-  :commands utop
+  :commands (utop utop-eval-region utop-eval-phrase utop-eval-buffer)
+  :init
+  (defun utop-eval-dwim ()
+    (interactive)
+    (if (use-region-p)
+        (utop-eval-region (region-beginning) (region-end))
+      (utop-eval-phrase)))
   :config
-  (setq utop-command "opam config exec -- utop -emacs"))
+  (setq utop-command "opam config exec -- utop -emacs"
+        utop-skip-after-eval-phrase nil))
 
 (use-package tuareg
   :ensure t
   :mode ("\\.ml\\'" . tuareg-mode)
+  :bind (:map tuareg-mode-map
+              ("C-c C-l" . utop-eval-buffer)
+              ("C-c C-c" . utop-eval-dwim))
   :config
   (setq *opam-share*
         (substring (shell-command-to-string "opam config var share 2> /dev/null") 0 -1))
