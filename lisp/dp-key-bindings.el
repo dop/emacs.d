@@ -24,8 +24,6 @@
 (global-set-key (kbd "C-c M-c") #'dp/convert-camelcase-to-constant)
 (global-set-key (kbd "C-c M-k") #'dp/convert-constant-to-camelcase)
 
-;; (global-set-key (kbd "C-x o") nil) ;; force myself to use M-o
-
 (global-set-key (kbd "M-1") #'dp/jump-to-window)
 (global-set-key (kbd "M-2") #'dp/jump-to-window)
 (global-set-key (kbd "M-3") #'dp/jump-to-window)
