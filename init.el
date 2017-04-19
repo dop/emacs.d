@@ -541,7 +541,8 @@
          ("C-c C-x C-j" . org-clock-goto)
          ("C-c a" . org-agenda))
   :config
-  (add-hook 'org-mode-hook 'org-bullets-mode)
+  (add-hook 'org-mode-hook #'org-bullets-mode)
+  (add-hook 'org-mode-hook #'visual-line-mode)
   (defun dp/org-set-source-code-background (exporter)
     "Insert custom inline css to automatically set the background
 of code to whatever theme I'm using's background"
