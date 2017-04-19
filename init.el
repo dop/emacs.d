@@ -50,6 +50,7 @@
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
 (when (not (window-system)) (menu-bar-mode -1))
+(blink-cursor-mode t)
 
 ;; Do not split windows
 (setq split-height-threshold nil split-width-threshold nil)
@@ -139,11 +140,6 @@
 
 ;; increate text by 1
 (setq text-scale-mode-step 1.1)
-
-(add-hook 'post-self-insert-hook #'set-cursor-according-to-mode)
-(setq set-cursor-according-to-mode-timer
-      (run-with-idle-timer 1 t #'set-cursor-according-to-mode 'box))
-;; (cancel-timer set-cursor-according-to-mode-timer)
 
 (defun turn-on-show-trailing-whitespace ()
   (setq show-trailing-whitespace t))
@@ -1104,6 +1100,10 @@ See URL `https://github.com/eslint/eslint'."
 ;; (require 'dp-haskell)
 
 (when (window-system)
+  (add-hook 'post-self-insert-hook #'set-cursor-according-to-mode)
+  (setq set-cursor-according-to-mode-timer
+        (run-with-idle-timer 1 t #'set-cursor-according-to-mode 'box))
+  ;; (cancel-timer set-cursor-according-to-mode-timer)
   (setq default-frame-alist '((font . "Consolas-13")))
   (set-frame-font (font-spec :family "Consolas" :size 13)))
 
