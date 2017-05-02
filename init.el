@@ -152,6 +152,10 @@
 (require 'dp-mode-line)
 (require 'dp-key-bindings)
 
+(use-package simple
+  :config
+  (setq-default visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow)))
+
 (use-package ibuffer
   :bind (("C-x C-b" . ibuffer)))
 
@@ -339,7 +343,8 @@
   :init
   (setq markdown-command "pandoc -f markdown -t html")
   :config
-  (add-hook 'markdown-mode-hook 'flyspell-mode))
+  (add-hook 'markdown-mode-hook #'visual-line-mode)
+  (add-hook 'markdown-mode-hook #'flyspell-mode))
 
 (use-package editorconfig
   :ensure t)
