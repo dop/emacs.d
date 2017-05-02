@@ -110,9 +110,6 @@
  '(org-agenda-files nil)
  '(org-export-htmlize-output-type (quote css))
  '(org-startup-folded t)
- '(package-selected-packages
-   (quote
-    (async god god-mode rg darktooth-theme gruvbox-theme ir-black-theme inkpot-theme bubbleberry-theme material-theme github-theme birds-of-paradise-plus-theme rust-mode underwater-theme ujelly-theme ubuntu-theme twilight-theme typing ts-comint tide idea-darkula-theme helm-themes js2-refactor xterm-color groovy-mode gradle-mode zerodark-theme paren-face graphql-mode org-present org-presie multi-term fic-mode hl-todo json-mode js-comint color-theme-modern git-timemachine typescript-mode ido-ubiquitous paradox window-number elm-mode quelpa-use-package flycheck-elm enlive request smartparens php-mode js2-highlight-vars zenburn-theme yaml-mode wrap-region windata whitespace-cleanup-mode wgrep visual-regexp-steroids visual-fill-column utop unicode-fonts undo-tree typo tuareg tss tree-mode syntax-subword sql-indent solarized-theme smex scss-mode sass-mode restclient rainbow-mode queue popwin paredit ox-reveal ox-pandoc ox-ioslide ox-impress-js org-plus-contrib olivetti nodejs-repl nginx-mode neotree monokai-theme mongo mmm-mode markdown-mode macrostep litable inf-mongo ido-vertical-mode ibuffer-vc ibuffer-projectile hungry-delete htmlize hl-line+ helm-swoop helm-ls-git helm-git-grep helm-css-scss haskell-mode graphviz-dot-mode goto-chg git-gutter-fringe flycheck-color-mode-line flx-isearch flx-ido expand-region exec-path-from-shell eproject epresent ensime elisp-slime-nav editorconfig dropdown-list drag-stuff dockerfile-mode docker-tramp docker dired-details dictionary dash-functional cyberpunk-theme csv-mode css-eldoc command-log-mode color-theme-sanityinc-tomorrow clojure-mode-extra-font-locking ace-jump-mode)))
  '(paradox-github-token t)
  '(pdf-view-midnight-colors (quote ("#DCDCCC" . "#383838")))
  '(pos-tip-background-color "#073642")
