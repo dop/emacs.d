@@ -337,6 +337,13 @@
   :bind (:map undo-tree-map
               ("C-x u" . undo-tree-visualize)))
 
+(use-package markdown-preview-mode
+  :ensure t
+  :commands (markdown-preview-mode)
+  :config
+  (setq markdown-preview-stylesheets
+        '("http://thomasf.github.io/solarized-css/solarized-light.min.css")))
+
 (use-package markdown-mode
   :ensure t
   :mode "\\.md'"
