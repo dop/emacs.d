@@ -1,4 +1,5 @@
 (require 'cl)
+(require 'dash)
 (require 'url)
 
 (defun urlencode (params)
@@ -296,5 +297,15 @@ active, apply to active region instead."
   (interactive)
   (unless (and (featurep 'yasnippet) (yas-expand))
     (company-complete-selection)))
+
+(defun dp/update-environment ()
+  (async-start
+   (lambda () (shell-command-to-string ". ~/.profile; env"))
+   (lambda (result)
+     (->> (s-split "\n" result)
+          (-filter (curry #'s-matches-p "="))
+          (-map (curry #'s-split "="))
+          (-map (pcase-lambda (`(,name ,value)) (setenv name value))))
+     (message "Updated environment variables."))))
 
 (provide 'dp-functions)

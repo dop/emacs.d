@@ -1108,4 +1108,6 @@ See URL `https://github.com/eslint/eslint'."
   (setq default-frame-alist '((font . "Consolas-13")))
   (set-frame-font (font-spec :family "Consolas" :size 13)))
 
+(dp/update-environment)
+
 ;;; init.el ends here
