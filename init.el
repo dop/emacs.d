@@ -311,7 +311,7 @@
 (use-package eshell
   :defer t
   :config
-  (add-hook 'eshell-mode-hook 'eshell-fringe-status-mode))
+  (add-hook 'eshell-mode-hook #'eshell-fringe-status-mode))
 
 (use-package exec-path-from-shell
   :ensure t
