@@ -308,4 +308,17 @@ active, apply to active region instead."
           (-map (pcase-lambda (`(,name ,value)) (setenv name value))))
      (message "Updated environment variables."))))
 
+(defun dp/eshell-aliases-from-shell ()
+  (async-start
+   (lambda () (shell-command-to-string ". ~/.profile; alias"))
+   (lambda (result)
+     (->> (s-split "\n" result)
+          (-filter (curry #'s-matches-p "="))
+          (-map (curry #'s-split "="))
+          (-map (pcase-lambda (`(,name ,value))
+                  (let ((normalized-value (replace-regexp-in-string "\\(^'\\|'$\\)" "" value)))
+                    (add-to-list 'eshell-command-aliases-list
+                                 (list name value))))))
+     (message "Updated EShell aliases."))))
+
 (provide 'dp-functions)
