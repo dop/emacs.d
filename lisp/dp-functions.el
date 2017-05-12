@@ -93,7 +93,7 @@
          (cond
           (type)
           (buffer-read-only 'hbar)
-          (t '(bar . 1)))))
+          (t '(bar . 2)))))
     (unless (equal next-cursor-type cursor-type)
       (setq cursor-type next-cursor-type))))
 
