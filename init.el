@@ -168,6 +168,17 @@
   :config
   (setf epa-pinentry-mode 'loopback))
 
+(defun set-bidi-left-to-right ()
+  (setq bidi-paragraph-direction 'left-to-right))
+
+(use-package shell
+  :config
+  (add-hook 'shell-mode-hook #'set-bidi-left-to-right))
+
+(use-package multi-term
+  :config
+  (add-hook 'term-mode-hook #'set-bidi-left-to-right))
+
 (use-package zenburn-theme
   :disabled t
   :ensure t
@@ -212,6 +223,7 @@
                 :style unspecified)))))))
 
 (use-package solarized-theme
+  :disabled t
   :ensure t
   :if window-system
   :init
@@ -849,11 +861,11 @@ See URL `https://github.com/eslint/eslint'."
 
 (require 'flowtype-mode)
 
-(require 'prettier-js)
-(setq-default prettier-args '("--single-quote"
-                              "--no-bracket-spacing"
-                              "--jsx-bracket-same-line"
-                              "--trailing-comma=es5"))
+;; (require 'prettier-js)
+;; (setq-default prettier-args '("--single-quote"
+;;                               "--no-bracket-spacing"
+;;                               "--jsx-bracket-same-line"
+;;                               "--trailing-comma=es5"))
 
 (use-package js2-highlight-vars
   :ensure t
@@ -1113,6 +1125,14 @@ See URL `https://github.com/eslint/eslint'."
 ;; (require 'dp-haskell)
 
 (when (window-system)
+  (switch-to-theme 'deep-blue)
+  (custom-theme-set-faces
+   'deep-blue
+   `(fringe ((t (:inherit default))))
+   `(git-gutter-fr:added ((t (:foreground "green" :inherit fringe))))
+   `(git-gutter-fr:modified ((t (:foreground "magenta" :inherit fringe))))
+   `(git-gutter-fr:deleted ((t (:foreground "red" :inherit fringe)))))
+
   (add-hook 'post-self-insert-hook #'set-cursor-according-to-mode)
   (setq set-cursor-according-to-mode-timer
         (run-with-idle-timer 1 t #'set-cursor-according-to-mode 'box))
