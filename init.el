@@ -556,7 +556,9 @@
   (add-hook 'emacs-lisp-mode-hook #'elisp-slime-nav-mode))
 
 (use-package org-bullets
-  :ensure t)
+  :ensure t
+  :config
+  (setq org-bullets-bullet-list '("·")))
 
 (use-package org
   :ensure t
@@ -1006,7 +1008,7 @@ See URL `https://github.com/eslint/eslint'."
       (utop-eval-phrase)))
   :config
   (setq utop-command "opam config exec -- utop -emacs"
-        utop-skip-after-eval-phrase nil))
+        utop-skip-after-eval-phrase t))
 
 (use-package tuareg
   :ensure t
