@@ -560,6 +560,12 @@
   :config
   (setq org-bullets-bullet-list '("·")))
 
+(use-package ox-reveal
+  :ensure t
+  :defer t
+  :init
+  (require 'org-compat))
+
 (use-package org
   :ensure t
   :mode ("\\.org$" . org-mode)
