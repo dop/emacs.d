@@ -179,118 +179,6 @@
   :config
   (add-hook 'term-mode-hook #'set-bidi-left-to-right))
 
-(use-package zenburn-theme
-  :disabled t
-  :ensure t
-  :if window-system
-  :init
-  (switch-to-theme 'zenburn)
-  (custom-theme-set-faces
-   'zenburn
-   `(cursor ((t (:background "red"))))
-   `(isearch ((t (:bold nil :inherit highlight))))
-   `(lazy-highlight ((t (:background "#7B6000"))))
-   `(highlight ((t (:background "#CB4B16"))))
-   `(font-lock-comment-face ((t (:foreground "#7F9F7F" :slant normal))))
-   `(font-lock-variable-name-face ((t (:foreground unspecified))))
-   `(font-lock-keyword-face ((t (:foreground "#F0DFAF" :bold nil))))
-   `(font-lock-builtin-face ((t (:bold nil :slant normal :inherit default))))
-   `(vertical-border ((t (:foreground "#4F4F4F"))))
-   `(fringe ((t (:background "#3F3F3F"))))
-   `(org-level-1 ((t (:foreground "#DFAF8F" :height 1.5 :overline "#4F4F4F"))))
-   `(org-level-2 ((t (:foreground "#BFEBBF" :height 1.3 :overline "#4F4F4F"))))
-   `(org-level-3 ((t (:foreground "#7CB8BB" :height 1.2 :overline "#4F4F4F"))))
-   `(mode-line
-     ((t (:inverse-video unspecified
-          :overline nil
-          :underline nil
-          :foreground "#8FB28F"
-          :background "#2B2B2B"
-          :box (:line-width 5
-                :color "#2B2B2B"
-                :style unspecified)))))
-   `(mode-line-buffer-id
-     ((t (:foreground "#F0DFAF"
-          :weight bold))))
-   `(mode-line-inactive
-     ((t (:inverse-video unspecified
-          :overline nil
-          :underline nil
-          :foreground "#5F7F5F"
-          :background "#383838"
-          :box (:line-width 5
-                :color "#383838"
-                :style unspecified)))))))
-
-(use-package solarized-theme
-  :disabled t
-  :ensure t
-  :if window-system
-  :init
-  (setq solarized-use-less-bold t
-        solarized-use-more-italic t
-        solarized-high-contrast-mode-line t
-        solarized-use-variable-pitch nil)
-  (switch-to-theme 'solarized-dark)
-  (solarized-with-color-variables
-   'dark
-   (custom-theme-set-faces
-    'solarized-dark
-    '(cursor ((t (:background "red"))))
-    `(mmm-default-submode-face ((t (:background nil))))
-    `(comint-highlight-prompt ((t (:foreground ,base2))))
-    `(mode-line
-      ((,class (:foreground ,s-mode-line-fg
-                :background ,s-mode-line-bg
-                :box (:line-width 1 :color ,s-mode-line-bg)))))
-    `(mode-line-buffer-id ((,class (:foreground ,s-mode-line-buffer-id-fg :weight bold))))
-    `(mode-line-inactive
-      ((,class (:foreground ,s-mode-line-bg
-                :background ,s-mode-line-fg
-                :box (:line-width 1 :color ,s-mode-line-bg)))))
-    `(js2-highlight-vars-face ((t (:inherit highlight :underline ,base1))))
-    `(js2-highlight-vars-second-face ((t (:inherit highlight :underline ,base1))))
-
-    `(font-lock-variable-name-face ((t (:inherit default))))
-    `(font-lock-function-name-face ((t (:foreground ,blue))))
-    `(tuareg-font-lock-governing-face ((t (:inherit font-lock-keyword-face))))
-    `(tuareg-font-lock-label-face ((t (:foreground ,base01))))
-    `(mmm-default-submode-face ((t (:background ,base02))))
-
-    `(ensime-implicit-highlight ((t (:underline (:style line :color ,base01)))))
-    `(hl-tags-face ((t (:background ,(color-lighten-name base02 5)))))
-    `(vc-locally-added-state ((t (:foreground ,green-l)))))))
-
-(use-package leuven-theme
-  :disabled t
-  :ensure t
-  :if window-system
-  :init (switch-to-theme 'leuven)
-  :config
-  (progn
-    (custom-theme-set-faces
-     'leuven
-     '(default ((t (:background "white" :foreground "#333333"))))
-     '(cursor ((t (:background "red"))))
-     '(fringe ((t (:background "white" :foreground "light grey"))))
-     '(mode-line ((t (:box (:line-width 3 :color "gray50")
-                            :background "gray50"
-                            :foreground "khaki"))))
-     '(mode-line-inactive ((t (:box (:line-width 3 :color "gainsboro")
-                                    :foreground "#F0F0EF"
-                                    :background "gainsboro"))))
-     '(column-enforce-face ((t (:background "#FFDDDD"))))
-     '(hl-tags-face ((t (:background nil :underline (:style line :color "grey80")))))
-     '(mmm-default-submode-face ((t :background "gray95")))
-     `(js2-error ((t (:box nil :background "#FFE1E1"))))
-     '(vertical-border ((t (:foreground "#f0f0ef")))))
-    (custom-theme-set-variables
-     'leuven
-     '(ansi-color-faces-vector
-       [default default default italic underline success warning error])
-     '(ansi-color-names-vector
-       ["black" "red3" "ForestGreen" "yellow3" "blue" "magenta3" "DeepSkyBlue" "gray50"]))))
-
 (use-package linum-mode
   :disabled t
   :commands linum-mode
@@ -1133,17 +1021,12 @@ See URL `https://github.com/eslint/eslint'."
 ;; (require 'dp-haskell)
 
 (when (window-system)
-  (switch-to-theme 'deep-blue)
-  (custom-theme-set-faces
-   'deep-blue
-   `(fringe ((t (:inherit default))))
-   `(git-gutter-fr:added ((t (:foreground "green" :inherit fringe))))
-   `(git-gutter-fr:modified ((t (:foreground "magenta" :inherit fringe))))
-   `(git-gutter-fr:deleted ((t (:foreground "red" :inherit fringe)))))
-
-  (add-hook 'post-self-insert-hook #'set-cursor-according-to-mode)
-  (setq set-cursor-according-to-mode-timer
-        (run-with-idle-timer 1 t #'set-cursor-according-to-mode 'box))
+  (custom-set-faces
+   `(default ((t (:background "black" :foreground "white"))))
+   `(cursor ((t (:background "red")))))
+  ;; (remove-hook 'post-self-insert-hook #'set-cursor-according-to-mode)
+  ;; (setq set-cursor-according-to-mode-timer
+  ;;       (run-with-idle-timer 1 t #'set-cursor-according-to-mode 'box))
   ;; (cancel-timer set-cursor-according-to-mode-timer)
   (setq default-frame-alist '((font . "Consolas-13")))
   (set-frame-font (font-spec :family "Consolas" :size 13)))
