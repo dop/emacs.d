@@ -253,6 +253,9 @@
   (add-hook 'markdown-mode-hook #'visual-line-mode)
   (add-hook 'markdown-mode-hook #'flyspell-mode))
 
+(use-package groovy-mode
+  :mode "\\.gradle'")
+
 (use-package editorconfig
   :ensure t)
 
@@ -707,8 +710,10 @@ See URL `https://github.com/eslint/eslint'."
   (bind-keys :map dired-mode-map
              ("C-a" . dired-back-to-start-of-files)
              ("e" . dp/ediff-files))
+  (setq dired-listing-switches "-alhF")
   (dired-details-install)
   (setq-default dired-details-hidden-string "--- ")
+  (setq dired-dwim-target t)
   (defadvice dired-create-directory
       (after revert-buffer-after-create activate)
     (revert-buffer))
@@ -914,11 +919,18 @@ See URL `https://github.com/eslint/eslint'."
   (setq *opam-share*
         (substring (shell-command-to-string "opam config var share 2> /dev/null") 0 -1))
   (add-to-list 'load-path (concat *opam-share* "/emacs/site-lisp"))
+
+  ;; ocp
   (require 'ocp-indent)
   (ocp-setup-indent)
-  (require 'merlin)
+
+  ;; merlin
+  (autoload 'merlin-mode "merlin" nil t nil)
   (add-hook 'tuareg-mode-hook #'merlin-mode t)
-  (add-hook 'caml-mode-hook #'merlin-mode t))
+  (add-hook 'caml-mode-hook #'merlin-mode t)
+  (setq merlin-command 'opam))
+
+;; (quelpa '(reason-mode :repo "reasonml-editor/reason-mode" :fetcher github :stable t))
 
 (use-package mmm-mode
   :ensure t

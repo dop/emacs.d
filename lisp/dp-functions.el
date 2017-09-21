@@ -55,8 +55,12 @@
 
 (defun switch-to-theme (theme)
   "Enables THEME and disable all others."
+  (interactive
+   (list
+    (intern (completing-read "Load theme: "
+			     (mapcar 'symbol-name
+				     (custom-available-themes))))))
   (disable-all-themes)
-  ;; (when (eq theme 'user) (dp/apply-custom-user-faces))
   (load-theme theme t))
 
 (defun rename-file-and-buffer (new-name)
@@ -236,6 +240,15 @@ Goes backward if ARG is negative; error if CHAR not found."
       ('it (insert "i"))
       ('iit (delete-forward-char 1)))))
 
+
+(defun dp/clean-json (start end)
+  "Change a region of raw JSON values to JavaScript objects by
+remove double quotes of properties and replacing double with
+single quotes."
+  (interactive "r")
+  (json-mode-beautify)
+  (replace-regexp "\"\\([^\"]+\\)\" ?:" "\\1:" nil start end)
+  (replace-regexp "\"" "'" nil start end))
 
 (defsubst curry (function &rest arguments)
   (lexical-let ((function function)
