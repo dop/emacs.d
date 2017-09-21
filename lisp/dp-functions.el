@@ -115,9 +115,6 @@
           (save-excursion
             (insert-buffer-substring data))))))
 
-(defun dp/url-retrieve ()
-  )
-
 (defun dp/zap-to-char (arg char)
   "Kill up to and including ARGth occurrence of CHAR.
 Case is ignored if `case-fold-search' is non-nil in the current buffer.
@@ -144,15 +141,6 @@ Goes backward if ARG is negative; error if CHAR not found."
     (if (>= b e)
         (funcall fn)
       (funcall region-fn b e))))
-
-(defun dp/comment-uncomment (&optional beg end)
-  (interactive "*r")
-  (dp/with-region-or beg end
-                     '(lambda (beg end)
-                        (if (= end (point))
-                            (comment-dwim)
-                          (comment-or-uncomment-region beg end)))
-                     'comment-dwim))
 
 (defun dp/kill-line-or-region (&optional beg end)
   (interactive "*r")
@@ -292,11 +280,6 @@ active, apply to active region instead."
        (apply #'max range)))
     (forward-line 1)
     (back-to-indentation)))
-
-(defun yasnippet-or-company-complete ()
-  (interactive)
-  (unless (and (featurep 'yasnippet) (yas-expand))
-    (company-complete-selection)))
 
 (defun dp/update-environment ()
   (async-start
