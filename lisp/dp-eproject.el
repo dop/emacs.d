@@ -144,7 +144,9 @@
         (setq-local flycheck-javascript-eslint-executable
                     (concat (eproject-root) eslint))
         (setq-local flycheck-eslintrc eslintrc-file)
-        (let* ((json (json-read-file flycheck-eslintrc))
+        (let* ((json (unless (ignore-errors (json-read-file flycheck-eslintrc))
+                       (message "Error reading eslint config file %s" flycheck-eslintrc)
+                       nil))
                (globals (mapcar 'car (cdr (assoc 'globals json))))
                (env (assoc 'env json)))
           (dp/js2-add-globals env globals)))
