@@ -237,6 +237,9 @@
   :bind (:map undo-tree-map
               ("C-x u" . undo-tree-visualize)))
 
+(use-package websocket
+  :ensure t)
+
 (use-package markdown-preview-mode
   :ensure t
   :commands (markdown-preview-mode)
@@ -844,13 +847,21 @@ See URL `https://github.com/eslint/eslint'."
           try-expand-line)))
 
 (use-package elm-mode
-  :disabled t
+  :ensure t
   :mode "\\.elm$"
   :config
-  (flycheck-elm-setup)
-  (setq elm-compile-arguments '("--yes" "--output=elm.js"))
+  ;; (setq elm-compile-arguments '("--yes" "--output=elm.js"))
+  (setq elm-indent-offset 4)
+  (setq elm-format-on-save t)
+  (setq elm-format-command "elm-format-0.18")
   (add-hook 'elm-mode-hook #'elm-oracle-setup-completion)
+  (flycheck-elm-setup)
+  (add-to-list 'elm-mode-hook #'flycheck-mode)
   (add-to-list 'company-backends 'company-elm))
+
+(use-package flycheck-elm
+  :ensure t
+  :commands flycheck-elm-setup)
 
 (use-package eproject
   :ensure t
