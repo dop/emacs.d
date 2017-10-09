@@ -947,6 +947,9 @@ See URL `https://github.com/eslint/eslint'."
   (setq utop-command "opam config exec -- utop -emacs"
         utop-skip-after-eval-phrase t))
 
+(add-to-list 'auto-mode-alist '("\\<jbuild\\'" . lisp-mode))
+(add-to-list 'auto-mode-alist '("\\<butler\\'" . lisp-mode))
+
 (use-package tuareg
   :ensure t
   :mode ("\\.ml\\'" . tuareg-mode)
@@ -964,6 +967,10 @@ See URL `https://github.com/eslint/eslint'."
 
   ;; merlin
   (autoload 'merlin-mode "merlin" nil t nil)
+  (eval-after-load "merlin"
+    (progn
+      (define-key merlin-mode-map (kbd "M-.") #'merlin-locate)
+      (define-key merlin-mode-map (kbd "M-,") #'merlin-pop-stack)))
   (add-hook 'tuareg-mode-hook #'merlin-mode t)
   (add-hook 'caml-mode-hook #'merlin-mode t)
   (setq merlin-command 'opam))
