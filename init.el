@@ -263,20 +263,30 @@
 (use-package editorconfig
   :ensure t)
 
-(defun davazp/ffap-nodejs-module (name)
-  (unless (or (string-prefix-p "/" name)
-              (string-prefix-p "./" name)
-              (string-prefix-p "../" name)
-              (not (or (s-match "^import.+from\s+'" (thing-at-point 'sentence))
-                       (s-match "require('[^']+')" (thing-at-point 'sentence)))))
-    (let ((base (locate-dominating-file default-directory "node_modules")))
+(defun dp/ffap-local-file (name)
+  (if (or (string-prefix-p "/" name)
+          (string-prefix-p "./" name)
+          (string-prefix-p "../" name))
       (-first #'file-exists-p
-              (list (concat base "node_modules/" name ".js")
-                    (concat base "node_modules/" name "/index.js")
-                    (concat base "node_modules/" name)
-                    (concat base name ".js")
-                    (concat base name "/index.js")
-                    (concat base name))))))
+              (list (concat name ".js") (concat name "/index.js") name))))
+
+(defun davazp/ffap-nodejs-module (name)
+  (block nil
+    (if-let ((local (dp/ffap-local-file name)))
+        (return local))
+    (unless (or (string-prefix-p "/" name)
+                (string-prefix-p "./" name)
+                (string-prefix-p "../" name)
+                (not (or (s-match "^import.+from\s+'" (thing-at-point 'sentence))
+                         (s-match "require('[^']+')" (thing-at-point 'sentence)))))
+      (let ((base (locate-dominating-file default-directory "node_modules")))
+        (-first #'file-exists-p
+                (list (concat base "node_modules/" name ".js")
+                      (concat base "node_modules/" name "/index.js")
+                      (concat base "node_modules/" name)
+                      (concat base name ".js")
+                      (concat base name "/index.js")
+                      (concat base name)))))))
 
 (use-package ffap
   :defer t
