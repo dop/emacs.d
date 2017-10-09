@@ -546,9 +546,14 @@ of code to whatever theme I'm using's background"
           magit-revert-buffers t)
     (add-hook 'git-commit-mode-hook 'turn-on-flyspell)))
 
+(defun dp/helm-git-grep-symbol-at-point ()
+  (interactive)
+  (helm-git-grep-1 (symbol-name (symbol-at-point))))
+
 (use-package helm
   :ensure t
-  :bind (("C-c g" . helm-git-grep))
+  :bind (("C-c g" . helm-git-grep)
+         ("C-c C-g" . dp/helm-git-grep-symbol-at-point))
   :config (setq helm-ff-transformer-show-only-basename nil
                 helm-ls-git-show-abs-or-relative 'relative
                 helm-buffers-fuzzy-matching t
