@@ -294,6 +294,7 @@
   (setq ffap-machine-p-known 'reject)
   (add-to-list 'ffap-alist '(js-mode . davazp/ffap-nodejs-module) t)
   (add-to-list 'ffap-alist '(js2-mode . davazp/ffap-nodejs-module) t)
+  (add-to-list 'ffap-alist '(rjsx-mode . davazp/ffap-nodejs-module) t )
   (add-to-list 'ffap-alist '(js2-jsx-mode . davazp/ffap-nodejs-module) t)
   (add-to-list 'ffap-alist '(typescript-mode . davazp/ffap-nodejs-module) t)
   (add-to-list 'ffap-alist '(flowtype-mode . davazp/ffap-nodejs-module) t))
@@ -793,7 +794,7 @@ See URL `https://github.com/eslint/eslint'."
 
 (use-package js2-mode
   :ensure t
-  :mode "\\.js\\'"
+  ;; :mode "\\.js\\'"
   :commands js2-mode
   :bind (:map js2-mode-map
               ([tab] . nil)
@@ -815,10 +816,20 @@ See URL `https://github.com/eslint/eslint'."
                 js2-bounce-indent-p nil
                 js2-include-jslint-globals t))
 
-(use-package js2-jsx-mode
-  :mode "\\.jsx\\'"
-  :init
-  (flycheck-add-mode 'javascript-jshint 'js2-jsx-mode))
+(use-package rjsx-mode
+  :ensure t
+  :mode "\\.jsx?\\'"
+  :bind (:map rjsx-mode-map
+              ([remap rjsx-delete-creates-full-tag] . hungry-delete-forward)))
+
+(defun jsx-indent-line-align-closing-bracket ()
+  "Workaround sgml-mode and align closing bracket with opening bracket"
+  (save-excursion
+    (beginning-of-line)
+    (when (looking-at-p "^ +\/?> *$")
+      (delete-char sgml-basic-offset))))
+
+(advice-add #'js-jsx-indent-line :after #'jsx-indent-line-align-closing-bracket)
 
 (use-package js-mode
   :config
