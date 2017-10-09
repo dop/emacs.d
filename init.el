@@ -966,6 +966,19 @@ See URL `https://github.com/eslint/eslint'."
   (mmm-add-mode-ext-class 'sgml-mode nil 'html-css)
   (mmm-add-mode-ext-class 'json-mode "\\.json\\.erb\\'" 'erb))
 
+(use-package web-mode
+  :ensure t
+  :config
+  (setq-default
+   web-mode-javascript-indent-offset 2
+   web-mode-code-indent-offset 2
+   web-mode-css-indent-offset 2
+   web-mode-markup-indent-offset 2
+   web-mode-style-padding 2
+   web-mode-block-padding 2
+   web-mode-script-padding 2)
+  (add-to-list 'auto-mode-alist '("\\.ejs\\'" . web-mode)))
+
 (use-package hl-tags-mode
   :commands hl-tags-mode
   :config
