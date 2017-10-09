@@ -173,6 +173,7 @@
 
 (use-package shell
   :config
+  (setq-default comint-process-echoes t)
   (add-hook 'shell-mode-hook #'set-bidi-left-to-right))
 
 (use-package multi-term
