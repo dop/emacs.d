@@ -34,15 +34,13 @@
 (require 'color)
 (require 'dp-functions)
 
-(when (fboundp 'mac-auto-operator-composition-mode)
-  (mac-auto-operator-composition-mode t))
-
 (setenv "PAGER" "cat")
 (setq comint-input-ignoredups t)
 (setq comint-eol-on-send t)
 (setq comint-scroll-to-bottom-on-output nil)
 (setq comint-move-point-for-output nil)
 (setq comint-scroll-show-maximum-output nil)
+(setq comint-process-echoes t)
 
 ;; No more symlinks to indicated that file is being edited.
 (setq create-lockfiles nil)
@@ -86,7 +84,7 @@
       query-replace-highlight t
       search-highlight t)
 
-(setq-default indicate-empty-lines t
+(setq-default indicate-empty-lines nil
               indicate-buffer-boundaries 'left)
 
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))
@@ -173,7 +171,6 @@
 
 (use-package shell
   :config
-  (setq-default comint-process-echoes t)
   (add-hook 'shell-mode-hook #'set-bidi-left-to-right))
 
 (use-package multi-term
@@ -215,6 +212,7 @@
   (add-hook 'eshell-mode-hook #'eshell-fringe-status-mode))
 
 (use-package exec-path-from-shell
+  :defer 2
   :ensure t
   :init (when (memq window-system '(mac ns))
           (exec-path-from-shell-initialize)))
@@ -906,7 +904,9 @@ See URL `https://github.com/eslint/eslint'."
   (add-hook 'generic-project-file-visit-hook 'eproject-eslint)
   (add-hook 'generic-project-file-visit-hook 'eproject-jshint)
   (add-hook 'generic-project-file-visit-hook 'eproject-flowtype)
-  (add-hook 'generic-git-project-file-visit-hook 'eproject-set-git-generic-keys))
+  (add-hook 'generic-git-project-file-visit-hook 'eproject-set-git-generic-keys)
+  ;;
+  (remove-hook 'after-change-major-mode-hook #'eproject--after-change-major-mode-hook))
 
 (use-package php-mode
   :ensure t
@@ -929,6 +929,7 @@ See URL `https://github.com/eslint/eslint'."
   (add-to-list 'php-mode-hook #'flycheck-mode-on-safe))
 
 (use-package nxml-mode
+  :defer t
   :config
   (add-to-list 'rng-schema-locating-files "~/.emacs.d/schemas.xml")
   (setq nxml-child-indent 4
@@ -1032,6 +1033,7 @@ See URL `https://github.com/eslint/eslint'."
   (add-hook 'html-mode-hook 'yas-minor-mode))
 
 (use-package log-edit
+  :defer t
   :config (add-hook 'log-edit-mode-hook 'flyspell-mode))
 
 (use-package olivetti
@@ -1091,6 +1093,8 @@ See URL `https://github.com/eslint/eslint'."
 ;; (require 'dp-haskell)
 
 (when (window-system)
+  (when (fboundp 'mac-auto-operator-composition-mode)
+    (mac-auto-operator-composition-mode t))
   (custom-set-faces
    `(default ((t (:background "black" :foreground "white"))))
    `(cursor ((t (:background "red")))))
