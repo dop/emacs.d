@@ -301,7 +301,9 @@ active, apply to active region instead."
      (->> (s-split "\n" result)
           (-filter (curry #'s-matches-p "="))
           (-map (curry #'s-split "="))
-          (-map (pcase-lambda (`(,name ,value)) (setenv name value))))
+          (-map (pcase-lambda (`(,name ,value))
+                  (message "%s = %s" name value)
+                  (setenv name value))))
      (message "Updated environment variables."))))
 
 (defun dp/eshell-aliases-from-shell ()
