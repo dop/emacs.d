@@ -956,24 +956,24 @@ See URL `https://github.com/eslint/eslint'."
   :mode ("\\.ml\\'" . tuareg-mode)
   :bind (:map tuareg-mode-map
               ("C-c C-l" . utop-eval-buffer)
-              ("C-c C-c" . utop-eval-dwim))
+              ("C-c C-c" . utop-eval-dwim)
+              ("M-." . merlin-locate)
+              ("C-c C-h" . merlin-document)
+              ("M-," . merlin-pop-stack))
   :config
   (setq *opam-share*
         (substring (shell-command-to-string "opam config var share 2> /dev/null") 0 -1))
   (add-to-list 'load-path (concat *opam-share* "/emacs/site-lisp"))
 
   ;; ocp
-  (require 'ocp-indent)
-  (ocp-setup-indent)
+  (autoload 'ocp-setup-indent "ocp-indent" nil t nil)
+  (add-hook 'tuareg-mode-hook #'ocp-setup-indent)
+  (add-hook 'caml-mode-hook #'ocp-setup-indent)
 
   ;; merlin
   (autoload 'merlin-mode "merlin" nil t nil)
-  (eval-after-load "merlin"
-    (progn
-      (define-key merlin-mode-map (kbd "M-.") #'merlin-locate)
-      (define-key merlin-mode-map (kbd "M-,") #'merlin-pop-stack)))
-  (add-hook 'tuareg-mode-hook #'merlin-mode t)
-  (add-hook 'caml-mode-hook #'merlin-mode t)
+  (add-hook 'tuareg-mode-hook #'merlin-mode)
+  (add-hook 'caml-mode-hook #'merlin-mode)
   (setq merlin-command 'opam))
 
 ;; (quelpa '(reason-mode :repo "reasonml-editor/reason-mode" :fetcher github :stable t))
