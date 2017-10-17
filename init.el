@@ -780,11 +780,15 @@ See URL `https://github.com/eslint/eslint'."
 
 (require 'flowtype-mode)
 
-;; (require 'prettier-js)
-;; (setq-default prettier-args '("--single-quote"
-;;                               "--no-bracket-spacing"
-;;                               "--jsx-bracket-same-line"
-;;                               "--trailing-comma=es5"))
+(use-package 'prettier-js
+  :ensure t
+  :commands prettier-js-mode
+  :config
+  (setq prettier-args
+        '("--single-quote"
+          "--no-bracket-spacing"
+          "--jsx-bracket-same-line"
+          "--trailing-comma=es5")))
 
 (use-package js2-highlight-vars
   :ensure t
@@ -812,6 +816,7 @@ See URL `https://github.com/eslint/eslint'."
   (add-hook 'js2-mode-hook #'js2-refactor-mode)
   (add-hook 'js2-mode-hook #'flycheck-mode)
   (add-hook 'js2-mode-hook #'js2-highlight-vars-mode)
+  (add-hook 'js2-mode-hook #'prettier-js-mode)
   (setq-default js2r-use-strict t)
   (setq-default js-indent-level 2
                 js2-basic-offset 2
