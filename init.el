@@ -1101,14 +1101,17 @@ See URL `https://github.com/eslint/eslint'."
   (when (fboundp 'mac-auto-operator-composition-mode)
     (mac-auto-operator-composition-mode t))
   (custom-set-faces
-   `(default ((t (:background "black" :foreground "white"))))
-   `(cursor ((t (:background "red")))))
-  ;; (remove-hook 'post-self-insert-hook #'set-cursor-according-to-mode)
-  ;; (setq set-cursor-according-to-mode-timer
-  ;;       (run-with-idle-timer 1 t #'set-cursor-according-to-mode 'box))
+   `(default ((t (:background "white" :foreground "black"))))
+   `(fringe ((t (:background "white"))))
+   `(error ((t (:foreground "tomato" :underline "red"))))
+   `(cursor ((t (:background "purple")))))
+  ;; (set-frame-parameter (selected-frame) 'alpha 100)
+  (add-hook 'post-self-insert-hook #'set-cursor-according-to-mode)
+  (setq set-cursor-according-to-mode-timer
+        (run-with-idle-timer 1 t #'set-cursor-according-to-mode 'box))
   ;; (cancel-timer set-cursor-according-to-mode-timer)
-  (setq default-frame-alist '((font . "Consolas-13")))
-  (set-frame-font (font-spec :family "Consolas" :size 13)))
+  (setq default-frame-alist '((font . "SF Mono-12")))
+  (set-frame-font (font-spec :family "SF Mono" :size 12)))
 
 (dp/update-environment)
 
