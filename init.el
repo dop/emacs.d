@@ -780,7 +780,7 @@ See URL `https://github.com/eslint/eslint'."
 
 (require 'flowtype-mode)
 
-(use-package 'prettier-js
+(use-package prettier-js
   :ensure t
   :commands prettier-js-mode
   :config
