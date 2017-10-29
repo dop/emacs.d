@@ -1048,6 +1048,10 @@ See URL `https://github.com/eslint/eslint'."
   :commands olivetti-mode
   :init (setq-default olivetti-body-width 120))
 
+(use-package centered-window-mode
+  :ensure t
+  :commands centered-window-mode)
+
 (use-package vc-svn
   :config
   (defadvice vc-svn-checkin
