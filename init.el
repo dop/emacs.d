@@ -885,6 +885,7 @@ See URL `https://github.com/eslint/eslint'."
   (setq elm-format-on-save t)
   (setq elm-format-command "elm-format-0.18")
   (add-hook 'elm-mode-hook #'elm-oracle-setup-completion)
+  (add-hook 'elm-mode-hook #'subword-mode)
   (flycheck-elm-setup)
   (add-to-list 'elm-mode-hook #'flycheck-mode)
   (add-to-list 'company-backends 'company-elm))
