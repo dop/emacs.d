@@ -784,11 +784,19 @@ See URL `https://github.com/eslint/eslint'."
   :ensure t
   :commands prettier-js-mode
   :config
-  (setq prettier-args
+  (setq prettier-js-args
         '("--single-quote"
+          "--print-width=120"
           "--no-bracket-spacing"
           "--jsx-bracket-same-line"
-          "--trailing-comma=es5")))
+          "--trailing-comma=all")))
+
+(use-package eslint-fix
+  :ensure t
+  :commands eslint-fix)
+
+(defun dp/setup-eslint-fix ()
+  (add-hook 'after-save-hook #'eslint-fix nil t))
 
 (use-package js2-highlight-vars
   :ensure t
@@ -811,11 +819,12 @@ See URL `https://github.com/eslint/eslint'."
               ("M-<down>" . js2r-move-line-down))
   :config
   (add-hook 'js2-mode-hook #'subword-mode)
-  ;; (remove-hook 'js2-mode-hook #'ac-js2-mode)
+  ;; (add-hook 'js2-mode-hook #'ac-js2-mode)
   (add-hook 'js2-mode-hook #'js2-refactor-mode)
   (add-hook 'js2-mode-hook #'flycheck-mode)
   (add-hook 'js2-mode-hook #'js2-highlight-vars-mode)
-  (add-hook 'js2-mode-hook #'prettier-js-mode)
+  ;; (add-hook 'js2-mode-hook #'prettier-js-mode)
+  (add-hook 'js2-mode-hook #'dp/setup-eslint-fix)
   (setq-default js2r-use-strict t)
   (setq-default js-indent-level 2
                 js2-basic-offset 2
@@ -906,10 +915,11 @@ See URL `https://github.com/eslint/eslint'."
     :relevant-files ("\\.scala$" "\\.java$" "\\.xml$"))
   (eproject-set-key "t" 'eproject-tasks-run)
   (eproject-set-key "s" 'eproject-open-term)
-  (add-hook 'generic-project-file-visit-hook 'eproject-set-local-keys)
-  (add-hook 'generic-project-file-visit-hook 'eproject-eslint)
-  (add-hook 'generic-project-file-visit-hook 'eproject-jshint)
-  (add-hook 'generic-project-file-visit-hook 'eproject-flowtype)
+  (add-hook 'generic-project-file-visit-hook #'eproject-set-local-keys)
+  (add-hook 'generic-project-file-visit-hook #'eproject-setup-exec-path)
+  (add-hook 'generic-project-file-visit-hook #'eproject-eslint)
+  (add-hook 'generic-project-file-visit-hook #'eproject-jshint)
+  (add-hook 'generic-project-file-visit-hook #'eproject-flowtype)
   (add-hook 'generic-git-project-file-visit-hook 'eproject-set-git-generic-keys)
   ;;
   (remove-hook 'after-change-major-mode-hook #'eproject--after-change-major-mode-hook))

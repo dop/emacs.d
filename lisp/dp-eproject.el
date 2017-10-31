@@ -30,6 +30,14 @@
     (if buf (switch-to-buffer buf)
       (dp/eproject-shell-command-with-path buf-name nil (eproject-attribute :path)))))
 
+(defun eproject-setup-exec-path ()
+  (if-let ((path (eproject-attribute :path))
+           (root (eproject-root)))
+      (let ((abs-path (concat root path)))
+        (unless (-contains? exec-path abs-path)
+          (setq-local exec-path (cons abs-path exec-path)))
+      )))
+
 (defun eproject-set-local-keys ()
   (mapc (lambda (action)
           ;; use pcase instead of destructuring-bind when there will be other
@@ -80,11 +88,11 @@
 (defun dp/eproject-shell-command-with-path (buffer-name command path &optional dir)
   (setq path (mapconcat (curry #'concat (eproject-root))
                         (when (stringp path) (setq path (list path)))
-                        ":"))
+                        path-separator))
   (let* ((current-paths (mapcar (rcurry #'substring 5)
                                 (remove-if-not (curry #'string-match "^PATH=")
                                                process-environment)))
-         (path-variable (concat "PATH=" path ":" (mapconcat 'identity current-paths ":")))
+         (path-variable (concat "PATH=" path path-separator (mapconcat 'identity current-paths path-separator)))
          (process-environment (cons path-variable process-environment)))
     (if command
         (progn
