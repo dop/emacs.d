@@ -402,7 +402,7 @@
   :bind (("C-M-s" . flx-isearch-forward)
          ("C-M-r" . flx-isearch-backward)))
 
-(use-package ido-ubiquitous :ensure t :defer t)
+(use-package ido-completing-read+ :ensure t :defer t)
 (use-package ido-vertical-mode :ensure t :defer t)
 (use-package flx-ido :ensure t :defer t)
 
