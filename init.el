@@ -805,7 +805,6 @@ See URL `https://github.com/eslint/eslint'."
   :commands js2-mode
   :bind (:map js2-mode-map
               ([tab] . nil)
-              ("C-c C-c" . dp/eproject-run-test-file)
               ("C-w" . backward-kill-word)
               ("M-d" . kill-word)
               ("M-<up>" . js2r-move-line-up)
@@ -895,6 +894,7 @@ See URL `https://github.com/eslint/eslint'."
   :commands flycheck-elm-setup)
 
 (use-package eproject
+  :disabled t
   :ensure t
   :diminish eproject-mode
   :commands define-project-type
@@ -913,6 +913,34 @@ See URL `https://github.com/eslint/eslint'."
   (add-hook 'generic-git-project-file-visit-hook 'eproject-set-git-generic-keys)
   ;;
   (remove-hook 'after-change-major-mode-hook #'eproject--after-change-major-mode-hook))
+
+(use-package window-purpose :ensure t)
+
+(use-package perspective :ensure t)
+(use-package persp-projectile :ensure t)
+
+(use-package projectile
+  :ensure t
+  :config
+  (setq projectile-mode-line
+        '(:eval (format " proj[%s]" (projectile-project-name))))
+  :init
+  (projectile-global-mode t)
+  (persp-mode t)
+  ;; cache generic project type for performance.
+  (defun projectile-project-type ()
+    "Determine the project's type based on its structure."
+    (if projectile-project-type
+        projectile-project-type
+      (let ((project-root (ignore-errors (projectile-project-root))))
+        (if project-root
+            (let ((project-type (gethash project-root projectile-project-type-cache)))
+              (unless project-type
+                (setq project-type (or (projectile-detect-project-type)
+                                       'generic))
+                (puthash project-root project-type projectile-project-type-cache))
+              project-type)
+          'generic)))))
 
 (use-package php-mode
   :ensure t
