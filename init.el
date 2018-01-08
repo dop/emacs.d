@@ -546,7 +546,11 @@ of code to whatever theme I'm using's background"
 
 (defun dp/helm-git-grep-symbol-at-point ()
   (interactive)
-  (helm-git-grep-1 (symbol-name (symbol-at-point))))
+  (helm-git-grep-1 (concat "\\<" (symbol-name (symbol-at-point)) "\\>")))
+
+(use-package helm-git-grep
+  :ensure t
+  :commands (helm-git-grep helm-git-grep-1))
 
 (use-package helm
   :ensure t
