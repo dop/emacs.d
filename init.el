@@ -587,56 +587,12 @@ of code to whatever theme I'm using's background"
   :ensure t
   :commands (flycheck-mode flycheck-add-mode)
   :config
-  (flycheck-def-config-file-var flycheck-eslintrc
-      javascript-eslint ".eslintrc" :safe #'stringp)
 
-  (defun flycheck-eslint-config-exists-p ()
-    "Whether there is an eslint config for the current buffer."
-    (let* ((executable (flycheck-find-checker-executable 'javascript-eslint))
-           (exitcode (and executable (call-process executable nil nil nil
-                                                   "--print-config" "."))))
-      (or flycheck-eslintrc
-          (eq exitcode 0))))
-
-  (flycheck-define-checker javascript-eslint
-    "A Javascript syntax and style checker using eslint.
-
-See URL `https://github.com/eslint/eslint'."
-    :command ("eslint" "--format=checkstyle"
-              (option "-c" flycheck-eslintrc)
-              (option-list "--rulesdir" flycheck-eslint-rules-directories)
-              "--stdin" "--stdin-filename" source-original)
-    :standard-input t
-    :error-parser flycheck-parse-checkstyle
-    :error-filter
-    (lambda (errors)
-      (seq-do (lambda (err)
-                ;; Parse error ID from the error message
-                (setf (flycheck-error-message err)
-                      (replace-regexp-in-string
-                       (rx " ("
-                           (group (one-or-more (not (any ")"))))
-                           ")" string-end)
-                       (lambda (s)
-                         (setf (flycheck-error-id err)
-                               (match-string 1 s))
-                         "")
-                       (flycheck-error-message err))))
-              (flycheck-sanitize-errors errors))
-      errors)
-    :enabled (lambda () (flycheck-eslint-config-exists-p))
-    :modes (js-mode js-jsx-mode js2-mode js2-jsx-mode js3-mode rjsx-mode)
-    :next-checkers ((warning . javascript-jscs))
-    :verify
-    (lambda (_)
-      (let* ((default-directory
-               (flycheck-compute-working-directory 'javascript-eslint))
-             (have-config (flycheck-eslint-config-exists-p)))
-        (list
-         (flycheck-verification-result-new
-          :label "config file"
-          :message (if have-config "found" "missing")
-          :face (if have-config 'success '(bold error)))))))
+  ;; flycheck-eslint-config-exists-p takes too much time, just assume that
+  ;; eslint is configured properly.
+  (defun dp/yes () t)
+  (advice-add 'flycheck-eslint-config-exists-p :override #'dp/yes)
+  ;; (advice-remove 'flycheck-eslint-config-exists-p #'dp/yes)
 
   (flycheck-define-checker javascript-flow
     "Static type checking using Flow."
