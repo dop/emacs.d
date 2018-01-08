@@ -713,10 +713,11 @@ of code to whatever theme I'm using's background"
   :pin melpa-stable)
 
 (use-package subword-mode
-  :diminish subword-mode
+  :diminish t
   :commands subword-mode)
 
 (use-package js2-refactor
+  :diminish t
   :ensure t
   :commands js2-refactor-mode
   :config
@@ -759,6 +760,7 @@ of code to whatever theme I'm using's background"
   (add-hook 'after-save-hook #'eslint-fix nil t))
 
 (use-package js2-highlight-vars
+  :diminish t
   :ensure t
   :commands js2-highlight-vars-mode
   :config
