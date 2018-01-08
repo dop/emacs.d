@@ -1120,17 +1120,18 @@ of code to whatever theme I'm using's background"
   (when (fboundp 'mac-auto-operator-composition-mode)
     (mac-auto-operator-composition-mode t))
   (custom-set-faces
-   `(default ((t (:background "white" :foreground "black"))))
-   `(fringe ((t (:background "white"))))
+   `(default ((t (:background "black" :foreground "white"))))
+   `(fringe ((t (:background "black"))))
+   `(font-lock-comment-face ((t (:foreground "chocolate" :slant italic))))
    `(error ((t (:foreground "tomato" :underline "red"))))
-   `(cursor ((t (:background "purple")))))
+   `(cursor ((t (:background "red")))))
   ;; (set-frame-parameter (selected-frame) 'alpha 100)
-  (add-hook 'post-self-insert-hook #'set-cursor-according-to-mode)
-  (setq set-cursor-according-to-mode-timer
-        (run-with-idle-timer 1 t #'set-cursor-according-to-mode 'box))
+  ;; (remove-hook 'post-self-insert-hook #'set-cursor-according-to-mode)
+  ;; (setq set-cursor-according-to-mode-timer
+  ;;       (run-with-idle-timer 1 t #'set-cursor-according-to-mode 'box))
   ;; (cancel-timer set-cursor-according-to-mode-timer)
-  (setq default-frame-alist '((font . "SF Mono-12")))
-  (set-frame-font (font-spec :family "SF Mono" :size 12)))
+  (setq default-frame-alist '((font . "IBM Plex Mono-12")))
+  (set-frame-font (font-spec :family "IBM Plex Mono" :size 12)))
 
 (dp/update-environment)
 
