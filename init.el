@@ -914,6 +914,19 @@ of code to whatever theme I'm using's background"
               project-type)
           'generic)))))
 
+(use-package ag
+  :commands ag
+  :ensure t)
+
+(use-package helm-ag
+  :commands helm-ag
+  :ensure t)
+
+(use-package helm-projectile
+  :ensure t
+  :init
+  (define-key projectile-command-map (kbd "s s") #'helm-projectile-ag))
+
 (use-package php-mode
   :ensure t
   :mode "\\.\\(php[s345]?\\|inc\\|phtml\\)"
