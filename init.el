@@ -928,6 +928,7 @@ of code to whatever theme I'm using's background"
   (define-key projectile-command-map (kbd "s s") #'helm-projectile-ag))
 
 (use-package php-mode
+  :disabled t
   :ensure t
   :mode "\\.\\(php[s345]?\\|inc\\|phtml\\)"
   :config
