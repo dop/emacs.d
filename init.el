@@ -846,6 +846,10 @@ of code to whatever theme I'm using's background"
           try-expand-list
           try-expand-line)))
 
+(defun elm-buffer-overview ()
+  (interactive)
+  (occur "^\\w+ :\\|^type"))
+
 (use-package elm-mode
   :ensure t
   :mode "\\.elm$"
