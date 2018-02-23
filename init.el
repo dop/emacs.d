@@ -787,6 +787,9 @@ of code to whatever theme I'm using's background"
   (add-hook 'js2-mode-hook #'js2-highlight-vars-mode)
   ;; (add-hook 'js2-mode-hook #'prettier-js-mode)
   (add-hook 'js2-mode-hook #'dp/setup-eslint-fix)
+  (defadvice js--multi-line-declaration-indentation
+      (around js2/disable-multi-line-identation activate)
+    nil)
   (setq-default js2r-use-strict t)
   (setq-default js-indent-level 2
                 js2-basic-offset 2
