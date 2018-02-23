@@ -1128,8 +1128,11 @@ of code to whatever theme I'm using's background"
     (mac-auto-operator-composition-mode t))
   (custom-set-faces
    `(default ((t (:background "black" :foreground "white"))))
-   `(fringe ((t (:background "black"))))
-   `(font-lock-comment-face ((t (:foreground "chocolate" :slant italic))))
+   `(fringe ((t (:background "gray20"))))
+   `(font-lock-comment-face ((t (:foreground "chocolate" :slant normal))))
+   `(git-gutter:added ((t (:foreground "yellow green" :inherit nil))))
+   `(git-gutter:deleted ((t (:foreground "tomato" :inherit nil))))
+   `(git-gutter:modified ((t (:foreground "orchid" :inherit nil))))
    `(error ((t (:foreground "tomato" :underline "red"))))
    `(cursor ((t (:background "red")))))
   ;; (set-frame-parameter (selected-frame) 'alpha 100)
