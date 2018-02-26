@@ -797,6 +797,10 @@ of code to whatever theme I'm using's background"
                 js2-bounce-indent-p nil
                 js2-include-jslint-globals t))
 
+(defun dp/js2-spec-overview ()
+  (interactive)
+  (helm-swoop :$query "\\<\\(describe\\|it\\)\\>("))
+
 (use-package rjsx-mode
   :ensure t
   :mode "\\.jsx?\\'"
