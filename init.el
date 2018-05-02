@@ -174,6 +174,7 @@
   (add-hook 'shell-mode-hook #'set-bidi-left-to-right))
 
 (use-package multi-term
+  :ensure t
   :config
   (add-hook 'term-mode-hook #'set-bidi-left-to-right))
 
@@ -465,6 +466,7 @@
   (setq org-bullets-bullet-list '("·")))
 
 (use-package ox-reveal
+  :disabled t
   :ensure t
   :defer t
   :init
@@ -521,6 +523,10 @@ of code to whatever theme I'm using's background"
         org-src-preserve-indentation t)
   (add-hook 'org-export-before-processing-hook 'dp/org-set-source-code-background))
 
+(use-package git-timemachine
+  :ensure t
+  :commands (git-timemachine))
+
 (use-package magit
   :ensure t
   :bind (("C-x g" . magit-status)
@@ -562,6 +568,10 @@ of code to whatever theme I'm using's background"
                 helm-recentf-fuzzy-matching t
                 helm-M-x-fuzzy-match t
                 helm-split-window-in-side-p t))
+
+(use-package helm-swoop
+  :ensure t
+  :commands (helm-swoop))
 
 (use-package git-gutter-fringe
   :ensure t
@@ -673,8 +683,7 @@ of code to whatever theme I'm using's background"
           (add-hook 'scss-mode-hook 'rainbow-mode)
           (add-hook 'css-mode-hook 'rainbow-mode)))
 
-(use-package dired-details
-  :ensure t
+(use-package dired-details+
   :commands dired-details-install)
 
 (defun dired-back-to-start-of-files ()
@@ -759,6 +768,10 @@ of code to whatever theme I'm using's background"
 (defun dp/setup-eslint-fix ()
   (add-hook 'after-save-hook #'eslint-fix nil t))
 
+(use-package xref-js2
+  :ensure t
+  :commands (xref-find-definitions xref-find-references))
+
 (use-package js2-highlight-vars
   :diminish t
   :ensure t
@@ -769,12 +782,16 @@ of code to whatever theme I'm using's background"
       (funcall js2--do-highlight-vars)))
   (advice-add 'js2--do-highlight-vars :around #'js2--do-highlight-vars-ignore-errors))
 
+(defun dp/setup-xref-js2 ()
+  (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t))
+
 (use-package js2-mode
   :ensure t
   ;; :mode "\\.js\\'"
   :commands js2-mode
   :bind (:map js2-mode-map
               ([tab] . nil)
+              ("M-." . nil)
               ("C-w" . backward-kill-word)
               ("M-d" . kill-word)
               ("M-<up>" . js2r-move-line-up)
@@ -786,7 +803,8 @@ of code to whatever theme I'm using's background"
   (add-hook 'js2-mode-hook #'flycheck-mode)
   (add-hook 'js2-mode-hook #'js2-highlight-vars-mode)
   ;; (add-hook 'js2-mode-hook #'prettier-js-mode)
-  (add-hook 'js2-mode-hook #'dp/setup-eslint-fix)
+  ;; (add-hook 'js2-mode-hook #'dp/setup-eslint-fix)
+  (add-hook 'js2-mode-hook #'dp/setup-xref-js2)
   (defadvice js--multi-line-declaration-indentation
       (around js2/disable-multi-line-identation activate)
     nil)
@@ -815,11 +833,6 @@ of code to whatever theme I'm using's background"
       (delete-char sgml-basic-offset))))
 
 (advice-add #'js-jsx-indent-line :after #'jsx-indent-line-align-closing-bracket)
-
-(use-package js-mode
-  :config
-  (flycheck-disable-checker 'javascript-jshint)
-  (flycheck-add-mode 'javascript-eslint 'js-mode))
 
 (use-package tide :ensure t :defer t)
 
@@ -1074,6 +1087,7 @@ of code to whatever theme I'm using's background"
   :init (setq-default olivetti-body-width 120))
 
 (use-package centered-window-mode
+  :disabled t
   :ensure t
   :commands centered-window-mode)
 
