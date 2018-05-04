@@ -915,11 +915,24 @@ of code to whatever theme I'm using's background"
 (use-package perspective :ensure t)
 (use-package persp-projectile :ensure t)
 
+(defun dp/projectile-run-terminal.app ()
+  (interactive)
+  (projectile-with-default-dir (projectile-project-root)
+    (apples-do-applescript
+     (format "tell application \"Terminal\"
+    activate
+    tell application \"System Events\" to keystroke \"t\" using command down
+    do script \"cd '%s'\" in selected tab of window 1 of application \"Terminal\"
+end tell" default-directory))))
+
 (use-package projectile
   :ensure t
   :config
   (setq projectile-mode-line
         '(:eval (format " proj[%s]" (projectile-project-name))))
+  (bind-keys
+   :map projectile-mode-map
+   ("C-c p x t" . dp/projectile-run-terminal.app))
   :init
   (projectile-global-mode t)
   (persp-mode t)
