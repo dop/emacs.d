@@ -1175,8 +1175,8 @@ end tell" default-directory))))
   ;; (setq set-cursor-according-to-mode-timer
   ;;       (run-with-idle-timer 1 t #'set-cursor-according-to-mode 'box))
   ;; (cancel-timer set-cursor-according-to-mode-timer)
-  (setq default-frame-alist '((font . "IBM Plex Mono-12")))
-  (set-frame-font (font-spec :family "IBM Plex Mono" :size 12)))
+  (setq default-frame-alist '((font . "PragmataPro-14")))
+  (set-frame-font (font-spec :family "PragmataPro" :size 14)))
 
 (dp/update-environment)
 
