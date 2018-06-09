@@ -1006,7 +1006,6 @@ end tell" default-directory))))
   (setq utop-command "opam config exec -- utop -emacs"
         utop-skip-after-eval-phrase t))
 
-(add-to-list 'auto-mode-alist '("\\<jbuild\\'" . lisp-mode))
 (add-to-list 'auto-mode-alist '("\\<butler\\'" . lisp-mode))
 
 (use-package tuareg
