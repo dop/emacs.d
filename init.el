@@ -158,6 +158,7 @@
   :bind (("C-x C-b" . ibuffer)))
 
 (use-package paradox
+  :disabled t
   :ensure t
   :commands (paradox-list-packages))
 
