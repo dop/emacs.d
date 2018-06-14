@@ -319,4 +319,21 @@ active, apply to active region instead."
                                  (list name value))))))
      (message "Updated EShell aliases."))))
 
+(defun dp/diff-last-2-yanks ()
+  (interactive)
+  (lexical-let* ((a (generate-new-buffer "*diff-yank*"))
+                 (b (generate-new-buffer "*diff-yank*"))
+                 clean-up)
+    (setq clean-up
+          (lambda ()
+            (kill-buffer a)
+            (kill-buffer b)
+            (remove-hook 'ediff-cleanup-hook clean-up)))
+    (add-hook 'ediff-cleanup-hook clean-up)
+    (with-current-buffer a
+      (insert (elt kill-ring 0)))
+    (with-current-buffer b
+      (insert (elt kill-ring 1)))
+    (ediff-buffers a b)))
+
 (provide 'dp-functions)
