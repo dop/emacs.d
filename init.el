@@ -945,6 +945,10 @@ of code to whatever theme I'm using's background"
     do script \"cd '%s'\" in selected tab of window 1 of application \"Terminal\"
 end tell" default-directory))))
 
+(use-package apples-mode
+  :ensure t
+  :commands (apples-do-applescript))
+
 (use-package projectile
   :ensure t
   :config
