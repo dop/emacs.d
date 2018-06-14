@@ -731,7 +731,7 @@ of code to whatever theme I'm using's background"
   :ensure t
   :commands js2-refactor-mode
   :config
-  (progn (js2r-add-keybindings-with-prefix "C-c C-m")))
+  (progn (js2r-add-keybindings-with-prefix "C-c m")))
 
 (use-package json-mode
   :ensure t
@@ -786,13 +786,19 @@ of code to whatever theme I'm using's background"
 (defun dp/setup-xref-js2 ()
   (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t))
 
+(defun dp/js2-jump-to-definition ()
+  (interactive)
+  (condition-case nil
+      (call-interactively #'js2-jump-to-definition)
+    (error
+     (call-interactively #'xref-find-definitions))))
+
 (use-package js2-mode
   :ensure t
-  ;; :mode "\\.js\\'"
   :commands js2-mode
   :bind (:map js2-mode-map
               ([tab] . nil)
-              ("M-." . nil)
+              ("M-." . dp/js2-jump-to-definition)
               ("C-w" . backward-kill-word)
               ("M-d" . kill-word)
               ("M-<up>" . js2r-move-line-up)
@@ -820,11 +826,17 @@ of code to whatever theme I'm using's background"
   (interactive)
   (helm-swoop :$query "\\<\\(describe\\|it\\)\\>("))
 
+(defun dp/rjsx-delete-creates-full-tag-or-hungry-delete (fn n &optional killflag)
+  (cl-letf (((symbol-function 'delete-forward-char) #'hungry-delete-forward))
+    (if (interactive-p)
+        (call-interactively fn)
+      (funcall fn n killflag))))
+
 (use-package rjsx-mode
   :ensure t
   :mode "\\.jsx?\\'"
-  :bind (:map rjsx-mode-map
-              ([remap rjsx-delete-creates-full-tag] . hungry-delete-forward)))
+  :config
+  (advice-add 'rjsx-delete-creates-full-tag :around #'dp/rjsx-delete-creates-full-tag-or-hungry-delete))
 
 (defun jsx-indent-line-align-closing-bracket ()
   "Workaround sgml-mode and align closing bracket with opening bracket"
