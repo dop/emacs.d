@@ -199,6 +199,13 @@
   (add-to-list 'grep-find-ignored-directories "node_modules")
   (add-to-list 'grep-find-ignored-directories "bower_components"))
 
+(use-package wgrep
+  :ensure t
+  :commands (wgrep-change-to-wgrep-mode))
+
+(use-package wgrep-ag
+  :ensure t)
+
 (use-package eshell-fringe-status
   :ensure t
   :commands eshell-fringe-status-mode)
