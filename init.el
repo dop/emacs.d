@@ -306,6 +306,9 @@
   (add-to-list 'ffap-alist '(typescript-mode . davazp/ffap-nodejs-module) t)
   (add-to-list 'ffap-alist '(flowtype-mode . davazp/ffap-nodejs-module) t))
 
+(use-package nodejs-repl
+  :ensure t)
+
 (use-package ispell
   ;; :commands (ispell-word flyspell-buffer flyspell-mode)
   :config (setq ispell-local-dictionary-alist
