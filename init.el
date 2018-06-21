@@ -476,6 +476,25 @@
   :config
   (setq org-bullets-bullet-list '("·")))
 
+(use-package org-present
+  :ensure t
+  :commands (org-present)
+  :config
+  (defun org-present-enter ()
+    (set-frame-parameter nil 'internal-border-width 50)
+    (org-present-big)
+    (org-display-inline-images)
+    (org-present-hide-cursor)
+    (org-present-read-only))
+  (defun org-present-leave ()
+    (set-frame-parameter nil 'internal-border-width 0)
+    (org-present-small)
+    (org-remove-inline-images)
+    (org-present-show-cursor)
+    (org-present-read-write))
+  (add-hook 'org-present-mode-hook #'org-present-enter)
+  (add-hook 'org-present-mode-quit-hook #'org-present-leave))
+
 (use-package ox-reveal
   :disabled t
   :ensure t
