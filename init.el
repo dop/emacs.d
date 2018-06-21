@@ -760,7 +760,7 @@ of code to whatever theme I'm using's background"
   :ensure t
   :commands js2-refactor-mode
   :config
-  (progn (js2r-add-keybindings-with-prefix "C-c m")))
+  (js2r-add-keybindings-with-prefix "C-c m"))
 
 (use-package json-mode
   :ensure t
