@@ -154,6 +154,8 @@
   :config
   (setq-default visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow)))
 
+(use-package diminish :ensure t)
+
 (use-package ibuffer
   :bind (("C-x C-b" . ibuffer)))
 
