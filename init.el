@@ -846,12 +846,16 @@ of code to whatever theme I'm using's background"
   (defadvice js--multi-line-declaration-indentation
       (around js2/disable-multi-line-identation activate)
     nil)
-  (setq-default js2r-use-strict t)
-  (setq-default js-indent-level 2
-                js2-basic-offset 2
-                js-switch-indent-offset 2
-                js2-bounce-indent-p nil
-                js2-include-jslint-globals t))
+  (setq-default
+   js2r-use-strict t
+   js-indent-level 2
+   js2-basic-offset 2
+   js-switch-indent-offset 2
+   js2-bounce-indent-p nil
+   js2-include-jslint-globals t
+   js2-strict-trailing-comma-warning  nil
+   js2-strict-inconsistent-return-warning nil
+   js2-global-externs '("module" "require" "process")))
 
 (defun dp/js2-spec-overview ()
   (interactive)
