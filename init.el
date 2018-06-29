@@ -748,6 +748,9 @@ of code to whatever theme I'm using's background"
   :commands ensime
   :pin melpa-stable)
 
+(use-package smartparens
+  :ensure t)
+
 (use-package subword-mode
   :diminish t
   :commands subword-mode)
