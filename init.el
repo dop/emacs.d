@@ -199,6 +199,9 @@
   :defer t
   :config
   (add-to-list 'grep-find-ignored-directories "node_modules")
+  (add-to-list 'grep-find-ignored-directories "coverage")
+  (add-to-list 'grep-find-ignored-directories "build")
+  (add-to-list 'grep-find-ignored-directories "dist")
   (add-to-list 'grep-find-ignored-directories "bower_components"))
 
 (use-package wgrep
