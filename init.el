@@ -398,11 +398,12 @@
   :init
   (progn
     (global-company-mode t)
+    (bind-keys :map company-mode-map
+               ("C-M-i" . company-complete))
     (bind-keys :map company-active-map
                ("C-w" . nil)
                ([return] . nil)
                ([tab] . company-complete-selection)
-               ("TAB" . company-complete-selection)
                ("RET" . nil)
                ("C-n" . company-select-next)
                ("C-p" . company-select-previous)))
@@ -634,6 +635,10 @@ of code to whatever theme I'm using's background"
   (advice-add 'flycheck-eslint-config-exists-p :override #'dp/yes)
   ;; (advice-remove 'flycheck-eslint-config-exists-p #'dp/yes)
 
+  ;; This helps some test runners that find test suites dynamically to not fail
+  ;; on temp flycheck files.
+  (setq flycheck-temp-prefix ".flycheck")
+
   (flycheck-define-checker javascript-flow
     "Static type checking using Flow."
     :command ("flow" "check-contents" "--json" source-original)
@@ -785,14 +790,14 @@ of code to whatever theme I'm using's background"
 
 (use-package prettier-js
   :ensure t
-  :commands prettier-js-mode
+  :commands (prettier-js-mode prettier-js)
   :config
   (setq prettier-js-args
         '("--single-quote"
-          "--print-width=120"
           "--no-bracket-spacing"
-          "--jsx-bracket-same-line"
-          "--trailing-comma=all")))
+          "--arrow-parens=always"
+          "--trailing-comma=all"
+          "--jsx-bracket-same-line")))
 
 (use-package eslint-fix
   :ensure t
@@ -883,17 +888,39 @@ of code to whatever theme I'm using's background"
 
 (advice-add #'js-jsx-indent-line :after #'jsx-indent-line-align-closing-bracket)
 
-(use-package tide :ensure t :defer t)
+(use-package stupid-indent-mode
+  :ensure t
+  :commands (stupid-indent-mode))
+
+(use-package tide
+  :ensure t
+  :commands (tide-setup))
+
+(defun setup-typescript-with-tide ()
+  (tide-setup)
+  (eldoc-mode t)
+  (subword-mode t)
+  (tide-hl-identifier-mode t)
+  (flycheck-mode t)
+  (setq company-tooltip-align-annotations t)
+  (company-mode t)
+  (when (s-ends-with? ".tsx" (buffer-file-name))
+    (stupid-indent-mode t)))
 
 (use-package typescript-mode
   :ensure t
   :mode "\\.tsx?$"
   :config
   (setq-default typescript-indent-level 2)
-  (add-hook 'typescript-mode-hook #'subword-mode)
-  (add-hook 'typescript-mode-hook #'tide-mode)
-  (add-hook 'typescript-mode-hook #'tide-hl-identifier-mode)
-  (add-hook 'typescript-mode-hook #'flycheck-mode))
+  (setq tide-format-options
+        '(:insertSpaceAfterOpeningAndBeforeClosingNonemptyParenthesis nil
+          :insertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets nil
+          :insertSpaceAfterOpeningAndBeforeClosingTemplateStringBraces nil
+          :insertSpaceAfterOpeningAndBeforeClosingJsxExpressionBraces nil
+          :insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces nil
+          :placeOpenBraceOnNewLineForFunctions nil))
+  (remove-hook 'before-save-hook 'tide-format-before-save)
+  (add-hook 'typescript-mode-hook #'setup-typescript-with-tide))
 
 (use-package skewer-mode
   :disabled t
@@ -974,6 +1001,21 @@ of code to whatever theme I'm using's background"
     do script \"cd '%s'\" in selected tab of window 1 of application \"Terminal\"
 end tell" default-directory))))
 
+(defun dp/projectile-run-iterm ()
+  (interactive)
+  (projectile-with-default-dir (projectile-project-root)
+    (apples-do-applescript
+     (let ((script "tell application \"iTerm\"
+    activate
+    tell window 1
+	set t to create tab with default profile
+	tell current session of t
+	    write text \"cd '%s'\"
+	end tell
+    end tell
+end tell"))
+       (format script default-directory)))))
+
 (use-package apples-mode
   :ensure t
   :commands (apples-do-applescript))
@@ -985,7 +1027,7 @@ end tell" default-directory))))
         '(:eval (format " proj[%s]" (projectile-project-name))))
   (bind-keys
    :map projectile-mode-map
-   ("C-c p x t" . dp/projectile-run-terminal.app))
+   ("C-c p x t" . dp/projectile-run-iterm))
   :init
   (projectile-global-mode t)
   (persp-mode t)
@@ -1203,6 +1245,11 @@ end tell" default-directory))))
   :config
   (setq-default inferior-lisp-program "sbcl"))
 
+(use-package restclient
+  :mode "\\.rest\\'"
+  :ensure t
+  :defer t)
+
 (load (expand-file-name "~/quicklisp/slime-helper.el"))
 ;; Replace "sbcl" with the path to your implementation
 (setq inferior-lisp-program "sbcl")
@@ -1213,6 +1260,7 @@ end tell" default-directory))))
 (when (window-system)
   (when (fboundp 'mac-auto-operator-composition-mode)
     (mac-auto-operator-composition-mode t))
+  (setq ns-use-thin-smoothing t)
   (custom-set-faces
    `(default ((t (:background "gray90" :foreground "black"))))
    `(fringe ((t (:background "gray90"))))
