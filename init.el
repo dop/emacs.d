@@ -757,7 +757,9 @@ of code to whatever theme I'm using's background"
   :pin melpa-stable)
 
 (use-package smartparens
-  :ensure t)
+  :ensure t
+  :config
+  (sp-local-pair '(js2-mode javascript-mode typescript-mode) "`" "`"))
 
 (use-package subword-mode
   :diminish t
