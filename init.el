@@ -101,7 +101,7 @@
 (setq display-time-24hr-format nil
       display-time-day-and-date nil)
 
-(setq visible-bell t
+(setq visible-bell nil
       ring-bell-function nil)
 
 (fset 'yes-or-no-p 'y-or-n-p)
