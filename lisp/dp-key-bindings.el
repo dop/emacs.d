@@ -34,6 +34,8 @@
 (global-set-key (kbd "M-0") #'dp/delete-window)
 (global-set-key (kbd "M-o") #'other-window)
 
+(global-set-key (kbd "M-l") #'downcase-dwim)
+
 (global-set-key (kbd "C-x M-d") #'delete-this-buffer-and-file)
 
 (global-unset-key [right])
