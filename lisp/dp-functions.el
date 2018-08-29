@@ -336,4 +336,25 @@ active, apply to active region instead."
       (insert (elt kill-ring 1)))
     (ediff-buffers a b)))
 
+(defvar tsfmt-executable "tsfmt")
+
+(defun tsfmt-region (start end)
+  (let ((name (buffer-file-name))
+        (saved-point (point)))
+      (call-process-region
+       start end tsfmt-executable
+       t t nil
+       "--stdin"
+       "--baseDir" (locate-dominating-file name "tsfmt.json")
+       name)
+      (goto-char saved-point)))
+
+(defun tsfmt ()
+  (interactive)
+  (pcase-let ((`(,start . ,end)
+               (if (use-region-p)
+                   (cons (region-beginning) (region-end))
+                 (cons (point-min) (point-max)))))
+    (tsfmt-region start end)))
+
 (provide 'dp-functions)
