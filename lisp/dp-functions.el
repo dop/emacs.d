@@ -303,7 +303,10 @@ active, apply to active region instead."
           (-map (curry #'s-split "="))
           (-map (pcase-lambda (`(,name ,value))
                   (message "%s = %s" name value)
-                  (setenv name value))))
+                  (setenv name value)
+                  (when (string-equal "PATH" name)
+                    (setq eshell-path-env value
+                          exec-path (append (parse-colon-path value) (list exec-directory)))))))
      (message "Updated environment variables."))))
 
 (defun dp/eshell-aliases-from-shell ()
