@@ -284,12 +284,21 @@
 (use-package editorconfig
   :ensure t)
 
+(require 'dash)
+
+(defun dp/ffap-list-of-files (partial-paths &optional suffixes)
+  (let ((suffixes (or suffixes (list "" ".js" ".ts" ".tsx" ".jsx"))))
+    (apply #'-concat
+           (-map (lambda (suffix) (-map (lambda (path) (concat path suffix)) partial-paths))
+                 suffixes))))
+
 (defun dp/ffap-local-file (name)
   (if (or (string-prefix-p "/" name)
           (string-prefix-p "./" name)
           (string-prefix-p "../" name))
       (-first #'file-exists-p
-              (list (concat name ".js") (concat name "/index.js") name))))
+              (dp/ffap-list-of-files
+               (list (concat name) (concat name "/index") name)))))
 
 (defun davazp/ffap-nodejs-module (name)
   (block nil
@@ -302,12 +311,11 @@
                          (s-match "require('[^']+')" (thing-at-point 'sentence)))))
       (let ((base (locate-dominating-file default-directory "node_modules")))
         (-first #'file-exists-p
-                (list (concat base "node_modules/" name ".js")
-                      (concat base "node_modules/" name "/index.js")
-                      (concat base "node_modules/" name)
-                      (concat base name ".js")
-                      (concat base name "/index.js")
-                      (concat base name)))))))
+                (dp/ffap-list-of-files
+                 (list (concat base "node_modules/" name)
+                       (concat base "node_modules/" name "/index")
+                       (concat base name)
+                       (concat base name "/index"))))))))
 
 (use-package ffap
   :defer t
@@ -315,7 +323,7 @@
   (setq ffap-machine-p-known 'reject)
   (add-to-list 'ffap-alist '(js-mode . davazp/ffap-nodejs-module) t)
   (add-to-list 'ffap-alist '(js2-mode . davazp/ffap-nodejs-module) t)
-  (add-to-list 'ffap-alist '(rjsx-mode . davazp/ffap-nodejs-module) t )
+  (add-to-list 'ffap-alist '(rjsx-mode . davazp/ffap-nodejs-module) t)
   (add-to-list 'ffap-alist '(js2-jsx-mode . davazp/ffap-nodejs-module) t)
   (add-to-list 'ffap-alist '(typescript-mode . davazp/ffap-nodejs-module) t)
   (add-to-list 'ffap-alist '(flowtype-mode . davazp/ffap-nodejs-module) t))
