@@ -284,8 +284,6 @@
 (use-package editorconfig
   :ensure t)
 
-(require 'dash)
-
 (defun dp/ffap-list-of-files (partial-paths &optional suffixes)
   (let ((suffixes (or suffixes (list "" ".js" ".ts" ".tsx" ".jsx"))))
     (apply #'-concat
