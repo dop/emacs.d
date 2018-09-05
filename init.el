@@ -1269,6 +1269,10 @@ end tell"))
   :ensure t
   :defer t)
 
+(use-package protobuf-mode
+  :ensure t
+  :mode "\\.proto\\'")
+
 (load (expand-file-name "~/quicklisp/slime-helper.el"))
 ;; Replace "sbcl" with the path to your implementation
 (setq inferior-lisp-program "sbcl")
