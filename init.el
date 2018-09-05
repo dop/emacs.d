@@ -448,8 +448,8 @@
   (defun dp/ido-keys ()
     (define-key ido-completion-map " " 'ido-restrict-to-matches))
   (setq ido-vertical-decorations
-        '("\n-> " "" "\n   " "\n   ···" "[" "]" " [No match]" " [Matched]"
-          " [Not readable]" " [Too big]" " [Confirm]" "\n-> " ""))
+        '("\n → " "" "\n   " "\n   ···" "[" "]" " [No match]" " [Matched]"
+          " [Not readable]" " [Too big]" " [Confirm]" "\n → " ""))
   (ido-everywhere t)
   (ido-ubiquitous-mode t)
   (ido-vertical-mode t)
@@ -591,17 +591,15 @@ of code to whatever theme I'm using's background"
    ("M-2" . nil)
    ("M-3" . nil)
    ("M-4" . nil))
-  :init
-  (progn
-    (setq magit-emacsclient-executable
-          "/usr/local/Cellar/emacs-mac/HEAD/bin/emacsclient"
-          magit-last-seen-setup-instructions "1.4.0"
-          magit-highlight-whitespace t
-          magit-highlight-trailing-whitespace t
-          magit-highlight-indentation nil
-          magit-diff-refine-hunk nil
-          magit-revert-buffers t)
-    (add-hook 'git-commit-mode-hook 'turn-on-flyspell)))
+  (setq magit-emacsclient-executable "/Applications/Emacs.app/Contents/MacOS/bin/emacsclient"
+        magit-last-seen-setup-instructions "1.4.0"
+        magit-highlight-whitespace t
+        magit-highlight-trailing-whitespace t
+        magit-highlight-indentation nil
+        magit-diff-refine-hunk nil
+        magit-revert-buffers t
+        magit-process-connection-type nil)
+  (add-hook 'git-commit-mode-hook 'turn-on-flyspell))
 
 (use-package helm-git-grep
   :ensure t
@@ -908,6 +906,7 @@ of code to whatever theme I'm using's background"
 (advice-add #'js-jsx-indent-line :after #'jsx-indent-line-align-closing-bracket)
 
 (use-package stupid-indent-mode
+  :disabled t
   :ensure t
   :commands (stupid-indent-mode))
 
@@ -922,16 +921,15 @@ of code to whatever theme I'm using's background"
   (tide-hl-identifier-mode t)
   (flycheck-mode t)
   (setq company-tooltip-align-annotations t)
-  (company-mode t)
-  (when (s-ends-with? ".tsx" (buffer-file-name))
-    (stupid-indent-mode t)))
+  (company-mode t))
 
 (use-package typescript-mode
   :ensure t
   :mode "\\.tsx?$"
   :config
-  (setq-default typescript-indent-level 2)
-  (setq tide-format-options
+  (setq typescript-indent-level 2
+        tide-completion-detailed t
+        tide-format-options
         '(:insertSpaceAfterOpeningAndBeforeClosingNonemptyParenthesis nil
           :insertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets nil
           :insertSpaceAfterOpeningAndBeforeClosingTemplateStringBraces nil
@@ -1283,27 +1281,32 @@ end tell"))
 (when (window-system)
   (when (fboundp 'mac-auto-operator-composition-mode)
     (mac-auto-operator-composition-mode t))
-  (setq ns-use-thin-smoothing t)
+  (setq ns-use-thin-smoothing t
+        ns-use-srgb-colorspace t)
   (custom-set-faces
-   `(default ((t (:background "gray90" :foreground "black"))))
-   `(fringe ((t (:background "gray90"))))
+   `(default ((t (:background "gray10" :foreground "white"))))
+   `(fringe ((t (:background "gray20"))))
    `(font-lock-comment-face ((t (:foreground "chocolate" :slant normal))))
    `(git-gutter:added ((t (:foreground "yellow green" :inherit nil))))
    `(git-gutter:deleted ((t (:foreground "tomato" :inherit nil))))
    `(git-gutter:modified ((t (:foreground "orchid" :inherit nil))))
    `(error ((t (:foreground "tomato" :underline "red"))))
-   `(js2-external-variable ((t (:foreground "gray40"))))
-   `(mode-line ((t (:inherit default :overline "black" :box (:line-width 2 :color "gray90")))))
-   `(mode-line-inactive ((t (:inherit default :foreground "gray60" :overline "gray80" :box (:line-width 2 :color "gray90")))))
+   `(js2-external-variable ((t (:foreground "gray60"))))
+   `(mode-line ((t (:inherit default :overline "white" :box (:line-width 2 :color "gray10")))))
+   `(mode-line-inactive ((t (:inherit default :foreground "gray40" :overline "gray60" :box (:line-width 2 :color "gray10")))))
    `(fixed-pitch ((t (:family "PragmataPro"))))
    `(cursor ((t (:background "red")))))
-  ;; (set-frame-parameter (selected-frame) 'alpha 100)
+  (add-to-list 'default-frame-alist '(ns-appearance . dark))
+  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+  (-> (selected-frame)
+      (set-frame-parameter 'ns-appearance 'dark)
+      (set-frame-parameter 'ns-transparent-titlebar t))
   ;; (remove-hook 'post-self-insert-hook #'set-cursor-according-to-mode)
   ;; (setq set-cursor-according-to-mode-timer
   ;;       (run-with-idle-timer 1 t #'set-cursor-according-to-mode 'box))
   ;; (cancel-timer set-cursor-according-to-mode-timer)
-  (setq default-frame-alist '((font . "PragmataPro-14")))
-  (set-frame-font (font-spec :family "PragmataPro" :size 14)))
+  (setq default-frame-alist '((font . "PragmataPro Mono-14")))
+  (set-frame-font (font-spec :family "PragmataPro Mono" :size 14)))
 
 (dp/update-environment)
 
