@@ -142,6 +142,15 @@
 (defun turn-on-show-trailing-whitespace ()
   (setq show-trailing-whitespace t))
 
+(require 'prettify-ppro)
+
+(defun dp/ppro-prettify-symbols ()
+  (prettify-ppro-add-symbols)
+  (prettify-symbols-mode t))
+
+(add-hook 'prog-mode-hook #'dp/ppro-prettify-symbols)
+(setq prettify-symbols-unprettify-at-point nil)
+
 (add-hook 'prog-mode-hook #'turn-on-show-trailing-whitespace)
 (add-hook 'html-mode-hook #'turn-on-show-trailing-whitespace)
 (add-hook 'css-mode-hook #'turn-on-show-trailing-whitespace)
