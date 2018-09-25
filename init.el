@@ -811,8 +811,7 @@ of code to whatever theme I'm using's background"
         '("--single-quote"
           "--no-bracket-spacing"
           "--arrow-parens=always"
-          "--trailing-comma=all"
-          "--jsx-bracket-same-line")))
+          "--trailing-comma=all")))
 
 (use-package eslint-fix
   :ensure t
