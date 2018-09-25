@@ -964,15 +964,16 @@ of code to whatever theme I'm using's background"
   :ensure t
   :mode "\\.elm$"
   :config
-  ;; (setq elm-compile-arguments '("--yes" "--output=elm.js"))
   (setq elm-indent-offset 4)
   (setq elm-format-on-save t)
-  (setq elm-format-command "elm-format-0.18")
-  (add-hook 'elm-mode-hook #'elm-oracle-setup-completion)
+  (setq elm-format-command "elm-format")
+  (setq elm-interactive-command '("elm" "repl"))
+  ;; (add-hook 'elm-mode-hook #'elm-oracle-setup-completion)
   (add-hook 'elm-mode-hook #'subword-mode)
   (flycheck-elm-setup)
   (add-to-list 'elm-mode-hook #'flycheck-mode)
-  (add-to-list 'company-backends 'company-elm))
+  ;; (add-to-list 'company-backends 'company-elm)
+  )
 
 (use-package string-edit
   :ensure t
