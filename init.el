@@ -974,6 +974,10 @@ of code to whatever theme I'm using's background"
   (add-to-list 'elm-mode-hook #'flycheck-mode)
   (add-to-list 'company-backends 'company-elm))
 
+(use-package string-edit
+  :ensure t
+  :commands string-edit-at-point)
+
 (use-package flycheck-elm
   :ensure t
   :commands flycheck-elm-setup)
