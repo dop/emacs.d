@@ -1136,8 +1136,6 @@ of code to whatever theme I'm using's background"
   (add-hook 'caml-mode-hook #'merlin-mode)
   (setq merlin-command 'opam))
 
-;; (quelpa '(reason-mode :repo "reasonml-editor/reason-mode" :fetcher github :stable t))
-
 (use-package mmm-mode
   :ensure t
   :commands (mmm-mode mmm-mode-on)
