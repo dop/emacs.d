@@ -1096,17 +1096,18 @@ of code to whatever theme I'm using's background"
   (setq nxml-child-indent 4
         nxml-attribute-indent 4))
 
+(defun utop-eval-dwim ()
+  (interactive)
+  (if (use-region-p)
+      (utop-eval-region (region-beginning) (region-end))
+    (utop-eval-phrase)))
+
 (use-package utop
   :ensure t
-  :commands (utop utop-eval-region utop-eval-phrase utop-eval-buffer)
-  :init
-  (defun utop-eval-dwim ()
-    (interactive)
-    (if (use-region-p)
-        (utop-eval-region (region-beginning) (region-end))
-      (utop-eval-phrase)))
+  :commands (utop utop-eval-region utop-eval-phrase utop-eval-buffer utop-eval-dwim)
   :config
   (setq utop-command "opam config exec -- utop -emacs"
+        company-backends (remove 'utop-company-backend company-backends)
         utop-skip-after-eval-phrase t))
 
 (add-to-list 'auto-mode-alist '("\\<butler\\'" . lisp-mode))
@@ -1121,6 +1122,7 @@ of code to whatever theme I'm using's background"
               ("C-c C-h" . merlin-document)
               ("M-," . merlin-pop-stack))
   :config
+  (add-to-list 'auto-mode-alist '("\\bdune\\(-project\\)?\\'" . tuareg-dune-mode))
   (setq *opam-share*
         (substring (shell-command-to-string "opam config var share 2> /dev/null") 0 -1))
   (add-to-list 'load-path (concat *opam-share* "/emacs/site-lisp"))
