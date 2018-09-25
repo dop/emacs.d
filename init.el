@@ -149,7 +149,7 @@
   (prettify-symbols-mode t))
 
 (add-hook 'prog-mode-hook #'dp/ppro-prettify-symbols)
-(setq prettify-symbols-unprettify-at-point nil)
+(setq prettify-symbols-unprettify-at-point t)
 
 (add-hook 'prog-mode-hook #'turn-on-show-trailing-whitespace)
 (add-hook 'html-mode-hook #'turn-on-show-trailing-whitespace)
