@@ -1009,30 +1009,21 @@ of code to whatever theme I'm using's background"
 (use-package perspective :ensure t)
 (use-package persp-projectile :ensure t)
 
-(defun dp/projectile-run-terminal.app ()
-  (interactive)
+(defun dp/projectile-run-applescript-in-project-root (script &rest args)
   (projectile-with-default-dir (projectile-project-root)
     (apples-do-applescript
-     (format "tell application \"Terminal\"
-    activate
-    tell application \"System Events\" to keystroke \"t\" using command down
-    do script \"cd '%s'\" in selected tab of window 1 of application \"Terminal\"
-end tell" default-directory))))
+     (apply #'format script default-directory args))))
+
+(defun dp/projectile-run-terminal.app ()
+  (interactive)
+  (dp/projectile-run-applescript-in-project-root
+   "tell application \"Terminal\"\n    activate\n    tell application \"System Events\" to keystroke \"t\" using command down\n    do script \"cd '%s'\" in selected tab of window 1 of application \"Terminal\"\nend tell"))
 
 (defun dp/projectile-run-iterm ()
   (interactive)
-  (projectile-with-default-dir (projectile-project-root)
-    (apples-do-applescript
-     (let ((script "tell application \"iTerm\"
-    activate
-    tell window 1
-	set t to create tab with default profile
-	tell current session of t
-	    write text \"cd '%s'\"
-	end tell
-    end tell
-end tell"))
-       (format script default-directory)))))
+  (dp/projectile-run-applescript-in-project-root
+   "tell application \"iTerm\"\n    activate\n    tell window 1\n\tset t to create tab with default profile\n\ttell current session of t\n\t    write text \"cd '%s'\"\n            write text \"echo -ne \\\"\\\\033]0;%s\\\\a\\\"\"\n\tend tell\n    end tell\nend tell"
+   (projectile-project-name)))
 
 (use-package apples-mode
   :ensure t
