@@ -269,6 +269,13 @@
   (setq markdown-preview-stylesheets
         '("http://thomasf.github.io/solarized-css/solarized-light.min.css")))
 
+(use-package visual-fill-column
+  :disabled t
+  :ensure t
+  :commands (visual-fill-column-mode)
+  :config
+  (add-hook 'visual-line-mode-hook #'visual-fill-column-mode))
+
 (use-package markdown-mode
   :ensure t
   :mode "\\.md'"
