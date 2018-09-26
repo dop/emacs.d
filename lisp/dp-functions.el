@@ -7,6 +7,39 @@
                      collect (format "%s=%s" (url-hexify-string name) (url-hexify-string value)))))
     (mapconcat 'identity pairs "&")))
 
+(defun dp/with-region-or (get-start-end fn)
+  "Invoke FN on region if it is selected or on (START . END) pair
+returned from GET-START-END.
+
+FN should accept two arguments START and END."
+  (destructuring-bind (beg . end)
+      (if (use-region-p)
+          (cons (region-beginning) (region-end))
+        (funcall get-start-end))
+      (funcall fn beg end)))
+
+(defun dp/with-start-end (fn)
+  "Invoke FN with beginning and end of current region or min and
+max points of current buffer if there is no selected region."
+  (dp/with-region-or (lambda () (cons (point-min) (point-max)))
+                     fn))
+
+(defun dp/remove-text-properties-dwim ()
+  (interactive)
+  (dp/with-start-end
+   (lambda (start end) (set-text-properties start end nil))))
+
+(defun dp/with-region-or-symbol-at-point (convert)
+  "Invoke CONVERT on string of region or symbol at point."
+  (dp/with-region-or
+   (lambda () (bounds-of-thing-at-point 'symbol))
+   (lambda (start end)
+       (let ((name (buffer-substring beg end)))
+         (save-excursion
+           (delete-region beg end)
+           (goto-char beg)
+           (insert (funcall convert name)))))))
+
 (defun eval-dwim (&optional start end eval-last-sexp-arg-internal)
   "Replace the preceding sexp with its value."
   (interactive "r\nP")
@@ -139,19 +172,6 @@ Goes backward if ARG is negative; error if CHAR not found."
    (invert-face 'mode-line)
    (run-with-timer 0.1 nil 'invert-face 'mode-line))
 
-(defun dp/with-region-or (beg end region-fn fn)
-  (let ((b (or (and mark-active beg) (point-at-bol)))
-        (e (or (and mark-active end) (point-at-eol))))
-    (if (>= b e)
-        (funcall fn)
-      (funcall region-fn b e))))
-
-(defun dp/kill-line-or-region (&optional beg end)
-  (interactive "*r")
-  (dp/with-region-or beg end
-                     'kill-region
-                     'kill-whole-line))
-
 (defun narrow-to-region-indirect (start end)
   "Restrict editing in this buffer to the current region, indirectly."
   (interactive "r")
@@ -171,32 +191,19 @@ Goes backward if ARG is negative; error if CHAR not found."
 (defun dp/camelcase-to-constant (s)
   (mapconcat 'upcase (dp/camelcase-name-split s) "_"))
 
-(defun dp/constant-to-camelcase (s &optional capitalize-first)
+(defun dp/constant-to-camelcase (s)
   (let ((parts (split-string s "_")))
-    (if capitalize-first
-        (mapconcat 'capitalize parts nil)
-      (concat
-       (downcase (car parts))
-       (mapconcat 'capitalize (cdr parts) nil)))))
-
-(defun dp/with-region-or-thing-at-point (fn &rest additional-arguments)
-  (save-excursion
-    (destructuring-bind (beg . end)
-        (if (use-region-p)
-            (cons (region-beginning) (region-end))
-          (bounds-of-thing-at-point 'symbol))
-      (let ((name (buffer-substring beg end)))
-        (delete-region beg end)
-        (goto-char beg)
-        (insert (apply fn name additional-arguments))))))
+    (concat
+     (downcase (car parts))
+     (mapconcat 'capitalize (cdr parts) nil))))
 
 (defun dp/convert-camelcase-to-constant ()
   (interactive)
-  (dp/with-region-or-thing-at-point 'dp/camelcase-to-constant))
+  (dp/with-region-or-symbol-at-point #'dp/camelcase-to-constant))
 
-(defun dp/convert-constant-to-camelcase (&optional arg)
-  (interactive "P")
-  (dp/with-region-or-thing-at-point 'dp/constant-to-camelcase arg))
+(defun dp/convert-constant-to-camelcase ()
+  (interactive)
+  (dp/with-region-or-symbol-at-point #'dp/constant-to-camelcase))
 
 (defvar dp/js-node-globals
   (list 'global 'require 'module 'exports))
@@ -274,7 +281,6 @@ single quotes."
  '(("(\\(compose\\)[ \t\n\r]" 1 font-lock-keyword-face)
    ("(\\(curry\\)[ \t\n\r]" 1 font-lock-keyword-face)
    ("(\\(rcurry\\)[ \t\n\r]" 1 font-lock-keyword-face)))
-
 
 (defun endless/comment-line-or-region (n)
   "Comment or uncomment current line and leave point after it.
