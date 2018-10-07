@@ -371,7 +371,11 @@
 (use-package multiple-cursors
   :ensure t
   :bind (("C-M-." . mc/mark-next-like-this)
-         ("C-M-," . mc/skip-to-next-like-this)))
+         ("C-M-," . mc/skip-to-next-like-this))
+  :config
+  (defadvice mc/cursor-is-bar
+      (around dp/mc/cursor-is-never-bar activate)
+    nil))
 
 (use-package whitespace-cleanup-mode
   :ensure t
