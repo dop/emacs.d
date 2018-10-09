@@ -534,6 +534,9 @@
   :init
   (require 'org-compat))
 
+(use-package ob-typescript
+  :load-path "~/projects/ob-typescript")
+
 (use-package org
   :ensure t
   :mode ("\\.org$" . org-mode)
