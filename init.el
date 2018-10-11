@@ -748,6 +748,7 @@ of code to whatever theme I'm using's background"
 (use-package dired
   :defer t
   :config
+  (put 'dired-find-alternate-file 'disabled nil)
   (require 'dp-ediff)
   (bind-keys :map dired-mode-map
              ("C-a" . dired-back-to-start-of-files)
