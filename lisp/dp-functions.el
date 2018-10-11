@@ -2,6 +2,20 @@
 (require 'dash)
 (require 'url)
 
+(defmacro comment (&rest body)
+  nil)
+
+(defmacro measure-time (&rest body)
+  "Measure the time it takes to evaluate BODY."
+  `(let ((time (current-time)))
+     ,@body
+     (message "%.06f" (float-time (time-since time)))))
+
+(defun json-drill (path json)
+  "Get value deep inside json. PATH is a list of names and JSON
+is alist returned from `json-read' for example."
+  (cl-reduce (lambda (alist key) (assocdr key alist)) path :initial-value json))
+
 (defun urlencode (params)
   (let ((pairs (loop for (name . value) in params
                      collect (format "%s=%s" (url-hexify-string name) (url-hexify-string value)))))
