@@ -1047,6 +1047,8 @@ of code to whatever theme I'm using's background"
   (bind-keys
    :map projectile-mode-map
    ("C-c p x t" . dp/projectile-run-iterm))
+  (when (boundp 'projectile-command-map)
+    (define-key projectile-mode-map "\C-cp" #'projectile-command-map))
   :init
   (projectile-global-mode t)
   (persp-mode t)
