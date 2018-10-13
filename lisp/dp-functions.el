@@ -16,6 +16,12 @@
 is alist returned from `json-read' for example."
   (cl-reduce (lambda (alist key) (assocdr key alist)) path :initial-value json))
 
+(defun assoc-set (key value list)
+  (append `((,key . ,value)) (assq-delete-all key list)))
+
+(defun assocdr (key list)
+  (cdr (assoc key list)))
+
 (defun urlencode (params)
   (let ((pairs (loop for (name . value) in params
                      collect (format "%s=%s" (url-hexify-string name) (url-hexify-string value)))))

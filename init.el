@@ -675,12 +675,6 @@ of code to whatever theme I'm using's background"
     :modes (js2-mode typescript-mode js-mode flowtype-mode))
   (add-to-list 'flycheck-checkers 'javascript-flow))
 
-(defun assoc-set (key value list)
-  (append `((,key . ,value)) (assq-delete-all key list)))
-
-(defun assocdr (key list)
-  (cdr (assoc key list)))
-
 (defun flycheck-parse-flow (output checker buffer)
   (let ((json-array-type 'list))
     (condition-case nil
