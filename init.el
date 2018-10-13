@@ -655,7 +655,7 @@ of code to whatever theme I'm using's background"
   :ensure t
   :commands (flycheck-mode flycheck-add-mode)
   :config
-
+  (setq flycheck-check-syntax-automatically '(save idle-change mode-enabled))
   ;; flycheck-eslint-config-exists-p takes too much time, just assume that
   ;; eslint is configured properly.
   (defun dp/yes () t)
