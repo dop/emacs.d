@@ -204,6 +204,12 @@
                  (fmt (concat "%" (number-to-string (1+ width)) "d")))
             (propertize (format fmt line) 'face 'linum)))))
 
+(use-package wgrep
+  :ensure t
+  :commands (wgrep-change-to-wgrep-mode)
+  :config
+  (setq wgrep-auto-save-buffer t))
+
 (use-package grep
   :defer t
   :config
@@ -212,10 +218,6 @@
   (add-to-list 'grep-find-ignored-directories "build")
   (add-to-list 'grep-find-ignored-directories "dist")
   (add-to-list 'grep-find-ignored-directories "bower_components"))
-
-(use-package wgrep
-  :ensure t
-  :commands (wgrep-change-to-wgrep-mode))
 
 (use-package wgrep-ag
   :ensure t)
@@ -1068,12 +1070,14 @@ of code to whatever theme I'm using's background"
           'generic)))))
 
 (use-package ag
-  :commands ag
-  :ensure t)
+  :ensure t
+  :commands ag)
 
 (use-package helm-ag
+  :ensure t
   :commands helm-ag
-  :ensure t)
+  :bind (:map helm-ag-mode-map
+              ("C-x C-q" . wgrep-change-to-wgrep-mode)))
 
 (use-package helm-projectile
   :ensure t
