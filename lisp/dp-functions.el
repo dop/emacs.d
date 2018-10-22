@@ -27,6 +27,26 @@ is alist returned from `json-read' for example."
                      collect (format "%s=%s" (url-hexify-string name) (url-hexify-string value)))))
     (mapconcat 'identity pairs "&")))
 
+(defun dp/get-org-table-bounds ()
+  (let (start end)
+    (save-mark-and-excursion
+      (beginning-of-line)
+      (while (and (looking-at "|") (= 0 (forward-line -1))))
+      (when (not (looking-at "|")) (forward-line))
+      (setq start (point))
+      (while (and (looking-at "|") (= 0 (forward-line))))
+      (when (looking-at "|") (goto (end-of-buffer)))
+      (setq end (point))
+      (when (= start end)
+        (error "No org table in sight!"))
+      (cons start end))))
+
+(defun mark-org-table ()
+  (interactive)
+  (destructuring-bind (start . end) (dp/get-org-table-bounds)
+    (set-mark end)
+    (goto-char start)))
+
 (defun dp/with-region-or (get-start-end fn)
   "Invoke FN on region if it is selected or on (START . END) pair
 returned from GET-START-END.
