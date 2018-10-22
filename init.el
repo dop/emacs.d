@@ -457,8 +457,8 @@
   (defun dp/ido-keys ()
     (define-key ido-completion-map " " 'ido-restrict-to-matches))
   (setq ido-vertical-decorations
-        '("\n → " "" "\n   " "\n   ···" "[" "]" " [No match]" " [Matched]"
-          " [Not readable]" " [Too big]" " [Confirm]" "\n → " ""))
+        '("\n>> " "" "\n   " "\n   ···" "[" "]" " [No match]" " [Matched]"
+          " [Not readable]" " [Too big]" " [Confirm]" "\n>> " ""))
   (ido-everywhere t)
   (ido-ubiquitous-mode t)
   (ido-vertical-mode t)
