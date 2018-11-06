@@ -1277,7 +1277,8 @@ of code to whatever theme I'm using's background"
 
 (load (expand-file-name "~/quicklisp/slime-helper.el"))
 ;; Replace "sbcl" with the path to your implementation
-(setq inferior-lisp-program "sbcl")
+(setq inferior-lisp-program "sbcl") ;; ccl64
+(slime-setup '(slime-fancy slime-repl-ansi-color))
 
 ;; (require 'dp-php)
 ;; (require 'dp-haskell)
