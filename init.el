@@ -1283,17 +1283,20 @@ of code to whatever theme I'm using's background"
 ;; (require 'dp-php)
 ;; (require 'dp-haskell)
 
+(defun set-frame-parameters (parameters &optional frame)
+  (loop with f = (or frame (selected-frame))
+        for (name . value) in parameters
+        do (set-frame-parameter f name value)))
+
 (when (window-system)
   (when (fboundp 'mac-auto-operator-composition-mode)
     (mac-auto-operator-composition-mode t))
   (setq ns-use-thin-smoothing t
         ns-use-srgb-colorspace t)
   (switch-to-theme 'dp-dark)
-  (add-to-list 'default-frame-alist '(ns-appearance . dark))
-  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
-  (-> (selected-frame)
-      (set-frame-parameter 'ns-appearance 'dark)
-      (set-frame-parameter 'ns-transparent-titlebar t))
+  (set-frame-parameters '((ns-appearance . light)
+                          (alpha . 100)
+                          (ns-transparent-titlebar . t)))
   ;; (remove-hook 'post-self-insert-hook #'set-cursor-according-to-mode)
   ;; (setq set-cursor-according-to-mode-timer
   ;;       (run-with-idle-timer 1 t #'set-cursor-according-to-mode 'box))
