@@ -1279,6 +1279,10 @@ of code to whatever theme I'm using's background"
   :ensure t
   :mode "\\.proto\\'")
 
+(use-package ns-auto-titlebar
+  :ensure t
+  :commands ns-auto-titlebar-mode)
+
 (load (expand-file-name "~/quicklisp/slime-helper.el"))
 ;; Replace "sbcl" with the path to your implementation
 (setq inferior-lisp-program "sbcl") ;; ccl64
@@ -1293,20 +1297,20 @@ of code to whatever theme I'm using's background"
         do (set-frame-parameter f name value)))
 
 (when (window-system)
+  (when (eq system-type 'darwin)
+    (ns-auto-titlebar-mode t)
+    (setq ns-use-thin-smoothing t
+          ns-use-srgb-colorspace t))
   (when (fboundp 'mac-auto-operator-composition-mode)
-    (mac-auto-operator-composition-mode t))
-  (setq ns-use-thin-smoothing t
-        ns-use-srgb-colorspace t)
-  (switch-to-theme 'dp-dark)
-  (set-frame-parameters '((ns-appearance . light)
-                          (alpha . 100)
+      (mac-auto-operator-composition-mode t))
+  (switch-to-theme 'gruvbox)
+  (set-frame-parameters '((alpha . 100)
                           (ns-transparent-titlebar . t)))
   ;; (remove-hook 'post-self-insert-hook #'set-cursor-according-to-mode)
   ;; (setq set-cursor-according-to-mode-timer
   ;;       (run-with-idle-timer 1 t #'set-cursor-according-to-mode 'box))
   ;; (cancel-timer set-cursor-according-to-mode-timer)
-  (setq default-frame-alist '((font . "PragmataPro Mono-14")))
-  (set-frame-font (font-spec :family "PragmataPro Mono" :size 14)))
+  (set-frame-font (font-spec :family "PragmataPro Mono Liga" :size 14)))
 
 (dp/update-environment)
 
