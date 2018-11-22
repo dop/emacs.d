@@ -1270,6 +1270,12 @@ of code to whatever theme I'm using's background"
   :config
   (setq-default inferior-lisp-program "sbcl"))
 
+(use-package paren-face
+  :ensure t
+  :defer t
+  :init
+  (global-paren-face-mode))
+
 (use-package restclient
   :mode "\\.rest\\'"
   :ensure t
@@ -1283,10 +1289,16 @@ of code to whatever theme I'm using's background"
   :ensure t
   :commands ns-auto-titlebar-mode)
 
-(load (expand-file-name "~/quicklisp/slime-helper.el"))
-;; Replace "sbcl" with the path to your implementation
-(setq inferior-lisp-program "sbcl") ;; ccl64
-(slime-setup '(slime-fancy slime-repl-ansi-color))
+(use-package slime
+  :ensure t
+  :commands (slime)
+  :config
+  (setq inferior-lisp-program "sbcl") ;; ccl64
+  (slime-setup '(slime-fancy slime-company slime-repl-ansi-color)))
+
+(use-package slime-company
+  :ensure t
+  :config (setq slime-company-completion 'fuzzy))
 
 ;; (require 'dp-php)
 ;; (require 'dp-haskell)
