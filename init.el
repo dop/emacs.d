@@ -234,6 +234,7 @@
 (use-package eshell
   :defer t
   :config
+  (setq eshell-hist-ignoredups t)
   (add-hook 'eshell-mode-hook #'eshell-fringe-status-mode))
 
 (use-package exec-path-from-shell
