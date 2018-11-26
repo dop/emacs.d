@@ -1200,12 +1200,11 @@ of code to whatever theme I'm using's background"
   :ensure t
   :commands (yas-minor-mode yas-global-mode)
   :init
-  (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
-  (setq yas-prompt-functions '(yas-ido-prompt yas-completing-prompt))
+  (setq yas-snippet-dirs '("~/.emacs.d/snippets")
+        yas-prompt-functions '(yas-ido-prompt yas-completing-prompt)
+        yas-wrap-around-region t)
   :config
-  (yas-reload-all)
-  (define-key yas-minor-mode-map (kbd "C-;") 'yas-expand)
-  (define-key yas-minor-mode-map [tab] nil)
+  (define-key yas-minor-mode-map (kbd "C-;") 'yas-insert-snippet)
   (add-hook 'html-mode-hook 'yas-minor-mode))
 
 (use-package log-edit
