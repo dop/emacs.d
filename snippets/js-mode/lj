@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: lj
+# key: lj
+# --
+console.log($1JSON.stringify($0, null, 2));
