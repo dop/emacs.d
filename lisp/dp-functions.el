@@ -370,9 +370,9 @@ active, apply to active region instead."
 
 (defun dp/diff-last-2-yanks ()
   (interactive)
-  (lexical-let* ((a (generate-new-buffer "*diff-yank*"))
-                 (b (generate-new-buffer "*diff-yank*"))
-                 clean-up)
+  (lexical-let ((a (generate-new-buffer "*diff-yank*"))
+                (b (generate-new-buffer "*diff-yank*"))
+                clean-up)
     (setq clean-up
           (lambda ()
             (kill-buffer a)
