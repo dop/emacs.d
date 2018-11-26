@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t -*-
+
 (require 'cl)
 (require 'dash)
 (require 'url)
@@ -369,21 +371,24 @@ active, apply to active region instead."
      (message "Updated EShell aliases."))))
 
 (defun dp/diff-last-2-yanks ()
+  "Run ediff on latest two entries in `kill-ring'."
   (interactive)
-  (lexical-let ((a (generate-new-buffer "*diff-yank*"))
-                (b (generate-new-buffer "*diff-yank*"))
-                clean-up)
-    (setq clean-up
-          (lambda ()
-            (kill-buffer a)
-            (kill-buffer b)
-            (remove-hook 'ediff-cleanup-hook clean-up)))
-    (add-hook 'ediff-cleanup-hook clean-up)
-    (with-current-buffer a
-      (insert (elt kill-ring 0)))
-    (with-current-buffer b
+  ;; Implementation depends on `lexical-binding' being t, otherwise #'clean-up
+  ;; will not be saved as closure to `ediff-cleanup-hook' and thus will lose
+  ;; reference to itself.
+  (let ((a (generate-new-buffer "*diff-yank*"))
+        (b (generate-new-buffer "*diff-yank*")))
+    (cl-labels ((clean-up ()
+                 (kill-buffer a)
+                 (kill-buffer b)
+                 (remove-hook 'ediff-cleanup-hook #'clean-up)
+                 (winner-undo)))
+      (add-hook 'ediff-cleanup-hook #'clean-up)
+      (with-current-buffer a
+        (insert (elt kill-ring 0)))
+      (with-current-buffer b
       (insert (elt kill-ring 1)))
-    (ediff-buffers a b)))
+      (ediff-buffers a b))))
 
 (defvar tsfmt-executable "tsfmt")
 
