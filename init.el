@@ -549,6 +549,10 @@
   :config
   (add-hook 'org-mode-hook #'org-bullets-mode)
   (add-hook 'org-mode-hook #'visual-line-mode)
+  (add-hook 'org-mode-hook #'variable-pitch-mode)
+  (defun dp/org-mode-scale-text () (text-scale-set 2))
+  (add-hook 'org-mode-hook #'dp/org-mode-scale-text)
+
   (defun dp/org-set-source-code-background (exporter)
     "Insert custom inline css to automatically set the background
 of code to whatever theme I'm using's background"
