@@ -1276,6 +1276,9 @@ of code to whatever theme I'm using's background"
   :init
   (global-paren-face-mode))
 
+(use-package erlang-mode
+  :ensure t)
+
 (use-package restclient
   :mode "\\.rest\\'"
   :ensure t
