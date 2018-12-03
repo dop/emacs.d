@@ -142,6 +142,8 @@
 (defun turn-on-show-trailing-whitespace ()
   (setq show-trailing-whitespace t))
 
+(defun dp/scale-text () (text-scale-set 2))
+
 (require 'prettify-ppro)
 
 (defun dp/ppro-prettify-symbols ()
@@ -286,7 +288,9 @@
   (setq markdown-command "pandoc -f markdown -t html")
   :config
   (add-hook 'markdown-mode-hook #'visual-line-mode)
-  (add-hook 'markdown-mode-hook #'flyspell-mode))
+  (add-hook 'markdown-mode-hook #'flyspell-mode)
+  (add-hook 'markdown-mode-hook #'variable-pitch-mode)
+  (add-hook 'markdown-mode-hook #'dp/scale-text))
 
 (use-package groovy-mode
   :mode "\\.gradle'")
@@ -550,8 +554,9 @@
   (add-hook 'org-mode-hook #'org-bullets-mode)
   (add-hook 'org-mode-hook #'visual-line-mode)
   (add-hook 'org-mode-hook #'variable-pitch-mode)
-  (defun dp/org-mode-scale-text () (text-scale-set 2))
-  (add-hook 'org-mode-hook #'dp/org-mode-scale-text)
+  (add-hook 'org-mode-hook #'dp/scale-text)
+  ;; (add-to-list 'org-babel-load-languages '(sh . t))
+  (setq org-html-htmlize-output-type nil)
 
   (defun dp/org-set-source-code-background (exporter)
     "Insert custom inline css to automatically set the background
@@ -566,6 +571,8 @@ of code to whatever theme I'm using's background"
           org-html-head-extra
           (format "<style type=\"text/css\">\n pre.src {background-color: %s; color: %s;}</style>\n"
                   my-pre-bg my-pre-fg))))))
+  ;; (add-hook 'org-export-before-processing-hook 'dp/org-set-source-code-background)
+
   (org-clock-persistence-insinuate)
   (setq org-startup-indented t
         org-agenda-files '("~/Org/journal.org")
@@ -592,8 +599,7 @@ of code to whatever theme I'm using's background"
         org-clock-report-include-clocking-task t
         org-time-clocksum-format '(:hours "%d" :require-hours t :minutes ":%02d" :require-minutes t)
         org-src-fontify-natively t
-        org-src-preserve-indentation t)
-  (add-hook 'org-export-before-processing-hook 'dp/org-set-source-code-background))
+        org-src-preserve-indentation t))
 
 (use-package git-timemachine
   :ensure t
