@@ -33,6 +33,7 @@
 (global-set-key (kbd "M-9") #'dp/jump-to-window)
 (global-set-key (kbd "M-0") #'dp/delete-window)
 (global-set-key (kbd "M-o") #'other-window)
+(global-set-key (kbd "C-x o") #'other-frame)
 
 (global-set-key (kbd "M-l") #'downcase-dwim)
 
