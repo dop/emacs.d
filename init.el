@@ -1310,7 +1310,9 @@ of code to whatever theme I'm using's background"
   :commands (slime)
   :config
   (setq inferior-lisp-program "sbcl") ;; ccl64
-  (slime-setup '(slime-fancy slime-company slime-repl-ansi-color)))
+  (setq lisp-indent-function 'common-lisp-indent-function)
+  (setq common-lisp-style "modern")
+  (slime-setup '(slime-fancy slime-indentation slime-company slime-repl-ansi-color))
   (add-hook 'lisp-mode-hook #'prettify-symbols-mode))
 
 (use-package slime-company
