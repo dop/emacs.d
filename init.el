@@ -66,6 +66,8 @@
 
 (setq gc-cons-threshold (* 20 1024 1024))
 
+(setq debugger-stack-frame-as-list t)
+
 ;; Put system clipboard contents into kill ring before killing so that it's not
 ;; lost.
 (setq save-interprogram-paste-before-kill t)
