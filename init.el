@@ -503,7 +503,8 @@
 (use-package elisp-mode
   :defer t
   :config
-  (define-key emacs-lisp-mode-map "\C-c\C-e" #'eval-and-replace))
+  (define-key emacs-lisp-mode-map "\C-c\C-e" #'eval-and-replace)
+  (add-hook 'emacs-lisp-mode #'prettify-symbols-mode))
 
 (use-package elisp-slime-nav
   :ensure t
@@ -1310,6 +1311,7 @@ of code to whatever theme I'm using's background"
   :config
   (setq inferior-lisp-program "sbcl") ;; ccl64
   (slime-setup '(slime-fancy slime-company slime-repl-ansi-color)))
+  (add-hook 'lisp-mode-hook #'prettify-symbols-mode))
 
 (use-package slime-company
   :ensure t
