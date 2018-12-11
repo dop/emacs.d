@@ -503,8 +503,7 @@
 (use-package elisp-mode
   :defer t
   :config
-  (define-key emacs-lisp-mode-map "\C-c\C-e" #'eval-and-replace)
-  (add-hook 'emacs-lisp-mode #'prettify-symbols-mode))
+  (define-key emacs-lisp-mode-map "\C-c\C-e" #'eval-and-replace))
 
 (use-package elisp-slime-nav
   :ensure t
@@ -1305,15 +1304,17 @@ of code to whatever theme I'm using's background"
   :ensure t
   :commands ns-auto-titlebar-mode)
 
+(defun dp/setup-lisp-mode ()
+  (setq-local lisp-indent-function 'common-lisp-indent-function))
+
 (use-package slime
   :ensure t
   :commands (slime)
   :config
-  (setq inferior-lisp-program "sbcl") ;; ccl64
-  (setq lisp-indent-function 'common-lisp-indent-function)
+  (setq inferior-lisp-program "~/projects/ccl/dx86cl64") ;; ccl64
   (setq common-lisp-style "modern")
-  (slime-setup '(slime-fancy slime-indentation slime-company slime-repl-ansi-color))
-  (add-hook 'lisp-mode-hook #'prettify-symbols-mode))
+  (add-to-list 'lisp-mode-hook 'dp/setup-lisp-mode)
+  (slime-setup '(slime-fancy slime-indentation slime-company slime-repl-ansi-color)))
 
 (use-package slime-company
   :ensure t
