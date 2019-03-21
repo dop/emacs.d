@@ -522,11 +522,12 @@
   :commands (org-present)
   :config
   (defun org-present-enter ()
-    (set-frame-parameter nil 'internal-border-width 50)
+    (set-frame-parameter nil 'internal-border-width 40)
     (org-present-big)
     (org-display-inline-images)
     (org-present-hide-cursor)
-    (org-present-read-only))
+    (org-present-read-only)
+    (setq-local visual-line-fringe-indicators nil))
   (defun org-present-leave ()
     (set-frame-parameter nil 'internal-border-width 0)
     (org-present-small)
@@ -624,8 +625,8 @@ of code to whatever theme I'm using's background"
         magit-highlight-trailing-whitespace t
         magit-highlight-indentation nil
         magit-diff-refine-hunk nil
-        magit-revert-buffers t
         magit-process-connection-type nil)
+  (magit-auto-revert-mode t)
   (add-hook 'git-commit-mode-hook 'turn-on-flyspell))
 
 (use-package helm-git-grep
@@ -1288,7 +1289,7 @@ of code to whatever theme I'm using's background"
   :init
   (global-paren-face-mode))
 
-(use-package erlang-mode
+(use-package erlang
   :ensure t)
 
 (use-package restclient

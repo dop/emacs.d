@@ -100,6 +100,10 @@ max points of current buffer if there is no selected region."
   (mapcar (compose #'round (curry #'* 255))
           (color-name-to-rgb name)))
 
+(defun color-rgba-to-hex (r g b &optional a)
+  (concat (format "#%02X%02X%02X" r g b)
+          (if a (format "%02X" a) "")))
+
 (defvar dp/custom-user-faces nil
   "Associated list of (FACE . SPEC) to apply to user theme")
 
@@ -379,15 +383,15 @@ active, apply to active region instead."
   (let ((a (generate-new-buffer "*diff-yank*"))
         (b (generate-new-buffer "*diff-yank*")))
     (cl-labels ((clean-up ()
-                 (kill-buffer a)
-                 (kill-buffer b)
-                 (remove-hook 'ediff-cleanup-hook #'clean-up)
-                 (winner-undo)))
+                          (kill-buffer a)
+                          (kill-buffer b)
+                          (remove-hook 'ediff-cleanup-hook #'clean-up)
+                          (winner-undo)))
       (add-hook 'ediff-cleanup-hook #'clean-up)
       (with-current-buffer a
         (insert (elt kill-ring 0)))
       (with-current-buffer b
-      (insert (elt kill-ring 1)))
+        (insert (elt kill-ring 1)))
       (ediff-buffers a b))))
 
 (defvar tsfmt-executable "tsfmt")
@@ -395,13 +399,13 @@ active, apply to active region instead."
 (defun tsfmt-region (start end)
   (let ((name (buffer-file-name))
         (saved-point (point)))
-      (call-process-region
-       start end tsfmt-executable
-       t t nil
-       "--stdin"
-       "--baseDir" (locate-dominating-file name "tsfmt.json")
-       name)
-      (goto-char saved-point)))
+    (call-process-region
+     start end tsfmt-executable
+     t t nil
+     "--stdin"
+     "--baseDir" (locate-dominating-file name "tsfmt.json")
+     name)
+    (goto-char saved-point)))
 
 (defun tsfmt ()
   (interactive)
@@ -410,5 +414,13 @@ active, apply to active region instead."
                    (cons (region-beginning) (region-end))
                  (cons (point-min) (point-max)))))
     (tsfmt-region start end)))
+
+(defun dp/tide-yank-inferred-type ()
+  (interactive)
+  (tide-command:quickinfo
+   (tide-on-response-success-callback response (:ignore-empty t)
+     (let ((text (tide-doc-text (plist-get response :body))))
+       (kill-new text)
+       (message text)))))
 
 (provide 'dp-functions)
