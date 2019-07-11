@@ -545,6 +545,7 @@
   (require 'org-compat))
 
 (use-package ob-typescript
+  :if (file-directory-p "~/projects/ob-typescript")
   :load-path "~/projects/ob-typescript")
 
 (use-package org
