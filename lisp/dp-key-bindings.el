@@ -3,8 +3,9 @@
 (global-set-key "\C-x\C-k" #'kill-region)
 (global-set-key (kbd "C-z") nil)
 (global-set-key (kbd "C-x k") #'kill-buffer)
-
 (global-set-key (kbd "C-k") #'kill-line)
+
+(global-set-key (kbd "C-x a r") #'align-regexp)
 
 (global-set-key (kbd "C-.") #'repeat)
 (global-set-key (kbd "RET") #'newline-and-indent)
