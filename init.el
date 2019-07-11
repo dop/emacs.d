@@ -1316,8 +1316,7 @@ of code to whatever theme I'm using's background"
   :init
   (global-paren-face-mode))
 
-(use-package erlang
-  :ensure t)
+(use-package erlang :disabled t :ensure t)
 
 (use-package restclient
   :mode "\\.rest\\'"
