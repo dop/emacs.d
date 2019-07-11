@@ -1232,6 +1232,11 @@ of code to whatever theme I'm using's background"
   (defadvice sgml-delete-tag (after reident activate)
     (indent-region (point-min) (point-max))))
 
+(use-package csharp-mode
+  :disabled t
+  :ensure t
+  :mode "\\.cs\\'")
+
 (use-package yasnippet
   :ensure t
   :commands (yas-minor-mode yas-global-mode)
