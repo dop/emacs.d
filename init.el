@@ -548,6 +548,24 @@
   :if (file-directory-p "~/projects/ob-typescript")
   :load-path "~/projects/ob-typescript")
 
+(defun my-insert-shell-prompt (_backend)
+  (org-babel-map-src-blocks
+   nil         ; nil implies current buffer
+   (let (;; capture macro-defined variables
+         (lang lang)
+         (beg-body beg-body)
+         (end-body end-body)
+         ;; other variables
+         (shell-langs '("sh" "shell"))
+         (prefix "$ "))
+     (when (member lang shell-langs)
+       (goto-char beg-body)
+       (skip-chars-forward "\n\s-" end-body)
+       (while (< (point) end-body)
+              (insert prefix)
+              (end-of-line)
+              (skip-chars-forward "\n\s-" end-body))))))
+
 (use-package org
   :ensure t
   :mode ("\\.org$" . org-mode)
@@ -557,9 +575,11 @@
   :config
   (add-hook 'org-mode-hook #'org-bullets-mode)
   (add-hook 'org-mode-hook #'visual-line-mode)
-  (add-hook 'org-mode-hook #'variable-pitch-mode)
-  (add-hook 'org-mode-hook #'dp/scale-text)
+  ;; (remove-hook 'org-mode-hook #'variable-pitch-mode)
+  ;; (remove-hook 'org-mode-hook #'dp/scale-text)
   ;; (add-to-list 'org-babel-load-languages '(sh . t))
+  ;; (add-to-list 'org-babel-load-languages '(ditaa . t))
+  ;; (add-hook 'org-export-before-parsing-hook #'my-insert-shell-prompt)
   (setq org-html-htmlize-output-type nil)
 
   (defun dp/org-set-source-code-background (exporter)
@@ -589,6 +609,7 @@ of code to whatever theme I'm using's background"
                                       "|"
                                       "DONE(d!/!)" "CANCELLED(c@/!)"))
         org-todo-keyword-faces '(("CANCELLED" :foreground "dark gray" :weight bold)
+                                 ("RECURRING" :foreground "LightGoldenrod3" :weight bold)
                                  ("POSTPONED" :foreground "sky blue" :weight bold)
                                  ("FEEDBACK" :foreground "dark orange" :weight bold)
                                  ("APPROVE" :foreground "cornflower blue" :weight bold))
