@@ -33,6 +33,9 @@
 
 (require 'color)
 (require 'dp-functions)
+(require 'so-long)
+
+(global-so-long-mode t)
 
 (setenv "PAGER" "cat")
 (setq comint-input-ignoredups t)
