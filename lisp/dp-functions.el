@@ -414,12 +414,34 @@ active, apply to active region instead."
                  (cons (point-min) (point-max)))))
     (tsfmt-region start end)))
 
-(defun dp/tide-yank-inferred-type ()
-  (interactive)
+(defun dp/tide-with-inferred-type (fn)
   (tide-command:quickinfo
    (tide-on-response-success-callback response (:ignore-empty t)
-     (let ((text (tide-doc-text (plist-get response :body))))
-       (kill-new text)
-       (message text)))))
+     (funcall fn (tide-doc-text (plist-get response :body))))))
+
+(defun dp/tide-yank-inferred-type ()
+  (interactive)
+  (dp/tide-with-inferred-type
+   (lambda (text)
+     (kill-new text)
+     (message text))))
+
+(defun dp/tide-insert-inferred-type ()
+  (interactive)
+  (dp/tide-with-inferred-type
+   (lambda (text)
+     (save-excursion
+       (beginning-of-line)
+       (newline-and-indent)
+       (previous-line)
+       (let ((start (point))
+             (commented-text
+              (with-temp-buffer
+                (setq comment-start "//")
+                (insert text)
+                (comment-region (point-min) (point-max))
+                (buffer-string))))
+         (insert commented-text)
+         (indent-region start (+ start (length commented-text))))))))
 
 (provide 'dp-functions)
