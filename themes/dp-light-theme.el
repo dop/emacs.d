@@ -5,8 +5,6 @@
  `(default ((t (:background "white" :foreground "gray10"))))
  `(variable-pitch ((t (:family "Georgia"))))
  `(fixed-pitch ((t (:family "Courier"))))
- `(org-block ((t (:inherit fixed-pitch))))
- `(org-table ((t (:inherit fixed-pitch))))
  `(fringe ((t (:background "white"))))
  `(font-lock-comment-face ((t (:foreground "chocolate" :slant normal))))
  `(git-gutter:added ((t (:foreground "yellow green" :inherit nil))))

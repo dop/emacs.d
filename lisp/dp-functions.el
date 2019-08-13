@@ -170,7 +170,6 @@ max points of current buffer if there is no selected region."
         (kill-buffer buffer)
         (message "File '%s' successfully removed" filename)))))
 
-
 (defun set-cursor-according-to-mode (&optional type)
   (let ((next-cursor-type
          (cond

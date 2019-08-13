@@ -193,6 +193,7 @@
   (add-hook 'shell-mode-hook #'set-bidi-left-to-right))
 
 (use-package multi-term
+  :disabled t
   :ensure t
   :config
   (add-hook 'term-mode-hook #'set-bidi-left-to-right))
@@ -374,6 +375,7 @@
   (setq comint-output-filter-functions (remove 'ansi-color-process-output comint-output-filter-functions)))
 
 (use-package multi-term
+  :disabled t
   :ensure t
   :defer t
   :config
@@ -469,8 +471,8 @@
   (defun dp/ido-keys ()
     (define-key ido-completion-map " " 'ido-restrict-to-matches))
   (setq ido-vertical-decorations
-        '("\n>> " "" "\n   " "\n   ···" "[" "]" " [No match]" " [Matched]"
-          " [Not readable]" " [Too big]" " [Confirm]" "\n>> " ""))
+        '("\n → " "" "\n   " "\n   ···" "[" "]" " [No match]" " [Matched]"
+          " [Not readable]" " [Too big]" " [Confirm]" "\n → " ""))
   (ido-everywhere t)
   (ido-ubiquitous-mode t)
   (ido-vertical-mode t)
@@ -583,7 +585,7 @@
   ;; (add-to-list 'org-babel-load-languages '(sh . t))
   ;; (add-to-list 'org-babel-load-languages '(ditaa . t))
   ;; (add-hook 'org-export-before-parsing-hook #'my-insert-shell-prompt)
-  (setq org-html-htmlize-output-type nil)
+  (setq org-html-htmlize-output-type 'inline-css)
 
   (defun dp/org-set-source-code-background (exporter)
     "Insert custom inline css to automatically set the background
@@ -807,6 +809,7 @@ of code to whatever theme I'm using's background"
     (revert-buffer)))
 
 (use-package scala-mode
+  :disabled t
   :ensure t
   :mode "\\.scala'"
   :config
@@ -815,11 +818,13 @@ of code to whatever theme I'm using's background"
   (add-hook 'scala-mode-hook 'ensime-scala-mode-hook))
 
 (use-package ensime
+  :disabled t
   :ensure t
   :commands ensime
   :pin melpa-stable)
 
 (use-package smartparens
+  :disabled t
   :ensure t
   :config
   (sp-local-pair '(js2-mode javascript-mode typescript-mode) "`" "`"))
@@ -1375,7 +1380,7 @@ of code to whatever theme I'm using's background"
   ;; (setq set-cursor-according-to-mode-timer
   ;;       (run-with-idle-timer 1 t #'set-cursor-according-to-mode 'box))
   ;; (cancel-timer set-cursor-according-to-mode-timer)
-  (set-frame-font (font-spec :family "PragmataPro Mono Liga" :size 14)))
+  (set-frame-font (font-spec :family "MonacoB" :size 12)))
 
 (dp/update-environment)
 
