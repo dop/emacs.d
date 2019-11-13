@@ -444,4 +444,19 @@ active, apply to active region instead."
          (insert commented-text)
          (indent-region start (+ start (length commented-text))))))))
 
+(defun dp/insert-linter-disable-next-line ()
+  (interactive)
+  (let* ((errors (flycheck-overlay-errors-at (point)))
+         (typescript-p (eq 'typescript-tslint (flycheck-error-checker (first errors)))))
+    (back-to-indentation)
+    (open-line 1)
+    (insert (format (looking-at-p "" "// %s %s"
+                    (if typescript-p
+                        "tslint:disable-next-line"
+                      "eslint-disable-next-line")
+                    (s-join " " (mapcar #'flycheck-error-id errors))))
+    (indent-for-tab-command)
+    (next-line)
+    (indent-for-tab-command))))
+
 (provide 'dp-functions)
