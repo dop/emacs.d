@@ -13,6 +13,7 @@
 (global-set-key [f5] #'whitespace-mode)
 (global-set-key [f7] #'cua-mode)
 
+(global-set-key (kbd "A-h") 'mark-paragraph)
 (global-set-key (kbd "M-z") #'dp/zap-to-char)
 (global-set-key (kbd "M-Z") #'zap-to-char)
 
