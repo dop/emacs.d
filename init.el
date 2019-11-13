@@ -32,10 +32,10 @@
 (require 'json)
 
 (require 'color)
-(require 'dp-functions)
 (require 'so-long)
-
 (global-so-long-mode t)
+
+(require 'dp-functions)
 
 (setenv "PAGER" "cat")
 (setq comint-input-ignoredups t)
@@ -155,7 +155,7 @@
   (prettify-ppro-add-symbols)
   (prettify-symbols-mode t))
 
-(add-hook 'prog-mode-hook #'dp/ppro-prettify-symbols)
+;; (add-hook 'prog-mode-hook #'dp/ppro-prettify-symbols)
 (setq prettify-symbols-unprettify-at-point t)
 
 (add-hook 'prog-mode-hook #'turn-on-show-trailing-whitespace)
@@ -705,6 +705,10 @@ of code to whatever theme I'm using's background"
   (advice-add 'flycheck-eslint-config-exists-p :override #'dp/yes)
   ;; (advice-remove 'flycheck-eslint-config-exists-p #'dp/yes)
 
+  ;; ESlint can support typescript files.
+  (flycheck-add-mode 'javascript-eslint 'typescript-mode)
+  (flycheck-add-next-checker 'typescript-tslint 'javascript-eslint)
+
   ;; This helps some test runners that find test suites dynamically to not fail
   ;; on temp flycheck files.
   (setq flycheck-temp-prefix ".flycheck")
@@ -862,11 +866,7 @@ of code to whatever theme I'm using's background"
   :ensure t
   :commands (prettier-js-mode prettier-js)
   :config
-  (setq prettier-js-args
-        '("--single-quote"
-          "--no-bracket-spacing"
-          "--arrow-parens=always"
-          "--trailing-comma=all")))
+  (setq prettier-js-args nil))
 
 (use-package eslint-fix
   :ensure t
@@ -1096,6 +1096,8 @@ of code to whatever theme I'm using's background"
   (when (boundp 'projectile-command-map)
     (define-key projectile-mode-map "\C-cp" #'projectile-command-map))
   :init
+  (setq projectile-project-root-files-functions
+        '(projectile-root-top-down projectile-root-top-down-recurring projectile-root-local projectile-root-bottom-up))
   (projectile-global-mode t)
   (persp-mode t)
   ;; cache generic project type for performance.
@@ -1372,15 +1374,14 @@ of code to whatever theme I'm using's background"
     (setq ns-use-thin-smoothing t
           ns-use-srgb-colorspace t))
   (when (fboundp 'mac-auto-operator-composition-mode)
-      (mac-auto-operator-composition-mode t))
-  (switch-to-theme 'gruvbox)
-  (set-frame-parameters '((alpha . 100)
-                          (ns-transparent-titlebar . t)))
-  ;; (remove-hook 'post-self-insert-hook #'set-cursor-according-to-mode)
-  ;; (setq set-cursor-according-to-mode-timer
-  ;;       (run-with-idle-timer 1 t #'set-cursor-according-to-mode 'box))
+    (mac-auto-operator-composition-mode t))
+  (set-frame-parameters '((alpha . 95) (ns-transparent-titlebar . t)))
+  (switch-to-theme 'dp-dark)
+  ;; (switch-to-theme 'gruvbox-dark-medium)
+  ;; (add-hook 'post-self-insert-hook #'set-cursor-according-to-mode)
+  ;; (setq set-cursor-according-to-mode-timer (run-with-idle-timer 1 t #'set-cursor-according-to-mode 'box))
   ;; (cancel-timer set-cursor-according-to-mode-timer)
-  (set-frame-font (font-spec :family "MonacoB" :size 12)))
+  (set-frame-font (font-spec :family "SF Mono" :size 12 :weight 'normal)))
 
 (dp/update-environment)
 
