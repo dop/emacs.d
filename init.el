@@ -1342,23 +1342,17 @@ of code to whatever theme I'm using's background"
   :commands ns-auto-titlebar-mode)
 
 (defun dp/setup-lisp-mode ()
+  (setq inferior-lisp-program "sbcl"
+        common-lisp-style "modern"
+        lisp-body-indent 2)
+  (paredit-mode t)
   (define-key lisp-mode-map (kbd "C-M-<tab>") #'indent-sexp)
   (setq-local lisp-indent-function 'common-lisp-indent-function)
   (setq-local lisp-body-indent 2))
 
-(use-package slime
+(use-package sly
   :ensure t
-  :commands (slime)
-  :config
-  (setq inferior-lisp-program "sbcl"
-        common-lisp-style "modern"
-        lisp-body-indent 2)
-  (add-to-list 'lisp-mode-hook 'dp/setup-lisp-mode)
-  (slime-setup '(slime-fancy slime-indentation slime-company slime-repl-ansi-color)))
-
-(use-package slime-company
-  :ensure t
-  :config (setq slime-company-completion 'fuzzy))
+  (add-to-list 'lisp-mode-hook 'dp/setup-lisp-mode))
 
 ;; (require 'dp-php)
 ;; (require 'dp-haskell)
