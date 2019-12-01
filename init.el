@@ -1357,6 +1357,15 @@ of code to whatever theme I'm using's background"
 ;; (require 'dp-php)
 ;; (require 'dp-haskell)
 
+(use-package swift-mode
+  :disabled t
+  :ensure t
+  :mode "\\.swift\\'")
+
+(use-package neotree
+  :disabled t
+  :ensure t)
+
 (defun set-frame-parameters (parameters &optional frame)
   (loop with f = (or frame (selected-frame))
         for (name . value) in parameters
