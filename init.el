@@ -149,14 +149,12 @@
 
 (defun dp/scale-text () (text-scale-set 2))
 
-(require 'prettify-ppro)
-
-(defun dp/ppro-prettify-symbols ()
-  (prettify-ppro-add-symbols)
-  (prettify-symbols-mode t))
-
+;; (require 'prettify-ppro)
+;; (defun dp/ppro-prettify-symbols ()
+;;   (prettify-ppro-add-symbols)
+;;   (prettify-symbols-mode t))
 ;; (add-hook 'prog-mode-hook #'dp/ppro-prettify-symbols)
-(setq prettify-symbols-unprettify-at-point t)
+;; (setq prettify-symbols-unprettify-at-point t)
 
 (add-hook 'prog-mode-hook #'turn-on-show-trailing-whitespace)
 (add-hook 'html-mode-hook #'turn-on-show-trailing-whitespace)
@@ -1378,13 +1376,12 @@ of code to whatever theme I'm using's background"
           ns-use-srgb-colorspace t))
   (when (fboundp 'mac-auto-operator-composition-mode)
     (mac-auto-operator-composition-mode t))
-  (set-frame-parameters '((alpha . 95) (ns-transparent-titlebar . t)))
-  (switch-to-theme 'dp-dark)
-  ;; (switch-to-theme 'gruvbox-dark-medium)
+  (switch-to-theme 'deeper-blue)
+  (set-frame-parameters '((alpha . 100) (ns-transparent-titlebar . t)))
   ;; (add-hook 'post-self-insert-hook #'set-cursor-according-to-mode)
   ;; (setq set-cursor-according-to-mode-timer (run-with-idle-timer 1 t #'set-cursor-according-to-mode 'box))
   ;; (cancel-timer set-cursor-according-to-mode-timer)
-  (set-frame-font (font-spec :family "SF Mono" :size 12 :weight 'normal)))
+  (set-frame-font (font-spec :family "SF Mono" :size 12)))
 
 (dp/update-environment)
 
