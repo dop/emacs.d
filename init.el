@@ -635,8 +635,7 @@ of code to whatever theme I'm using's background"
 
 (use-package magit
   :ensure t
-  :bind (("C-x g" . magit-status)
-         ("C-x f" . dp/git-find-file))
+  :bind (("C-x g" . magit-status))
   :config
   (bind-keys
    :map magit-mode-map
@@ -644,12 +643,10 @@ of code to whatever theme I'm using's background"
    ("M-2" . nil)
    ("M-3" . nil)
    ("M-4" . nil))
-  (setq magit-emacsclient-executable "/Applications/Emacs.app/Contents/MacOS/bin/emacsclient"
-        magit-last-seen-setup-instructions "1.4.0"
-        magit-highlight-whitespace t
+  (setq magit-highlight-whitespace t
         magit-highlight-trailing-whitespace t
         magit-highlight-indentation nil
-        magit-diff-refine-hunk nil
+        magit-diff-refine-hunk t
         magit-process-connection-type nil)
   (magit-auto-revert-mode t)
   (add-hook 'git-commit-mode-hook 'turn-on-flyspell))
@@ -1083,35 +1080,32 @@ of code to whatever theme I'm using's background"
   :ensure t
   :commands (apples-do-applescript))
 
+(defun dp/node-modules-project-p (file)
+  (s-contains-p "/node_modules/" file))
+
+(defun dp/git-dir-p (file)
+  (s-contains-p "/.git/" file))
+
+(defun dp/ignored-project-p (file)
+  (or (file-remote-p file)
+      (dp/git-dir-p file)
+      (dp/node-modules-project-p file)))
+
 (use-package projectile
   :ensure t
   :config
-  (setq projectile-mode-line
-        '(:eval (format " proj[%s]" (projectile-project-name))))
-  (bind-keys
-   :map projectile-mode-map
-   ("C-c p x t" . dp/projectile-run-iterm))
+  (setq projectile-mode-line '(:eval (format " proj[%s]" (projectile-project-name))))
+  (add-to-list 'projectile-project-root-files "package.json")
+  (bind-keys :map projectile-mode-map
+             ("C-c p x t" . dp/projectile-run-iterm))
   (when (boundp 'projectile-command-map)
     (define-key projectile-mode-map "\C-cp" #'projectile-command-map))
   :init
   (setq projectile-project-root-files-functions
-        '(projectile-root-top-down projectile-root-top-down-recurring projectile-root-local projectile-root-bottom-up))
+        '(projectile-root-top-down projectile-root-top-down-recurring projectile-root-local projectile-root-bottom-up)
+        projectile-ignored-project-function #'dp/ignored-project-p)
   (projectile-global-mode t)
-  (persp-mode t)
-  ;; cache generic project type for performance.
-  (defun projectile-project-type ()
-    "Determine the project's type based on its structure."
-    (if projectile-project-type
-        projectile-project-type
-      (let ((project-root (ignore-errors (projectile-project-root))))
-        (if project-root
-            (let ((project-type (gethash project-root projectile-project-type-cache)))
-              (unless project-type
-                (setq project-type (or (projectile-detect-project-type)
-                                       'generic))
-                (puthash project-root project-type projectile-project-type-cache))
-              project-type)
-          'generic)))))
+  (persp-mode t))
 
 (use-package ag
   :ensure t
