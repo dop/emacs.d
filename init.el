@@ -513,7 +513,8 @@
   :commands elisp-slime-nav-mode
   :diminish elisp-slime-nav-mode
   :config
-  (add-hook 'emacs-lisp-mode-hook #'elisp-slime-nav-mode))
+  (add-hook 'emacs-lisp-mode-hook #'elisp-slime-nav-mode)
+  (add-hook 'emacs-lisp-mode-hook #'paredit-mode))
 
 (use-package org-bullets
   :ensure t
@@ -1335,16 +1336,29 @@ of code to whatever theme I'm using's background"
 
 (defun dp/setup-lisp-mode ()
   (setq inferior-lisp-program "sbcl"
-        common-lisp-style "modern"
+        common-lisp-style "classic"
         lisp-body-indent 2)
   (paredit-mode t)
   (define-key lisp-mode-map (kbd "C-M-<tab>") #'indent-sexp)
-  (setq-local lisp-indent-function 'common-lisp-indent-function)
-  (setq-local lisp-body-indent 2))
+  (setq-local lisp-indent-function 'common-lisp-indent-function))
 
-(use-package sly
+(use-package slime-company
+  :disabled t
   :ensure t
-  (add-to-list 'lisp-mode-hook 'dp/setup-lisp-mode))
+  :config
+  (setq slime-company-completion 'fuzzy))
+
+(use-package slime
+  :ensure t
+  :config
+  (add-to-list 'lisp-mode-hook #'slime-mode)
+  ;; (require 'slime-company)
+  (add-to-list 'lisp-mode-hook #'dp/setup-lisp-mode)
+  (slime-setup '(slime-fancy slime-indentation slime-company slime-repl-ansi-color)))
+
+(use-package trident-mode
+  :ensure t
+  :defer t)
 
 ;; (require 'dp-php)
 ;; (require 'dp-haskell)
