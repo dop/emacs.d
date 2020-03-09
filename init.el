@@ -421,6 +421,9 @@
       (wrap-region-add-wrapper "`" "`" nil mode)
       (wrap-region-add-wrapper "_" "_" nil mode))))
 
+(use-package drag-stuff
+  :ensure t)
+
 (use-package visual-regexp-steroids
   :ensure t
   :defer t)
@@ -503,18 +506,27 @@
     (error (message "Invalid expression")
            (insert (current-kill 0)))))
 
+(use-package paredit
+  :ensure t
+  :commands paredit-mode)
+
 (use-package elisp-mode
   :defer t
   :config
-  (define-key emacs-lisp-mode-map "\C-c\C-e" #'eval-and-replace))
+  (define-key emacs-lisp-mode-map "\C-c\C-e" #'eval-and-replace)
+  (add-hook 'emacs-lisp-mode-hook #'paredit-mode))
+
+(use-package ielm
+  :commands ielm
+  :config
+  (add-hook 'ielm-mode-hook #'paredit-mode))
 
 (use-package elisp-slime-nav
   :ensure t
   :commands elisp-slime-nav-mode
   :diminish elisp-slime-nav-mode
   :config
-  (add-hook 'emacs-lisp-mode-hook #'elisp-slime-nav-mode)
-  (add-hook 'emacs-lisp-mode-hook #'paredit-mode))
+  (add-hook 'emacs-lisp-mode-hook #'elisp-slime-nav-mode))
 
 (use-package org-bullets
   :ensure t
@@ -974,6 +986,8 @@ of code to whatever theme I'm using's background"
 (use-package typescript-mode
   :ensure t
   :mode "\\.tsx?$"
+  :bind (:map typescript-mode-map
+              ("C-c ." . tide-references))
   :config
   (setq typescript-indent-level 2
         tide-completion-detailed t
@@ -1168,6 +1182,7 @@ of code to whatever theme I'm using's background"
 (add-to-list 'auto-mode-alist '("\\<butler\\'" . lisp-mode))
 
 (use-package tuareg
+  :disabled t
   :ensure t
   :mode ("\\.ml\\'" . tuareg-mode)
   :bind (:map tuareg-mode-map
@@ -1335,9 +1350,9 @@ of code to whatever theme I'm using's background"
   :commands ns-auto-titlebar-mode)
 
 (defun dp/setup-lisp-mode ()
-  (setq inferior-lisp-program "sbcl"
-        common-lisp-style "classic"
-        lisp-body-indent 2)
+  (setq-default inferior-lisp-program "sbcl"
+                common-lisp-style "classic"
+                lisp-body-indent 2)
   (paredit-mode t)
   (define-key lisp-mode-map (kbd "C-M-<tab>") #'indent-sexp)
   (setq-local lisp-indent-function 'common-lisp-indent-function))
@@ -1352,11 +1367,11 @@ of code to whatever theme I'm using's background"
   :ensure t
   :config
   (add-to-list 'lisp-mode-hook #'slime-mode)
-  ;; (require 'slime-company)
   (add-to-list 'lisp-mode-hook #'dp/setup-lisp-mode)
   (slime-setup '(slime-fancy slime-indentation slime-company slime-repl-ansi-color)))
 
 (use-package trident-mode
+  :disabled t
   :ensure t
   :defer t)
 
@@ -1364,13 +1379,12 @@ of code to whatever theme I'm using's background"
 ;; (require 'dp-haskell)
 
 (use-package swift-mode
-  :disabled t
   :ensure t
   :mode "\\.swift\\'")
 
 (use-package neotree
-  :disabled t
-  :ensure t)
+  :ensure t
+  :commands neotree)
 
 (defun set-frame-parameters (parameters &optional frame)
   (loop with f = (or frame (selected-frame))
