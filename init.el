@@ -1386,6 +1386,13 @@ of code to whatever theme I'm using's background"
   :ensure t
   :commands neotree)
 
+(use-package super-save
+  :ensure t
+  :config
+  (add-hook 'prog-mode-hook #'super-save-mode)
+  (setq super-save-auto-save-when-idle nil
+        auto-save-default nil))
+
 (defun set-frame-parameters (parameters &optional frame)
   (loop with f = (or frame (selected-frame))
         for (name . value) in parameters
