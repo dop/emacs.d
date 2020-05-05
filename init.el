@@ -147,7 +147,8 @@
 (defun turn-on-show-trailing-whitespace ()
   (setq show-trailing-whitespace t))
 
-(defun dp/scale-text () (text-scale-set 2))
+(defun dp/scale-text-up () (text-scale-set 2))
+(defun dp/scale-text-down () (text-scale-set -2))
 
 ;; (require 'prettify-ppro)
 ;; (defun dp/ppro-prettify-symbols ()
@@ -299,7 +300,7 @@
   (add-hook 'markdown-mode-hook #'visual-line-mode)
   (add-hook 'markdown-mode-hook #'flyspell-mode)
   (add-hook 'markdown-mode-hook #'variable-pitch-mode)
-  (add-hook 'markdown-mode-hook #'dp/scale-text))
+  (add-hook 'markdown-mode-hook #'dp/scale-text-up))
 
 (use-package groovy-mode
   :mode "\\.gradle'")
@@ -543,25 +544,26 @@
 (use-package org-bullets
   :ensure t
   :config
-  (setq org-bullets-bullet-list '("·")))
+  (setq org-bullets-bullet-list '("•")))
 
 (use-package org-present
   :ensure t
   :commands (org-present)
   :config
+  (setq org-present-text-scale 8)
   (defun org-present-enter ()
     (set-frame-parameter nil 'internal-border-width 40)
     (org-present-big)
     (org-display-inline-images)
-    (org-present-hide-cursor)
     (org-present-read-only)
-    (setq-local visual-line-fringe-indicators nil))
+    (setq-local visual-line-fringe-indicators nil)
+    (setq-local indicate-buffer-boundaries nil))
   (defun org-present-leave ()
     (set-frame-parameter nil 'internal-border-width 0)
     (org-present-small)
     (org-remove-inline-images)
-    (org-present-show-cursor)
-    (org-present-read-write))
+    (org-present-read-write)
+    (kill-local-variable 'indicate-buffer-boundaries))
   (add-hook 'org-present-mode-hook #'org-present-enter)
   (add-hook 'org-present-mode-quit-hook #'org-present-leave))
 
@@ -603,8 +605,8 @@
   :config
   (add-hook 'org-mode-hook #'org-bullets-mode)
   (add-hook 'org-mode-hook #'visual-line-mode)
-  ;; (remove-hook 'org-mode-hook #'variable-pitch-mode)
-  ;; (remove-hook 'org-mode-hook #'dp/scale-text)
+  (add-hook 'org-mode-hook #'variable-pitch-mode)
+  (add-hook 'org-mode-hook #'dp/scale-text-up)
   ;; (add-to-list 'org-babel-load-languages '(sh . t))
   ;; (add-to-list 'org-babel-load-languages '(ditaa . t))
   ;; (add-hook 'org-export-before-parsing-hook #'my-insert-shell-prompt)
