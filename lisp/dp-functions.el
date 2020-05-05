@@ -475,4 +475,14 @@ active, apply to active region instead."
               (magit-buffer-diff-files (list project-subdir))
               (magit-buffer-log-files (list project-subdir)))
           (rename-buffer (concat "magit: " git-directory-name "/" project-subdir)))))))
+
+(defun random-password (&optional size)
+  (remove-if-not
+   (lambda (c) (or (<= ?a c ?z) (<= ?A c ?Z) (<= ?0 c ?9)))
+   (shell-command-to-string (format "head -c %d /dev/random | base64" (or size 12)))))
+
+(defun insert-random-password ()
+  (interactive)
+  (insert (random-password)))
+
 (provide 'dp-functions)
