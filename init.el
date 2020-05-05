@@ -1342,7 +1342,7 @@ of code to whatever theme I'm using's background"
 (use-package inf-lisp
   :defer t
   :config
-  (setq-default inferior-lisp-program "sbcl"))
+  (setq inferior-lisp-program "sbcl"))
 
 (use-package paren-face
   :ensure t
