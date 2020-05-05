@@ -663,7 +663,6 @@ of code to whatever theme I'm using's background"
 
 (use-package magit
   :ensure t
-  :bind (("C-x g" . magit-status))
   :config
   (bind-keys
    :map magit-mode-map
@@ -676,6 +675,8 @@ of code to whatever theme I'm using's background"
         magit-highlight-indentation nil
         magit-diff-refine-hunk t
         magit-process-connection-type nil)
+  (define-key magit-mode-map (kbd "C-x g") #'projectile-magit-status)
+  (define-key magit-file-mode-map (kbd "C-x g") #'projectile-magit-status)
   (magit-auto-revert-mode t)
   (add-hook 'git-commit-mode-hook 'turn-on-flyspell))
 

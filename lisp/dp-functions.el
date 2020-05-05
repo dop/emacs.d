@@ -459,4 +459,17 @@ active, apply to active region instead."
     (next-line)
     (indent-for-tab-command))))
 
+(defun projectile-magit-status ()
+  (interactive)
+  (let ((git-root (magit-toplevel))
+        (project-root (projectile-project-root)))
+    (if (string-equal git-root project-root)
+        (magit-status)
+      (let* ((git-directory-name (file-name-base (directory-file-name git-root)))
+             (project-subdir (directory-file-name (subseq project-root (length git-root)))))
+        (with-current-buffer
+            (magit-setup-buffer #'magit-status-mode nil
+              (magit-buffer-diff-files (list project-subdir))
+              (magit-buffer-log-files (list project-subdir)))
+          (rename-buffer (concat "magit: " git-directory-name "/" project-subdir)))))))
 (provide 'dp-functions)
