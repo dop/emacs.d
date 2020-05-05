@@ -184,17 +184,20 @@
   (setf epa-pinentry-mode 'loopback))
 
 (defun set-bidi-left-to-right ()
+  (setq bidi-display-reordering nil)
   (setq bidi-paragraph-direction 'left-to-right))
 
 (use-package shell
   :config
-  (add-hook 'shell-mode-hook #'set-bidi-left-to-right))
+  (add-hook 'shell-mode-hook #'set-bidi-left-to-right)
+  (add-hook 'shell-mode-hook #'toggle-truncate-lines))
 
 (use-package multi-term
   :disabled t
   :ensure t
   :config
-  (add-hook 'term-mode-hook #'set-bidi-left-to-right))
+  (add-hook 'term-mode-hook #'set-bidi-left-to-right)
+  (add-hook 'term-mode-hook #'toggle-truncate-lines))
 
 (use-package linum-mode
   :disabled t
@@ -241,7 +244,9 @@
   :defer t
   :config
   (setq eshell-hist-ignoredups t)
-  (add-hook 'eshell-mode-hook #'eshell-fringe-status-mode))
+  (add-hook 'eshell-mode-hook #'eshell-fringe-status-mode)
+  (add-hook 'eshell-mode-hook #'set-bidi-left-to-right)
+  (add-hook 'eshell-mode-hook #'toggle-truncate-lines))
 
 (use-package exec-path-from-shell
   :defer 2
@@ -371,6 +376,13 @@
   (add-hook 'comint-preoutput-filter-functions #'xterm-color-filter)
   (add-hook 'compilation-filter-hook #'dp/xterm-color-compilation-filter)
   (setq comint-output-filter-functions (remove 'ansi-color-process-output comint-output-filter-functions)))
+
+(use-package compile
+  :config
+  (setq compilation-always-kill t)
+  (add-hook 'compilation-mode-hook #'dp/scale-text-down)
+  (add-hook 'compilation-mode-hook #'set-bidi-left-to-right)
+  (add-hook 'compulation-mode-hook #'toggle-truncate-lines))
 
 (use-package multi-term
   :disabled t
