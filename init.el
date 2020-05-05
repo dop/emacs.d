@@ -275,6 +275,7 @@
               ("C-x u" . undo-tree-visualize)))
 
 (use-package websocket
+  :defer t
   :ensure t)
 
 (use-package markdown-preview-mode
