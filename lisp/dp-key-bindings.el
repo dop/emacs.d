@@ -10,14 +10,13 @@
 (global-set-key (kbd "C-.") #'repeat)
 (global-set-key (kbd "RET") #'newline-and-indent)
 
-(global-set-key [f5] #'whitespace-mode)
-(global-set-key [f7] #'cua-mode)
-
 (global-set-key (kbd "A-h") 'mark-paragraph)
 (global-set-key (kbd "M-z") #'dp/zap-to-char)
 (global-set-key (kbd "M-Z") #'zap-to-char)
 
 (global-set-key (kbd "M-/") #'hippie-expand)
+
+(global-set-key (kbd "C-c C-m") #'execute-extended-command)
 
 (global-set-key (kbd "C-x n i") #'narrow-to-region-indirect)
 
