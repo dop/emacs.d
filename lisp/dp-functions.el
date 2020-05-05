@@ -132,7 +132,8 @@ max points of current buffer if there is no selected region."
       (disable-theme theme)
     (load-theme theme t)))
 
-(defun switch-to-theme (theme)
+(defun switch-to-theme (theme &rest custom-faces)
+  (declare (indent 1))
   "Enables THEME and disable all others."
   (interactive
    (list
@@ -140,7 +141,9 @@ max points of current buffer if there is no selected region."
 			     (mapcar 'symbol-name
 				     (custom-available-themes))))))
   (disable-all-themes)
-  (load-theme theme t))
+  (load-theme theme t)
+  (when custom-faces
+    (apply #'custom-theme-set-faces theme custom-faces)))
 
 (defun rename-file-and-buffer (new-name)
   "Renames both current buffer and file it's visiting to NEW-NAME."
