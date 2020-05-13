@@ -473,7 +473,8 @@ active, apply to active region instead."
         (with-current-buffer
             (magit-setup-buffer #'magit-status-mode nil
               (magit-buffer-diff-files (list project-subdir))
-              (magit-buffer-log-files (list project-subdir)))
+              (magit-buffer-log-files (list project-subdir))
+              (magit-section-show-child-count nil))
           (rename-buffer (concat "magit: " git-directory-name "/" project-subdir)))))))
 
 (defun random-password (&optional size)
