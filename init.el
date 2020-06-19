@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t -*-
 ;;; init.el
 
 (setq custom-file "~/.emacs.d/custom.el")
@@ -89,8 +90,10 @@
       query-replace-highlight t
       search-highlight t)
 
-(setq-default indicate-empty-lines nil
-              indicate-buffer-boundaries 'left)
+(setq inhibit-compacting-font-caches t)
+
+(setq indicate-empty-lines nil
+      indicate-buffer-boundaries 'left)
 
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))
       scroll-conservatively most-positive-fixnum
@@ -106,7 +109,7 @@
 (setq display-time-24hr-format nil
       display-time-day-and-date nil)
 
-(setq visible-bell nil
+(setq visible-bell t
       ring-bell-function nil)
 
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -250,7 +253,7 @@
   (add-hook 'eshell-mode-hook #'toggle-truncate-lines))
 
 (use-package exec-path-from-shell
-  :defer 2
+  :defer t
   :ensure t
   :init (when (memq window-system '(mac ns))
           (exec-path-from-shell-initialize)))
@@ -522,7 +525,9 @@
 
 (use-package paredit
   :ensure t
-  :commands paredit-mode)
+  :commands paredit-mode
+  :config
+  (add-hook 'minibuffer-inactive-mode-hook #'paredit-mode))
 
 (use-package elisp-mode
   :defer t
@@ -607,11 +612,13 @@
   (add-hook 'org-mode-hook #'org-bullets-mode)
   (add-hook 'org-mode-hook #'visual-line-mode)
   (add-hook 'org-mode-hook #'variable-pitch-mode)
-  (add-hook 'org-mode-hook #'dp/scale-text-up)
-  ;; (add-to-list 'org-babel-load-languages '(sh . t))
-  ;; (add-to-list 'org-babel-load-languages '(ditaa . t))
+  ;; (add-hook 'org-mode-hook #'dp/scale-text-up)
+  (org-babel-do-load-languages 'org-babel-load-languages
+                               '((emacs-lisp . t) (shell . t) (lisp . t)))
+  (setq org-babel-lisp-eval-fn #'sly-eval)
   ;; (add-hook 'org-export-before-parsing-hook #'my-insert-shell-prompt)
   (setq org-html-htmlize-output-type 'inline-css)
+  (require 'org-tempo)
 
   (defun dp/org-set-source-code-background (exporter)
     "Insert custom inline css to automatically set the background
@@ -955,10 +962,6 @@ of code to whatever theme I'm using's background"
    js2-strict-trailing-comma-warning  nil
    js2-strict-inconsistent-return-warning nil
    js2-global-externs '("module" "require" "process")))
-
-(defun dp/js2-spec-overview ()
-  (interactive)
-  (helm-swoop :$query "\\<\\(describe\\|it\\)\\>("))
 
 (defun dp/rjsx-delete-creates-full-tag-or-hungry-delete (fn n &optional killflag)
   (cl-letf (((symbol-function 'delete-forward-char) #'hungry-delete-forward))
@@ -1365,20 +1368,18 @@ of code to whatever theme I'm using's background"
   :ensure t
   :commands ns-auto-titlebar-mode)
 
-(defun dp/setup-lisp-mode ()
-  (setq common-lisp-style "classic"
-        lisp-body-indent 2)
-  (paredit-mode t)
-  (define-key lisp-mode-map (kbd "C-M-<tab>") #'indent-sexp)
-  (setq-local lisp-indent-function 'common-lisp-indent-function))
-
 (use-package slime-company
   :disabled t
   :ensure t
   :config
   (setq slime-company-completion 'fuzzy))
 
+(defun dp/setup-lisp-mode ()
+  (setq-local lisp-body-indent 2)
+  (setq-local lisp-indent-function 'common-lisp-indent-function))
+
 (use-package slime
+  :disabled t
   :ensure t
   :config
   (setq inferior-lisp-program "sbcl")
@@ -1387,13 +1388,19 @@ of code to whatever theme I'm using's background"
   (add-hook 'slime-repl-mode #'paredit-mode)
   (slime-setup '(slime-fancy slime-indentation slime-company slime-repl-ansi-color)))
 
+(use-package sly
+  :ensure t
+  :config
+  (setq common-lisp-style "classic"
+        inferior-lisp-program "sbcl")
+  (add-hook 'sly-editing-mode-map #'paredit-mode)
+  (add-hook 'sly-editing-mode-map #'dp/setup-lisp-mode)
+  (add-hook 'sly-mrepl-mode-hook #'paredit-mode))
+
 (use-package trident-mode
   :disabled t
   :ensure t
   :defer t)
-
-;; (require 'dp-php)
-;; (require 'dp-haskell)
 
 (use-package swift-mode
   :ensure t
@@ -1402,6 +1409,13 @@ of code to whatever theme I'm using's background"
 (use-package neotree
   :ensure t
   :commands neotree)
+
+(use-package mini-frame
+  :disabled t
+  :ensure t
+  :config
+  (setq mini-frame-show-parameters
+        '((top . 5) (width . 0.7) (left . 0.5) (height . 12))))
 
 (use-package super-save
   :ensure t

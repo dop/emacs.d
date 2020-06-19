@@ -348,20 +348,48 @@ active, apply to active region instead."
     (forward-line 1)
     (back-to-indentation)))
 
+(defun dp/set-env-path (value)
+  (let* ((dirs (mapcar #'directory-file-name (remove-duplicates (parse-colon-path value) :test #'equal)))
+         (path (s-join path-separator dirs)))
+    (message "PATH = %s" path)
+    (setenv "PATH" path)
+    (setq eshell-path-env path
+          exec-path (append dirs (list exec-directory)))))
+
+(defun dp/parse-env (text)
+  (->> (s-split "\n" text)
+       (-filter (curry #'s-matches-p "="))
+       (-map (curry #'s-split "="))))
+
+(defun dp/update-env (env)
+  (loop for (name value) in env
+        do (if (string-equal "PATH" name)
+               (dp/set-env-path value)
+             (message "%s = %s" name value)
+             (setenv name value))))
+
+(defun dp/with-env (command fn)
+  (async-start (lambda () (shell-command-to-string command))
+               fn))
+
+(defun dp/nvm-use (version)
+  (let ((bufname (buffer-name (current-buffer))))
+    (dp/with-env (concat ". ~/.profile; nvm use " (format "%s" version) "; env")
+                 (lambda (result)
+                   (let ((values (dp/parse-env result)))
+                     (dp/update-env values)
+                     (let ((path (getenv "PATH")))
+                       (with-current-buffer (get-buffer bufname)
+                         (dp/update-env values))))
+                   (message (shell-command-to-string "node -v"))))))
+
+(defalias 'eshell/nvm-use 'dp/nvm-use)
+
 (defun dp/update-environment ()
-  (async-start
-   (lambda () (shell-command-to-string ". ~/.profile; env"))
-   (lambda (result)
-     (->> (s-split "\n" result)
-          (-filter (curry #'s-matches-p "="))
-          (-map (curry #'s-split "="))
-          (-map (pcase-lambda (`(,name ,value))
-                  (message "%s = %s" name value)
-                  (setenv name value)
-                  (when (string-equal "PATH" name)
-                    (setq eshell-path-env value
-                          exec-path (append (parse-colon-path value) (list exec-directory)))))))
-     (message "Updated environment variables."))))
+  (dp/with-env ". ~/.profile; env"
+               (lambda (result)
+                 (->> (dp/parse-env result) (dp/update-env))
+                 (message "Updated environment variables."))))
 
 (defun dp/eshell-aliases-from-shell ()
   (async-start
@@ -485,5 +513,22 @@ active, apply to active region instead."
 (defun insert-random-password ()
   (interactive)
   (insert (random-password)))
+
+;; TODO does not work well, messes up buffer.
+(defun eshell/clear-buffer ()
+  (let ((eshell-buffer-maximum-lines 0))
+    (eshell-truncate-buffer)))
+
+(defun dp/projectile-find-root-with-prettier ()
+  (let* ((bin/pretter "node_modules/.bin/prettier")
+         (root (locate-dominating-file (projectile-project-root)
+                                      (lambda (dir)
+                                        (file-exists-p (concat dir bin/pretter))))))
+    (when root
+      (concat root bin/pretter))))
+
+(defun dp/spec-overview ()
+  (interactive)
+  (helm-swoop :query "\\<\\(x\\|f\\)?\\(describe\\|it\\)\\(\\.\\(skip\\|only\\|todo\\)\\)?\\>("))
 
 (provide 'dp-functions)
