@@ -20,3 +20,4 @@ url/
 /ido.last
 /projectile-bookmarks.eld
 *.cache
+transient/
