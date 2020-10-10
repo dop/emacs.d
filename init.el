@@ -613,7 +613,7 @@
   (setq org-babel-lisp-eval-fn #'sly-eval)
   ;; (add-hook 'org-export-before-parsing-hook #'my-insert-shell-prompt)
   (setq org-html-htmlize-output-type 'inline-css)
-  (require 'org-tempo)
+  ;; (require 'org-tempo)
 
   (defun dp/org-set-source-code-background (exporter)
     "Insert custom inline css to automatically set the background
