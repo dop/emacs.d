@@ -1480,9 +1480,8 @@ of code to whatever theme I'm using's background"
          (size (getf font-spec :size)))
     (set-face-attribute 'default nil :family default-font :height (* 10 size) :weight 'normal)
     (set-face-attribute 'fixed-pitch nil :family default-font)
-    (eval-after-load "markdown-mode"
-      (progn
-        (set-face-attribute 'markdown-inline-code-face nil :inherit 'fixed-pitch)))
+    (with-eval-after-load 'markdown-mode
+      (set-face-attribute 'markdown-code-face nil :inherit 'fixed-pitch))
 
     (add-hook 'post-self-insert-hook #'set-cursor-according-to-mode)
     (setq set-cursor-according-to-mode-timer (run-with-idle-timer 1 t #'set-cursor-according-to-mode 'box))
