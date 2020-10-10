@@ -31,10 +31,7 @@
 (require 'f)
 (require 'dash)
 (require 'json)
-
 (require 'color)
-(require 'so-long)
-(global-so-long-mode t)
 
 (require 'dp-functions)
 
@@ -1423,6 +1420,11 @@ of code to whatever theme I'm using's background"
   (add-hook 'prog-mode-hook #'super-save-mode)
   (setq super-save-auto-save-when-idle nil
         auto-save-default nil))
+
+(when (< emacs-major-version 27)
+  (use-package so-long
+    :ensure t
+    :init (global-so-long-mode t)))
 
 (defun set-frame-parameters (parameters &optional frame)
   (loop with f = (or frame (selected-frame))
