@@ -40,6 +40,8 @@
 
 (global-set-key (kbd "C-x M-d") #'delete-this-buffer-and-file)
 
+(global-set-key (kbd "<f5>") #'recompile)
+
 (global-unset-key [right])
 (global-unset-key [left])
 (global-unset-key [up])

@@ -1393,7 +1393,7 @@ of code to whatever theme I'm using's background"
   :config
   (setq common-lisp-style "classic"
         inferior-lisp-program "sbcl")
-  (add-hook 'sly-editing-mode-map #'paredit-mode)
+  (add-hook 'lisp-mode-hook #'paredit-mode)
   (add-hook 'sly-editing-mode-map #'dp/setup-lisp-mode)
   (add-hook 'sly-mrepl-mode-hook #'paredit-mode))
 
@@ -1429,19 +1429,43 @@ of code to whatever theme I'm using's background"
         for (name . value) in parameters
         do (set-frame-parameter f name value)))
 
+(defvar *good-default-fonts* nil)
+
+(setf *good-default-fonts*
+      '((pragmata :family "PragmataPro Mono" :size 14)
+        (free :family "FreeMono" :size 12)
+        (roboto :family "Roboto Mono" :size 12)
+        (helvetica :family "Helvetica Neue" :size 14)
+        (inconsolata :family "Inconsolata" :size 14)
+        (jetbrains :family "Jetbrains Mono" :size 12)
+        (sf :family "SF Mono" :size 12)
+        (menlo :family "Menlo" :size 12)
+        (monaco :family "MonacoB" :size 12)
+        (source :family "Source Code Pro" :size 12)
+        (fira :family "Fira Code" :size 12)
+        (ubuntu :family "Ubuntu Mono Ligaturized" :size 14)))
+
 (when (window-system)
   (when (eq system-type 'darwin)
     (ns-auto-titlebar-mode t)
     (setq ns-use-thin-smoothing t
           ns-use-srgb-colorspace t))
-  (when (fboundp 'mac-auto-operator-composition-mode)
-    (mac-auto-operator-composition-mode t))
-  (switch-to-theme 'deeper-blue)
-  (set-frame-parameters '((alpha . 100) (ns-transparent-titlebar . t)))
-  ;; (add-hook 'post-self-insert-hook #'set-cursor-according-to-mode)
-  ;; (setq set-cursor-according-to-mode-timer (run-with-idle-timer 1 t #'set-cursor-according-to-mode 'box))
-  ;; (cancel-timer set-cursor-according-to-mode-timer)
-  (set-frame-font (font-spec :family "SF Mono" :size 12)))
+  (let* ((light nil)
+         (font-spec (cdr (find 'monaco *good-default-fonts* :key #'car)))
+         (variable-pitch-font "Georgia")
+         (default-font (getf font-spec :family))
+         (size (getf font-spec :size)))
+    (switch-to-theme 'solarized-zenburn)
+    (set-face-attribute 'default nil :family default-font :height (* 10 size) :weight 'normal)
+    (set-face-attribute 'fixed-pitch nil :family default-font)
+    (set-face-attribute 'cursor nil :background "red")
+    (eval-after-load "markdown-mode"
+      (progn
+        (set-face-attribute 'markdown-inline-code-face nil :inherit 'fixed-pitch)))))
+
+;; (add-hook 'post-self-insert-hook #'set-cursor-according-to-mode)
+;; (setq set-cursor-according-to-mode-timer (run-with-idle-timer 1 t #'set-cursor-according-to-mode 'box))
+;; (cancel-timer set-cursor-according-to-mode-timer)
 
 (dp/update-environment)
 
