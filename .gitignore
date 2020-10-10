@@ -21,3 +21,4 @@ url/
 /projectile-bookmarks.eld
 *.cache
 transient/
+/custom.el
