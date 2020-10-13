@@ -356,10 +356,15 @@ active, apply to active region instead."
     (setq eshell-path-env path
           exec-path (append dirs (list exec-directory)))))
 
+(defun dp/split-on-first (elt seq)
+  (let ((sep (seq-position seq elt)))
+    (list (seq-subseq seq 0 sep)
+          (seq-subseq seq (1+ sep)))))
+
 (defun dp/parse-env (text)
   (->> (s-split "\n" text)
        (-filter (curry #'s-matches-p "="))
-       (-map (curry #'s-split "="))))
+       (-map (curry #'dp/split-on-first ?=))))
 
 (defun dp/update-env (env)
   (loop for (name value) in env
