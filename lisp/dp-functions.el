@@ -387,8 +387,11 @@ active, apply to active region instead."
                             (dp/update-env values))))
                       ,@body)))))
 
+(defun dp/str (arg)
+  (format "%s" arg))
+
 (defun dp/nvm (command &rest args)
-  (dp/with-env (format ". ~/.profile; nvm %s %s; env" command (mapconcat #'identity args " "))
+  (dp/with-env (format ". ~/.profile; nvm %s %s; env" command (mapconcat #'dp/str args " "))
     (message (shell-command-to-string "node -v"))))
 
 (defun dp/nvm-use (&optional version)
