@@ -1429,7 +1429,14 @@ of code to whatever theme I'm using's background"
 
 (use-package neotree
   :ensure t
-  :commands neotree)
+  :commands neotree
+  :config
+  (setq neo-autorefresh t
+        neo-file-link-face
+        neo-smart-open t
+        neo-theme 'nerd
+        neo-window-fixed-size nil
+        neo-window-width 30))
 
 (use-package mini-frame
   :disabled t
