@@ -1325,6 +1325,7 @@ of code to whatever theme I'm using's background"
   :commands centered-window-mode)
 
 (use-package vc-svn
+  :defer t
   :config
   (defadvice vc-svn-checkin
       (before escape-filepaths
