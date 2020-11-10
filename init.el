@@ -957,16 +957,15 @@ of code to whatever theme I'm using's background"
   (defadvice js--multi-line-declaration-indentation
       (around js2/disable-multi-line-identation activate)
     nil)
-  (setq-default
-   js2r-use-strict t
-   js-indent-level 2
-   js2-basic-offset 2
-   js-switch-indent-offset 2
-   js2-bounce-indent-p nil
-   js2-include-jslint-globals t
-   js2-strict-trailing-comma-warning  nil
-   js2-strict-inconsistent-return-warning nil
-   js2-global-externs '("module" "require" "process")))
+  (setq js2r-use-strict t
+        js-indent-level 2
+        js2-basic-offset 2
+        js-switch-indent-offset 2
+        js2-bounce-indent-p nil
+        js2-include-jslint-globals t
+        js2-strict-trailing-comma-warning  nil
+        js2-strict-inconsistent-return-warning nil
+        js2-global-externs '("module" "require" "process")))
 
 (defun dp/rjsx-delete-creates-full-tag-or-hungry-delete (fn n &optional killflag)
   (cl-letf (((symbol-function 'delete-forward-char) #'hungry-delete-forward))
@@ -1380,8 +1379,8 @@ of code to whatever theme I'm using's background"
   (setq slime-company-completion 'fuzzy))
 
 (defun dp/setup-lisp-mode ()
-  (setq-local lisp-body-indent 2)
-  (setq-local lisp-indent-function 'common-lisp-indent-function))
+  (setq lisp-body-indent 2)
+  (setq lisp-indent-function 'common-lisp-indent-function))
 
 (use-package slime
   :disabled t
