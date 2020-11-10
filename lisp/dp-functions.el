@@ -340,7 +340,10 @@ active, apply to active region instead."
     (back-to-indentation)))
 
 (defun dp/set-env-path (value)
-  (let* ((dirs (mapcar #'directory-file-name (remove-duplicates (parse-colon-path value) :test #'equal)))
+  (let* ((dirs (--> (parse-colon-path value)
+                    (mapcar #'directory-file-name it)
+                    (remove-duplicates it :test #'equal)
+                    (remove-if-not #'file-readable-p it)))
          (path (s-join path-separator dirs)))
     (message "PATH = %s" path)
     (setenv "PATH" path)
