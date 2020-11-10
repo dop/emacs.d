@@ -1024,6 +1024,22 @@ of code to whatever theme I'm using's background"
   (remove-hook 'before-save-hook 'tide-format-before-save)
   (add-hook 'typescript-mode-hook #'setup-typescript-with-tide))
 
+(defcustom jest-test-command-template "npx %s jest %s %s" nil)
+
+(defun ad-customizable-jest-test-command (fn filename)
+  (format jest-test-command-template
+          (mapconcat #'shell-quote-argument jest-test-npx-options " ")
+          (mapconcat #'shell-quote-argument jest-test-options " ")
+          filename))
+
+(advice-add 'jest-test-command :around #'ad-customizable-jest-test-command)
+
+(use-package jest-test-mode
+  :ensure t
+  :commands jest-test-mode
+  :init
+  (add-hook 'typescript-mode-hook #'jest-test-mode))
+
 (use-package skewer-mode
   :disabled t
   :commands (skewer-run-phantomjs run-skewer skewer-mode)
