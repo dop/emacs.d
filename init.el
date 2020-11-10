@@ -1461,69 +1461,13 @@ of code to whatever theme I'm using's background"
     :ensure t
     :init (global-so-long-mode t)))
 
-(defun set-frame-parameters (parameters &optional frame)
-  (loop with f = (or frame (selected-frame))
-        for (name . value) in parameters
-        do (set-frame-parameter f name value)))
+(use-package dynamic-cursor-mode
+  :config (dynamic-cursor-mode t))
 
-(defvar *good-macos-fonts* nil)
-(setf *good-macos-fonts*
-      '((monaco :family "MonacoB" :size 12)
-        (pragmata :family "PragmataPro Mono" :size 14)
-        (roboto :family "Roboto Mono" :size 12)
-        (helvetica :family "Helvetica Neue" :size 14)
-        (inconsolata :family "Inconsolata" :size 14)
-        (jetbrains :family "Jetbrains Mono" :size 12)
-        (sf :family "SF Mono" :size 12)
-        (menlo :family "Menlo" :size 12)
-        (source :family "Source Code Pro" :size 12)
-        (fira :family "Fira Code" :size 12)))
-
-(defvar *good-linux-fonts* nil)
-(setf *good-linux-fonts*
-      '((source :family "Source Code Pro" :size 9)
-        (pragmata :family "PragmataPro Mono" :size 10)
-        (typewriter :family "Tlwg Mono" :size 11)
-        (monaco :family "MonacoB" :size 9)
-        (dejavu :family "DejaVu Sans Mono" :size 9)
-        (fira :family "Fira Code" :size 9)
-        (liberation :family "Liberation Mono" :size 9)
-        (noto :family "Noto Mono" :size 9)
-        (ubuntu :family "Ubuntu Mono" :size 11)))
-
-(defun get-good-font (&optional name)
-  (let* ((fonts (if (eq system-type 'darwin)
-                   *good-macos-fonts*
-                 *good-linux-fonts*))
-         (spec (or (find name fonts :key #'car)
-                   (first fonts))))
-    (cdr spec)))
-
-(pcase (list system-type (window-system))
-  (`(darwin ,_)
-   (ns-auto-titlebar-mode t)
-   (setq ns-use-thin-smoothing t
-         ns-use-srgb-colorspace t)
-   (switch-to-theme 'solarized-zenburn)
-   (set-face-attribute 'cursor nil :background "red"))
-  (`(,_ x)
-   (switch-to-theme 'solarized-dark-high-contrast)
-   (set-face-attribute 'cursor nil :background "green")))
-
-(when (window-system)
-  (let* ((font-spec (get-good-font))
-         (variable-pitch-font "Georgia")
-         (default-font (getf font-spec :family))
-         (size (getf font-spec :size)))
-    (set-face-attribute 'default nil :family default-font :height (* 10 size) :weight 'normal)
-    (set-face-attribute 'fixed-pitch nil :family default-font)
-    (with-eval-after-load 'markdown-mode
-      (set-face-attribute 'markdown-code-face nil :inherit 'fixed-pitch))
-
-    (add-hook 'post-self-insert-hook #'set-cursor-according-to-mode)
-    (setq set-cursor-according-to-mode-timer (run-with-idle-timer 1 t #'set-cursor-according-to-mode 'box))
-    ;; (cancel-timer set-cursor-according-to-mode-timer)
-    ))
+(when (eq 'ns (window-system))
+  (ns-auto-titlebar-mode t)
+  (setq ns-use-thin-smoothing t
+        ns-use-srgb-colorspace t))
 
 (dp/update-environment)
 
