@@ -1065,6 +1065,7 @@ of code to whatever theme I'm using's background"
   (occur "^\\w+ :\\|^type"))
 
 (use-package elm-mode
+  :disabled t
   :ensure t
   :mode "\\.elm$"
   :config
@@ -1211,6 +1212,7 @@ of code to whatever theme I'm using's background"
     (utop-eval-phrase)))
 
 (use-package utop
+  :disabled t
   :ensure t
   :commands (utop utop-eval-region utop-eval-phrase utop-eval-buffer utop-eval-dwim)
   :config
@@ -1248,6 +1250,7 @@ of code to whatever theme I'm using's background"
   (setq merlin-command 'opam))
 
 (use-package mmm-mode
+  :disabled t
   :ensure t
   :commands (mmm-mode mmm-mode-on)
   :config
@@ -1295,6 +1298,7 @@ of code to whatever theme I'm using's background"
   :mode "\\.cs\\'")
 
 (use-package yasnippet
+  :disabled t
   :ensure t
   :commands (yas-minor-mode yas-global-mode)
   :init
@@ -1357,11 +1361,6 @@ of code to whatever theme I'm using's background"
   :config
   (setq command-log-mode-auto-show t))
 
-(use-package evil
-  :disabled t
-  :ensure t
-  :defer t)
-
 (use-package inf-lisp
   :defer t
   :config
@@ -1409,12 +1408,13 @@ of code to whatever theme I'm using's background"
   (slime-setup '(slime-fancy slime-indentation slime-company slime-repl-ansi-color)))
 
 (use-package sly
+  :disabled t
   :ensure t
   :config
   (setq common-lisp-style "classic"
         inferior-lisp-program "sbcl")
   (add-hook 'lisp-mode-hook #'paredit-mode)
-  (add-hook 'sly-editing-mode-map #'dp/setup-lisp-mode)
+  (add-hook 'sly-editing-mode-hook #'dp/setup-lisp-mode)
   (add-hook 'sly-mrepl-mode-hook #'paredit-mode))
 
 (use-package trident-mode
