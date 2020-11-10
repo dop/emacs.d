@@ -1445,6 +1445,10 @@ of code to whatever theme I'm using's background"
   (setq super-save-auto-save-when-idle nil
         auto-save-default nil))
 
+(use-package eglot
+  :ensure t
+  :hook (scala-mode . eglot-ensure))
+
 (when (< emacs-major-version 27)
   (use-package so-long
     :ensure t
