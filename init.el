@@ -3,6 +3,8 @@
 
 (add-to-list 'load-path "~/.emacs.d/lisp")
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
+(when (file-exists-p (setq custom-file "~/.emacs.d/custom.el"))
+  (load-file custom-file))
 
 (require 'cl)
 (require 'package)
