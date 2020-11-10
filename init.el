@@ -839,19 +839,27 @@ of code to whatever theme I'm using's background"
     (revert-buffer)))
 
 (use-package scala-mode
-  :disabled t
   :ensure t
   :mode "\\.scala'"
   :config
-  (setq scala-indent:align-parameters nil)
-  :init
-  (add-hook 'scala-mode-hook 'ensime-scala-mode-hook))
+  (setq scala-indent:align-parameters nil))
 
-(use-package ensime
-  :disabled t
+(defun sbt:project-directory-p (directory)
+  (let ((project-directory (expand-file-name "project" directory)))
+    (or (and (file-directory-p project-directory)
+             (or (file-exists-p (expand-file-name "build.properties" project-directory))
+                 (file-expand-wildcards (expand-file-name "*.scala" project-directory))))
+        (let ((default-directory directory))
+          (file-expand-wildcards "*.sbt")))))
+
+(use-package sbt-mode
   :ensure t
-  :commands ensime
-  :pin melpa-stable)
+  :commands (sbt-start sbt-command)
+  :config
+  (setq sbt:program-options '("-Dsbt.supershell=false"))
+  (defun sbt:find-root ()
+    (or sbt:buffer-project-root
+        (locate-dominating-file default-directory #'sbt:project-directory-p))))
 
 (use-package smartparens
   :disabled t
