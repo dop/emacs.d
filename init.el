@@ -518,7 +518,7 @@
   :ensure t
   :commands paredit-mode
   :config
-  (add-hook 'minibuffer-inactive-mode-hook #'paredit-mode))
+  (add-hook 'eval-expression-minibuffer-setup-hook #'paredit-mode))
 
 (use-package elisp-mode
   :defer t
