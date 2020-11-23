@@ -502,8 +502,9 @@ active, apply to active region instead."
 
 (defun projectile-magit-status ()
   (interactive)
-  (let ((git-root (magit-toplevel))
-        (project-root (projectile-project-root)))
+  (let* ((project-root (projectile-project-root))
+         (default-directory project-root)
+         (git-root (magit-toplevel project-root)))
     (if (string-equal git-root project-root)
         (magit-status)
       (let ((git-directory-name (file-name-base (directory-file-name git-root)))
@@ -513,6 +514,8 @@ active, apply to active region instead."
               (magit-buffer-diff-files (list project-subdir))
               (magit-buffer-log-files (list project-subdir))
               (magit-section-show-child-count nil))
+          (setq projectile-project-root project-root
+                default-directory project-root)
           (rename-buffer (concat "magit: " git-directory-name "/" project-subdir)))))))
 
 (defun random-password (&optional size)
