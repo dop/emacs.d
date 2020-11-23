@@ -1412,6 +1412,7 @@ of code to whatever theme I'm using's background"
   :ensure t
   :commands neotree
   :config
+  (add-hook 'neotree-mode-hook #'hl-line-mode)
   (setq neo-autorefresh t
         neo-smart-open t
         neo-theme 'nerd
