@@ -1380,15 +1380,37 @@ of code to whatever theme I'm using's background"
   (setq lisp-body-indent 2)
   (setq lisp-indent-function 'common-lisp-indent-function))
 
-(use-package slime
-  :disabled t
-  :ensure t
+(use-package lisp-mode
   :config
   (setq inferior-lisp-program "sbcl")
-  (add-hook 'lisp-mode-hook #'slime-mode)
   (add-hook 'lisp-mode-hook #'dp/setup-lisp-mode)
+  (add-hook 'lisp-mode-hook #'paredit-mode))
+
+(defun echo-ps-send-result (result)
+  (message "%s" (with-temp-buffer
+                  (emacs-lisp-mode)
+                  (loop for value in (cdr result) do (insert (format "%s" value)))
+                  (font-lock-ensure)
+                  (buffer-string))))
+
+(defun ps-expand-and-send ()
+  (interactive)
+  (slime-eval-async (list 'swank:eval-and-grab-output
+                          (format "(js-eval:js (js-eval::*js* :wait t) %s)" (slime-sexp-at-point)))
+    #'echo-ps-send-result
+    (slime-current-package)))
+
+(use-package slime
+  :ensure t
+  :defer t
+  :config
+  (add-hook 'lisp-mode-hook #'slime-mode)
   (add-hook 'slime-repl-mode #'paredit-mode)
-  (slime-setup '(slime-fancy slime-indentation slime-company slime-repl-ansi-color)))
+  (slime-setup '(slime-fancy slime-indentation slime-company slime-repl-ansi-color))
+  (load "~/quicklisp/dists/quicklisp/software/Parenscript-2.7.1/extras/js-expander.el")
+  (load "~/quicklisp/log4slime-setup.el")
+  (global-log4slime-mode t)
+  (define-key slime-mode-map (kbd "C-c e") #'ps-expand-and-send))
 
 (use-package sly
   :disabled t
