@@ -35,6 +35,7 @@
 (require 'dp-functions)
 
 (setenv "PAGER" "cat")
+
 (setq comint-input-ignoredups t)
 (setq comint-eol-on-send t)
 (setq comint-scroll-to-bottom-on-output nil)
@@ -65,8 +66,6 @@
 (setq cua-enable-cua-keys t)
 (setq cua-prefix-override-inhibit-delay nil)
 
-(setq gc-cons-threshold (* 20 1024 1024))
-
 (setq debugger-stack-frame-as-list t)
 
 ;; Put system clipboard contents into kill ring before killing so that it's not
@@ -91,10 +90,6 @@
 
 (setq indicate-empty-lines nil
       indicate-buffer-boundaries 'left)
-
-(setq mouse-wheel-scroll-amount '(1 ((shift) . 1))
-      scroll-conservatively most-positive-fixnum
-      scroll-preserve-screen-position t)
 
 (setq backup-directory-alist (\` (("." \, (expand-file-name "~/.emacs.d/backups"))))
       backup-by-copying t
@@ -123,7 +118,7 @@
 
 (delete-selection-mode t)
 
-(setq-default indent-tabs-mode nil)
+(setq indent-tabs-mode nil)
 
 ;; Also auto refresh dired, but be quiet about it
 (setq global-auto-revert-non-file-buffers nil)
@@ -300,7 +295,6 @@
   :config
   (add-hook 'markdown-mode-hook #'visual-line-mode)
   (add-hook 'markdown-mode-hook #'flyspell-mode)
-  (add-hook 'markdown-mode-hook #'variable-pitch-mode)
   (add-hook 'markdown-mode-hook #'dp/scale-text-up))
 
 (use-package groovy-mode
@@ -605,17 +599,17 @@
   :bind (("C-c C-x C-o" . org-clock-out)
          ("C-c C-x C-j" . org-clock-goto)
          ("C-c a" . org-agenda))
+  :init
+  (require 'org-tempo nil t)
   :config
   (add-hook 'org-mode-hook #'org-bullets-mode)
   (add-hook 'org-mode-hook #'visual-line-mode)
-  (add-hook 'org-mode-hook #'variable-pitch-mode)
   ;; (add-hook 'org-mode-hook #'dp/scale-text-up)
   (org-babel-do-load-languages 'org-babel-load-languages
                                '((emacs-lisp . t) (shell . t) (lisp . t)))
   (setq org-babel-lisp-eval-fn #'sly-eval)
   ;; (add-hook 'org-export-before-parsing-hook #'my-insert-shell-prompt)
   (setq org-html-htmlize-output-type 'inline-css)
-  ;; (require 'org-tempo)
 
   (defun dp/org-set-source-code-background (exporter)
     "Insert custom inline css to automatically set the background
@@ -1112,26 +1106,16 @@ of code to whatever theme I'm using's background"
 
 (use-package window-purpose :ensure t)
 
-(use-package perspective :ensure t)
-(use-package persp-projectile :ensure t)
+(use-package perspective
+  :ensure t
+  :config
+  (persp-turn-off-modestring))
 
-(defun dp/projectile-run-applescript-in-project-root (script &rest args)
-  (projectile-with-default-dir (projectile-project-root)
-    (apples-do-applescript
-     (apply #'format script default-directory args))))
-
-(defun dp/projectile-run-terminal.app ()
-  (interactive)
-  (dp/projectile-run-applescript-in-project-root
-   "tell application \"Terminal\"\n    activate\n    tell application \"System Events\" to keystroke \"t\" using command down\n    do script \"cd '%s'\" in selected tab of window 1 of application \"Terminal\"\nend tell"))
-
-(defun dp/projectile-run-iterm ()
-  (interactive)
-  (dp/projectile-run-applescript-in-project-root
-   "tell application \"iTerm\"\n    activate\n    tell window 1\n\tset t to create tab with default profile\n\ttell current session of t\n\t    write text \"cd '%s'\"\n            write text \"echo -ne \\\"\\\\033]0;%s\\\\a\\\"\"\n\tend tell\n    end tell\nend tell"
-   (projectile-project-name)))
+(use-package persp-projectile
+  :ensure t)
 
 (use-package apples-mode
+  :disabled t
   :ensure t
   :commands (apples-do-applescript))
 
@@ -1219,8 +1203,6 @@ of code to whatever theme I'm using's background"
   (setq utop-command "opam config exec -- utop -emacs"
         company-backends (remove 'utop-company-backend company-backends)
         utop-skip-after-eval-phrase t))
-
-(add-to-list 'auto-mode-alist '("\\<butler\\'" . lisp-mode))
 
 (use-package tuareg
   :disabled t
@@ -1414,7 +1396,6 @@ of code to whatever theme I'm using's background"
   :config
   (setq common-lisp-style "classic"
         inferior-lisp-program "sbcl")
-  (add-hook 'lisp-mode-hook #'paredit-mode)
   (add-hook 'sly-editing-mode-hook #'dp/setup-lisp-mode)
   (add-hook 'sly-mrepl-mode-hook #'paredit-mode))
 
@@ -1432,7 +1413,6 @@ of code to whatever theme I'm using's background"
   :commands neotree
   :config
   (setq neo-autorefresh t
-        neo-file-link-face
         neo-smart-open t
         neo-theme 'nerd
         neo-window-fixed-size nil
