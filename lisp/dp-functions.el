@@ -500,23 +500,36 @@ active, apply to active region instead."
     (next-line)
     (indent-for-tab-command))))
 
+(defun dp/get-project-magit-buffer (project-root)
+  (let ((default-directory project-root))
+    (magit-get-mode-buffer #'magit-status-mode)))
+
+(defun dp/update-magit-filters (subdir)
+  (setq magit-buffer-diff-files (list subdir)
+	magit-buffer-log-files (list subdir)
+	magit-section-show-child-count nil))
+
+(defun dp/setup-magit-buffer (git-root project-root)
+  (let ((git-directory-name (file-name-base (directory-file-name git-root)))
+        (project-subdir (directory-file-name (subseq project-root (length git-root)))))
+    (with-current-buffer (magit-setup-buffer #'magit-status-mode nil)
+      (setq projectile-project-root project-root)
+      (dp/update-magit-filters project-subdir)
+      (rename-buffer (concat "magit: " git-directory-name "/" project-subdir)))))
+
 (defun projectile-magit-status ()
   (interactive)
   (let* ((project-root (projectile-project-root))
-         (default-directory project-root)
          (git-root (magit-toplevel project-root)))
     (if (string-equal git-root project-root)
         (magit-status)
-      (let ((git-directory-name (file-name-base (directory-file-name git-root)))
-            (project-subdir (directory-file-name (subseq project-root (length git-root)))))
-        (with-current-buffer
-            (magit-setup-buffer #'magit-status-mode nil
-              (magit-buffer-diff-files (list project-subdir))
-              (magit-buffer-log-files (list project-subdir))
-              (magit-section-show-child-count nil))
-          (setq projectile-project-root project-root
-                default-directory project-root)
-          (rename-buffer (concat "magit: " git-directory-name "/" project-subdir)))))))
+      (if-let ((buf (dp/get-project-magit-buffer project-root)))
+	  (with-current-buffer buf
+	    (unless (equal projectile-project-root project-root)
+	      (dp/update-magit-filters (directory-file-name (subseq project-root (length git-root)))))
+	    (switch-to-buffer buf)
+	    (magit-refresh-buffer))
+	(dp/setup-magit-buffer git-root project-root)))))
 
 (defun random-password (&optional size)
   (remove-if-not
