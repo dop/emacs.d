@@ -36,6 +36,10 @@
 (global-set-key (kbd "M-o") #'other-window)
 (global-set-key (kbd "C-x o") #'other-frame)
 
+(global-set-key (kbd "<f6>") #'profiler-start)
+(global-set-key (kbd "<f7>") #'profiler-report)
+(global-set-key (kbd "<f8>") #'profiler-stop)
+
 (global-set-key (kbd "M-l") #'downcase-dwim)
 
 (global-set-key (kbd "C-x M-d") #'delete-this-buffer-and-file)
