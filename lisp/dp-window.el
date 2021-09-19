@@ -14,11 +14,12 @@ returns a WINDOW with index N."
 DIRECTION can be either lrtb (left to right, top to bottom) or
 tbrl (top to bottom, left to right). Defaults to tblr.  Returns t
 if W1 should precede W2, nil otherwise."
-  (unless direction (setq direction 'tblr))
-  (pcase-let ((`(,l1 ,t1 _ _) (window-edges w1))
-              (`(,l2 ,t2 _ _) (window-edges w2)))
+  (unless direction (setq direction 'lrtb))
+  (pcase-let ((`(,l1 ,t1 ,b1 ,r1) (window-edges w1))
+              (`(,l2 ,t2 ,b2 ,r2) (window-edges w2)))
     (case direction
       (tblr (or (< l1 l2) (and (< t1 t2) (= l1 l2))))
+      (tbrl (or (< l2 l1) (and (< t1 t2) (= l1 l2))))
       (lrtb (or (< t1 t2) (and (< l1 l2) (= t1 t2)))))))
 
 (defun dp/jump-to-window (&optional k)
