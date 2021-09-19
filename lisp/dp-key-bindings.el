@@ -1,4 +1,5 @@
 (global-set-key "\C-w" #'backward-kill-word)
+
 (global-set-key (kbd "M-DEL") #'kill-whole-line)
 (global-set-key "\C-x\C-k" #'kill-region)
 (global-set-key (kbd "C-z") nil)
@@ -44,7 +45,7 @@
 
 (global-set-key (kbd "C-x M-d") #'delete-this-buffer-and-file)
 
-(global-set-key (kbd "<f5>") #'recompile)
+(global-set-key (kbd "<f5>") #'dp/compile)
 (global-set-key (kbd "<f12>") #'projectile-magit-status)
 
 (global-unset-key [right])

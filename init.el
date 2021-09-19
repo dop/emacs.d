@@ -1,6 +1,8 @@
 ;; -*- lexical-binding: t -*-
 ;;; init.el
 
+(setq gc-cons-threshold (* 16 1024 1024))
+
 (add-to-list 'load-path "~/.emacs.d/lisp")
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 (when (file-exists-p (setq custom-file "~/.emacs.d/custom.el"))
@@ -11,8 +13,8 @@
 
 (setq package-archives
       '(("gnu" . "http://elpa.gnu.org/packages/")
-        ("melpa" . "http://melpa.org/packages/")
-        ("melpa-stable" . "https://stable.melpa.org/packages/")))
+        ("melpa-stable" . "https://stable.melpa.org/packages/")
+        ("melpa" . "http://melpa.org/packages/")))
 
 (setq package-enable-at-startup nil)
 (package-initialize)
@@ -118,7 +120,7 @@
 
 (delete-selection-mode t)
 
-(setq indent-tabs-mode nil)
+(setq-default indent-tabs-mode nil)
 
 ;; Also auto refresh dired, but be quiet about it
 (setq global-auto-revert-non-file-buffers nil)
@@ -149,7 +151,7 @@
 ;; (defun dp/ppro-prettify-symbols ()
 ;;   (prettify-ppro-add-symbols)
 ;;   (prettify-symbols-mode t))
-;; (add-hook 'prog-mode-hook #'dp/ppro-prettify-symbols)
+;; (remove-hook 'prog-mode-hook #'dp/ppro-prettify-symbols)
 ;; (setq prettify-symbols-unprettify-at-point t)
 
 (add-hook 'prog-mode-hook #'turn-on-show-trailing-whitespace)
@@ -345,6 +347,15 @@
   (add-to-list 'ffap-alist '(typescript-mode . davazp/ffap-nodejs-module) t)
   (add-to-list 'ffap-alist '(flowtype-mode . davazp/ffap-nodejs-module) t))
 
+(use-package which-key
+  :ensure t
+  :defer t
+  :diminish which-key-mode
+  :init (which-key-mode t)
+  :config
+  (setq which-key-add-column-padding 4
+        which-key-max-display-columns 3))
+
 (use-package nodejs-repl
   :ensure t)
 
@@ -457,7 +468,8 @@
                ("C-n" . company-select-next)
                ("C-p" . company-select-previous)))
   :config
-  (setq company-idle-delay 0.1))
+  (setq company-idle-delay 0.1
+        company-tooltip-align-annotations t))
 
 (use-package dictionary
   :ensure t
@@ -514,11 +526,35 @@
     (error (message "Invalid expression")
            (insert (current-kill 0)))))
 
+(defun delete-whitespace-backwards ()
+  (let ((count 0))
+    (while (member (char-before) '(?\n ?\t ?\ ))
+      (incf count)
+      (delete-char -1))
+    (and (plusp count) count)))
+
 (use-package paredit
   :ensure t
   :commands paredit-mode
   :config
-  (add-hook 'eval-expression-minibuffer-setup-hook #'paredit-mode))
+  (add-hook 'eval-expression-minibuffer-setup-hook #'paredit-mode)
+  (add-hook 'lisp-data-mode-hook #'paredit-mode)
+
+  (define-key paredit-mode-map (kbd "C-w") #'paredit-backward-kill-word)
+  (define-key paredit-mode-map (kbd "C-c [") #'paredit-forward-slurp-sexp)
+  (define-key paredit-mode-map (kbd "C-c ]") #'paredit-forward-barf-sexp)
+
+  (defadvice paredit-forward-delete (around collapse-whitespace activate)
+    (interactive "P")
+    (let ((r "[\s\n]+"))
+      (if (looking-at-p r)
+          (kill-region (point) (search-forward-regexp r nil t))
+        ad-do-it)))
+
+  (defadvice paredit-backward-delete (around collapse-whitespace activate)
+    (interactive "P")
+    (unless (delete-whitespace-backwards)
+      ad-do-it)))
 
 (use-package elisp-mode
   :defer t
@@ -593,6 +629,10 @@
               (end-of-line)
               (skip-chars-forward "\n\s-" end-body))))))
 
+(use-package typo
+  :ensure t
+  :commands typo-mode)
+
 (use-package org
   :ensure t
   :mode ("\\.org$" . org-mode)
@@ -607,7 +647,7 @@
   ;; (add-hook 'org-mode-hook #'dp/scale-text-up)
   (org-babel-do-load-languages 'org-babel-load-languages
                                '((emacs-lisp . t) (shell . t) (lisp . t)))
-  (setq org-babel-lisp-eval-fn #'sly-eval)
+  ;; (setq org-babel-lisp-eval-fn #'slime-eval)
   ;; (add-hook 'org-export-before-parsing-hook #'my-insert-shell-prompt)
   (setq org-html-htmlize-output-type 'inline-css)
 
@@ -661,6 +701,7 @@ of code to whatever theme I'm using's background"
 
 (use-package magit
   :ensure t
+  :diminish auto-revert-mode
   :config
   (bind-keys
    :map magit-mode-map
@@ -857,14 +898,8 @@ of code to whatever theme I'm using's background"
     (or sbt:buffer-project-root
         (locate-dominating-file default-directory #'sbt:project-directory-p))))
 
-(use-package smartparens
-  :disabled t
-  :ensure t
-  :config
-  (sp-local-pair '(js2-mode javascript-mode typescript-mode) "`" "`"))
-
 (use-package subword-mode
-  :diminish t
+  :diminish subword-mode
   :commands subword-mode)
 
 (use-package js2-refactor
@@ -880,62 +915,20 @@ of code to whatever theme I'm using's background"
   :config
   (add-hook 'json-mode-hook 'flycheck-mode))
 
-(defun js-to-json (start end &optional arg)
-  (interactive "r\nP")
-  (let ((js-value (buffer-substring start end)))
-    (kill-region start end)
-    (insert (with-temp-buffer
-              (insert "console.log(JSON.stringify(" js-value "))")
-              (call-process-region (point-min) (point-max) "node" t t)
-              (when arg (json-mode-beautify))
-              (buffer-string)))))
-
-(require 'flowtype-mode)
-
-(use-package prettier-js
-  :ensure t
-  :commands (prettier-js-mode prettier-js)
-  :config
-  (setq prettier-js-args nil))
+(use-package prettier
+  :pin "melpa-stable"
+  :ensure t)
 
 (use-package eslint-fix
   :ensure t
   :commands eslint-fix)
-
-(defun dp/setup-eslint-fix ()
-  (add-hook 'after-save-hook #'eslint-fix nil t))
-
-(use-package xref-js2
-  :ensure t
-  :commands (xref-find-definitions xref-find-references))
-
-(use-package js2-highlight-vars
-  :diminish t
-  :ensure t
-  :commands js2-highlight-vars-mode
-  :config
-  (defun js2--do-highlight-vars-ignore-errors (js2--do-highlight-vars)
-    (ignore-errors
-      (funcall js2--do-highlight-vars)))
-  (advice-add 'js2--do-highlight-vars :around #'js2--do-highlight-vars-ignore-errors))
-
-(defun dp/setup-xref-js2 ()
-  (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t))
-
-(defun dp/js2-jump-to-definition ()
-  (interactive)
-  (condition-case nil
-      (call-interactively #'js2-jump-to-definition)
-    (error
-     (call-interactively #'xref-find-definitions))))
 
 (use-package js2-mode
   :ensure t
   :commands js2-mode
   :bind (:map js2-mode-map
               ([tab] . nil)
-              ("M-." . dp/js2-jump-to-definition)
-              ("C-w" . backward-kill-word)
+              ;; ("C-w" . backward-kill-word)
               ("M-d" . kill-word)
               ("M-<up>" . js2r-move-line-up)
               ("M-<down>" . js2r-move-line-down))
@@ -945,8 +938,6 @@ of code to whatever theme I'm using's background"
   (add-hook 'js2-mode-hook #'js2-refactor-mode)
   (add-hook 'js2-mode-hook #'flycheck-mode)
   (add-hook 'js2-mode-hook #'js2-highlight-vars-mode)
-  ;; (add-hook 'js2-mode-hook #'prettier-js-mode)
-  ;; (add-hook 'js2-mode-hook #'dp/setup-eslint-fix)
   (add-hook 'js2-mode-hook #'dp/setup-xref-js2)
   (defadvice js--multi-line-declaration-indentation
       (around js2/disable-multi-line-identation activate)
@@ -969,7 +960,7 @@ of code to whatever theme I'm using's background"
 
 (use-package rjsx-mode
   :ensure t
-  :mode "\\.jsx?\\'"
+  :mode "\\.\\(jsx?\\|mjs\\)\\'"
   :config
   (advice-add 'rjsx-delete-creates-full-tag :around #'dp/rjsx-delete-creates-full-tag-or-hungry-delete))
 
@@ -982,41 +973,24 @@ of code to whatever theme I'm using's background"
 
 (advice-add #'js-jsx-indent-line :after #'jsx-indent-line-align-closing-bracket)
 
-(use-package stupid-indent-mode
-  :disabled t
+(use-package lsp-mode
   :ensure t
-  :commands (stupid-indent-mode))
-
-(use-package tide
-  :ensure t
-  :commands (tide-setup))
-
-(defun setup-typescript-with-tide ()
-  (tide-setup)
-  (eldoc-mode t)
-  (subword-mode t)
-  (tide-hl-identifier-mode t)
-  (flycheck-mode t)
-  (setq company-tooltip-align-annotations t)
-  (company-mode t))
+  :pin "melpa-stable"
+  :hook ((lsp-mode . lsp-enable-which-key-integration)))
 
 (use-package typescript-mode
   :ensure t
-  :mode "\\.tsx?$"
-  :bind (:map typescript-mode-map
-              ("C-c ." . tide-references))
+  :mode "\\.ts'"
+  :hook ((typescript-mode . lsp)
+         (typescript-mode . subword-mode))
   :config
-  (setq typescript-indent-level 2
-        tide-completion-detailed t
-        tide-format-options
-        '(:insertSpaceAfterOpeningAndBeforeClosingNonemptyParenthesis nil
-          :insertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets nil
-          :insertSpaceAfterOpeningAndBeforeClosingTemplateStringBraces nil
-          :insertSpaceAfterOpeningAndBeforeClosingJsxExpressionBraces nil
-          :insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces nil
-          :placeOpenBraceOnNewLineForFunctions nil))
-  (remove-hook 'before-save-hook 'tide-format-before-save)
-  (add-hook 'typescript-mode-hook #'setup-typescript-with-tide))
+  (setq typescript-indent-level 2)
+  :init
+  (define-derived-mode tsx-mode typescript-mode "tsx")
+  (add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-mode)))
+
+(defvar compilation-typescript-error-regexp-alist
+  '(typescript-nglint-warning typescript-nglint-error typescript-tslint typescript-tsc-pretty typescript-tsc))
 
 (defcustom jest-test-command-template "npx %s jest %s %s" nil)
 
@@ -1030,6 +1004,7 @@ of code to whatever theme I'm using's background"
 
 (use-package jest-test-mode
   :ensure t
+  :diminish jest-test-mode
   :commands jest-test-mode
   :init
   (add-hook 'typescript-mode-hook #'jest-test-mode))
@@ -1082,37 +1057,31 @@ of code to whatever theme I'm using's background"
   :ensure t
   :commands flycheck-elm-setup)
 
-(use-package eproject
+(use-package window-purpose
   :disabled t
-  :ensure t
-  :diminish eproject-mode
-  :commands define-project-type
-  :init
-  (require 'flycheck)
-  (require 'dp-eproject)
-  (define-project-type maven (generic)
-    (look-for "pom.xml")
-    :relevant-files ("\\.scala$" "\\.java$" "\\.xml$"))
-  (eproject-set-key "t" 'eproject-tasks-run)
-  (eproject-set-key "s" 'eproject-open-term)
-  (add-hook 'generic-project-file-visit-hook #'eproject-set-local-keys)
-  (add-hook 'generic-project-file-visit-hook #'eproject-setup-exec-path)
-  (add-hook 'generic-project-file-visit-hook #'eproject-eslint)
-  (add-hook 'generic-project-file-visit-hook #'eproject-jshint)
-  (add-hook 'generic-project-file-visit-hook #'eproject-flowtype)
-  (add-hook 'generic-git-project-file-visit-hook 'eproject-set-git-generic-keys)
-  ;;
-  (remove-hook 'after-change-major-mode-hook #'eproject--after-change-major-mode-hook))
-
-(use-package window-purpose :ensure t)
+  :ensure t)
 
 (use-package perspective
+  :disabled t
   :ensure t
   :config
   (persp-turn-off-modestring))
 
-(use-package persp-projectile
-  :ensure t)
+(defun project-my-project (dir)
+  (let ((root (locate-dominating-file dir ".dir-locals.el")))
+    (and root (cons 'my-project root))))
+
+(cl-defmethod project-roots ((project (head my-project)))
+  (list (cdr project)))
+
+(cl-defmethod project-ignores ((project (head my-project)) dir)
+  (append (list "node_modules/" "dist/" "coverage/" ".log/")
+          (mapcar (lambda (dir) (concat dir "/"))
+                  vc-directory-exclusion-list)))
+
+(use-package project
+  :config
+  (add-hook 'project-find-functions #'project-my-project))
 
 (use-package apples-mode
   :disabled t
@@ -1130,22 +1099,6 @@ of code to whatever theme I'm using's background"
       (dp/git-dir-p file)
       (dp/node-modules-project-p file)))
 
-(use-package projectile
-  :ensure t
-  :config
-  (setq projectile-mode-line '(:eval (format " proj[%s]" (projectile-project-name))))
-  (add-to-list 'projectile-project-root-files "package.json")
-  (bind-keys :map projectile-mode-map
-             ("C-c p x t" . dp/projectile-run-iterm))
-  (when (boundp 'projectile-command-map)
-    (define-key projectile-mode-map "\C-cp" #'projectile-command-map))
-  :init
-  (setq projectile-project-root-files-functions
-        '(projectile-root-top-down projectile-root-top-down-recurring projectile-root-local projectile-root-bottom-up)
-        projectile-ignored-project-function #'dp/ignored-project-p)
-  (projectile-global-mode t)
-  (persp-mode t))
-
 (use-package ag
   :ensure t
   :commands ag)
@@ -1155,11 +1108,6 @@ of code to whatever theme I'm using's background"
   :commands helm-ag
   :bind (:map helm-ag-mode-map
               ("C-x C-q" . wgrep-change-to-wgrep-mode)))
-
-(use-package helm-projectile
-  :ensure t
-  :init
-  (define-key projectile-command-map (kbd "s s") #'helm-projectile-ag))
 
 (use-package php-mode
   :disabled t
@@ -1347,7 +1295,7 @@ of code to whatever theme I'm using's background"
 (use-package inf-lisp
   :defer t
   :config
-  (setq inferior-lisp-program "sbcl"))
+  (setq inferior-lisp-program "sbcl --dynamic-space-size 2048"))
 
 (use-package paren-face
   :ensure t
@@ -1400,12 +1348,19 @@ of code to whatever theme I'm using's background"
     #'echo-ps-send-result
     (slime-current-package)))
 
+(defun override-slime-repl-bindings-with-paredit ()
+  (define-key slime-repl-mode-map
+    (read-kbd-macro paredit-backward-delete-key) nil))
+
 (use-package slime
   :ensure t
   :defer t
   :config
+  ;; Unblocks eldoc while using slime-watch.
+  (setq slime-inhibit-pipelining nil)
   (add-hook 'lisp-mode-hook #'slime-mode)
-  (add-hook 'slime-repl-mode #'paredit-mode)
+  (add-hook 'slime-repl-mode-hook #'paredit-mode)
+  (add-hook 'slime-repl-mode-hook #'override-slime-repl-bindings-with-paredit)
   (slime-setup '(slime-fancy slime-indentation slime-company slime-repl-ansi-color))
   (load "~/quicklisp/dists/quicklisp/software/Parenscript-2.7.1/extras/js-expander.el")
   (load "~/quicklisp/log4slime-setup.el")
@@ -1434,12 +1389,17 @@ of code to whatever theme I'm using's background"
   :ensure t
   :commands neotree
   :config
-  (add-hook 'neotree-mode-hook #'hl-line-mode)
-  (setq neo-autorefresh t
-        neo-smart-open t
-        neo-theme 'nerd
-        neo-window-fixed-size nil
-        neo-window-width 30))
+  (add-hook 'neotree-mode-hook #'hl-line-mode))
+
+(use-package dimmer
+  :disabled t
+  :ensure t
+  :init
+  (dimmer-mode t)
+  :config
+  (dimmer-configure-helm)
+  (dimmer-configure-magit)
+  (dimmer-configure-org))
 
 (use-package mini-frame
   :disabled t
@@ -1450,6 +1410,7 @@ of code to whatever theme I'm using's background"
 
 (use-package super-save
   :ensure t
+  :diminish super-save-mode
   :config
   (add-hook 'prog-mode-hook #'super-save-mode)
   (setq super-save-auto-save-when-idle nil
@@ -1471,6 +1432,9 @@ of code to whatever theme I'm using's background"
   (ns-auto-titlebar-mode t)
   (setq ns-use-thin-smoothing t
         ns-use-srgb-colorspace t))
+
+(when (eq 'mac (window-system))
+  (mac-auto-operator-composition-mode t))
 
 (dp/update-environment)
 

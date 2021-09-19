@@ -121,26 +121,19 @@ max points of current buffer if there is no selected region."
           do (ignore-errors
                (face-spec-reset-face face)))))
 
-(defun disable-all-themes ()
-  ;; (dp/reset-custom-user-faces)
-  (dolist (enabled-theme custom-enabled-themes)
-    (disable-theme enabled-theme)))
-
 (defun toggle-theme (theme)
   "Enables or disables a THEME."
   (if (custom-theme-enabled-p theme)
       (disable-theme theme)
     (load-theme theme t)))
 
+;; Essentially counsel-load-theme
 (defun switch-to-theme (theme &rest custom-faces)
-  (declare (indent 1))
   "Enables THEME and disable all others."
-  (interactive
-   (list
-    (intern (completing-read "Load theme: "
-			     (mapcar 'symbol-name
-				     (custom-available-themes))))))
-  (disable-all-themes)
+  (declare (indent 1))
+  (interactive (list (intern (completing-read "Load theme: " (custom-available-themes)))))
+  (dolist (enabled-theme custom-enabled-themes)
+    (disable-theme enabled-theme))
   (load-theme theme t)
   (when custom-faces
     (apply #'custom-theme-set-faces theme custom-faces)))
@@ -500,33 +493,28 @@ active, apply to active region instead."
     (next-line)
     (indent-for-tab-command))))
 
-(defun dp/get-project-magit-buffer (project-root)
-  (let ((default-directory project-root))
-    (magit-get-mode-buffer #'magit-status-mode)))
-
-(defun dp/update-magit-filters (subdir)
-  (setq magit-buffer-diff-files (list subdir)
-	magit-buffer-log-files (list subdir)
-	magit-section-show-child-count nil))
-
 (defun dp/setup-magit-buffer (git-root project-root)
   (let ((git-directory-name (file-name-base (directory-file-name git-root)))
         (project-subdir (directory-file-name (subseq project-root (length git-root)))))
-    (with-current-buffer (magit-setup-buffer #'magit-status-mode nil)
-      (setq projectile-project-root project-root)
-      (dp/update-magit-filters project-subdir)
+    (with-current-buffer (magit-setup-buffer #'magit-status-mode nil
+			   (magit-buffer-diff-files (list project-subdir))
+			   (magit-buffer-log-files (list project-subdir))
+			   (magit-section-show-child-count nil))
       (rename-buffer (concat "magit: " git-directory-name "/" project-subdir)))))
 
 (defun projectile-magit-status ()
   (interactive)
-  (let* ((project-root (projectile-project-root))
+  (let* ((project-root (expand-file-name (cdr (project-current))))
          (git-root (magit-toplevel project-root)))
     (if (string-equal git-root project-root)
         (magit-status)
-      (if-let ((buf (dp/get-project-magit-buffer project-root)))
+      (if-let ((buf (let ((default-directory project-root))
+		      (magit-get-mode-buffer #'magit-status-mode))))
 	  (with-current-buffer buf
-	    (unless (equal projectile-project-root project-root)
-	      (dp/update-magit-filters (directory-file-name (subseq project-root (length git-root)))))
+	    (let ((subdir (directory-file-name (subseq project-root (length git-root)))))
+	      (setq magit-buffer-diff-files (list subdir)
+		    magit-buffer-log-files (list subdir)
+		    magit-section-show-child-count nil))
 	    (switch-to-buffer buf)
 	    (magit-refresh-buffer))
 	(dp/setup-magit-buffer git-root project-root)))))
@@ -556,5 +544,31 @@ active, apply to active region instead."
 (defun dp/spec-overview ()
   (interactive)
   (helm-swoop :query "\\<\\(x\\|f\\)?\\(describe\\|it\\)\\(\\.\\(skip\\|only\\|todo\\)\\)?\\>("))
+
+(defun dp/drop-project-root (file-name)
+  (s-replace (expand-file-name (cdr (project-current))) "" file-name))
+
+(defun dp/compile (fresh)
+  (interactive "P")
+  (let ((file-name (buffer-file-name)))
+    (if file-name
+      (let ((default-directory (or (cdr (project-current)) default-directory))
+            (test-file-name (car (file-expand-wildcards (format "%s.(spec|e2e|test).*" (file-name-sans-extension file-name))))))
+        (cond
+         ((string-match ".\\(spec\\|e2e\\|test\\).\\(js\\|ts\\)x?$" file-name)
+          (compile (jest-test-command (dp/drop-project-root file-name))))
+         (test-file-name
+          (compile (jest-test-command (dp/drop-project-root test-file-name))))
+         ((and (not fresh)
+               compilation-directory
+               (s-contains-p default-directory compilation-directory))
+          (recompile))
+         (t
+          (let ((test-target (projectile-completing-read
+                              "Find test file or directory: "
+                              (append (projectile-project-files default-directory)
+                                      (projectile-project-dirs default-directory)))))
+            (compile (jest-test-command test-target))))))
+      (recompile))))
 
 (provide 'dp-functions)
