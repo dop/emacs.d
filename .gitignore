@@ -6,6 +6,5 @@
 /data/
 /recentf
 *.cache
-/custom.el
 /projects
 /eln-cache/
