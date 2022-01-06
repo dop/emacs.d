@@ -7,8 +7,6 @@
 (global-set-key (kbd "M-u") #'upcase-dwim)
 (global-set-key (kbd "C-x M-d") #'delete-this-buffer-and-file)
 
-(global-set-key (kbd "M-o") #'other-window)
-
 (comment
  (global-set-key (kbd "M-1") #'dp/jump-to-window)
  (global-set-key (kbd "M-2") #'dp/jump-to-window)
