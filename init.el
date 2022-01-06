@@ -108,7 +108,8 @@
   (add-hook 'compilation-mode-hook #'toggle-truncate-lines))
 
 (use-package whitespace-cleanup-mode
-  :init (global-whitespace-cleanup-mode t))
+  :init (global-whitespace-cleanup-mode t)
+  :config (setf (cdr (assoc 'whitespace-cleanup-mode minor-mode-alist)) (list " _")))
 
 (defvar whitespace-characters
   '(?\n ?\r ?\t ?\ ))
@@ -140,76 +141,93 @@
    (emacs-lisp-mode . paredit-mode)
    (lisp-mode . paredit-mode)
    (lisp-data-mode . paredit-mode)
-   (eval-expression-minibuffer-setup . paredit-mode))
+   (eval-expression-minibuffer-setup . paredit-mode)
+   (sly-mrepl-mode . paredit-mode))
   :config
   (define-key paredit-mode-map (kbd "C-w") #'paredit-backward-kill-word)
   (define-key paredit-mode-map (kbd "C-c [") #'paredit-forward-slurp-sexp)
   (define-key paredit-mode-map (kbd "C-c ]") #'paredit-forward-barf-sexp)
 
   (advice-add 'paredit-kill :around #'paredit-kill-dwim)
+  (advice-add 'paredit-backward-kill-word :around #'paredit-kill-dwim)
   (advice-add 'paredit-forward-delete :around #'paredit-forward-delete-whitespace)
   (advice-add 'paredit-backward-delete :around #'paredit-backward-delete-whitespace))
-
-(use-package org-bullets
-  :hook ((org-mode . org-bullets-mode)))
 
 (use-package org
   :mode ("\\.org\\'" . org-mode)
   :config
-  (add-hook 'org-mode-hook #'turn-on-show-trailing-whitespace)
-  (add-hook 'org-mode-hook #'visual-line-mode)
+  (require 'org-tempo)
+  (dolist (hook (list #'turn-on-show-trailing-whitespace
+                      #'visual-line-mode
+                      #'variable-pitch-mode
+                      #'flyspell-mode))
+    (add-hook 'org-mode-hook hook))
+
   (org-babel-do-load-languages 'org-babel-load-languages
                                '((emacs-lisp . t) (shell . t) (lisp . t))))
 
 (use-package git-timemachine)
 
 (use-package json-mode
+  :pin gnu
   :mode "\\.\\(json\\|babelrc\\|jshintrc\\|eslintrc\\|bowerrc\\|json\\.erb\\|watchmanconfig\\)\\'")
 
 (use-package prettier)
+
+(use-package flymake :pin gnu :defer t)
 
 (use-package flymake-eslint
   :bind (:map flymake-mode-map ("C-x `" . flymake-goto-next-error))
   :hook
   ((js-mode . flymake-eslint-enable)
-   (typescript-mode . flymake-eslint-enable))
-  :custom
-  ((flymake-eslint-defer-binary-check t)))
+   (typescript-mode . flymake-eslint-enable)))
 
-(use-package js
-  :config (add-hook 'js-mode-hook #'subword-mode))
+(use-package eglot :pin gnu)
 
-(use-package typescript-mode
-  :mode "\\.ts\\'"
-  :config
-  ;; (add-hook 'typescript-mode-hook #'lsp)
-  (add-hook 'typescript-mode-hook #'subword-mode)
-  :init
-  (define-derived-mode tsx-mode typescript-mode "tsx")
-  (add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-mode)))
+(use-package subword
+  :hook ((js-mode . subword-mode)
+         (typescript-mode . subword-mode)))
 
-(defvar compilation-typescript-error-regexp-alist
-  '(typescript-nglint-warning typescript-nglint-error typescript-tslint typescript-tsc-pretty typescript-tsc))
+(use-package editorconfig
+  :config (editorconfig-mode t))
+
+(use-package typescript-mode :mode "\\.ts\\'")
+
+(define-derived-mode tsx-mode typescript-mode "tsx")
+(add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-mode))
 
 (use-package string-edit)
 
-(defun project-dir-locals-project (dir)
-  (let ((root (locate-dominating-file dir ".dir-locals.el")))
-    (and root (cons 'dir-locals root))))
-
-(cl-defmethod project-roots ((project (head dir-locals)))
-  (list (cdr project)))
-
-(cl-defmethod project-ignores ((project (head dir-locals)) dir)
-  (cons ".log/"
-        (mapcar (lambda (dir) (concat dir "/"))
-                vc-directory-exclusion-list)))
-
-(advice-add 'risky-local-variable-p :override #'ignore)
-
 (use-package project
+  :pin gnu
   :config
-  (add-hook 'project-find-functions #'project-dir-locals-project))
+  (advice-add 'risky-local-variable-p :override #'ignore)
+
+  (defun project-dir-locals-project (dir)
+    (let ((root (locate-dominating-file dir ".dir-locals.el")))
+      (and root (cons 'dir-locals root))))
+
+  (cl-defmethod project-roots ((project (head dir-locals)))
+    (list (cdr project)))
+
+  (cl-defmethod project-ignores ((project (head dir-locals)) dir)
+    (mapcar (lambda (dir) (concat dir "/"))
+            vc-directory-exclusion-list))
+
+  (add-hook 'project-find-functions #'project-dir-locals-project)
+
+  (defun project-npm-project (dir)
+    (let ((root (locate-dominating-file dir "package.json")))
+      (and root (cons 'npm root))))
+
+  (cl-defmethod project-roots ((project (head npm)))
+    (list (cdr project)))
+
+  (cl-defmethod project-ignores ((project (head npm)) dir)
+    (mapcar (lambda (dir) (concat dir "/"))
+            vc-directory-exclusion-list))
+
+  (add-hook 'project-find-functions #'project-npm-project))
 
 (use-package olivetti)
 (use-package csv-mode :mode "\\.csv\\'")
@@ -217,44 +235,12 @@
 (use-package protobuf-mode :mode "\\.proto\\'")
 
 (use-package ns-auto-titlebar
-  :init
-  (ns-auto-titlebar-mode t)
-  (when (eq 'ns (window-system))
-    (setq ns-use-thin-smoothing t
-          ns-use-srgb-colorspace t)))
+  :if (eq 'ns (window-system))
+  :init (ns-auto-titlebar-mode t))
 
-(defun echo-ps-send-result (result)
-  (message "%s" (with-temp-buffer
-                  (emacs-lisp-mode)
-                  (loop for value in (cdr result) do (insert (format "%s" value)))
-                  (font-lock-ensure)
-                  (buffer-string))))
-
-(defun ps-expand-and-send ()
-  (interactive)
-  (slime-eval-async (list 'swank:eval-and-grab-output
-                          (format "(js-eval:js (js-eval::*js* :wait t) %s)" (slime-sexp-at-point)))
-    #'echo-ps-send-result
-    (slime-current-package)))
-
-(defun override-slime-repl-bindings-with-paredit ()
-  (define-key slime-repl-mode-map
-    (read-kbd-macro paredit-backward-delete-key) nil))
-
-(use-package slime
-  :ensure t
-  :pin melpa-stable
-  :defer t
-  :config
-  ;; Unblocks eldoc while using slime-watch.
-  (setq slime-inhibit-pipelining nil)
-  (add-hook 'lisp-mode-hook #'slime-mode)
-  (add-hook 'slime-repl-mode-hook #'paredit-mode)
-  (add-hook 'slime-repl-mode-hook #'override-slime-repl-bindings-with-paredit)
-  (slime-setup '(slime-fancy slime-indentation slime-company slime-repl-ansi-color))
-  (load "~/quicklisp/dists/quicklisp/software/Parenscript-2.7.1/extras/js-expander.el")
-  (load "~/quicklisp/log4slime-setup.el")
-  (global-log4slime-mode t)
-  (define-key slime-mode-map (kbd "C-c e") #'ps-expand-and-send))
+(use-package sly
+  :hook ((lisp-mode . sly-editing-mode)))
 
 (use-package neotree)
+
+(use-package yoshi :commands yoshi-project-mode)

@@ -1,6 +1,6 @@
 ;; -*- lexical-binding: t; -*-
 
-(global-set-key (kbd "C-w") #'backward-kill-word)
+(global-set-key (kbd "C-w") #'kill-region-or-backward-word)
 (global-set-key (kbd "C-k") #'kill-region-or-line)
 (global-set-key (kbd "C-z") nil)
 (global-set-key (kbd "M-l") #'downcase-dwim)

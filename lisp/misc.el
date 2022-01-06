@@ -60,12 +60,22 @@ characters."
         (kill-buffer buffer)
         (message "File '%s' successfully removed" filename)))))
 
+(defun kill-region-or (command)
+  "Interactively call `kill-region', if one is active, or COMMAND."
+  (call-interactively
+   (if (use-region-p) #'kill-region command)))
+
 (defun kill-region-or-line ()
   "If the region is active and non-empty, call `kill-region'.
 Otherwise, call `kill-line'."
   (interactive)
-  (call-interactively
-   (if (use-region-p) #'kill-region #'kill-line)))
+  (kill-region-or #'kill-line))
+
+(defun kill-region-or-backward-word ()
+  "If the region is active and non-empty, call `kill-region'.
+Otherwise, call `backward-kill-word'."
+  (interactive)
+  (kill-region-or #'backward-kill-word))
 
 (defun ediff-last-2-yanks ()
   "Run ediff on latest two entries in `kill-ring'."
@@ -117,8 +127,16 @@ Otherwise, call `kill-line'."
 
 (defun compile-file (file)
   (interactive (list (or (buffer-file-name) (read-file-name "File: "))))
-  (destructuring-bind (_ . dir) (project-current)
-    (let ((default-directory (or dir default-directory)))
-      (compile (concat compile-command file)))))
+  (pcase (project-current)
+    (`(,_ . ,dir)
+     (let ((default-directory (or dir default-directory)))
+       (compile (concat compile-command file))))))
+
+(defun open-dictionary-app (text)
+  (interactive
+   (list (if (use-region-p)
+             (buffer-substring-no-properties (region-beginning) (region-end))
+           (read-string "Word or phrase: " (word-at-point t)))))
+  (shell-command (concat "open dict://" (url-encode-url text))))
 
 (provide 'misc)
