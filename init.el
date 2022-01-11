@@ -2,6 +2,7 @@
 
 (setenv "TERM" "dumb")
 (setenv "PAGER" "cat")
+(setenv "EDITOR" "emacsclient")
 
 (load-file (setq custom-file "~/.emacs.d/custom.el"))
 (add-to-list 'load-path "~/.emacs.d/lisp")
