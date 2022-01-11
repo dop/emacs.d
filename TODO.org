@@ -1,0 +1,2 @@
+* TODO smarter extract of npm test script for compile-command
+* TODO org-book-mode
