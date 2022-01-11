@@ -1,42 +1,50 @@
 ;; -*- lexical-binding: t; -*-
 
+(require 'eglot)
+(require 'flymake-eslint)
 (require 'project-tools)
 
-(defmacro with-npm-project (expr &rest body)
-  (declare (indent 1))
-  (cond
-   ((null expr)        `(when (project-npm-p) ,@body))
-   ((consp (car expr)) `(when (project-npm-p) (when-let ,expr ,@body)))
-   (t                  `(when (and (project-npm-p) ,expr) ,@body))))
+(defvar-local yoshi-local-project-overrides nil
+  "Saves a list of overriden buffer variables so that they can be
+clear when mode is turned off.")
 
-(defun yoshi-prettier ()
-  (with-npm-project (project-has-node-script-p "prettier")
-    (prettier-mode t)))
+(defmacro yoshi-set (&rest pairs)
+  `(progn
+     ,@(cl-loop for (name _) on pairs by #'cddr
+                collect `(push ',name yoshi-local-project-overrides))
+     (setq-local ,@pairs)))
 
-(defun yoshi-eslint ()
-  (with-npm-project ((eslint (project-has-node-script-p "eslint")))
-    (setq-local flymake-eslint-executable-name eslint)
-    (flymake-eslint-enable)))
+(defun yoshi--setup-compilation (project)
+  (let ((yoshi (or (project-has-node-script-p project "yoshi-flow-editor")
+                   (project-has-node-script-p project "yoshi-flow-bm")
+                   (error "Cannot find yoshi in %s." (cdr project))))
+        (sled (or (project-has-node-script-p project "sled-test-runner")
+                  (error "Cannot find sled in %s." (cdr project)))))
+    (yoshi-set
+     compilation-error-regexp-alist '(jest)
+     compile-command (if (locate-dominating-file "." "sled.config")
+                         (concat sled " local -f ")
+                       (concat yoshi " test --color ")))))
 
-(defun yoshi-set-compile-command ()
-  (with-npm-project ((yfe (project-has-node-script-p "yoshi-flow-editor")))
-    (setq-local compile-command (concat yfe " test --color "))))
-
-(defun yoshi-set-eglot-server-program ()
-  (with-npm-project ((tslib (project-has-file-p "node_modules/typescript/lib")))
-    (setq-local eglot-server-programs
-                (cons (list 'typescript-mode
-                            "typescript-language-server"
-                            "--stdio"
-                            "--tsserver-path" tslib)
-                      eglot-server-programs))))
+(defun yoshi--setup-typescript (project)
+  (yoshi-set
+   eglot-stay-out-of '(flymake-diagnostic-functions)
+   eglot-server-programs (list (list '(typescript-mode tsx-mode) "typescript-language-server" "--stdio" "--tsserver-path"
+                                     (project-has-file-p project "node_modules/typescript/lib")))
+   flymake-eslint-executable-name (project-has-node-script-p project "eslint")
+   flymake-diagnostic-functions '(flymake-eslint--checker eglot-flymake-backend))
+  (prettier-mode t)
+  (eglot-ensure))
 
 (define-minor-mode yoshi-project-mode "Yoshi for Emacs."
   :lighter " 🦖"
-  (when yoshi-project-mode
-    (yoshi-prettier)
-    (yoshi-eslint)
-    (yoshi-set-compile-command)
-    (yoshi-set-eglot-server-program)))
+  (cond
+   (yoshi-project-mode
+    (when-let ((project (project-current)))
+      (yoshi--setup-compilation project)
+      (when (derived-mode-p 'typescript-mode)
+        (yoshi--setup-typescript project))))
+   (t
+    (mapc #'kill-local-variable yoshi-local-project-overrides))))
 
 (provide 'yoshi)

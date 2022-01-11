@@ -6,12 +6,11 @@
 (load-file (setq custom-file "~/.emacs.d/custom.el"))
 (add-to-list 'load-path "~/.emacs.d/lisp")
 
-(require 'misc)
 (require 'key-bindings)
 
-(scroll-bar-mode -1)
-(tool-bar-mode -1)
-(when (not (eq system-type 'darwin))
+;; (scroll-bar-mode -1)
+;; (tool-bar-mode -1)
+(unless (eq window-system 'ns)
   (menu-bar-mode -1))
 
 (put 'downcase-region 'disabled nil)
@@ -60,15 +59,22 @@
 
 (advice-add 'use-package :before #'activate-before-use-package)
 
+(defun make-text-smaller () (text-scale-adjust -2))
+
+(add-hook 'help-mode-hook             #'make-text-smaller)
+(add-hook 'apropos-mode-hook          #'make-text-smaller)
+(add-hook 'backtrace-mode-hook        #'make-text-smaller)
+(add-hook 'imenu-list-major-mode-hook #'make-text-smaller)
+(add-hook 'messages-buffer-mode-hook  #'make-text-smaller)
+(add-hook 'eshell-mode-hook           #'make-text-smaller)
+(add-hook 'compilation-mode-hook      #'make-text-smaller)
+
+(add-hook 'eshell-mode-hook #'toggle-truncate-lines)
+
 (use-package exec-path-from-shell
   :init
   (when (memq window-system '(mac ns))
     (exec-path-from-shell-initialize)))
-
-(use-package eshell
-  :defer t
-  :config
-  (add-hook 'eshell-mode-hook #'toggle-truncate-lines))
 
 (use-package hungry-delete
   :init (global-hungry-delete-mode t))
@@ -105,11 +111,12 @@
 (use-package compile
   :defer t
   :config
-  (add-hook 'compilation-mode-hook #'toggle-truncate-lines))
+  (push '(jest "at [^(]+(\\([^:]+\\):\\([[:digit:]]+\\):\\([[:digit:]]+\\))\\(\n +.*\\)+" 1 2 3) compilation-error-regexp-alist-alist)
+  (push 'jest compilation-error-regexp-alist))
 
 (use-package whitespace-cleanup-mode
   :init (global-whitespace-cleanup-mode t)
-  :config (setf (cdr (assoc 'whitespace-cleanup-mode minor-mode-alist)) (list " _")))
+  :config (setf (cdr (assoc 'whitespace-cleanup-mode minor-mode-alist)) (list " ░")))
 
 (defvar whitespace-characters
   '(?\n ?\r ?\t ?\ ))
@@ -174,15 +181,12 @@
 
 (use-package prettier)
 
-(use-package flymake :pin gnu :defer t)
+(use-package flymake
+  :pin gnu
+  :hook ((typescript-mode . flymake-mode))
+  :bind (:map flymake-mode-map ("C-x `" . flymake-goto-next-error)))
 
-(use-package flymake-eslint
-  :bind (:map flymake-mode-map ("C-x `" . flymake-goto-next-error))
-  :hook
-  ((js-mode . flymake-eslint-enable)
-   (typescript-mode . flymake-eslint-enable)))
-
-(use-package eglot :pin gnu)
+(use-package flymake-eslint)
 
 (use-package subword
   :hook ((js-mode . subword-mode)
@@ -229,7 +233,9 @@
 
   (add-hook 'project-find-functions #'project-npm-project))
 
-(use-package olivetti)
+(use-package eglot :pin gnu)
+
+(use-package olivetti :defer t)
 (use-package csv-mode :mode "\\.csv\\'")
 (use-package restclient :mode "\\.rest\\'")
 (use-package protobuf-mode :mode "\\.proto\\'")
@@ -243,4 +249,5 @@
 
 (use-package neotree)
 
-(use-package yoshi :commands yoshi-project-mode)
+(unless (require 'work nil t)
+  (message "Work profile did not load."))

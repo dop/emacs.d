@@ -1,5 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
+(require 'cl-seq)
+
 (defmacro comment (&rest body))
 
 (defun alphanumeric-char-p (c)
@@ -59,6 +61,34 @@ characters."
         (delete-file filename)
         (kill-buffer buffer)
         (message "File '%s' successfully removed" filename)))))
+
+(defvar mark-and-copy-options
+  '((?s "sexp"      mark-sexp)
+    (?e "sentence"  mark-end-of-sentence)
+    (?w "word"      mark-word)
+    (?p "paragraph" mark-paragraph)
+    (?f "defun"     mark-defun)
+    (?a "all"       mark-whole-buffer)))
+
+(defun mark-and-copy--prompt ()
+  (format "Copy %s: "
+          (mapconcat
+           (pcase-lambda (`(,c ,word ,_))
+             (let ((pos (cl-position c word)))
+               (format "%s(%c)%s" (substring word 0 pos) c (substring word (1+ pos)))))
+           mark-and-copy-options
+           ", ")))
+
+(defun mark-and-copy ()
+  "Mark part of buffer before calling `kill-ring-save'."
+  (interactive)
+  (when-let* ((option (or (use-region-p) (read-char (mark-and-copy--prompt))))
+              (mark (nth 2 (seq-find (lambda (o) (eq option (car o))) mark-and-copy-options))))
+    (funcall mark))
+  (let ((beg (region-beginning))
+        (end (region-end)))
+    (pulse-momentary-highlight-region beg end)
+    (kill-ring-save beg end)))
 
 (defun kill-region-or (command)
   "Interactively call `kill-region', if one is active, or COMMAND."
@@ -125,12 +155,10 @@ Otherwise, call `backward-kill-word'."
           (save-excursion
             (insert-buffer-substring data))))))
 
-(defun compile-file (file)
+(defun project-compile-file (file)
   (interactive (list (or (buffer-file-name) (read-file-name "File: "))))
-  (pcase (project-current)
-    (`(,_ . ,dir)
-     (let ((default-directory (or dir default-directory)))
-       (compile (concat compile-command file))))))
+  (let ((compile-command (concat compile-command file)))
+    (project-compile)))
 
 (defun open-dictionary-app (text)
   (interactive
