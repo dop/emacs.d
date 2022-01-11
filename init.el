@@ -167,6 +167,7 @@
   (require 'org-tempo)
   (dolist (hook (list #'turn-on-show-trailing-whitespace
                       #'visual-line-mode
+                      #'org-indent-mode
                       #'flyspell-mode))
     (add-hook 'org-mode-hook hook))
 
