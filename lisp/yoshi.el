@@ -14,17 +14,20 @@ clear when mode is turned off.")
                 collect `(push ',name yoshi-local-project-overrides))
      (setq-local ,@pairs)))
 
+(defun yoshi--test-command (project)
+  (let-alist (json-read-file (expand-file-name "package.json" (cdr project)))
+    (let ((npxed (replace-regexp-in-string "\\byoshi\\([^ ]+\\)" "npx --no-install \\&" .scripts.test:unit)))
+      (replace-regexp-in-string "\\btest\\b" "test --color" npxed))))
+
 (defun yoshi--setup-compilation (project)
   (let ((yoshi (or (project-has-node-script-p project "yoshi-flow-editor")
-                   (project-has-node-script-p project "yoshi-flow-bm")
-                   (error "Cannot find yoshi in %s." (cdr project))))
-        (sled (or (project-has-node-script-p project "sled-test-runner")
-                  (error "Cannot find sled in %s." (cdr project)))))
+                   (project-has-node-script-p project "yoshi-flow-bm")))
+        (sled (project-has-node-script-p project "sled-test-runner")))
     (yoshi-set
      compilation-error-regexp-alist '(jest)
-     compile-command (if (locate-dominating-file "." "sled.config")
+     compile-command (if (locate-dominating-file "." "sled.json")
                          (concat sled " local -f ")
-                       (concat yoshi " test --color ")))))
+                       (concat (yoshi--test-command project) " ")))))
 
 (defun yoshi--setup-typescript (project)
   (yoshi-set
