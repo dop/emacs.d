@@ -25,6 +25,11 @@
       (window-height . 0.375)
       (side . bottom)
       (slot . -1))
+     ("\\*Flymake diagnostics"
+      (display-buffer-reuse-window display-buffer-in-previous-window display-buffer-in-side-window)
+      (window-height . shrink-window-if-larger-than-buffer)
+      (side . bottom)
+      (slot . 1))
      ("\\*\\(Async Shell Command\\|Shell Command Output\\)\\*"
       (display-buffer-reuse-window display-buffer-in-previous-window display-buffer-in-side-window)
       (window-height . 0.375)
