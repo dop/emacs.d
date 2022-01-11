@@ -101,7 +101,13 @@
  '(olivetti-minimum-body-width 78)
  '(org-ellipsis "...")
  '(org-hide-emphasis-markers t)
+ '(org-log-done 'time)
  '(org-startup-folded t)
+ '(org-todo-keyword-faces
+   '(("TODO" org-todo)
+     ("WAIT" :foreground "orange" :weight bold)
+     ("DONE" org-done)))
+ '(org-todo-keywords '((sequence "TODO(t)" "WAIT(w@)" "DONE(d)")))
  '(package-selected-packages
    '(imenu-list eglot macrostep flymake-proselint jsonrpc flymake eldoc project json-mode editorconfig sly prettier paredit-menu exec-path-from-shell markdown-mode nodejs-repl string-edit typescript-mode wgrep xterm-color flymake-eslint olivetti ns-auto-titlebar cider quick-peek lsp paredit-everywhere slime-company whitespace-cleanup-mode use-package undo-tree restclient protobuf-mode paredit neotree hungry-delete git-timemachine dictionary csv-mode company))
  '(paredit-lighter " ParEd" t)
