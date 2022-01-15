@@ -79,7 +79,6 @@
      ("lithuanian" "[a-zA-ZąčęėįšųūžĄČĘĖĮŠŲŪŽ]" "[^a-zA-ZąčęėįšųūžĄČĘĖĮŠŲŪŽ]" "" nil
       ("-l" "lt")
       nil utf-8)))
- '(ispell-program-name "/usr/local/bin/aspell")
  '(jit-lock-defer-time 0)
  '(js-indent-level 2)
  '(kept-new-versions 6)

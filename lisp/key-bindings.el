@@ -2,13 +2,15 @@
 
 (require 'misc)
 
-(global-set-key (kbd "M-w") #'mark-and-copy)
 (global-set-key (kbd "C-w") #'kill-region-or-backward-word)
 (global-set-key (kbd "C-k") #'kill-region-or-line)
 (global-set-key (kbd "C-z") nil)
 (global-set-key (kbd "M-l") #'downcase-dwim)
 (global-set-key (kbd "M-u") #'upcase-dwim)
 (global-set-key (kbd "C-x M-d") #'delete-this-buffer-and-file)
+
+(require 'mark-and-copy)
+(global-set-key (kbd "M-w") #'mark-and-copy)
 
 (comment
  (global-set-key (kbd "M-1") #'dp/jump-to-window)

@@ -62,13 +62,14 @@
 
 (defun make-text-smaller () (text-scale-adjust -2))
 
-(add-hook 'help-mode-hook             #'make-text-smaller)
-(add-hook 'apropos-mode-hook          #'make-text-smaller)
-(add-hook 'backtrace-mode-hook        #'make-text-smaller)
-(add-hook 'imenu-list-major-mode-hook #'make-text-smaller)
-(add-hook 'messages-buffer-mode-hook  #'make-text-smaller)
-(add-hook 'eshell-mode-hook           #'make-text-smaller)
-(add-hook 'compilation-mode-hook      #'make-text-smaller)
+(when window-system
+  (add-hook 'help-mode-hook             #'make-text-smaller)
+  (add-hook 'apropos-mode-hook          #'make-text-smaller)
+  (add-hook 'backtrace-mode-hook        #'make-text-smaller)
+  (add-hook 'imenu-list-major-mode-hook #'make-text-smaller)
+  (add-hook 'messages-buffer-mode-hook  #'make-text-smaller)
+  (add-hook 'eshell-mode-hook           #'make-text-smaller)
+  (add-hook 'compilation-mode-hook      #'make-text-smaller))
 
 (add-hook 'eshell-mode-hook #'toggle-truncate-lines)
 
@@ -84,6 +85,10 @@
   :bind (:map undo-tree-map
               ("C-x u" . undo-tree-visualize))
   :init (global-undo-tree-mode t))
+
+(use-package ispell
+  :config
+  (setq ispell-program-name (executable-find "aspell")))
 
 (use-package markdown-mode
   :mode "\\.md\\'"
