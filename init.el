@@ -71,6 +71,7 @@
   (add-hook 'eshell-mode-hook           #'make-text-smaller)
   (add-hook 'compilation-mode-hook      #'make-text-smaller))
 
+(with-eval-after-load 'sly (add-hook 'sly-mrepl-mode-hook #'make-text-smaller))
 (add-hook 'eshell-mode-hook #'toggle-truncate-lines)
 
 (use-package exec-path-from-shell
@@ -160,6 +161,9 @@
   (define-key paredit-mode-map (kbd "C-w") #'paredit-backward-kill-word)
   (define-key paredit-mode-map (kbd "C-c [") #'paredit-forward-slurp-sexp)
   (define-key paredit-mode-map (kbd "C-c ]") #'paredit-forward-barf-sexp)
+
+  (define-key paredit-mode-map "{" #'paredit-open-curly)
+  (define-key paredit-mode-map "[" #'paredit-open-square)
 
   (advice-add 'paredit-kill :around #'paredit-kill-dwim)
   (advice-add 'paredit-backward-kill-word :around #'paredit-kill-dwim)

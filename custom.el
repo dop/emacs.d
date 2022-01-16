@@ -20,7 +20,7 @@
  '(debug-on-error nil)
  '(delete-old-versions t)
  '(display-buffer-alist
-   '(("\\*.*eshell\\*"
+   '(("\\*\\(.*eshell\\|sly-mrepl for.*\\)\\*"
       (display-buffer-reuse-window display-buffer-in-previous-window display-buffer-in-side-window)
       (window-height . 0.375)
       (side . bottom)
@@ -139,7 +139,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :extend nil :stipple nil :background "white" :foreground "grey10" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "nil" :family "Noto Sans Mono"))))
+ '(default ((t (:height 120 :family "Noto Sans Mono"))))
  '(cursor ((t (:background "red"))))
  '(eglot-mode-line ((t (:inherit font-lock-constant-face :weight normal))))
  '(fixed-pitch ((t (:inherti 'default :family "monospace"))))

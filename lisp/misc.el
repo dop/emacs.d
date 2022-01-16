@@ -132,6 +132,15 @@ Otherwise, call `backward-kill-word'."
   (let ((compile-command (concat compile-command file)))
     (project-compile)))
 
+
+(defun project-save-buffers ()
+  "Save all project buffers visiting a file."
+  (interactive)
+  (dolist (buf (project-buffers (project-current t)))
+    (when (buffer-file-name buf)
+      (with-current-buffer buf
+        (save-buffer)))))
+
 (defun open-dictionary-app (text)
   (interactive
    (list (if (use-region-p)
