@@ -11,6 +11,7 @@
 
 (require 'mark-and-copy)
 (global-set-key (kbd "M-w") #'mark-and-copy)
+(global-set-key (kbd "M-W") #'mark-and-copy-mark)
 
 (comment
  (global-set-key (kbd "M-1") #'dp/jump-to-window)
