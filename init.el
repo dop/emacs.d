@@ -259,5 +259,4 @@
 
 (use-package neotree)
 
-(unless (require 'work nil t)
-  (message "Work profile did not load."))
+(use-package yoshi :commands yoshi-project-mode)
