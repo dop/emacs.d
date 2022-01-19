@@ -15,9 +15,10 @@ clear when mode is turned off.")
      (setq-local ,@pairs)))
 
 (defun yoshi--test-command (project)
-  (let-alist (json-read-file (expand-file-name "package.json" (cdr project)))
-    (let ((npxed (replace-regexp-in-string "\\byoshi\\([^ ]+\\)" "npx --no-install \\&" .scripts.test:unit)))
-      (replace-regexp-in-string "\\btest\\b" "test --color" npxed))))
+  (when-let ((package-json (expand-file-name "package.json" (cdr project))))
+    (let-alist (json-read-file package-json)
+      (let ((npxed (replace-regexp-in-string "\\byoshi\\([^ ]+\\)" "npx --no-install \\&" .scripts.test:unit)))
+        (replace-regexp-in-string "\\btest\\b" "test --color" npxed)))))
 
 (defun yoshi--setup-compilation (project)
   (let ((yoshi (or (project-has-node-script-p project "yoshi-flow-editor")
