@@ -127,11 +127,15 @@ Otherwise, call `backward-kill-word'."
           (save-excursion
             (insert-buffer-substring data))))))
 
+(defun advice-list (symbol)
+  (let ((list))
+    (advice-mapc (lambda (&rest args) (push args x)) symbol)
+    list))
+
 (defun project-compile-file (file)
   (interactive (list (or (buffer-file-name) (read-file-name "File: "))))
   (let ((compile-command (concat compile-command file)))
-    (project-compile)))
-
+    (call-interactively #'project-compile)))
 
 (defun project-save-buffers ()
   "Save all project buffers visiting a file."

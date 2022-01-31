@@ -90,7 +90,7 @@
  '(neo-theme 'nerd)
  '(neo-vc-integration '(face char))
  '(neo-window-fixed-size nil)
- '(neo-window-width nil)
+ '(neo-window-width 30)
  '(next-screen-context-lines 10)
  '(ns-alternate-modifier 'super)
  '(ns-command-modifier 'meta)
@@ -108,7 +108,7 @@
      ("DONE" org-done)))
  '(org-todo-keywords '((sequence "TODO(t)" "WAIT(w@)" "DONE(d)")))
  '(package-selected-packages
-   '(imenu-list eglot macrostep flymake-proselint jsonrpc flymake eldoc project json-mode editorconfig sly prettier paredit-menu exec-path-from-shell markdown-mode nodejs-repl string-edit typescript-mode wgrep xterm-color flymake-eslint olivetti ns-auto-titlebar cider quick-peek lsp paredit-everywhere slime-company whitespace-cleanup-mode use-package undo-tree restclient protobuf-mode paredit neotree hungry-delete git-timemachine dictionary csv-mode company))
+   '(paredit-everywhere-mode ox-gfm imenu-list eglot macrostep flymake-proselint jsonrpc flymake eldoc project json-mode editorconfig sly prettier paredit-menu exec-path-from-shell markdown-mode nodejs-repl string-edit typescript-mode wgrep xterm-color flymake-eslint olivetti ns-auto-titlebar cider quick-peek lsp paredit-everywhere slime-company whitespace-cleanup-mode use-package undo-tree restclient protobuf-mode paredit neotree hungry-delete git-timemachine dictionary csv-mode company))
  '(paredit-lighter " ParEd" t)
  '(prettier-inline-errors-flag t)
  '(prettier-lighter " Pr")
@@ -139,7 +139,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:height 120 :family "Noto Sans Mono"))))
+ '(default ((t (:background "white" :foreground "black" :height 120 :family "Noto Sans Mono"))))
  '(cursor ((t (:background "red"))))
  '(eglot-mode-line ((t (:inherit font-lock-constant-face :weight normal))))
  '(fixed-pitch ((t (:inherti 'default :family "monospace"))))

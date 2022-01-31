@@ -7,7 +7,7 @@
 (load-file (setq custom-file "~/.emacs.d/custom.el"))
 (add-to-list 'load-path "~/.emacs.d/lisp")
 
-(require 'key-bindings)
+(require 'setup-key-bindings)
 
 ;; (scroll-bar-mode -1)
 ;; (tool-bar-mode -1)
@@ -74,22 +74,21 @@
 (with-eval-after-load 'sly (add-hook 'sly-mrepl-mode-hook #'make-text-smaller))
 (add-hook 'eshell-mode-hook #'toggle-truncate-lines)
 
+(require 'setup-ibuffer)
+
 (use-package exec-path-from-shell
   :init
   (when (memq window-system '(mac ns))
     (exec-path-from-shell-initialize)))
 
-(use-package hungry-delete
-  :init (global-hungry-delete-mode t))
+(use-package hungry-delete :init (global-hungry-delete-mode t))
 
 (use-package undo-tree
-  :bind (:map undo-tree-map
-              ("C-x u" . undo-tree-visualize))
+  :bind (:map undo-tree-map ("C-x u" . undo-tree-visualize))
   :init (global-undo-tree-mode t))
 
 (use-package ispell
-  :config
-  (setq ispell-program-name (executable-find "aspell")))
+  :config (setq ispell-program-name (executable-find "aspell")))
 
 (use-package markdown-mode
   :mode "\\.md\\'"
@@ -99,76 +98,15 @@
 
 (use-package nodejs-repl)
 
-(defun xterm-color-compilation-filter ()
-  (let* ((inhibit-read-only t)
-         (start compilation-filter-start)
-         (end   (point))
-         (input (delete-and-extract-region start end)))
-    (goto-char (point-max))
-    (insert (xterm-color-filter input))))
+(require 'setup-xterm-color)
 
-;; Nice colors for tools that produce color escape codes.
-(use-package xterm-color
-  :commands xterm-color-filter
-  :hook ((compilation-filter . xterm-color-compilation-filter))
-  :config
-  (add-hook 'comint-preoutput-filter-functions #'xterm-color-filter)
-  (setq comint-output-filter-functions (remove 'ansi-color-process-output comint-output-filter-functions)))
-
-(use-package compile
-  :defer t
-  :config
-  (push '(jest "at [^(]+(\\([^:]+\\):\\([[:digit:]]+\\):\\([[:digit:]]+\\))\\(\n +.*\\)+" 1 2 3) compilation-error-regexp-alist-alist)
-  (push 'jest compilation-error-regexp-alist))
+(require 'setup-compile)
 
 (use-package whitespace-cleanup-mode
   :init (global-whitespace-cleanup-mode t)
   :config (setf (cdr (assoc 'whitespace-cleanup-mode minor-mode-alist)) (list " ░")))
 
-(defvar whitespace-characters
-  '(?\n ?\r ?\t ?\ ))
-
-(defun whitespace-char-p (c)
-  (member c whitespace-characters))
-
-(defun paredit-kill-dwim (fn &rest args)
-  (if (use-region-p)
-      (call-interactively #'kill-region)
-    (apply fn args)))
-
-(defun paredit-forward-delete-whitespace (fn &rest args)
-  (if (whitespace-char-p (char-after))
-      (while (whitespace-char-p (char-after))
-        (delete-char 1))
-    (apply fn args)))
-
-(defun paredit-backward-delete-whitespace (fn &rest args)
-  (if (whitespace-char-p (char-before))
-      (while (whitespace-char-p (char-before))
-        (delete-char -1))
-    (apply fn args)))
-
-(use-package paredit
-  :commands paredit-mode
-  :hook
-  ((ielm-mode . paredit-mode)
-   (emacs-lisp-mode . paredit-mode)
-   (lisp-mode . paredit-mode)
-   (lisp-data-mode . paredit-mode)
-   (eval-expression-minibuffer-setup . paredit-mode)
-   (sly-mrepl-mode . paredit-mode))
-  :config
-  (define-key paredit-mode-map (kbd "C-w") #'paredit-backward-kill-word)
-  (define-key paredit-mode-map (kbd "C-c [") #'paredit-forward-slurp-sexp)
-  (define-key paredit-mode-map (kbd "C-c ]") #'paredit-forward-barf-sexp)
-
-  (define-key paredit-mode-map "{" #'paredit-open-curly)
-  (define-key paredit-mode-map "[" #'paredit-open-square)
-
-  (advice-add 'paredit-kill :around #'paredit-kill-dwim)
-  (advice-add 'paredit-backward-kill-word :around #'paredit-kill-dwim)
-  (advice-add 'paredit-forward-delete :around #'paredit-forward-delete-whitespace)
-  (advice-add 'paredit-backward-delete :around #'paredit-backward-delete-whitespace))
+(require 'setup-paredit)
 
 (use-package org
   :mode ("\\.org\\'" . org-mode)
@@ -202,49 +140,14 @@
   :hook ((js-mode . subword-mode)
          (typescript-mode . subword-mode)))
 
-(use-package editorconfig
-  :config (editorconfig-mode t))
+(use-package editorconfig :config (editorconfig-mode t))
 
 (use-package typescript-mode :mode "\\.ts\\'")
-
-(define-derived-mode tsx-mode typescript-mode "tsx")
-(add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-mode))
+(require 'tsx-mode)
 
 (use-package string-edit)
-
-(use-package project
-  :pin gnu
-  :config
-  (advice-add 'risky-local-variable-p :override #'ignore)
-
-  (defun project-dir-locals-project (dir)
-    (let ((root (locate-dominating-file dir ".dir-locals.el")))
-      (and root (cons 'dir-locals root))))
-
-  (cl-defmethod project-roots ((project (head dir-locals)))
-    (list (cdr project)))
-
-  (cl-defmethod project-ignores ((project (head dir-locals)) dir)
-    (mapcar (lambda (dir) (concat dir "/"))
-            vc-directory-exclusion-list))
-
-  (add-hook 'project-find-functions #'project-dir-locals-project)
-
-  (defun project-npm-project (dir)
-    (let ((root (locate-dominating-file dir "package.json")))
-      (and root (cons 'npm root))))
-
-  (cl-defmethod project-roots ((project (head npm)))
-    (list (cdr project)))
-
-  (cl-defmethod project-ignores ((project (head npm)) dir)
-    (mapcar (lambda (dir) (concat dir "/"))
-            vc-directory-exclusion-list))
-
-  (add-hook 'project-find-functions #'project-npm-project))
-
+(use-package wgrep)
 (use-package eglot :pin gnu)
-
 (use-package olivetti :defer t)
 (use-package csv-mode :mode "\\.csv\\'")
 (use-package restclient :mode "\\.rest\\'")
@@ -254,9 +157,9 @@
   :if (eq 'ns (window-system))
   :init (ns-auto-titlebar-mode t))
 
-(use-package sly
-  :hook ((lisp-mode . sly-editing-mode)))
+(use-package sly :hook ((lisp-mode . sly-editing-mode)))
 
+(use-package dark-mode :commands dark-mode)
 (use-package neotree)
 
 (use-package yoshi :commands yoshi-project-mode)

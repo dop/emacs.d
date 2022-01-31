@@ -8,6 +8,10 @@
 (global-set-key (kbd "M-l") #'downcase-dwim)
 (global-set-key (kbd "M-u") #'upcase-dwim)
 (global-set-key (kbd "C-x M-d") #'delete-this-buffer-and-file)
+(global-set-key (kbd "C-x C-b") #'ibuffer)
+
+(define-key project-prefix-map "C" #'project-compile-file)
+;; (global-define-key (kbd "<f5>") #'recompile)
 
 (require 'mark-and-copy)
 (global-set-key (kbd "M-w") #'mark-and-copy)
