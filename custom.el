@@ -40,7 +40,7 @@
       (window-width . 0.375)
       (side . right)
       (slot . 1))
-     ("\\*\\(compilation\\|vc-\\)\\*"
+     ("\\*\\(.*compilation\\|vc-\\)\\*"
       (display-buffer-reuse-window display-buffer-in-previous-window display-buffer-in-side-window)
       (window-width . 0.375)
       (side . right)
@@ -85,6 +85,7 @@
  '(kept-old-versions 2)
  '(locale-coding-system 'utf-8 t)
  '(mode-require-final-newline t)
+ '(monkeytype-mode-hook '((lambda nil (electric-pair-mode -1))))
  '(neo-autorefresh nil)
  '(neo-smart-open t)
  '(neo-theme 'nerd)
@@ -108,7 +109,7 @@
      ("DONE" org-done)))
  '(org-todo-keywords '((sequence "TODO(t)" "WAIT(w@)" "DONE(d)")))
  '(package-selected-packages
-   '(paredit-everywhere-mode ox-gfm imenu-list eglot macrostep flymake-proselint jsonrpc flymake eldoc project json-mode editorconfig sly prettier paredit-menu exec-path-from-shell markdown-mode nodejs-repl string-edit typescript-mode wgrep xterm-color flymake-eslint olivetti ns-auto-titlebar cider quick-peek lsp paredit-everywhere slime-company whitespace-cleanup-mode use-package undo-tree restclient protobuf-mode paredit neotree hungry-delete git-timemachine dictionary csv-mode company))
+   '(monkeytype paredit-everywhere-mode ox-gfm imenu-list eglot macrostep flymake-proselint jsonrpc flymake eldoc project json-mode editorconfig sly prettier paredit-menu exec-path-from-shell markdown-mode nodejs-repl string-edit typescript-mode wgrep xterm-color flymake-eslint olivetti ns-auto-titlebar cider quick-peek lsp paredit-everywhere slime-company whitespace-cleanup-mode use-package undo-tree restclient protobuf-mode paredit neotree hungry-delete git-timemachine dictionary csv-mode company))
  '(paredit-lighter " ParEd" t)
  '(prettier-inline-errors-flag t)
  '(prettier-lighter " Pr")
