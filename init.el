@@ -39,6 +39,7 @@
 (add-hook 'html-mode-hook #'turn-on-show-trailing-whitespace)
 (add-hook 'css-mode-hook #'turn-on-show-trailing-whitespace)
 
+;; Useful in eshell.
 (defalias 'e 'find-file)
 
 (require 'package)
@@ -60,16 +61,20 @@
 
 (advice-add 'use-package :before #'activate-before-use-package)
 
-(defun make-text-smaller () (text-scale-adjust -2))
+(defun make-text-smaller ()
+  (text-scale-adjust -2))
 
 (when window-system
-  (add-hook 'help-mode-hook             #'make-text-smaller)
-  (add-hook 'apropos-mode-hook          #'make-text-smaller)
-  (add-hook 'backtrace-mode-hook        #'make-text-smaller)
-  (add-hook 'imenu-list-major-mode-hook #'make-text-smaller)
-  (add-hook 'messages-buffer-mode-hook  #'make-text-smaller)
-  (add-hook 'eshell-mode-hook           #'make-text-smaller)
-  (add-hook 'compilation-mode-hook      #'make-text-smaller))
+  (dolist (mode-hook
+           (list 'help-mode-hook
+                 'Info-mode-hook
+                 'apropos-mode-hook
+                 'backtrace-mode-hook
+                 'imenu-list-major-mode-hook
+                 'messages-buffer-mode-hook
+                 'eshell-mode-hook
+                 'compilation-mode-hook))
+    (add-hook mode-hook #'make-text-smaller)))
 
 (with-eval-after-load 'sly (add-hook 'sly-mrepl-mode-hook #'make-text-smaller))
 (add-hook 'eshell-mode-hook #'toggle-truncate-lines)
@@ -98,9 +103,12 @@
 
 (use-package nodejs-repl)
 
+(require 'setup-project)
 (require 'setup-xterm-color)
-
 (require 'setup-compile)
+
+(with-eval-after-load 'log-edit
+  (add-hook 'log-edit-mode-hook #'flyspell-mode))
 
 (use-package whitespace-cleanup-mode
   :init (global-whitespace-cleanup-mode t)
@@ -112,12 +120,11 @@
   :mode ("\\.org\\'" . org-mode)
   :config
   (require 'org-tempo)
-  (dolist (hook (list #'turn-on-show-trailing-whitespace
-                      #'visual-line-mode
-                      #'org-indent-mode
-                      #'flyspell-mode))
-    (add-hook 'org-mode-hook hook))
-
+  (add-hooks 'org-mode-hook
+             (list #'turn-on-show-trailing-whitespace
+                   #'visual-line-mode
+                   #'org-indent-mode
+                   #'flyspell-mode))
   (org-babel-do-load-languages 'org-babel-load-languages
                                '((emacs-lisp . t) (shell . t) (lisp . t))))
 
@@ -129,11 +136,7 @@
 
 (use-package prettier)
 
-(use-package flymake
-  :pin gnu
-  :hook ((typescript-mode . flymake-mode))
-  :bind (:map flymake-mode-map ("C-x `" . flymake-goto-next-error)))
-
+(require 'setup-flymake)
 (use-package flymake-eslint)
 
 (use-package subword
@@ -161,5 +164,7 @@
 
 (use-package dark-mode :commands dark-mode)
 (use-package neotree)
+
+(use-package enumerated-windows :init (enumerated-windows-mode t))
 
 (use-package yoshi :commands yoshi-project-mode)

@@ -152,4 +152,12 @@ Otherwise, call `backward-kill-word'."
            (read-string "Word or phrase: " (word-at-point t)))))
   (shell-command (concat "open dict://" (url-encode-url text))))
 
+(defun add-hooks (hook functions)
+  "Add multiple FUNCTIONS to a HOOK.
+
+Every item of FUNCTIONS can be either function or arguments to
+`add-hook' sans HOOK symbol itself."
+  (dolist (fn functions)
+    (apply #'add-hook hook (if (consp fn) fn (list fn)))))
+
 (provide 'misc)

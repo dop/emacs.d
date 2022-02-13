@@ -27,7 +27,6 @@
       (slot . -1))
      ("\\*Flymake diagnostics"
       (display-buffer-reuse-window display-buffer-in-previous-window display-buffer-in-side-window)
-      (window-height . shrink-window-if-larger-than-buffer)
       (side . bottom)
       (slot . 1))
      ("\\*\\(Async Shell Command\\|Shell Command Output\\)\\*"
@@ -84,8 +83,9 @@
  '(kept-new-versions 6)
  '(kept-old-versions 2)
  '(locale-coding-system 'utf-8 t)
+ '(mode-line-compact t)
  '(mode-require-final-newline t)
- '(monkeytype-mode-hook '((lambda nil (electric-pair-mode -1))))
+ '(monkeytype-mode-hook '((lambda nil (electric-pair-local-mode -1))))
  '(neo-autorefresh nil)
  '(neo-smart-open t)
  '(neo-theme 'nerd)

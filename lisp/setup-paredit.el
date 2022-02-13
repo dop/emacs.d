@@ -35,6 +35,9 @@
   (define-key paredit-mode-map (kbd "C-c [") #'paredit-forward-slurp-sexp)
   (define-key paredit-mode-map (kbd "C-c ]") #'paredit-forward-barf-sexp)
 
+  (define-key paredit-mode-map (kbd "M-[") #'paredit-wrap-square)
+  (define-key paredit-mode-map (kbd "M-{") #'paredit-wrap-curly)
+
   (define-key paredit-mode-map "{" #'paredit-open-curly)
   (define-key paredit-mode-map "[" #'paredit-open-square)
 
@@ -47,4 +50,4 @@
   :hook ((typescript-mode . paredit-everywhere-mode)
          (js-mode . paredit-everywhere-mode)))
 
-(provide 'paredit-setup)
+(provide 'setup-paredit)
