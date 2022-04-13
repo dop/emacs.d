@@ -4,6 +4,9 @@
   (when (member major-mode '(flymake-project-diagnostics-mode flymake-diagnostics-buffer-mode))
     (fit-window-to-buffer (get-buffer-window (current-buffer)) 10 5)))
 
+(use-package flymake-proselint
+  :commands flymake-proselint-setup)
+
 (use-package flymake
   :pin gnu
   :hook ((typescript-mode . flymake-mode))

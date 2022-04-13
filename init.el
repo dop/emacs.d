@@ -7,6 +7,11 @@
 (load-file (setq custom-file "~/.emacs.d/custom.el"))
 (add-to-list 'load-path "~/.emacs.d/lisp")
 
+(with-eval-after-load 'info
+  (add-to-list 'Info-directory-list "~/.local/share/info"))
+
+(defalias 'yes-or-no-p 'y-or-n-p)
+
 (require 'setup-key-bindings)
 
 ;; (scroll-bar-mode -1)
@@ -31,6 +36,9 @@
 (electric-pair-mode t)
 (delete-selection-mode t)
 (auto-compression-mode t)
+
+(defun turn-off-local-electric-pair-mode ()
+  (electric-pair-local-mode -1))
 
 (defun turn-on-show-trailing-whitespace ()
   (setq show-trailing-whitespace t))
@@ -115,18 +123,7 @@
   :config (setf (cdr (assoc 'whitespace-cleanup-mode minor-mode-alist)) (list " ░")))
 
 (require 'setup-paredit)
-
-(use-package org
-  :mode ("\\.org\\'" . org-mode)
-  :config
-  (require 'org-tempo)
-  (add-hooks 'org-mode-hook
-             (list #'turn-on-show-trailing-whitespace
-                   #'visual-line-mode
-                   #'org-indent-mode
-                   #'flyspell-mode))
-  (org-babel-do-load-languages 'org-babel-load-languages
-                               '((emacs-lisp . t) (shell . t) (lisp . t))))
+(require 'setup-org)
 
 (use-package git-timemachine)
 
@@ -165,6 +162,6 @@
 (use-package dark-mode :commands dark-mode)
 (use-package neotree)
 
-(use-package enumerated-windows :init (enumerated-windows-mode t))
+(use-package enumerated-windows :config (enumerated-windows-mode t))
 
 (use-package yoshi :commands yoshi-project-mode)

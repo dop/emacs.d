@@ -40,10 +40,17 @@ returns a WINDOW with index N."
          (n (- (elt keys (- (length keys) 1)) 49)))
     (enumerated-windows-select n)))
 
-(defun enumerated-windows-swap (k n)
-  (interactive "nFirst window #: \nnSecond window #: ")
-  (let ((win1 (enumerated-windows-get (1- k)))
-        (win2 (enumerated-windows-get (1- n))))
+(defun enumerated-windows--last-key (&optional i)
+  (let* ((keys (this-command-keys-vector)))
+    (- (elt keys (- (length keys) (or i 1))) 49)))
+
+(defun enumerated-windows-swap ()
+  (interactive)
+  (let* ((keys (this-command-keys-vector))
+         (k (- (elt keys (- (length keys) 2)) 49))
+         (n (- (elt keys (- (length keys) 1)) 49))
+         (win1 (enumerated-windows-get k))
+         (win2 (enumerated-windows-get n)))
     (unless win1 (error "There is no window #%d" k))
     (unless win2 (error "There is no window #%d" n))
     (let ((buf1 (window-buffer win1))
@@ -51,9 +58,11 @@ returns a WINDOW with index N."
       (set-window-buffer win1 buf2)
       (set-window-buffer win2 buf1))))
 
-(defun enumerated-windows-delete (n)
-  (interactive "nWindow #: ")
-  (delete-window (enumerated-windows-get (1- n))))
+(defun enumerated-windows-delete ()
+  (interactive)
+  (let* ((keys (this-command-keys-vector))
+         (n (- (elt keys (- (length keys) 1)) 49)))
+    (delete-window (enumerated-windows-get n))))
 
 (defvar enumerated-windows-mode-line-number
   '(:propertize (:eval
@@ -75,11 +84,14 @@ returns a WINDOW with index N."
           (cdr (nthcdr i mode-line-format)))))
 
 (defvar enumerated-windows-prefix-map
-  (let ((map (make-sparse-keymap)))
-    (cl-loop for digit from ?1 to ?9 do
-      (define-key map (string digit) #'enumerated-windows-select-command))
-    (define-key map "s" #'enumerated-windows-swap)
-    (define-key map "k" #'enumerated-windows-delete)
+  (let ((map (make-sparse-keymap))
+        (digits (cl-loop for d from ?1 to ?9 collect d)))
+    (dolist (digit digits)
+      (define-key map (string digit) #'enumerated-windows-select-command)
+      (define-key map (format "k%c" digit) #'enumerated-windows-delete)
+      (dolist (digit2 digits)
+        (define-key map (format "s%c%c" digit digit2) #'enumerated-windows-swap)))
+    (define-key map "S" #'enumerated-windows-swap)
     map))
 
 (defvar enumerated-windows-prefix

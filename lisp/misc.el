@@ -160,4 +160,10 @@ Every item of FUNCTIONS can be either function or arguments to
   (dolist (fn functions)
     (apply #'add-hook hook (if (consp fn) fn (list fn)))))
 
+;; (defun diff-hunk-create-new-file ()
+;;   (let ((old (substring-no-properties (car (diff-hunk-file-names t)))))
+;;     (when (string= old "/dev/null")
+;;       (let ((new (substring-no-properties (car (diff-hunk-file-names)))))
+;;         (cons new (file-exists-p new))))))
+
 (provide 'misc)

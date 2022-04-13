@@ -6,7 +6,7 @@
 (use-package compile
   :defer t
   :config
-  (push '(jest "at [^(]+(\\([^:]+\\):\\([[:digit:]]+\\):\\([[:digit:]]+\\))\\(\n +.*\\)+" 1 2 3) compilation-error-regexp-alist-alist)
+  (push '(jest "at \\([^[:space:]]+ \\)?(?\\([^:]+\\):\\([[:digit:]]+\\):\\([[:digit:]]+\\))?" 2 3 4) compilation-error-regexp-alist-alist)
   (push 'jest compilation-error-regexp-alist)
   (advice-add 'compile :around #'compile-with-local-compilation-error-regexp-alist))
 
