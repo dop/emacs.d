@@ -137,13 +137,54 @@ Otherwise, call `backward-kill-word'."
   (let ((compile-command (concat compile-command file)))
     (call-interactively #'project-compile)))
 
+(defmacro with-project-buffers (options &rest body)
+  (declare (indent 1))
+  (let ((filter (gensym "filter"))
+        (buf (gensym "buf"))
+        (bufs (gensym "bufs"))
+        (total (gensym "total"))
+        (i (gensym "i")))
+    `(let* ((,bufs (project-buffers (project-current t)))
+            (,total (length ,bufs))
+            (,i 0))
+       (dolist (,buf ,bufs)
+         ,(when (plist-get options :progress)
+            `(progn
+               (setq ,i (1+ ,i))
+               (when (or (zerop (mod ,i 10))
+                         (= ,i ,total))
+                 (message "%d/%d" ,i ,total))))
+         (let ((,filter (or ,(plist-get options :filter) #'buffer-file-name)))
+           (when (funcall ,filter ,buf)
+             (with-current-buffer ,buf
+               ,@body)))))))
+
 (defun project-save-buffers ()
   "Save all project buffers visiting a file."
   (interactive)
-  (dolist (buf (project-buffers (project-current t)))
-    (when (buffer-file-name buf)
-      (with-current-buffer buf
-        (save-buffer)))))
+  (with-project-buffers ()
+    (save-buffer)))
+
+(defun project-revert-buffers ()
+  "Revert all project buffers visiting a file."
+  (interactive)
+  (with-project-buffers (:progress t)
+    (ignore-errors
+      (revert-buffer nil t))))
+
+(defun project-close-dead-process-buffers ()
+  "Close all buffers that have dead process attached."
+  (interactive)
+  (let ((count 0))
+    (cl-flet ((flymake-eslint-buffer-p (buf) (s-starts-with-p " *flymake-eslint*" (buffer-name buf)))
+              (kill () (kill-buffer) (setf count (1+ count))))
+      (with-project-buffers (:filter #'get-buffer-process)
+        (unless (process-live-p (get-buffer-process (current-buffer)))
+          (kill)))
+      (with-project-buffers (:filter #'flymake-eslint-buffer-p)
+        (kill))
+      (message "Dead process buffers closed: %d" count))))
+
 
 (defun open-dictionary-app (text)
   (interactive
@@ -165,5 +206,82 @@ Every item of FUNCTIONS can be either function or arguments to
 ;;     (when (string= old "/dev/null")
 ;;       (let ((new (substring-no-properties (car (diff-hunk-file-names)))))
 ;;         (cons new (file-exists-p new))))))
+
+(defun markdown-live-preview-window-browser (file)
+  "Preview FILE with browser.
+To be used with `markdown-live-preview-window-function'."
+  (browse-url file))
+
+(setq markdown-live-preview-window-function 'markdown-live-preview-window-browser)
+
+(defvar my-eshell-prompt-limit 25)
+
+(defun get-project-name-and-branch (project)
+  (pcase project
+    (`(,type . ,path)
+     (list
+      (cond ((eq type 'vc)
+             (elt (reverse (split-string path "/")) 1))
+            ((eq type 'npm)
+             (let-alist (json-read-file (expand-file-name "package.json" path))
+               .name)))
+      (car (let ((default-directory path))
+             (vc-git-branches)))))))
+
+(defun shorten-path (path limit prefix)
+  (let ((limited nil))
+    (cl-loop for part in (reverse (split-string path "/" t))
+             while (< (seq-reduce #'+ (mapcar #'length limited) 0) limit)
+             do (push part limited))
+    (let ((trimmed (mapconcat #'identity limited "/")))
+      (concat (if (/= (length trimmed) (length path)) prefix "")
+              trimmed))))
+
+(defun my-eshell-prompt ()
+  (let ((path (abbreviate-file-name (eshell/pwd)))
+        (limit my-eshell-prompt-limit)
+        (limited nil)
+        (project (project-current)))
+    (with-output-to-string
+      (princ (shorten-path path my-eshell-prompt-limit "… "))
+      (if (= (user-uid) 0)
+          (princ " # ")
+        (princ " $ ")))))
+
+(defun overlay-get-eslint-message (overlay)
+  "Get text message from OVERLAY if it is from `flymake-eslint--checker' backend."
+  (when-let ((diagnostics (and (overlayp overlay)
+                               (overlay-get overlay 'flymake-diagnostic))))
+    (when (eq (flymake--diag-backend diagnostics) 'flymake-eslint--checker)
+      (flymake--diag-text diagnostics))))
+
+(ert-deftest overlay-get-eslint-message ()
+  "Tests basics of `overlay-get-eslint-message'."
+  (should (null (overlay-get-eslint-message nil)))
+  (should (null (overlay-get-eslint-message [])))
+  (should (null (overlay-get-eslint-message (make-overlay 0 0)))))
+
+(defun eslint-message-get-rule (text)
+  "Extract rule name from eslint message."
+  (string-trim (car (s-match "[[0-9a-z/-]+]$" text)) "\\[" "\\]"))
+
+(ert-deftest eslint-message-get-rule ()
+  "Tests basics of `eslint-message-get-rule'."
+  (should (string= "react-hooks/exhaustive-deps"
+                   (eslint-message-get-rule "warning: React Hook useEffect has a missing dependency: 'init'. Either include it or remove the dependency array [react-hooks/exhaustive-deps]")))
+  (should (string= "jsx-a11y/anchor-has-content"
+                   (eslint-message-get-rule "Anchor must have content [jsx-a11y/anchor-has-content]"))))
+
+(defun ignore-eslint-rules ()
+  "Insert eslint-disable-next-line rule pragma for overlay warning on current point."
+  (interactive)
+  (when-let ((rules (cl-loop for msg in (mapcar #'overlay-get-eslint-message (overlays-at (point)))
+                        when msg
+                        collect (eslint-message-get-rule msg))))
+    (previous-line)
+    (end-of-line)
+    (newline-and-indent)
+    (call-interactively #'comment-dwim)
+    (insert "eslint-disable-next-line " (mapconcat #'identity rules " "))))
 
 (provide 'misc)

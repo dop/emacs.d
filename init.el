@@ -8,7 +8,7 @@
 (add-to-list 'load-path "~/.emacs.d/lisp")
 
 (with-eval-after-load 'info
-  (add-to-list 'Info-directory-list "~/.local/share/info"))
+  (add-to-list 'Info-additional-directory-list "~/.local/share/info"))
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
@@ -69,25 +69,11 @@
 
 (advice-add 'use-package :before #'activate-before-use-package)
 
-(defun make-text-smaller ()
-  (text-scale-adjust -2))
-
-(when window-system
-  (dolist (mode-hook
-           (list 'help-mode-hook
-                 'Info-mode-hook
-                 'apropos-mode-hook
-                 'backtrace-mode-hook
-                 'imenu-list-major-mode-hook
-                 'messages-buffer-mode-hook
-                 'eshell-mode-hook
-                 'compilation-mode-hook))
-    (add-hook mode-hook #'make-text-smaller)))
-
-(with-eval-after-load 'sly (add-hook 'sly-mrepl-mode-hook #'make-text-smaller))
 (add-hook 'eshell-mode-hook #'toggle-truncate-lines)
 
 (require 'setup-ibuffer)
+
+(use-package ef-themes)
 
 (use-package exec-path-from-shell
   :init
@@ -102,6 +88,9 @@
 
 (use-package ispell
   :config (setq ispell-program-name (executable-find "aspell")))
+
+(use-package edit-indirect
+  :commands edit-indirect-region)
 
 (use-package markdown-mode
   :mode "\\.md\\'"
@@ -147,7 +136,9 @@
 
 (use-package string-edit)
 (use-package wgrep)
-(use-package eglot :pin gnu)
+(use-package eglot
+  :pin gnu
+  :custom ((eglot-events-buffer-size 0)))
 (use-package olivetti :defer t)
 (use-package csv-mode :mode "\\.csv\\'")
 (use-package restclient :mode "\\.rest\\'")
@@ -157,7 +148,14 @@
   :if (eq 'ns (window-system))
   :init (ns-auto-titlebar-mode t))
 
-(use-package sly :hook ((lisp-mode . sly-editing-mode)))
+(use-package sly
+  :hook ((lisp-mode . sly-editing-mode))
+  :config
+  (defun rps-sly-eval-last-expression ()
+    (interactive)
+    (sly-interactive-eval (format "(rps:ps () %s)" (sly-last-expression))))
+
+  (bind-key "C-c C-j" #'rps-sly-eval-last-expression sly-editing-mode-map))
 
 (use-package dark-mode :commands dark-mode)
 (use-package neotree)

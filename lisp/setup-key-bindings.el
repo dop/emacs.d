@@ -20,7 +20,6 @@
 
 (global-set-key (kbd "C-x O") #'other-frame)
 (global-set-key (kbd "M-`") #'other-frame)
-(global-set-key (kbd "C-x 1") #'zoom-dwim)
 
 (define-key project-prefix-map "C" #'project-compile-file)
 

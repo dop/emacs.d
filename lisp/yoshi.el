@@ -35,35 +35,56 @@ clear when mode is turned off.")
       (yoshi--enhance-test-script
        (or .scripts.test:unit .scripts.test:jest .scripts.test)))))
 
+(defun --npx (command)
+  (concat "npx --no-install " command))
+
+(defun yoshi--extract-yoshi-command (command)
+  (replace-regexp-in-string "\\(.*\\)\\byoshi\\(-[-a-z]+\\)?\\b\\(.*\\)"
+                            "yoshi\\2"
+                            command))
+
+(defun yoshi--flow-command (project)
+  (when-let ((package-json (expand-file-name "package.json" (cdr project)))
+             (_ (file-exists-p package-json)))
+    (let-alist (json-read-file package-json)
+      (yoshi--extract-yoshi-command .scripts.start))))
+
 (defun yoshi--setup-compilation (project)
-  (let ((yoshi (or (project-npx project "yoshi-flow-editor")
-                   (project-npx project "yoshi-flow-bm")))
-        (sled (project-npx project "sled-test-runner")))
+  (let ((yoshi (--npx (yoshi--flow-command project)))
+        (sled (--npx "sled-test-runner")))
     (yoshi-set
      compilation-error-regexp-alist '(jest typescript-tsc-pretty typescript-tsc)
      compile-command (if (locate-dominating-file "." "sled.json")
                          (concat sled " local -f ")
                        (concat (yoshi--test-command project) " ")))))
 
+(defun yoshi--locate-outer-dominating-file (project file)
+  (or (project-has-file-p project file)
+      (let ((outer (locate-dominating-file (project-root project) file)))
+        (expand-file-name file outer))))
+
 (defun yoshi--locate-typescript-lib (project)
-  (let ((tslib "node_modules/typescript/lib"))
-    (or (project-has-file-p project tslib)
-        (let ((outer (locate-dominating-file (project-root project) tslib)))
-          (expand-file-name tslib outer)))))
+  (yoshi--locate-outer-dominating-file project "node_modules/typescript/lib"))
+
+(defun yoshi--locate-prettier (project)
+  (yoshi--locate-outer-dominating-file project "node_modules/.bin/prettier"))
+
+(defun yoshi--locate-eslint (project)
+  (yoshi--locate-outer-dominating-file project "node_modules/.bin/eslint"))
 
 (defun yoshi--setup-typescript (project)
   (yoshi-set
    eglot-stay-out-of '(flymake-diagnostic-functions)
    eglot-server-programs `(((typescript-mode tsx-mode) "typescript-language-server" "--stdio"
                             "--tsserver-path" ,(yoshi--locate-typescript-lib project)))
-   flymake-eslint-executable-name (project-has-node-script-p project "eslint")
+   flymake-eslint-executable-name (yoshi--locate-eslint project)
    flymake-diagnostic-functions '(flymake-eslint--checker eglot-flymake-backend))
-  (when (project-has-node-script-p project "prettier")
+  (when (yoshi--locate-prettier project)
     (prettier-mode t))
   (eglot-ensure))
 
 (define-minor-mode yoshi-project-mode "Yoshi for Emacs."
-  :lighter " 🦖"
+  :lighter " yo"
   (cond
    (yoshi-project-mode
     (when-let ((project (project-current)))
