@@ -15,4 +15,6 @@
     (:description "project" :reader (project-current t))
     (seq-contains-p (project-buffers qualifier) buf)))
 
+(add-hook 'ibuffer-mode-hook #'hl-line-mode)
+
 (provide 'setup-ibuffer)

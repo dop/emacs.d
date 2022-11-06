@@ -17,9 +17,8 @@
  '(create-lockfiles nil)
  '(css-indent-offset 2)
  '(csv-separators '("," "	" ";"))
- '(custom-enabled-themes '(ef-summer))
- '(custom-safe-themes
-   '("a701a8612a0105b657a3fc6d686a1afa43f6c26f9339cadc6a26570099f69f26" "1752a799b84cf9897f7c97bb16a139d77cf76b008209d246a35793c23f58dff4"))
+ '(custom-enabled-themes nil)
+ '(custom-safe-themes nil)
  '(debug-on-error nil)
  '(delete-old-versions t)
  '(display-battery-mode t)
@@ -34,8 +33,8 @@
       (display-buffer-reuse-window display-buffer-in-previous-window display-buffer-at-bottom)
       (window-height . 0.375))
      ("\\*\\([Hh]elp\\|Backtrace\\|Warnings\\|Messages\\|info\\|Apropos\\|vc-diff\\)\\*"
-      (display-buffer-reuse-window display-buffer-in-previous-window display-buffer-in-direction)
-      (direction . rightmost)
+      (display-buffer-reuse-window display-buffer-in-previous-window display-buffer-pop-up-window display-buffer-same-window)
+      (window-height . 0.375)
       (window-width . 0.375))
      ("\\*Completions\\*"
       (display-buffer-reuse-window display-buffer-in-previous-window display-buffer-at-bottom)
@@ -49,8 +48,10 @@
  '(display-time-default-load-average nil)
  '(display-time-mode t)
  '(editorconfig-mode-lighter " ec")
+ '(ef-themes-mixed-fonts t)
  '(eglot-autoshutdown t)
  '(eglot-confirm-server-initiated-edits nil)
+ '(eglot-events-buffer-size nil)
  '(eglot-override-flymake-diagnostic-functions nil)
  '(eldoc-minor-mode-string " doc")
  '(electric-pair-mode t)
@@ -60,6 +61,7 @@
  '(eshell-prompt-function 'my-eshell-prompt)
  '(fast-but-imprecise-scrolling t)
  '(flymake-eslint-defer-binary-check t)
+ '(frame-inhibit-implied-resize t)
  '(gc-cons-threshold 268435456)
  '(ibuffer-formats
    '((mark modified read-only locked " "
@@ -72,6 +74,7 @@
      (mark " "
            (name 16 -1)
            " " filename)))
+ '(ibuffer-saved-filter-groups nil)
  '(indent-tabs-mode nil)
  '(indicate-buffer-boundaries 'left)
  '(indicate-empty-lines nil)
@@ -125,19 +128,24 @@
      ("CANCELLED" :foreground "grey" :weight bold)))
  '(org-todo-keywords '((sequence "TODO(t)" "WAIT(w@)" "DONE(d)" "CANCELLED(c)")))
  '(package-selected-packages
-   '(ef-themes git-gutter slime sql-indent ox-slack impatient-mode eink-theme solarized-theme seq edit-indirect flow-js2-mode inf-clojure browse-kill-ring ox-jira stimmung-themes scala-mode monkeytype paredit-everywhere-mode ox-gfm imenu-list eglot macrostep flymake-proselint jsonrpc flymake eldoc project json-mode editorconfig prettier paredit-menu exec-path-from-shell markdown-mode nodejs-repl string-edit typescript-mode wgrep xterm-color flymake-eslint olivetti ns-auto-titlebar cider quick-peek lsp paredit-everywhere slime-company whitespace-cleanup-mode use-package undo-tree restclient protobuf-mode paredit neotree hungry-delete git-timemachine dictionary csv-mode company))
+   '(keyfreq rainbow-mode sly marginalia vertico paren-face deadgrep sql-indent ox-slack solarized-theme seq edit-indirect flow-js2-mode inf-clojure browse-kill-ring ox-jira scala-mode paredit-everywhere-mode ox-gfm imenu-list eglot macrostep flymake-proselint jsonrpc flymake eldoc project json-mode editorconfig prettier paredit-menu exec-path-from-shell markdown-mode nodejs-repl string-edit typescript-mode wgrep xterm-color flymake-eslint olivetti ns-auto-titlebar cider lsp paredit-everywhere slime-company whitespace-cleanup-mode use-package undo-tree restclient protobuf-mode paredit neotree hungry-delete git-timemachine dictionary csv-mode company))
  '(paredit-lighter " ParEd" t)
  '(prettier-inline-errors-flag t)
  '(prettier-lighter " Pr")
  '(query-replace-highlight t)
  '(quick-peek-add-spacer nil)
  '(quick-peek-position 'below)
+ '(read-buffer-completion-ignore-case t)
+ '(recentf-mode t)
  '(require-final-newline t)
  '(ring-bell-function nil)
  '(safe-local-variable-values '((eval org-writing-mode t) (eval yoshi-project-mode t)))
  '(save-interprogram-paste-before-kill t)
+ '(save-place-mode t)
+ '(savehist-mode t)
  '(scroll-error-top-bottom t)
  '(search-highlight t)
+ '(sly-highlight-suppressed-forms t)
  '(text-scale-mode-step 1.1)
  '(transient-save-history nil)
  '(typescript-indent-level 2)
@@ -149,6 +157,8 @@
  '(vc-directory-exclusion-list
    '("SCCS" "RCS" "CVS" "MCVS" ".src" ".svn" ".git" ".hg" ".bzr" "_MTN" "_darcs" "{arch}" "node_modules" "dist" "brower_components" "coverage" "build"))
  '(version-control t)
+ '(vertico-count-format '("%-6s " . "%s/%s"))
+ '(vertico-mode t)
  '(visible-bell t)
  '(window-sides-slots '(1 0 2 2)))
 
@@ -157,11 +167,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:height 160 :family "Iosevka Fixed"))))
  '(cursor ((t (:background "red"))))
- '(fixed-pitch ((t (:inherti 'default :family "monospace"))))
- '(font-lock-comment-face ((t (:foreground "grey50" :slant italic))))
- '(mode-line ((t (:background "grey75" :foreground "black" :box (:line-width (1 . -1) :style released-button) :height 1.1 :family "SF Pro Display"))))
- '(mode-line-inactive ((t (:inherit mode-line :foreground "#786e74" :family "SF Pro Display"))))
- '(neo-file-link-face ((t (:inherit default :foreground "dark gray"))))
- '(variable-pitch ((t (:family "Times")))))
+ '(eglot-highlight-symbol-face ((t (:inherit highlight))))
+ '(font-lock-comment-face ((t (:inherit shadow :slant italic))))
+ '(fringe ((t (:inherit default)))))

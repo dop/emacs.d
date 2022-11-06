@@ -88,10 +88,11 @@ Otherwise, call `backward-kill-word'."
   (let ((a (generate-new-buffer "*diff-yank*"))
         (b (generate-new-buffer "*diff-yank*")))
     (cl-labels ((clean-up ()
-                          (kill-buffer a)
-                          (kill-buffer b)
-                          (remove-hook 'ediff-cleanup-hook #'clean-up)
-                          (winner-undo)))
+                  (kill-buffer a)
+                  (kill-buffer b)
+                  (remove-hook 'ediff-cleanup-hook #'clean-up)
+                  (when (functionp 'winner-undo)
+                    (winner-undo))))
       (add-hook 'ediff-cleanup-hook #'clean-up)
       (with-current-buffer a
         (insert (elt kill-ring 0)))
@@ -107,7 +108,7 @@ Otherwise, call `backward-kill-word'."
 
 (defun spec-overview ()
   (interactive)
-  (occur "\\<\\(x\\|f\\)?\\(describe\\|it\\)\\(\\.\\(skip\\|only\\|todo\\)\\)?\\>("))
+  (occur "\\<\\(x\\|f\\)?\\(describe\\|it\\)\\(\\.\\(skip\\|only\\|todo\\|each\\)\\)?\\>("))
 
 (defun download-to-current-buffer (url)
   "Downloads URL into current buffer."
@@ -175,16 +176,16 @@ Otherwise, call `backward-kill-word'."
 (defun project-close-dead-process-buffers ()
   "Close all buffers that have dead process attached."
   (interactive)
-  (let ((count 0))
-    (cl-flet ((flymake-eslint-buffer-p (buf) (s-starts-with-p " *flymake-eslint*" (buffer-name buf)))
-              (kill () (kill-buffer) (setf count (1+ count))))
+  (let ((dead-count 0) (eslint-count 0))
+    (cl-flet ((flymake-eslint-buffer-p (buf) (s-starts-with-p " *flymake-eslint*" (buffer-name buf))))
       (with-project-buffers (:filter #'get-buffer-process)
         (unless (process-live-p (get-buffer-process (current-buffer)))
-          (kill)))
+          (kill-buffer)
+          (cl-incf dead-count)))
       (with-project-buffers (:filter #'flymake-eslint-buffer-p)
-        (kill))
-      (message "Dead process buffers closed: %d" count))))
-
+        (kill-buffer)
+        (cl-incf eslint-count))
+      (message "Dead process buffers: %d. Hanging eslint buffers: %d." dead-count eslint-count))))
 
 (defun open-dictionary-app (text)
   (interactive
@@ -214,7 +215,7 @@ To be used with `markdown-live-preview-window-function'."
 
 (setq markdown-live-preview-window-function 'markdown-live-preview-window-browser)
 
-(defvar my-eshell-prompt-limit 25)
+(defvar my-eshell-prompt-limit 20)
 
 (defun get-project-name-and-branch (project)
   (pcase project
@@ -243,7 +244,7 @@ To be used with `markdown-live-preview-window-function'."
         (limited nil)
         (project (project-current)))
     (with-output-to-string
-      (princ (shorten-path path my-eshell-prompt-limit "… "))
+      (princ (shorten-path path my-eshell-prompt-limit "…"))
       (if (= (user-uid) 0)
           (princ " # ")
         (princ " $ ")))))
@@ -283,5 +284,18 @@ To be used with `markdown-live-preview-window-function'."
     (newline-and-indent)
     (call-interactively #'comment-dwim)
     (insert "eslint-disable-next-line " (mapconcat #'identity rules " "))))
+
+(defun duplicate-line (&optional n)
+  "Duplicate the current line N times.
+Also see the `copy-from-above-command' command."
+  (interactive "p")
+  (let ((line (buffer-substring (line-beginning-position)
+                                (line-end-position))))
+    (save-excursion
+      (forward-line 1)
+      (unless (bolp)
+        (insert "\n"))
+      (dotimes (_ n)
+        (insert line "\n")))))
 
 (provide 'misc)

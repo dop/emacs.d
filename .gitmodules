@@ -1,0 +1,6 @@
+[submodule "eglot"]
+	path = lisp/eglot
+	url = git@github.com:dop/eglot.git
+[submodule "flymake-eslint"]
+	path = lisp/flymake-eslint
+	url = git@github.com:dop/flymake-eslint.git

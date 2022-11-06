@@ -12,10 +12,10 @@
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
+(require 'misc)
+(require 'git-utils)
 (require 'setup-key-bindings)
 
-;; (scroll-bar-mode -1)
-;; (tool-bar-mode -1)
 (unless (eq window-system 'ns)
   (menu-bar-mode -1))
 
@@ -73,8 +73,6 @@
 
 (require 'setup-ibuffer)
 
-(use-package ef-themes)
-
 (use-package exec-path-from-shell
   :init
   (when (memq window-system '(mac ns))
@@ -88,6 +86,10 @@
 
 (use-package ispell
   :config (setq ispell-program-name (executable-find "aspell")))
+
+(use-package deadgrep
+  :pin melpa-stable
+  :commands deadgrep)
 
 (use-package edit-indirect
   :commands edit-indirect-region)
@@ -123,7 +125,6 @@
 (use-package prettier)
 
 (require 'setup-flymake)
-(use-package flymake-eslint)
 
 (use-package subword
   :hook ((js-mode . subword-mode)
@@ -131,14 +132,13 @@
 
 (use-package editorconfig :config (editorconfig-mode t))
 
-(use-package typescript-mode :mode "\\.ts\\'")
+(use-package js :config (add-to-list 'auto-mode-alist '("\\.mjs\\'" . js-mode)))
+(use-package typescript-mode :mode "\\.tsx\\'")
 (require 'tsx-mode)
 
 (use-package string-edit)
 (use-package wgrep)
-(use-package eglot
-  :pin gnu
-  :custom ((eglot-events-buffer-size 0)))
+(use-package eglot :load-path "~/.emacs.d/lisp/eglot")
 (use-package olivetti :defer t)
 (use-package csv-mode :mode "\\.csv\\'")
 (use-package restclient :mode "\\.rest\\'")
@@ -147,6 +147,12 @@
 (use-package ns-auto-titlebar
   :if (eq 'ns (window-system))
   :init (ns-auto-titlebar-mode t))
+
+(use-package marginalia :defer t :init (marginalia-mode t))
+;; (use-package corfu :init (global-corfu-mode -1))
+(use-package vertico :defer t :init (vertico-mode t))
+
+(use-package paren-face :hook ((lisp-data-mode . paren-face-mode)))
 
 (use-package sly
   :hook ((lisp-mode . sly-editing-mode))
@@ -157,9 +163,14 @@
 
   (bind-key "C-c C-j" #'rps-sly-eval-last-expression sly-editing-mode-map))
 
+(use-package clojure-mode :hook ((clojure-mode . paredit-mode)))
+(use-package cider :commands cider-jack-in :hook ((cider-repl-mode . paredit-mode)))
+
 (use-package dark-mode :commands dark-mode)
 (use-package neotree)
 
 (use-package enumerated-windows :config (enumerated-windows-mode t))
 
 (use-package yoshi :commands yoshi-project-mode)
+
+(use-package keyfreq :init (keyfreq-mode 1) (keyfreq-autosave-mode 1))

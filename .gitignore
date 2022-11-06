@@ -8,4 +8,7 @@
 *.cache
 /projects
 /eln-cache/
-tramp
+/tramp
+/image-dired
+/history
+/places
