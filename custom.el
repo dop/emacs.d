@@ -13,6 +13,7 @@
  '(comint-scroll-to-bottom-on-output nil)
  '(company-tooltip-align-annotations t)
  '(compilation-always-kill t)
+ '(compilation-ask-about-save nil)
  '(compilation-message-face 'default)
  '(create-lockfiles nil)
  '(css-indent-offset 2)
