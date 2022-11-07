@@ -129,7 +129,7 @@
      ("CANCELLED" :foreground "grey" :weight bold)))
  '(org-todo-keywords '((sequence "TODO(t)" "WAIT(w@)" "DONE(d)" "CANCELLED(c)")))
  '(package-selected-packages
-   '(keyfreq rainbow-mode sly marginalia vertico paren-face deadgrep sql-indent ox-slack solarized-theme seq edit-indirect flow-js2-mode inf-clojure browse-kill-ring ox-jira scala-mode paredit-everywhere-mode ox-gfm imenu-list eglot macrostep flymake-proselint jsonrpc flymake eldoc project json-mode editorconfig prettier paredit-menu exec-path-from-shell markdown-mode nodejs-repl string-edit typescript-mode wgrep xterm-color flymake-eslint olivetti ns-auto-titlebar cider lsp paredit-everywhere slime-company whitespace-cleanup-mode use-package undo-tree restclient protobuf-mode paredit neotree hungry-delete git-timemachine dictionary csv-mode company))
+   '(clojure-mode string-edit-at-point keyfreq rainbow-mode sly marginalia vertico paren-face deadgrep sql-indent ox-slack solarized-theme seq edit-indirect flow-js2-mode inf-clojure browse-kill-ring ox-jira scala-mode paredit-everywhere-mode ox-gfm imenu-list eglot macrostep flymake-proselint jsonrpc flymake eldoc project json-mode editorconfig prettier paredit-menu exec-path-from-shell markdown-mode nodejs-repl string-edit typescript-mode wgrep xterm-color flymake-eslint olivetti ns-auto-titlebar cider lsp paredit-everywhere slime-company whitespace-cleanup-mode use-package undo-tree restclient protobuf-mode paredit neotree hungry-delete git-timemachine dictionary csv-mode company))
  '(paredit-lighter " ParEd" t)
  '(prettier-inline-errors-flag t)
  '(prettier-lighter " Pr")
@@ -150,7 +150,9 @@
  '(text-scale-mode-step 1.1)
  '(transient-save-history nil)
  '(typescript-indent-level 2)
+ '(undo-tree-auto-save-history t)
  '(undo-tree-enable-undo-in-region t)
+ '(undo-tree-history-directory-alist '((".*" . "~/.emacs.d/undo-tree-history")))
  '(undo-tree-mode-lighter " ut")
  '(vc-annotate-background nil)
  '(vc-annotate-background-mode nil)
@@ -168,7 +170,10 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(default ((t (:height 140 :family "IBM Plex Mono"))))
  '(cursor ((t (:background "red"))))
  '(eglot-highlight-symbol-face ((t (:inherit highlight))))
  '(font-lock-comment-face ((t (:inherit shadow :slant italic))))
- '(fringe ((t (:inherit default)))))
+ '(fringe ((t (:inherit default))))
+ '(mode-line ((t (:background "grey75" :foreground "black" :box (:line-width (1 . 1) :style released-button) :family "IBM Plex Sans"))))
+ '(mode-line-inactive ((t (:inherit mode-line :foreground "grey50" :box (:line-width (1 . 1) :style released-button))))))

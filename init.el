@@ -63,11 +63,20 @@
 (package-activate 'use-package)
 (require 'use-package)
 
+(defvar *install-package-if-used* nil)
+
 (defun activate-before-use-package (name &rest args)
   "Activate package before `use-package' is run."
   (package-activate name))
 
+(defun install-before-use-package (name &rest args)
+  (when *install-package-if-used*
+    (ignore-errors
+      (unless (package-installed-p name)
+        (package-install name)))))
+
 (advice-add 'use-package :before #'activate-before-use-package)
+(advice-add 'use-package :before #'install-before-use-package)
 
 (add-hook 'eshell-mode-hook #'toggle-truncate-lines)
 
@@ -88,7 +97,6 @@
   :config (setq ispell-program-name (executable-find "aspell")))
 
 (use-package deadgrep
-  :pin melpa-stable
   :commands deadgrep)
 
 (use-package edit-indirect
@@ -136,7 +144,7 @@
 (use-package typescript-mode :mode "\\.tsx\\'")
 (require 'tsx-mode)
 
-(use-package string-edit)
+(use-package string-edit-at-point)
 (use-package wgrep)
 (use-package eglot :load-path "~/.emacs.d/lisp/eglot")
 (use-package olivetti :defer t)
@@ -144,9 +152,11 @@
 (use-package restclient :mode "\\.rest\\'")
 (use-package protobuf-mode :mode "\\.proto\\'")
 
-(use-package ns-auto-titlebar
-  :if (eq 'ns (window-system))
-  :init (ns-auto-titlebar-mode t))
+(if (functionp 'mac-auto-operator-composition-mode)
+    (mac-auto-operator-composition-mode t)
+  (use-package ns-auto-titlebar
+    :if (eq 'ns (window-system))
+    :init (ns-auto-titlebar-mode t)))
 
 (use-package marginalia :defer t :init (marginalia-mode t))
 ;; (use-package corfu :init (global-corfu-mode -1))
@@ -174,3 +184,7 @@
 (use-package yoshi :commands yoshi-project-mode)
 
 (use-package keyfreq :init (keyfreq-mode 1) (keyfreq-autosave-mode 1))
+
+(server-start)
+
+;; end of init.el
