@@ -47,6 +47,15 @@
 (add-hook 'html-mode-hook #'turn-on-show-trailing-whitespace)
 (add-hook 'css-mode-hook #'turn-on-show-trailing-whitespace)
 
+(defun eos/add-watchwords ()
+  "Highlight FIXME, TODO, and XXX in code."
+  (font-lock-add-keywords
+   nil '(("\\<\\(TODO\\(?:(.*)\\)?:?\\)\\>"  1 'warning prepend)
+         ("\\<\\(FIXME\\(?:(.*)\\)?:?\\)\\>" 1 'error prepend)
+         ("\\<\\(XXX\\(?:(.*)\\)?:?\\)\\>"  1 'error prepend))))
+
+(add-hook 'prog-mode-hook #'eos/add-watchwords)
+
 ;; Useful in eshell.
 (defalias 'e 'find-file)
 
@@ -79,6 +88,7 @@
 (advice-add 'use-package :before #'install-before-use-package)
 
 (add-hook 'eshell-mode-hook #'toggle-truncate-lines)
+(add-hook 'compilation-mode-hook #'toggle-truncate-lines)
 
 (require 'setup-ibuffer)
 
