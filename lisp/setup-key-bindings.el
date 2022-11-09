@@ -5,6 +5,8 @@
 
 (global-set-key (kbd "C-z") nil)
 
+;; For terminal
+(global-set-key (kbd "C-c i") #'completion-at-point)
 (global-set-key (kbd "C-c C-m") #'execute-extended-command)
 
 (global-set-key (kbd "C-w") #'kill-region-or-backward-word)

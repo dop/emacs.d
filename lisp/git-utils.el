@@ -15,6 +15,25 @@
            (completing-read (format "Switch from \"%s\" to: " current) options))))
   (shell-command (format "git checkout %s" branch)))
 
+(defun vc-dir-buffer-list ()
+  (let ((vc-root (expand-file-name (vc-root-dir))))
+    (seq-filter (lambda (buffer)
+                  (and (string-match-p "^\\*vc-dir\\*" (buffer-name buffer))
+                       (with-current-buffer buffer
+                         (string-prefix-p vc-root default-directory))))
+                (buffer-list))))
+
+(defun revert-vc-buffers ()
+  (mapc (lambda (buffer)
+          (with-current-buffer buffer
+            (revert-buffer nil t)))
+        (vc-dir-buffer-list)))
+
+(defun git-checkout-revert-vc-buffers (&rest ignore)
+  (revert-vc-buffers))
+
+(advice-add 'git-checkout :after #'git-checkout-revert-vc-buffers)
+
 (defun git-delete-branches (branches)
   "Select and delete branches."
   (interactive
