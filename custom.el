@@ -174,15 +174,15 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:slant normal :weight medium :height 140 :family "IBM Plex Mono"))))
+ '(default ((t (:inherit nil :extend nil :stipple nil :background "White" :foreground "Black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight medium :height 120 :width normal :foundry "nil" :family "IBM Plex Mono"))))
  '(cursor ((t (:background "red"))))
  '(eglot-highlight-symbol-face ((t (:inherit highlight))))
  '(eshell-ls-directory ((t (:inherit (bold font-lock-function-name-face)))))
  '(eshell-prompt ((t (:inherit nil :foreground "red" :weight bold))))
- '(fixed-pitch ((t (:family "Monaco"))))
- '(fixed-pitch-serif ((t (:family "Courier New"))))
+ '(fixed-pitch ((t (:family "IBM Plex Mono"))))
+ '(fixed-pitch-serif ((t (:weight normal :family "IBM Plex Mono"))))
  '(font-lock-comment-face ((t (:inherit shadow :slant italic))))
  '(fringe ((t (:inherit default))))
- '(mode-line ((t (:background "grey75" :foreground "black" :box (:line-width (1 . 1) :style released-button) :height 1.0 :width normal :family "IBM Plex Sans"))))
+ '(mode-line ((t (:inherit variable-pitch :background "grey75" :foreground "black" :box (:line-width (1 . 1) :style released-button) :height 1.0 :width normal))))
  '(mode-line-inactive ((t (:inherit mode-line :background "grey75" :foreground "grey50"))))
  '(variable-pitch ((t (:family "IBM Plex Sans")))))

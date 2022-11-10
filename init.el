@@ -162,11 +162,12 @@
 (use-package restclient :mode "\\.rest\\'")
 (use-package protobuf-mode :mode "\\.proto\\'")
 
-(if (functionp 'mac-auto-operator-composition-mode)
-    (mac-auto-operator-composition-mode t)
-  (use-package ns-auto-titlebar
+(use-package ns-auto-titlebar
     :if (eq 'ns (window-system))
-    :init (ns-auto-titlebar-mode t)))
+    :init (ns-auto-titlebar-mode t))
+
+(when (functionp 'mac-auto-operator-composition-mode)
+  (mac-auto-operator-composition-mode t))
 
 (use-package marginalia :defer t :init (marginalia-mode t))
 ;; (use-package corfu :init (global-corfu-mode -1))
