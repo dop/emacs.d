@@ -1,4 +1,8 @@
 (require 'project)
+(require 'library)
+
+(defun project-current-root ()
+  (project-root (project-current)))
 
 (defun project-has-file-p (project filepath)
   (let* ((directory (project-root project))

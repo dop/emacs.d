@@ -1,11 +1,13 @@
 (with-eval-after-load 'ibuffer
+  (require 'project-tools)
+
   (define-ibuffer-sorter project
     "Sort buffers by project or `default-directory'."
     (:description "project")
     (let ((a-dir (with-current-buffer (car a)
-                   (or (cdr (project-current)) default-directory)))
+                   (or (project-current-root) default-directory)))
           (b-dir (with-current-buffer (car b)
-                   (or (cdr (project-current)) default-directory))))
+                   (or (project-current-root) default-directory))))
       (string< a-dir b-dir)))
 
   (define-key ibuffer-mode-map (kbd "s p") #'ibuffer-do-sort-by-project)

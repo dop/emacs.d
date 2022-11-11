@@ -1,31 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
 (require 'cl-seq)
-
-(defmacro comment (&rest body))
-
-(defun alphanumeric-char-p (c)
-  (or (<= ?a c ?z) (<= ?A c ?Z) (<= ?0 c ?9)))
-
-(defun random-alphanumeric-string (&optional size)
-  "Return random string consisting of alphanumeric characters.
-
-Encodes bytes from /dev/random using `base64-encode-string' and
-returns at SIZE length string consisting of alphanumeric
-characters."
-  (let* ((size (or size 12))
-	 (command (format "head -c %d /dev/random" (+ 2 size)))
-	 (base64 (base64-encode-string
-		  (encode-coding-string (shell-command-to-string command)
-					'latin-1))))
-    (substring (apply #'string (seq-filter #'alphanumeric-char-p base64))
-	       0 size)))
-
-(ert-deftest random-alphanumeric-string ()
-  "Tests basics of `random-alphanumeric-string'."
-  (should (eq 'string (type-of (random-alphanumeric-string))))
-  (should (= 12 (length (random-alphanumeric-string))))
-  (should (= 5 (length (random-alphanumeric-string 5)))))
+(require 'library)
 
 (defun insert-random-string ()
   "Insert random alphanumeric string."
