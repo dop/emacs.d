@@ -1,24 +1,42 @@
 * Install
-#+BEGIN_SRC shell
+
+#+begin_src shell
 git clone git://git.sv.gnu.org/emacs.git
 git checkout emacs-28
-#+END_SRC
+#+end_src
+
+Alternatively, since Emacs history is long and repository is big, we can retrieve only the current source:
+
+#+begin_src shell
+git clone --depth 1 --branch emacs-28 git://git.sv.gnu.org/emacs.git
+#+end_src
 
 Below are some of the build recipes for the machines I use.
 
 ** Ubuntu
 Dependencies:
-#+BEGIN_SRC shell
+#+begin_src shell
   apt install \
       libgtk-3-dev texinfo \
       libgccjit-9-dev libncurses-dev libgnutls28-dev libgif-dev \
       libxpm-dev libjansson-dev libmagickwand-dev libmagickcore-dev
-#+END_SRC
+#+end_src
 
 Configure:
-#+BEGIN_SRC shell
+#+begin_src shell
   ./configure --prefix=$HOME/.local --with-x-toolkit=gtk3 --with-cairo \
               --with-imagemagick --with-json --with-harfbuzz --with-jpeg --with-png \
               --with-pdf --with-gif --with-tiff --with-xpm --with-gnutls \
               --with-native-compilation
-#+END_SRC
+#+end_src
+
+** MacOS
+
+Use [[https://www.macports.org/][MacPorts]] to install [[https://github.com/akheron/jansson][jansson]].
+
+#+begin_src shell
+  ./autogen.sh
+  ./configure
+  make install
+  mv nextstep/Emacs.app /Applications
+#+end_src
