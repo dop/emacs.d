@@ -1,7 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
 (require 'cl-seq)
-(require 'library)
+(require 'my-library)
 
 (defun insert-random-string ()
   "Insert random alphanumeric string."
@@ -274,4 +274,4 @@ Also see the `copy-from-above-command' command."
       (dotimes (_ n)
         (insert line "\n")))))
 
-(provide 'misc)
+(provide 'my-commands)

@@ -12,7 +12,7 @@
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-(require 'misc)
+(require 'my-commands)
 (require 'git-utils)
 (require 'setup-key-bindings)
 
@@ -90,11 +90,15 @@
 (add-hook 'eshell-mode-hook #'toggle-truncate-lines)
 (add-hook 'compilation-mode-hook #'toggle-truncate-lines)
 
+(require 'setup-dired)
 (require 'setup-ibuffer)
+
+(use-package hl-line
+  :hook (package-menu-mode . hl-line-mode))
 
 (use-package exec-path-from-shell
   :init
-  (when (memq window-system '(mac ns))
+  (when (memq window-system '(mac ns x))
     (exec-path-from-shell-initialize)))
 
 (use-package hungry-delete :init (global-hungry-delete-mode t))

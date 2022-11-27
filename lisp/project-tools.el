@@ -1,5 +1,5 @@
 (require 'project)
-(require 'library)
+(require 'my-library)
 
 (defun project-current-root ()
   (project-root (project-current)))

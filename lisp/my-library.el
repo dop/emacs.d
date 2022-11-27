@@ -13,4 +13,4 @@
   "Check if OBJECT is a cons cell with atom in cdr."
   (and (consp object) (atom (cdr object))))
 
-(provide 'library)
+(provide 'my-library)

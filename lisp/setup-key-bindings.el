@@ -1,7 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
 (require 'zoom)
-(require 'misc)
+(require 'my-commands)
 
 (global-set-key (kbd "C-z") nil)
 
