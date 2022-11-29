@@ -2,7 +2,8 @@
 (require 'my-library)
 
 (defun project-current-root ()
-  (project-root (project-current)))
+  (when-let ((project (project-current)))
+    (project-root project)))
 
 (defun project-has-file-p (project filepath)
   (let* ((directory (project-root project))
