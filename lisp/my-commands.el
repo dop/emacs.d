@@ -193,18 +193,6 @@ To be used with `markdown-live-preview-window-function'."
 
 (defvar my-eshell-prompt-limit 20)
 
-(defun get-project-name-and-branch (project)
-  (pcase project
-    (`(,type . ,path)
-     (list
-      (cond ((eq type 'vc)
-             (elt (reverse (split-string path "/")) 1))
-            ((eq type 'npm)
-             (let-alist (json-read-file (expand-file-name "package.json" path))
-               .name)))
-      (car (let ((default-directory path))
-             (vc-git-branches)))))))
-
 (defun shorten-path (path limit prefix)
   (let ((limited nil))
     (cl-loop for part in (reverse (split-string path "/" t))
@@ -221,6 +209,9 @@ To be used with `markdown-live-preview-window-function'."
         (project (project-current)))
     (with-output-to-string
       (princ (shorten-path path my-eshell-prompt-limit "…"))
+      (when-let ((curr (car (vc-git-branches))))
+        (princ ":")
+        (princ curr))
       (if (= (user-uid) 0)
           (princ " # ")
         (princ " $ ")))))
