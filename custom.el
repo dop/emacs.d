@@ -154,7 +154,7 @@
  '(text-scale-mode-step 1.1)
  '(transient-save-history nil)
  '(typescript-indent-level 2)
- '(undo-tree-auto-save-history t)
+ '(undo-tree-auto-save-history nil)
  '(undo-tree-enable-undo-in-region t)
  '(undo-tree-history-directory-alist '((".*" . "~/.emacs.d/undo-tree-history")))
  '(undo-tree-mode-lighter " ut")
