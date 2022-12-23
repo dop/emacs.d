@@ -129,7 +129,7 @@
      ("CANCELLED" :foreground "grey" :weight bold)))
  '(org-todo-keywords '((sequence "TODO(t)" "WAIT(w@)" "DONE(d)" "CANCELLED(c)")))
  '(package-selected-packages
-   '(string-edit-at-point keyfreq rainbow-mode sly marginalia vertico paren-face deadgrep sql-indent ox-slack solarized-theme seq edit-indirect flow-js2-mode inf-clojure browse-kill-ring ox-jira scala-mode paredit-everywhere-mode ox-gfm imenu-list eglot macrostep flymake-proselint jsonrpc flymake eldoc project json-mode editorconfig prettier paredit-menu exec-path-from-shell markdown-mode nodejs-repl typescript-mode wgrep xterm-color flymake-eslint olivetti ns-auto-titlebar cider lsp paredit-everywhere slime-company whitespace-cleanup-mode use-package undo-tree restclient protobuf-mode paredit neotree hungry-delete git-timemachine dictionary csv-mode company))
+   '(dired-collapse dired-subtree string-edit-at-point keyfreq rainbow-mode sly marginalia vertico paren-face deadgrep sql-indent ox-slack solarized-theme seq edit-indirect flow-js2-mode inf-clojure browse-kill-ring ox-jira scala-mode paredit-everywhere-mode ox-gfm imenu-list eglot macrostep flymake-proselint jsonrpc flymake eldoc project json-mode editorconfig prettier paredit-menu exec-path-from-shell markdown-mode nodejs-repl typescript-mode wgrep xterm-color flymake-eslint olivetti ns-auto-titlebar cider lsp paredit-everywhere slime-company whitespace-cleanup-mode use-package undo-tree restclient protobuf-mode paredit neotree hungry-delete git-timemachine dictionary csv-mode company))
  '(paredit-lighter " ParEd" t)
  '(prettier-inline-errors-flag t)
  '(prettier-lighter " Pr")
@@ -174,15 +174,35 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :extend nil :stipple nil :background "White" :foreground "Black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight medium :height 120 :width normal :foundry "nil" :family "IBM Plex Mono"))))
+ '(default ((t (:inherit nil :extend nil :stipple nil :background "white" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight regular :height 140 :width normal :foundry "nil" :family "Source Code Pro"))))
  '(cursor ((t (:background "red"))))
+ '(dired-subtree-depth-1-face ((t nil)))
+ '(dired-subtree-depth-2-face ((t nil)))
+ '(dired-subtree-depth-3-face ((t nil)))
+ '(dired-subtree-depth-4-face ((t nil)))
  '(eglot-highlight-symbol-face ((t (:inherit highlight))))
  '(eshell-ls-directory ((t (:inherit (bold font-lock-function-name-face)))))
- '(eshell-prompt ((t (:inherit nil :foreground "red" :weight bold))))
- '(fixed-pitch ((t (:family "IBM Plex Mono"))))
- '(fixed-pitch-serif ((t (:weight normal :family "IBM Plex Mono"))))
+ '(eshell-prompt
+   ((((background dark))
+     (:inherit nil :foreground "pink" :weight bold))
+    (t
+     (:inherit nil :foreground "dark red" :weight bold))))
+ '(fixed-pitch ((t (:weight normal :family "Courier New"))))
+ '(fixed-pitch-serif ((t (:weight normal :family "Courier New"))))
  '(font-lock-comment-face ((t (:inherit shadow :slant italic))))
  '(fringe ((t (:inherit default))))
- '(mode-line ((t (:inherit variable-pitch :background "grey75" :foreground "black" :box (:line-width (1 . 1) :style released-button) :height 1.0 :width normal))))
+ '(mode-line ((t (:background "grey75" :foreground "black" :box (:line-width (1 . 1) :style released-button) :weight medium :height 1.0 :width normal :family "Avenir Next"))))
  '(mode-line-inactive ((t (:inherit mode-line :background "grey75" :foreground "grey50"))))
- '(variable-pitch ((t (:family "IBM Plex Sans")))))
+ '(org-document-title
+   ((((background dark))
+     (:foreground "pale turquoise" :weight bold :height 1.5))
+    (t
+     (:foreground "midnight blue" :weight bold :height 1.5))))
+ '(outline-1
+   ((((background dark))
+     (:inherit font-lock-function-name-face :overline "gray20" :height 1.2))
+    (t
+     (:inherit font-lock-function-name-face :overline "azure2" :height 1.2))))
+ '(outline-2
+   ((t (:inherit font-lock-variable-name-face :height 1.1))))
+ '(variable-pitch ((t (:weight medium :family "Avenir Next")))))

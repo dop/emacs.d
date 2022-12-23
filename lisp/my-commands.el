@@ -265,4 +265,11 @@ Also see the `copy-from-above-command' command."
       (dotimes (_ n)
         (insert line "\n")))))
 
+(defun dark-mode ()
+  "This seems to be good enough."
+  (interactive)
+  (set-face-attribute 'default nil
+                      :foreground (face-attribute 'default :background)
+                      :background (face-attribute 'default :foreground)))
+
 (provide 'my-commands)
