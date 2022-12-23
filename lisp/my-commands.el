@@ -8,22 +8,8 @@
   (interactive)
   (insert (random-alphanumeric-string)))
 
-(defun rename-file-and-buffer (new-name)
-  "Renames both current buffer and file it's visiting to NEW-NAME."
-  (interactive "FNew name: ")
-  (let ((name (buffer-name))
-        (filename (buffer-file-name)))
-    (if (not filename)
-        (message "Buffer '%s' is not visiting a file!" name)
-      (if (get-buffer new-name)
-          (message "A buffer named '%s' already exists!" new-name)
-        (progn
-          (rename-file name new-name 1)
-          (rename-buffer new-name)
-          (set-visited-file-name new-name)
-          (set-buffer-modified-p nil))))))
-
-(defalias 'rename-buffer-and-file #'rename-file-and-buffer)
+(defalias 'rename-buffer-and-file #'rename-visited-file)
+(defalias 'rename-file-and-buffer #'rename-visited-file)
 
 (defun delete-this-buffer-and-file ()
   "Removes file connected to current buffer and kills buffer."
@@ -251,19 +237,6 @@ To be used with `markdown-live-preview-window-function'."
     (newline-and-indent)
     (call-interactively #'comment-dwim)
     (insert "eslint-disable-next-line " (mapconcat #'identity rules " "))))
-
-(defun duplicate-line (&optional n)
-  "Duplicate the current line N times.
-Also see the `copy-from-above-command' command."
-  (interactive "p")
-  (let ((line (buffer-substring (line-beginning-position)
-                                (line-end-position))))
-    (save-excursion
-      (forward-line 1)
-      (unless (bolp)
-        (insert "\n"))
-      (dotimes (_ n)
-        (insert line "\n")))))
 
 (defun dark-mode ()
   "This seems to be good enough."

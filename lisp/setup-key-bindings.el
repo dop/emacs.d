@@ -18,7 +18,7 @@
 (global-set-key (kbd "C-x M-d") #'delete-this-buffer-and-file)
 (global-set-key (kbd "C-x M-r") #'rename-buffer-and-file)
 (global-set-key (kbd "C-x C-b") #'ibuffer)
-(global-set-key (kbd "C-x w z") #'zoom-dwim)
+(global-set-key (kbd "C-c C-d") #'duplicate-dwim)
 
 (global-set-key (kbd "C-x O") #'other-frame)
 (global-set-key (kbd "M-`") #'other-frame)
