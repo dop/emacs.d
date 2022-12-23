@@ -93,6 +93,9 @@
 (require 'setup-dired)
 (require 'setup-ibuffer)
 
+(use-package sql-indent
+  :hook (sql-mode . sqlind-minor-mode))
+
 (use-package hl-line
   :hook (package-menu-mode . hl-line-mode))
 
