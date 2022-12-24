@@ -3,10 +3,10 @@
 (require 'cl-seq)
 (require 'my-library)
 
-(defun insert-random-string ()
+(defun insert-random-string (size)
   "Insert random alphanumeric string."
-  (interactive)
-  (insert (random-alphanumeric-string)))
+  (interactive "p")
+  (insert (random-alphanumeric-string (if (> size 1) size nil))))
 
 (defalias 'rename-buffer-and-file #'rename-visited-file)
 (defalias 'rename-file-and-buffer #'rename-visited-file)
