@@ -84,7 +84,45 @@ clear when mode is turned off.")
     (prettier-mode t))
   (eglot-ensure))
 
+(defun yoshi-extract-translation ()
+  "Place a translation in message_en.json file.
+
+Kill region or a string (sexp) and ask for key to place it under
+in message_en.json for current project. Put {t('KEY')} in place
+of killed text."
+  (interactive)
+  (let* ((string (if (use-region-p)
+                     (progn
+                       (call-interactively #'kill-region)
+                       (car kill-ring))
+                   (kill-sexp)
+                   (let ((yanked (car kill-ring)))
+                     (substring yanked 1 (1- (length yanked))))))
+         (english
+          (seq-filter (lambda (filename)
+                        (string-suffix-p "messages_en.json" filename))
+                      (project-files (project-current))))
+         (len (length english)))
+    (cond ((= 1 len)
+           (let ((key (read-string "Key: ")))
+             (insert (format "{t('%s')}" key))
+             (save-excursion
+               (with-current-buffer (find-file-noselect (car english) t t)
+                 (let ((value (read-string "Value: " string)))
+                   (replace-regexp "\"[\n\r]*}\s*$" (format "\",\n\"%s\": \"%s\"\n}" key value))
+                   (previous-line)
+                   (indent-for-tab-command)
+                   (save-buffer))))))
+          ((= 0 len)
+           (warn "No message_en.json found."))
+          (t
+           (warn "%n message_en.json files found." len)))))
+
 (define-minor-mode yoshi-project-mode "Yoshi for Emacs."
+  :keymap (let ((prefix (kbd "C-c y"))
+                (map (make-sparse-keymap)))
+            (define-key map (kbd "t") #'yoshi-extract-translation)
+            (list (cons prefix map)))
   :lighter " yo"
   (cond
    (yoshi-project-mode

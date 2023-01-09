@@ -102,6 +102,8 @@
  '(kept-old-versions 2)
  '(locale-coding-system 'utf-8 t)
  '(ls-lisp-dirs-first t)
+ '(ls-lisp-emulation nil)
+ '(ls-lisp-ignore-case t)
  '(ls-lisp-use-insert-directory-program nil)
  '(mode-line-compact t)
  '(mode-require-final-newline t)
@@ -145,8 +147,8 @@
      ("WAIT" :foreground "orange" :weight bold)
      ("DONE" org-done)
      ("CANCELLED" :foreground "grey" :weight bold)))
- '(org-todo-keywords '((sequence "TODO(t)" "WAIT(w@)" "DONE(d)" "CANCELLED(c)")))
- '(org-writing-mode-hook nil)
+ '(org-todo-keywords
+   '((sequence "TODO(t)" "WAIT(w@)" "|" "DONE(d!)" "CANCELLED(c@)")))
  '(package-selected-packages
    '(php-mode org-modern dired-collapse dired-subtree string-edit-at-point keyfreq rainbow-mode sly marginalia vertico paren-face deadgrep sql-indent ox-slack solarized-theme seq edit-indirect flow-js2-mode inf-clojure browse-kill-ring ox-jira scala-mode paredit-everywhere-mode ox-gfm imenu-list eglot macrostep flymake-proselint jsonrpc flymake eldoc project json-mode editorconfig prettier paredit-menu exec-path-from-shell markdown-mode nodejs-repl typescript-mode wgrep xterm-color flymake-eslint olivetti ns-auto-titlebar cider lsp paredit-everywhere slime-company whitespace-cleanup-mode use-package undo-tree restclient protobuf-mode paredit neotree hungry-delete git-timemachine dictionary csv-mode company))
  '(paredit-lighter " ParEd" t)
@@ -209,7 +211,7 @@
  '(mode-line ((t (:background "grey75" :foreground "black" :box (:line-width (1 . 1) :style released-button) :weight medium :height 1.0 :width normal :family "Avenir Next"))))
  '(mode-line-inactive ((t (:inherit mode-line :background "grey75" :foreground "grey50"))))
  '(org-document-title ((((background dark)) (:foreground "pale turquoise" :weight bold :height 1.5)) (t (:foreground "midnight blue" :weight bold :height 1.5))))
- '(org-ellipsis ((t (:foreground "LightGoldenrod"))))
+ '(org-ellipsis ((t (:foreground "DarkGoldenrod"))))
  '(outline-1 ((((background dark)) (:inherit font-lock-function-name-face :overline "gray20" :height 1.2)) (t (:inherit font-lock-function-name-face :overline "azure2" :height 1.2))))
  '(outline-2 ((t (:inherit font-lock-variable-name-face :height 1.1))))
  '(variable-pitch ((t (:weight medium :family "Avenir Next")))))
