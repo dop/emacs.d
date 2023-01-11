@@ -194,8 +194,7 @@
 (use-package clojure-mode :hook ((clojure-mode . paredit-mode)))
 (use-package cider :commands cider-jack-in :hook ((cider-repl-mode . paredit-mode)))
 
-(use-package dark-mode :commands dark-mode)
-(use-package neotree)
+(use-package imenu-list :commands imenu-list)
 
 (use-package enumerated-windows :config (enumerated-windows-mode t))
 
