@@ -173,6 +173,7 @@
  '(savehist-mode t)
  '(scroll-error-top-bottom t)
  '(search-highlight t)
+ '(sly-command-switch-to-existing-lisp 'always)
  '(sly-highlight-suppressed-forms t)
  '(text-scale-mode-step 1.1)
  '(transient-save-history nil)

@@ -24,27 +24,37 @@
 (use-package paredit
   :commands paredit-mode
   :hook
-  ((ielm-mode . paredit-mode)
-   (emacs-lisp-mode . paredit-mode)
-   (lisp-mode . paredit-mode)
+  ((inferior-emacs-lisp-mode . paredit-mode)
    (lisp-data-mode . paredit-mode)
-   (eval-expression-minibuffer-setup . paredit-mode)
-   (sly-mrepl-mode . paredit-mode))
+   (sly-mrepl-mode . repl-paredit-mode)
+   (eval-expression-minibuffer-setup . repl-paredit-mode))
   :config
-  (define-key paredit-mode-map (kbd "C-w") #'paredit-backward-kill-word)
-  (define-key paredit-mode-map (kbd "C-c [") #'paredit-forward-slurp-sexp)
-  (define-key paredit-mode-map (kbd "C-c ]") #'paredit-forward-barf-sexp)
 
-  (define-key paredit-mode-map (kbd "M-[") #'paredit-wrap-square)
-  (define-key paredit-mode-map (kbd "M-{") #'paredit-wrap-curly)
+  (keymap-set paredit-mode-map "C-j" 'paredit-newline)
+  (keymap-set paredit-mode-map "RET" 'paredit-newline)
 
-  (define-key paredit-mode-map "{" #'paredit-open-curly)
-  (define-key paredit-mode-map "[" #'paredit-open-square)
+  (keymap-set paredit-mode-map "C-w" 'paredit-backward-kill-word)
+  (keymap-set paredit-mode-map "C-c [" 'paredit-forward-slurp-sexp)
+  (keymap-set paredit-mode-map "C-c ]" 'paredit-forward-barf-sexp)
+
+  (keymap-set paredit-mode-map "M-[" 'paredit-wrap-square)
+  (keymap-set paredit-mode-map "M-{" 'paredit-wrap-curly)
+
+  (keymap-set paredit-mode-map "{" 'paredit-open-curly)
+  (keymap-set paredit-mode-map "[" 'paredit-open-square)
 
   (advice-add 'paredit-kill :around #'paredit-kill-dwim)
   (advice-add 'paredit-backward-kill-word :around #'paredit-kill-dwim)
   (advice-add 'paredit-forward-delete :around #'paredit-forward-delete-whitespace)
-  (advice-add 'paredit-backward-delete :around #'paredit-backward-delete-whitespace))
+  (advice-add 'paredit-backward-delete :around #'paredit-backward-delete-whitespace)
+
+  (define-minor-mode repl-paredit-mode "Paredit in the REPL."
+    :keymap (let ((map (copy-keymap paredit-mode-map)))
+              (keymap-unset map "RET" t)
+              (keymap-unset map "<return>" t)
+              (keymap-set map "C-j" 'paredit-newline)
+              map)
+    (turn-off-local-electric-indent-mode)))
 
 (use-package paredit-everywhere
   :hook ((typescript-mode . paredit-everywhere-mode)
