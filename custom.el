@@ -152,7 +152,7 @@
  '(org-todo-keywords
    '((sequence "TODO(t)" "WAIT(w@)" "|" "DONE(d!)" "CANCELLED(c@)")))
  '(package-selected-packages
-   '(async php-mode org-modern dired-collapse dired-subtree string-edit-at-point keyfreq rainbow-mode sly marginalia vertico paren-face deadgrep sql-indent ox-slack solarized-theme seq edit-indirect flow-js2-mode inf-clojure browse-kill-ring ox-jira scala-mode paredit-everywhere-mode ox-gfm imenu-list eglot macrostep flymake-proselint jsonrpc flymake eldoc project json-mode editorconfig prettier paredit-menu exec-path-from-shell markdown-mode nodejs-repl typescript-mode wgrep xterm-color flymake-eslint olivetti ns-auto-titlebar cider lsp paredit-everywhere slime-company whitespace-cleanup-mode use-package undo-tree restclient protobuf-mode paredit neotree hungry-delete git-timemachine dictionary csv-mode company))
+   '(async php-mode org-modern dired-collapse dired-subtree string-edit-at-point keyfreq rainbow-mode sly marginalia vertico paren-face deadgrep sql-indent ox-slack solarized-theme seq edit-indirect flow-js2-mode inf-clojure browse-kill-ring ox-jira scala-mode paredit-everywhere-mode ox-gfm imenu-list eglot macrostep flymake-proselint jsonrpc flymake eldoc project json-mode editorconfig prettier paredit-menu exec-path-from-shell markdown-mode nodejs-repl typescript-mode wgrep xterm-color flymake-eslint olivetti ns-auto-titlebar cider lsp paredit-everywhere slime-company whitespace-cleanup-mode use-package undo-tree restclient protobuf-mode paredit hungry-delete git-timemachine dictionary csv-mode company))
  '(paredit-lighter " ParEd" t)
  '(prettier-inline-errors-flag t)
  '(prettier-lighter " Pr")
@@ -198,7 +198,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :extend nil :stipple nil :background "white" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight regular :height 140 :width normal :foundry "nil" :family "Source Code Pro"))))
+ '(default ((t (:inherit nil :extend nil :stipple nil :background "white" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight medium :height 140 :width normal :foundry "nil" :family "Source Code Pro"))))
  '(cursor ((t (:background "red"))))
  '(dired-subtree-depth-1-face ((t nil)))
  '(dired-subtree-depth-2-face ((t nil)))
