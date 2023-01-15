@@ -40,10 +40,17 @@
 (defun turn-off-local-electric-pair-mode ()
   (electric-pair-local-mode -1))
 
+(defun turn-off-local-electric-indent-mode ()
+  (electric-indent-local-mode -1))
+
 (defun turn-on-show-trailing-whitespace ()
   (setq show-trailing-whitespace t))
 
+(defun turn-off-bidi-display-reordering ()
+  (setq bidi-display-reordering nil))
+
 (add-hook 'prog-mode-hook #'turn-on-show-trailing-whitespace)
+(add-hook 'prog-mode-hook #'turn-off-bidi-display-reordering)
 (add-hook 'html-mode-hook #'turn-on-show-trailing-whitespace)
 (add-hook 'css-mode-hook #'turn-on-show-trailing-whitespace)
 
@@ -136,7 +143,7 @@
 
 (use-package whitespace-cleanup-mode
   :init (global-whitespace-cleanup-mode t)
-  :config (setf (cdr (assoc 'whitespace-cleanup-mode minor-mode-alist)) (list " ░")))
+  :config (setf (cdr (assoc 'whitespace-cleanup-mode minor-mode-alist)) (list " wsc")))
 
 (require 'setup-paredit)
 (require 'setup-org)
@@ -177,7 +184,8 @@
   (mac-auto-operator-composition-mode t))
 
 (use-package marginalia :defer t :init (marginalia-mode t))
-;; (use-package corfu :init (global-corfu-mode -1))
+;; (use-package orderless :pin gnu :ensure t)
+;; (use-package consult :pin gnu :ensure t)
 (use-package vertico :defer t :init (vertico-mode t))
 
 (use-package paren-face :hook ((lisp-data-mode . paren-face-mode)))
@@ -187,9 +195,14 @@
   :config
   (defun rps-sly-eval-last-expression ()
     (interactive)
-    (sly-interactive-eval (format "(rps:ps () %s)" (sly-last-expression))))
+    (sly-interactive-eval (format "(rps-user:run %s)" (sly-last-expression))))
 
-  (bind-key "C-c C-j" #'rps-sly-eval-last-expression sly-editing-mode-map))
+  (defun rps-ps-last-expression ()
+    (interactive)
+    (sly-interactive-eval (format "(ps %s)" (sly-last-expression))))
+
+  (bind-key "C-c C-j" #'rps-sly-eval-last-expression sly-editing-mode-map)
+  (bind-key "C-c j" #'rps-ps-last-expression sly-editing-mode-map))
 
 (use-package clojure-mode :hook ((clojure-mode . paredit-mode)))
 (use-package cider :commands cider-jack-in :hook ((cider-repl-mode . paredit-mode)))

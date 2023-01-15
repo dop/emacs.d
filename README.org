@@ -2,7 +2,7 @@
 
 #+begin_src shell
 git clone git://git.sv.gnu.org/emacs.git
-git checkout emacs-28
+git checkout emacs-28 # or whatever version
 #+end_src
 
 Alternatively, since Emacs history is long and repository is big, we can retrieve only the current source:
@@ -28,8 +28,7 @@ Configure:
               --with-imagemagick --with-json --with-harfbuzz --with-jpeg --with-png \
               --with-pdf --with-gif --with-tiff --with-xpm --with-gnutls \
               --with-native-compilation
-#+end_src
-
+#+end_sr
 ** MacOS
 
 Use [[https://www.macports.org/][MacPorts]] to install [[https://github.com/akheron/jansson][jansson]].
@@ -39,4 +38,14 @@ Use [[https://www.macports.org/][MacPorts]] to install [[https://github.com/akhe
   ./configure
   make install
   mv nextstep/Emacs.app /Applications
+#+end_src
+
+Disable MacOS handling of =Control-Command-D= (show/hide word definition) by
+
+#+begin_src shell
+defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 70 '<dict><key>enabled</key><false/></dict>'
+#+end_src
+
+#+begin_src shell
+/System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
 #+end_src
