@@ -264,7 +264,7 @@ To be used with `markdown-live-preview-window-function'."
                  (message "Switched to node %s." nvm-current-version)))
     (message "Provide a version.")))
 
-(defun get-scratch-buffer-create (&optional mode)
+(defun get-mode-scratch-buffer-create (&optional mode)
   (let* ((mode-name
           (string-replace "-mode" "" (symbol-name mode)))
          (buffer-name
@@ -278,14 +278,14 @@ To be used with `markdown-live-preview-window-function'."
 
 (defun scratch-org-buffer ()
   (interactive)
-  (get-scratch-buffer-create 'org-mode))
+  (get-mode-scratch-buffer-create 'org-mode))
 
 (defun scratch-markdown-buffer ()
   (interactive)
-  (get-scratch-buffer-create 'markdown-mode))
+  (get-mode-scratch-buffer-create 'markdown-mode))
 
 (defun scratch-js-buffer ()
   (interactive)
-  (get-scratch-buffer-create 'javascript-mode))
+  (get-mode-scratch-buffer-create 'javascript-mode))
 
 (provide 'my-commands)
