@@ -47,14 +47,14 @@
 (add-hook 'html-mode-hook #'turn-on-show-trailing-whitespace)
 (add-hook 'css-mode-hook #'turn-on-show-trailing-whitespace)
 
-(defun eos/add-watchwords ()
-  "Highlight FIXME, TODO, and XXX in code."
+(defun add-watchwords ()
+  "Highlight FIXME, @fixme, TODO, @todo, XXX, @xxx."
   (font-lock-add-keywords
-   nil '(("\\<\\(TODO\\(?:(.*)\\)?:?\\)\\>"  1 'warning prepend)
-         ("\\<\\(FIXME\\(?:(.*)\\)?:?\\)\\>" 1 'error prepend)
-         ("\\<\\(XXX\\(?:(.*)\\)?:?\\)\\>"  1 'error prepend))))
+   nil '(("\\(\\B@todo\\|\\<TODO\\)\\(?:$\\|:\s\\|\s\\)" 1 'warning prepend)
+         ("\\(\\B@fixme\\|\\<FIXME\\)\\(?:$\\|:\s\\|\s\\)" 1 'error prepend)
+         ("\\(\\B@xxx\\|\\<XXX\\)\\(?:$\\|:\s\\|\s\\)"  1 'error prepend))))
 
-(add-hook 'prog-mode-hook #'eos/add-watchwords)
+(add-hook 'prog-mode-hook #'add-watchwords)
 
 ;; Useful in eshell.
 (defalias 'e 'find-file)
