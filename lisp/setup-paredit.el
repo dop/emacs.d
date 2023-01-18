@@ -24,8 +24,8 @@
 (use-package paredit
   :commands paredit-mode
   :hook
-  ((inferior-emacs-lisp-mode . paredit-mode)
-   (lisp-data-mode . paredit-mode)
+  ((lisp-data-mode . paredit-mode)
+   (inferior-emacs-lisp-mode . repl-paredit-mode)
    (sly-mrepl-mode . repl-paredit-mode)
    (eval-expression-minibuffer-setup . repl-paredit-mode))
   :config
