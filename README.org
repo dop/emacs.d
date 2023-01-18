@@ -1,3 +1,5 @@
+#+TITLE: README
+
 * Install
 
 #+begin_src shell
@@ -40,11 +42,13 @@ Use [[https://www.macports.org/][MacPorts]] to install [[https://github.com/akhe
   mv nextstep/Emacs.app /Applications
 #+end_src
 
-Disable MacOS handling of =Control-Command-D= (show/hide word definition) by
+Disable MacOS handling of =Control-Command-D= (show/hide word definition):
 
 #+begin_src shell
 defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 70 '<dict><key>enabled</key><false/></dict>'
 #+end_src
+
+Trigger disabled hotkey to take effect:
 
 #+begin_src shell
 /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
