@@ -104,7 +104,8 @@
   :hook (sql-mode . sqlind-minor-mode))
 
 (use-package hl-line
-  :hook (package-menu-mode . hl-line-mode))
+  :hook ((package-menu-mode . hl-line-mode)
+         (vc-dir-mode . hl-line-mode)))
 
 (use-package exec-path-from-shell
   :init
