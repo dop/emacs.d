@@ -7,7 +7,9 @@
            (when options
              (completing-read (format "Switch from \"%s\" to: " current) options)))))
   (if branch
-      (shell-command (format "git checkout %s" branch))
+      (if (member branch (vc-git-branches))
+          (shell-command (format "git checkout %s" branch))
+        (shell-command (format "git checkout -b %s" branch)))
     (message "No local branches to select from.")))
 
 (defun vc-dir-buffer-list ()
