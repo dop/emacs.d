@@ -193,14 +193,23 @@ To be used with `markdown-live-preview-window-function'."
         (limit my-eshell-prompt-limit)
         (limited nil)
         (project (project-current)))
-    (with-output-to-string
-      (princ (shorten-path path my-eshell-prompt-limit "…"))
-      (when-let ((curr (car (vc-git-branches))))
-        (princ ":")
-        (princ curr))
-      (if (= (user-uid) 0)
-          (princ " # ")
-        (princ " $ ")))))
+    (let* ((shortened-path
+            (shorten-path path my-eshell-prompt-limit "…"))
+           (branch
+            (car (vc-git-branches)))
+           (suffix
+            (if (= (user-uid) 0) " # " " $ "))
+           (prompt
+            (with-output-to-string
+              (princ shortened-path)
+              (when branch (princ " ") (princ branch))
+              (princ suffix))))
+      (when branch
+        (put-text-property (1+ (length shortened-path))
+                           (+ 1 (length shortened-path)
+                              (length branch))
+                           'face '(eshell-prompt underline) prompt))
+      prompt)))
 
 (defun overlay-get-eslint-message (overlay)
   "Get text message from OVERLAY if it is from `flymake-eslint--checker' backend."
