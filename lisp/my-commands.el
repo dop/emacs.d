@@ -297,4 +297,8 @@ To be used with `markdown-live-preview-window-function'."
   (interactive)
   (get-mode-scratch-buffer-create 'javascript-mode))
 
+(defun scratch-typescript-buffer ()
+  (interactive)
+  (get-mode-scratch-buffer-create 'typescript-mode))
+
 (provide 'my-commands)
