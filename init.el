@@ -198,12 +198,20 @@
     (interactive)
     (sly-interactive-eval (format "(rps-user:run %s)" (sly-last-expression))))
 
-  (defun rps-ps-last-expression ()
+  (defun ps-last-expression ()
     (interactive)
-    (sly-interactive-eval (format "(ps %s)" (sly-last-expression))))
+    (let ((expr (format "(format t (ps:ps %s))" (sly-last-expression))))
+      (sly-eval-async `(slynk:eval-and-grab-output ,expr)
+        (lambda (result)
+          (cl-destructuring-bind (output value) result
+            (with-current-buffer (pop-to-buffer (get-buffer-create "*Parenscript->JavaScript*"))
+              (erase-buffer)
+              (insert output)
+              (unless (eq major-mode 'javascript-mode)
+                (javascript-mode))))))))
 
   (bind-key "C-c C-j" #'rps-sly-eval-last-expression sly-editing-mode-map)
-  (bind-key "C-c j" #'rps-ps-last-expression sly-editing-mode-map))
+  (bind-key "C-c j" #'ps-last-expression sly-editing-mode-map))
 
 (use-package clojure-mode :hook ((clojure-mode . paredit-mode)))
 (use-package cider :commands cider-jack-in :hook ((cider-repl-mode . paredit-mode)))
