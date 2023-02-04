@@ -105,7 +105,8 @@
 
 (use-package hl-line
   :hook ((package-menu-mode . hl-line-mode)
-         (vc-dir-mode . hl-line-mode)))
+         (vc-dir-mode . hl-line-mode)
+         (vc-annotate-mode . hl-line-mode)))
 
 (use-package exec-path-from-shell
   :init
