@@ -203,15 +203,15 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:background "white" :foreground "#202020" :height 140))))
- '(cursor ((((background light)) (:background "red")) (((background dark)) (:background "green"))))
+ '(cursor ((((background light)) (:background "magenta")) (((background dark)) (:background "green"))))
  '(eglot-highlight-symbol-face ((t (:inherit highlight))))
  '(eglot-mode-line ((t (:inherit font-lock-constant-face))))
  '(eshell-ls-directory ((t (:inherit (bold font-lock-function-name-face)))))
  '(eshell-prompt ((((background dark)) (:inherit nil :foreground "pink" :weight bold)) (t (:inherit nil :foreground "dark red" :weight bold))))
- '(fringe ((t (:inherit default :foreground "grey50"))))
  '(fixed-pitch ((t (:weight normal :family "Courier"))))
  '(fixed-pitch-serif ((t (:weight normal :family "Courier"))))
  '(font-lock-comment-face ((t (:inherit shadow :slant italic))))
+ '(fringe ((((background light)) (:background "grey95" :foreground "grey50")) (((background dark)) (:background "grey25" :foreground "grey50"))))
  '(hl-line ((((background light)) (:background "honeydew2")) (((background dark)) (:background "dark slate gray"))))
  '(mode-line ((t (:background "grey75" :foreground "black" :box (:line-width (1 . 1) :style released-button) :weight medium :height 1.0 :width normal :family "Avenir Next"))))
  '(mode-line-inactive ((t (:inherit mode-line :background "grey75" :foreground "grey50"))))
