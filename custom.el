@@ -202,7 +202,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:background "white" :foreground "#202020" :height 140))))
+ '(default ((t (:background "white" :foreground "#202020"))))
  '(cursor ((((background light)) (:background "magenta")) (((background dark)) (:background "green"))))
  '(eglot-highlight-symbol-face ((t (:inherit highlight))))
  '(eglot-mode-line ((t (:inherit font-lock-constant-face))))
