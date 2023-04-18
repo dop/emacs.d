@@ -226,21 +226,26 @@ To be used with `markdown-live-preview-window-function'."
 
 (defun eslint-message-get-rule (text)
   "Extract rule name from eslint message."
-  (string-trim (car (s-match "[[0-9a-z/-]+]$" text)) "\\[" "\\]"))
+  (string-trim (car (s-match "[[@0-9a-z/-]+]$" text)) "\\[" "\\]"))
 
 (ert-deftest eslint-message-get-rule ()
   "Tests basics of `eslint-message-get-rule'."
   (should (string= "react-hooks/exhaustive-deps"
                    (eslint-message-get-rule "warning: React Hook useEffect has a missing dependency: 'init'. Either include it or remove the dependency array [react-hooks/exhaustive-deps]")))
   (should (string= "jsx-a11y/anchor-has-content"
-                   (eslint-message-get-rule "Anchor must have content [jsx-a11y/anchor-has-content]"))))
+                   (eslint-message-get-rule "Anchor must have content [jsx-a11y/anchor-has-content]")))
+  (should (string= "@typescript-eslint/rule"
+                   (eslint-message-get-rule "Rule in scoped package [@typescript-eslint/rule]"))))
+
+(defun overlay-get-current-eslint-messages ()
+  (mapcar #'overlay-get-eslint-message (overlays-at (point))))
 
 (defun ignore-eslint-rules ()
   "Insert eslint-disable-next-line rule pragma for overlay warning on current point."
   (interactive)
-  (when-let ((rules (cl-loop for msg in (mapcar #'overlay-get-eslint-message (overlays-at (point)))
-                        when msg
-                        collect (eslint-message-get-rule msg))))
+  (when-let ((rules (cl-loop for msg in (overlay-get-current-eslint-messages)
+                             when msg
+                             collect (eslint-message-get-rule msg))))
     (previous-line)
     (end-of-line)
     (newline-and-indent)
@@ -285,20 +290,9 @@ To be used with `markdown-live-preview-window-function'."
         (funcall mode))
       (pop-to-buffer buffer))))
 
-(defun scratch-org-buffer ()
-  (interactive)
-  (get-mode-scratch-buffer-create 'org-mode))
-
-(defun scratch-markdown-buffer ()
-  (interactive)
-  (get-mode-scratch-buffer-create 'markdown-mode))
-
-(defun scratch-js-buffer ()
-  (interactive)
-  (get-mode-scratch-buffer-create 'javascript-mode))
-
-(defun scratch-typescript-buffer ()
-  (interactive)
-  (get-mode-scratch-buffer-create 'typescript-mode))
+(defun create-scratch-buffer (mode)
+  (interactive (list
+                (completing-read "Mode: " (-uniq (mapcar #'cdr auto-mode-alist)) nil t)))
+  (get-mode-scratch-buffer-create (intern mode)))
 
 (provide 'my-commands)
