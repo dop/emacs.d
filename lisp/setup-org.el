@@ -11,7 +11,7 @@
                     #'turn-off-local-electric-pair-mode))
     (add-hook 'org-mode-hook fn))
   (org-babel-do-load-languages 'org-babel-load-languages
-                               '((emacs-lisp . t) (shell . t) (lisp . t))))
+                               '((emacs-lisp . t) (shell . t) (lisp . t) (plantuml . t))))
 
 (use-package org-writing :commands org-writing-mode)
 
