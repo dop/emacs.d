@@ -54,6 +54,8 @@
 (add-hook 'html-mode-hook #'turn-on-show-trailing-whitespace)
 (add-hook 'css-mode-hook #'turn-on-show-trailing-whitespace)
 
+(add-to-list 'auto-mode-alist '("\\.vue\\'" . mhtml-mode))
+
 (defun add-watchwords ()
   "Highlight FIXME, @fixme, TODO, @todo, XXX, @xxx."
   (font-lock-add-keywords
@@ -133,6 +135,9 @@
   :config
   (add-hook 'markdown-mode-hook #'visual-line-mode)
   (add-hook 'markdown-mode-hook #'flyspell-mode))
+
+(use-package markdown-preview-mode
+  :commands markdown-preview-mode)
 
 (use-package nodejs-repl)
 
@@ -224,6 +229,8 @@
 (use-package yoshi :commands yoshi-project-mode)
 
 (use-package keyfreq :init (keyfreq-mode 1) (keyfreq-autosave-mode 1))
+
+(use-package plantuml-mode :mode "\\.puml\\'")
 
 (server-start)
 

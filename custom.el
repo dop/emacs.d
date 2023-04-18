@@ -72,6 +72,8 @@
  '(flymake-eslint-defer-binary-check t)
  '(frame-inhibit-implied-resize t)
  '(gc-cons-threshold 268435456)
+ '(grep-find-ignored-directories
+   '("SCCS" "RCS" "CVS" "MCVS" ".src" ".svn" ".git" ".hg" ".bzr" "_MTN" "_darcs" "{arch}" "node_modules" "dist" "brower_components" "coverage" "build" ".angular"))
  '(ibuffer-formats
    '((mark modified read-only locked " "
            (name 32 32 :left :elide)
@@ -134,6 +136,7 @@
  '(org-html-prefer-user-labels t)
  '(org-log-done 'time)
  '(org-modern-hide-stars t)
+ '(org-plantuml-jar-path "/opt/local/share/java/plantuml/plantuml.jar")
  '(org-startup-folded t)
  '(org-structure-template-alist
    '(("a" . "export ascii")
@@ -156,8 +159,11 @@
  '(org-todo-keywords
    '((sequence "TODO(t)" "WAIT(w@)" "|" "DONE(d!)" "CANCELLED(c@)")))
  '(package-selected-packages
-   '(async php-mode org-modern dired-collapse dired-subtree string-edit-at-point keyfreq rainbow-mode sly marginalia vertico paren-face deadgrep sql-indent ox-slack solarized-theme seq edit-indirect flow-js2-mode inf-clojure browse-kill-ring ox-jira scala-mode paredit-everywhere-mode ox-gfm imenu-list eglot macrostep flymake-proselint jsonrpc flymake eldoc project json-mode editorconfig prettier paredit-menu exec-path-from-shell markdown-mode nodejs-repl typescript-mode wgrep xterm-color flymake-eslint olivetti ns-auto-titlebar cider lsp paredit-everywhere slime-company whitespace-cleanup-mode use-package undo-tree restclient protobuf-mode paredit hungry-delete git-timemachine dictionary csv-mode company))
+   '(graphviz-dot-mode plantuml-mode string-inflection markdown-preview-mode jq-mode async php-mode org-modern dired-collapse dired-subtree string-edit-at-point keyfreq rainbow-mode sly marginalia vertico paren-face deadgrep sql-indent ox-slack solarized-theme seq edit-indirect flow-js2-mode inf-clojure browse-kill-ring ox-jira scala-mode paredit-everywhere-mode ox-gfm imenu-list eglot macrostep flymake-proselint jsonrpc flymake eldoc project json-mode editorconfig prettier paredit-menu exec-path-from-shell markdown-mode nodejs-repl typescript-mode wgrep xterm-color flymake-eslint olivetti ns-auto-titlebar cider lsp paredit-everywhere slime-company whitespace-cleanup-mode use-package undo-tree restclient protobuf-mode paredit hungry-delete git-timemachine dictionary csv-mode company))
  '(paredit-lighter " ParEd" t)
+ '(plantuml-default-exec-mode 'jar)
+ '(plantuml-indent-level 4)
+ '(plantuml-jar-path "/opt/local/share/java/plantuml/plantuml.jar")
  '(prettier-inline-errors-flag t)
  '(prettier-lighter " Pr")
  '(query-replace-highlight t)
@@ -168,7 +174,8 @@
  '(require-final-newline t)
  '(ring-bell-function nil)
  '(safe-local-variable-values
-   '((diff-add-log-use-relative-names . t)
+   '((olivetti-body-width . 120)
+     (diff-add-log-use-relative-names . t)
      (vc-git-annotate-switches . "-w")
      (eval org-writing-mode t)
      (eval yoshi-project-mode t)))
