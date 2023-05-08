@@ -232,6 +232,11 @@
 
 (use-package plantuml-mode :mode "\\.puml\\'")
 
+(use-package vc-git
+  :bind (:map vc-dir-git-mode-map
+              ("z x" . vc-git-stash-delete)
+              ("z s" . vc-git-stash-show)))
+
 (server-start)
 
 ;; end of init.el
