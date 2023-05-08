@@ -65,8 +65,8 @@ Otherwise, call `backward-kill-word'."
 (defun open-terminal-app ()
   (interactive)
   (let* ((project (project-current))
-         (dir (if project (project-root project) default-directory)))
-    (shell-command (format "open -a Terminal.app %s" dir))))
+         (dir (expand-file-name (if project (project-root project) default-directory))))
+    (shell-command (format "open -a Terminal.app '%s'" dir))))
 
 (defun spec-overview ()
   (interactive)
