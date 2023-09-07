@@ -15,4 +15,20 @@
 
 (use-package org-writing :commands org-writing-mode)
 
+(use-package org-download
+  :after org
+  :commands (org-download-screenshot)
+  :custom
+  (org-download-method 'directory)
+  (org-download-image-dir "images")
+  (org-download-heading-lvl nil)
+  (org-download-timestamp "%Y%m%d-%H%M%S_")
+  (org-image-actual-width 300)
+  (org-download-screenshot-method "pngpaste %s")
+  ;; :bind
+  ;; ("C-M-y" . org-download-screenshot)
+  ;; :config
+  ;; (require 'org-download)
+  )
+
 (provide 'setup-org)
