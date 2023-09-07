@@ -127,4 +127,13 @@ usage: (cond-let ((VAR TEST) BODY...))."
       `(sref (elt ,seq ,(car indeces)) ,@(cdr indeces))
     seq))
 
+(defun up-directory (file)
+  (file-name-directory (directory-file-name (file-name-as-directory file))))
+
+(defun locate-top-dominating-file (file name)
+  (when-let ((dominating-file
+              (locate-dominating-file file name)))
+    (or (locate-top-dominating-file (up-directory dominating-file) name)
+        dominating-file)))
+
 (provide 'my-library)
