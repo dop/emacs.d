@@ -237,6 +237,34 @@
               ("z x" . vc-git-stash-delete)
               ("z s" . vc-git-stash-show)))
 
+(use-package git-gutter
+  :hook (prog-mode . git-gutter-mode))
+
+(use-package git-gutter-fringe
+  :config
+  (define-fringe-bitmap 'git-gutter-fr:added [224] nil nil '(center repeated))
+  (define-fringe-bitmap 'git-gutter-fr:modified [224] nil nil '(top repeated))
+  (define-fringe-bitmap 'git-gutter-fr:deleted [224] nil nil '(top repeated)))
+
+(use-package ligature
+  :hook (prog-mode . ligature-mode)
+  :config
+  (ligature-set-ligatures
+   'prog-mode
+   '("|||>" "<|||" "<==>" "<!--" "####" "~~>" "***" "||=" "||>"
+     ":::" "::=" "=:=" "===" "==>" "=!=" "=>>" "=<<" "=/=" "!=="
+     "!!." ">=>" ">>=" ">>>" ">>-" ">->" "->>" "-->" "---" "-<<"
+     "<~~" "<~>" "<*>" "<||" "<|>" "<$>" "<==" "<=>" "<=<" "<->"
+     "<--" "<-<" "<<=" "<<-" "<<<" "<+>" "</>" "###" "#_(" "..<"
+     "..." "+++" "/==" "///" "_|_" "www" "&&" "^=" "~~" "~@" "~="
+     "~>" "~-" "**" "*>" "*/" "||" "|}" "|]" "|=" "|>" "|-" "{|"
+     "[|" "]#" "::" ":=" ":>" ":<" "$>" "==" "=>" "!=" "!!" ">:"
+     ">=" ">>" ">-" "-~" "-|" "->" "--" "-<" "<~" "<*" "<|" "<:"
+     "<$" "<=" "<>" "<-" "<<" "<+" "</" "#{" "#[" "#:" "#=" "#!"
+     "##" "#(" "#?" "#_" "%%" ".=" ".-" ".." ".?" "+>" "++" "?:"
+     "?=" "?." "??" ";;" "/*" "/=" "/>" "//" "__" "~~" "(*" "*)"
+     "\\\\" "://")))
+
 (server-start)
 
 ;; end of init.el
