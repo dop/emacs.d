@@ -159,7 +159,7 @@
  '(org-todo-keywords
    '((sequence "TODO(t)" "WAIT(w@)" "|" "DONE(d!)" "CANCELLED(c@)")))
  '(package-selected-packages
-   '(graphviz-dot-mode plantuml-mode string-inflection markdown-preview-mode jq-mode async php-mode org-modern dired-collapse dired-subtree string-edit-at-point keyfreq rainbow-mode sly marginalia vertico paren-face deadgrep sql-indent ox-slack solarized-theme seq edit-indirect flow-js2-mode inf-clojure browse-kill-ring ox-jira scala-mode paredit-everywhere-mode ox-gfm imenu-list eglot macrostep flymake-proselint jsonrpc flymake eldoc project json-mode editorconfig prettier paredit-menu exec-path-from-shell markdown-mode nodejs-repl typescript-mode wgrep xterm-color flymake-eslint olivetti ns-auto-titlebar cider lsp paredit-everywhere slime-company whitespace-cleanup-mode use-package undo-tree restclient protobuf-mode paredit hungry-delete git-timemachine dictionary csv-mode company))
+   '(org-download git-gutter-fringe neotree ligature ligature-pragmatapro graphviz-dot-mode plantuml-mode string-inflection markdown-preview-mode jq-mode async php-mode org-modern dired-collapse dired-subtree string-edit-at-point keyfreq rainbow-mode sly marginalia vertico paren-face deadgrep sql-indent ox-slack solarized-theme seq edit-indirect flow-js2-mode inf-clojure browse-kill-ring ox-jira scala-mode paredit-everywhere-mode ox-gfm imenu-list eglot macrostep flymake-proselint jsonrpc flymake eldoc project json-mode editorconfig prettier paredit-menu exec-path-from-shell markdown-mode nodejs-repl typescript-mode wgrep xterm-color flymake-eslint olivetti ns-auto-titlebar cider lsp paredit-everywhere slime-company whitespace-cleanup-mode use-package undo-tree restclient protobuf-mode paredit hungry-delete git-timemachine dictionary csv-mode company))
  '(paredit-lighter " ParEd" t)
  '(plantuml-default-exec-mode 'jar)
  '(plantuml-indent-level 4)
@@ -197,7 +197,7 @@
  '(vc-annotate-background-mode nil)
  '(vc-annotate-very-old-color nil)
  '(vc-directory-exclusion-list
-   '("SCCS" "RCS" "CVS" "MCVS" ".src" ".svn" ".git" ".hg" ".bzr" "_MTN" "_darcs" "{arch}" "node_modules" "dist" "brower_components" "coverage" "build"))
+   '("SCCS" "RCS" "CVS" "MCVS" ".src" ".svn" ".git" ".hg" ".bzr" "_MTN" "_darcs" "{arch}" "node_modules" "dist" "bower_components" "coverage" "build"))
  '(version-control t)
  '(vertico-count-format '("%-6s " . "%s/%s"))
  '(vertico-mode t)
@@ -209,17 +209,13 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:background "white" :foreground "#202020"))))
- '(cursor ((((background light)) (:background "magenta")) (((background dark)) (:background "green"))))
+ '(default ((t (:weight regular :height 120 :width normal :family "MonacoB"))))
+ '(cursor ((((background light)) (:background "red")) (((background dark)) (:background "green"))))
  '(eglot-highlight-symbol-face ((t (:inherit highlight))))
- '(eglot-mode-line ((t (:inherit font-lock-constant-face))))
- '(eshell-ls-directory ((t (:inherit (bold font-lock-function-name-face)))))
- '(eshell-prompt ((((background dark)) (:inherit nil :foreground "pink" :weight bold)) (t (:inherit nil :foreground "dark red" :weight bold))))
- '(fixed-pitch ((t (:weight normal :family "Courier"))))
- '(fixed-pitch-serif ((t (:weight normal :family "Courier"))))
- '(font-lock-comment-face ((t (:inherit shadow :slant italic))))
- '(fringe ((((background light)) (:background "grey95" :foreground "grey50")) (((background dark)) (:background "grey25" :foreground "grey50"))))
- '(hl-line ((((background light)) (:background "honeydew2")) (((background dark)) (:background "dark slate gray"))))
+ '(fringe ((t (:inherit default))))
+ '(git-gutter:added ((t (:foreground "yellow green"))))
+ '(git-gutter:deleted ((t (:foreground "tomato"))))
+ '(git-gutter:modified ((t (:foreground "orchid"))))
  '(mode-line ((t (:background "grey75" :foreground "black" :box (:line-width (1 . 1) :style released-button) :weight medium :height 1.0 :width normal :family "Avenir Next"))))
  '(mode-line-inactive ((t (:inherit mode-line :background "grey75" :foreground "grey50"))))
  '(org-document-title ((((background dark)) (:foreground "pale turquoise" :weight bold :height 1.5)) (t (:foreground "midnight blue" :weight bold :height 1.5))))
@@ -227,4 +223,6 @@
  '(org-tag ((t (:inverse-video t))))
  '(outline-1 ((((background dark)) (:inherit font-lock-function-name-face :overline "gray20" :height 1.2)) (t (:inherit font-lock-function-name-face :overline "azure2" :height 1.2))))
  '(outline-2 ((t (:inherit font-lock-variable-name-face :height 1.1))))
- '(variable-pitch ((t (:weight medium :family "Avenir Next")))))
+ '(trailing-whitespace ((((background light)) (:background "yellow")) (((background dark)) (:background "yellow4"))))
+ '(variable-pitch ((t (:weight medium :family "Avenir Next"))))
+ '(vertical-border ((t (:foreground "grey")))))
