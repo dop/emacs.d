@@ -259,8 +259,6 @@ To be used with `markdown-live-preview-window-function'."
                       :foreground (face-attribute 'default :background)
                       :background (face-attribute 'default :foreground)))
 
-;; TODO I think this does not work well, somehow `nvm-use' is not
-;; setting `exec-path' right.
 (defun eshell/nvm-use (&optional version)
   (if-let ((version-string
             (or (and version (cond ((stringp version) version)
@@ -274,7 +272,7 @@ To be used with `markdown-live-preview-window-function'."
                   (warn "Cannot find .nvmrc.")))))
       (nvm-use version-string
                (lambda ()
-                 (message "%s" (getenv "PATH"))
+                 (eshell-set-path (string-join exec-path ":"))
                  (message "Switched to node %s." nvm-current-version)))
     (message "Provide a version.")))
 
