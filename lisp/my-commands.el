@@ -72,23 +72,24 @@ Otherwise, call `backward-kill-word'."
   (interactive)
   (occur "\\<\\(x\\|f\\)?\\(describe\\|it\\)\\(\\.\\(skip\\|only\\|todo\\|each\\)\\)?\\>("))
 
-(defun download-to-current-buffer (url)
-  "Downloads URL into current buffer."
-  (interactive "sURL: ")
-  (download-to-buffer url (current-buffer) nil))
+(defun download-as-string (url callback &optional with-headers)
+  "Downloads URL and call CALLBACK with result string."
+  (url-retrieve url (lambda (status)
+                      (unless with-headers
+                        (goto-char (point-min))
+                        (kill-region (point-min) (progn (forward-paragraph 1) (point)))
+                        (kill-line))
+                      (apply callback (buffer-string)))))
 
 (defun download-to-buffer (url buf &optional with-headers)
   "Downloads URL into buffer BUF."
-  (let ((data (url-retrieve-synchronously url)))
-    (if data
-        (with-current-buffer buf
-          (unless with-headers
-            (with-current-buffer data
-              (goto-char (point-min))
-              (kill-region (point-min) (progn (forward-paragraph 1) (point)))
-              (kill-line)))
-          (save-excursion
-            (insert-buffer-substring data))))))
+  (download-as-string url (lambda (data)
+                            (save-excursion (insert data))) with-headers))
+
+(defun download-to-current-buffer (with-headers url)
+  "Downloads URL into current buffer."
+  (interactive "P\nsURL: ")
+  (download-to-buffer url (current-buffer) with-headers))
 
 (defun advice-list (symbol)
   (let ((list))
