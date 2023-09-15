@@ -136,4 +136,16 @@ usage: (cond-let ((VAR TEST) BODY...))."
     (or (locate-top-dominating-file (up-directory dominating-file) name)
         dominating-file)))
 
+(defun url-retrieve-body (url callback &optional cbargs silent inhibit-cookies)
+  "Same as `url-retrieve', but extracts only body part as string as passes it to CALLBACK."
+  (let ((buf (current-buffer)))
+    (url-retrieve url (lambda (status)
+                        (beginning-of-buffer)
+                        (forward-paragraph)
+                        (next-line)
+                        (beginning-of-line)
+                        (let ((body (buffer-substring (point) (point-max))))
+                          (with-current-buffer buf (funcall callback body))))
+                  cbargs silent inhibit-cookies)))
+
 (provide 'my-library)
