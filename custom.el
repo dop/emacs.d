@@ -202,14 +202,15 @@
  '(vertico-count-format '("%-6s " . "%s/%s"))
  '(vertico-mode t)
  '(visible-bell t)
- '(window-sides-slots '(1 0 2 2)))
+ '(window-sides-slots '(1 0 2 2))
+ '(xref-search-program 'ripgrep))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:weight regular :height 120 :width normal :family "MonacoB"))))
+ '(default ((t (:height 130 :family "CommitMono"))))
  '(cursor ((((background light)) (:background "red")) (((background dark)) (:background "green"))))
  '(eglot-highlight-symbol-face ((t (:inherit highlight))))
  '(fringe ((t (:inherit default))))
