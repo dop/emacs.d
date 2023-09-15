@@ -1,7 +1,28 @@
 ;; -*- lexical-binding: t; -*-
 
+(defcustom project-preferred-root-resolution 'default
+  "Choose how project root is resolved."
+  :type 'symbol
+  :options '(default top)
+  :safe t)
+
+(defun project-vc-top-dir ()
+  "Run VC-Dir in top project root."
+  (interactive)
+  (let ((project-preferred-root-resolution 'top))
+    (call-interactively #'project-vc-dir)))
+
+(defun project-find-top-regexp ()
+  "Run VC-Dir in top project root."
+  (interactive)
+  (let ((project-preferred-root-resolution 'top))
+    (call-interactively #'project-find-regexp)))
+
 (use-package project
   :pin gnu
+  :bind (:map project-prefix-map
+              ("V" . project-vc-top-dir)
+              ("G" . project-find-top-regexp))
   :config
   (advice-add 'risky-local-variable-p :override #'ignore)
 
@@ -24,7 +45,11 @@
   (add-hook 'project-find-functions #'project-dir-locals-project)
 
   (defun project-npm-project (dir)
-    (let ((root (locate-dominating-file dir "package.json")))
+    (let* ((resolve-root
+            (case project-preferred-root-resolution
+              (top #'locate-top-dominating-file)
+              (t   #'locate-dominating-file)))
+           (root (funcall resolve-root dir "package.json")))
       (and root (cons 'npm root))))
 
   (cl-defmethod project-roots ((project (head npm)))
