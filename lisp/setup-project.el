@@ -7,21 +7,28 @@
   :safe t)
 
 (defun project-vc-top-dir ()
-  "Run VC-Dir in top project root."
+  "Run `project-vc-dir' in top project."
   (interactive)
   (let ((project-preferred-root-resolution 'top))
     (call-interactively #'project-vc-dir)))
 
 (defun project-find-top-regexp ()
-  "Run VC-Dir in top project root."
+  "Run `project-find-regexp' in top project."
   (interactive)
   (let ((project-preferred-root-resolution 'top))
     (call-interactively #'project-find-regexp)))
+
+(defun project-find-top-file ()
+  "Run `project-find-file' in top project."
+  (interactive)
+  (let ((project-preferred-root-resolution 'top))
+    (call-interactively #'project-find-file)))
 
 (use-package project
   :pin gnu
   :bind (:map project-prefix-map
               ("V" . project-vc-top-dir)
+              ("F" . project-find-top-file)
               ("G" . project-find-top-regexp))
   :config
   (advice-add 'risky-local-variable-p :override #'ignore)
