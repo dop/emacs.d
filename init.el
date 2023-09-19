@@ -265,6 +265,11 @@
      "?=" "?." "??" ";;" "/*" "/=" "/>" "//" "__" "~~" "(*" "*)"
      "\\\\" "://")))
 
+
+;; Work around the issue of Emacs EPG and GPG >2.0 talking past each other.
+;; https://dev.gnupg.org/T6481#170760
+(fset 'epg-wait-for-status 'ignore)
+
 (server-start)
 
 ;; end of init.el
