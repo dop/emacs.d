@@ -7,3 +7,4 @@
 [submodule "lisp/inf-clojure"]
 	path = lisp/inf-clojure
 	url = git@github.com:dop/inf-clojure.git
+	branch = skip-empty-prompts
