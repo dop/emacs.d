@@ -265,6 +265,12 @@
      "?=" "?." "??" ";;" "/*" "/=" "/>" "//" "__" "~~" "(*" "*)"
      "\\\\" "://")))
 
+(use-package inf-clojure
+  :load-path "~/.emacs.d/lisp/inf-clojure"
+  :config (setq inf-clojure-enable-eldoc nil))
+
+(use-package clojure-mode
+  :hook ((clojure-mode . inf-clojure-eldoc-setup)))
 
 ;; Work around the issue of Emacs EPG and GPG >2.0 talking past each other.
 ;; https://dev.gnupg.org/T6481#170760
