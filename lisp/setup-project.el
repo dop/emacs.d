@@ -53,7 +53,7 @@
 
   (defun project-npm-project (dir)
     (let* ((resolve-root
-            (case project-preferred-root-resolution
+            (cl-case project-preferred-root-resolution
               (top #'locate-top-dominating-file)
               (t   #'locate-dominating-file)))
            (root (funcall resolve-root dir "package.json")))
