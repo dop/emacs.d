@@ -289,9 +289,26 @@ To be used with `markdown-live-preview-window-function'."
         (funcall mode))
       (pop-to-buffer buffer))))
 
+(defun list-unique-modes ()
+  (-uniq (mapcar #'cdr auto-mode-alist)))
+
+(defcustom scratch-file-directory "~/.emacs.d/scratch"
+  "Directory to place and open scratch files."
+  :type 'string
+  :risky t)
+
+(defun scratch-file (mode-name)
+  (interactive (list (completing-read "Mode: " (list-unique-modes) nil t)))
+  (files--ensure-directory scratch-file-directory)
+  (with-current-buffer (find-file
+                        (expand-file-name (concat "scratch." (string-replace "-mode" "" mode-name))
+                                          scratch-file-directory))
+    (let ((mode (intern mode-name)))
+      (unless (eq major-mode mode)
+        (funcall mode)))))
+
 (defun create-scratch-buffer (mode)
-  (interactive (list
-                (completing-read "Mode: " (-uniq (mapcar #'cdr auto-mode-alist)) nil t)))
+  (interactive (list (completing-read "Mode: " (list-unique-modes)  nil t)))
   (get-mode-scratch-buffer-create (intern mode)))
 
 (provide 'my-commands)

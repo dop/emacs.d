@@ -81,7 +81,8 @@
 (package-activate 'use-package)
 (require 'use-package)
 
-(defvar *install-package-if-used* nil)
+(defvar *install-package-if-used* nil
+  "Install package when `use-package' is called.")
 
 (defun activate-before-use-package (name &rest args)
   "Activate package before `use-package' is run."
@@ -275,6 +276,21 @@
 ;; Work around the issue of Emacs EPG and GPG >2.0 talking past each other.
 ;; https://dev.gnupg.org/T6481#170760
 (fset 'epg-wait-for-status 'ignore)
+
+(use-package conf-mode
+  :mode "\\.env\\(\\.local\\)?\\'")
+
+(defvar project-name-mode-line
+  '(:propertize (:eval (when-let ((project (project-current)))
+                         (format "%s/" (file-name-base (directory-file-name (project-root project))))))))
+
+(put 'project-name-mode-line 'risky-local-variable t)
+
+(unless (cl-position 'project-name-mode-line mode-line-format)
+  (let ((i (cl-position 'mode-line-buffer-identification mode-line-format)))
+    (push 'project-name-mode-line (nthcdr i mode-line-format))))
+
+(keymap-global-set "C-c s" #'scratch-file)
 
 (server-start)
 
