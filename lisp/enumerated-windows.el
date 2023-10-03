@@ -70,12 +70,12 @@ returns a WINDOW with index N."
                    (format "%d " (1+ i))))))
 (put 'enumerated-windows-mode-line-number 'risky-local-variable t)
 
-(defvar enumerated-windows-add-mode-line-number-after
+(defvar enumerated-windows-add-mode-line-number-before
   'mode-line-buffer-identification)
 
 (defun enumerated-windows--add-window-number-to-mode-line ()
   (unless (cl-position 'enumerated-windows-mode-line-number mode-line-format)
-    (let ((i (cl-position enumerated-windows-add-mode-line-number-after mode-line-format)))
+    (let ((i (cl-position enumerated-windows-add-mode-line-number-before mode-line-format)))
       (push 'enumerated-windows-mode-line-number (nthcdr i mode-line-format)))))
 
 (defun enumerated-windows--remove-window-number-from-mode-line ()
