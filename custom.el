@@ -70,6 +70,7 @@
  '(eshell-prompt-function 'my-eshell-prompt)
  '(fast-but-imprecise-scrolling t)
  '(flymake-eslint-defer-binary-check t)
+ '(flymake-eslint-prefer-json-diagnostics t)
  '(frame-inhibit-implied-resize t)
  '(gc-cons-threshold 268435456)
  '(grep-find-ignored-directories
@@ -159,7 +160,7 @@
  '(org-todo-keywords
    '((sequence "TODO(t)" "WAIT(w@)" "|" "DONE(d!)" "CANCELLED(c@)")))
  '(package-selected-packages
-   '(org-download git-gutter-fringe neotree ligature ligature-pragmatapro graphviz-dot-mode plantuml-mode string-inflection markdown-preview-mode jq-mode async php-mode org-modern dired-collapse dired-subtree string-edit-at-point keyfreq rainbow-mode sly marginalia vertico paren-face deadgrep sql-indent ox-slack solarized-theme seq edit-indirect flow-js2-mode inf-clojure browse-kill-ring ox-jira scala-mode paredit-everywhere-mode ox-gfm imenu-list eglot macrostep flymake-proselint jsonrpc flymake eldoc project json-mode editorconfig prettier paredit-menu exec-path-from-shell markdown-mode nodejs-repl typescript-mode wgrep xterm-color flymake-eslint olivetti ns-auto-titlebar cider lsp paredit-everywhere slime-company whitespace-cleanup-mode use-package undo-tree restclient protobuf-mode paredit hungry-delete git-timemachine dictionary csv-mode company))
+   '(neotree org-download git-gutter-fringe git-gutter graphviz-dot-mode plantuml-mode string-inflection markdown-preview-mode jq-mode async php-mode org-modern dired-collapse dired-subtree string-edit-at-point keyfreq rainbow-mode sly marginalia vertico paren-face deadgrep sql-indent ox-slack seq edit-indirect flow-js2-mode browse-kill-ring ox-jira scala-mode ox-gfm imenu-list macrostep flymake-proselint jsonrpc flymake eldoc json-mode editorconfig prettier paredit-menu exec-path-from-shell markdown-mode nodejs-repl typescript-mode wgrep xterm-color flymake-eslint olivetti ns-auto-titlebar cider paredit-everywhere slime-company whitespace-cleanup-mode use-package undo-tree restclient protobuf-mode paredit hungry-delete dictionary csv-mode))
  '(paredit-lighter " ParEd" t)
  '(plantuml-default-exec-mode 'jar)
  '(plantuml-indent-level 4)
@@ -213,7 +214,8 @@
  '(default ((t (:height 130 :family "CommitMono"))))
  '(cursor ((((background light)) (:background "red")) (((background dark)) (:background "green"))))
  '(eglot-highlight-symbol-face ((t (:inherit highlight))))
- '(fringe ((t (:inherit default))))
+ '(eglot-mode-line ((t (:inherit font-lock-constant-face))))
+ '(fringe ((((background light)) (:background "grey95" :foreground "grey50")) (((background dark)) (:background "grey25" :foreground "grey50"))))
  '(git-gutter:added ((t (:foreground "yellow green"))))
  '(git-gutter:deleted ((t (:foreground "tomato"))))
  '(git-gutter:modified ((t (:foreground "orchid"))))
