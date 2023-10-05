@@ -211,10 +211,11 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:height 130 :family "CommitMono"))))
+ '(default ((t (:height 130 :family "CommitMono" :foreground "#202020"))))
  '(cursor ((((background light)) (:background "red")) (((background dark)) (:background "green"))))
  '(eglot-highlight-symbol-face ((t (:inherit highlight))))
  '(eglot-mode-line ((t (:inherit font-lock-constant-face))))
+ '(font-lock-comment-face ((t (:slant italic))))
  '(fringe ((((background light)) (:background "grey95" :foreground "grey50")) (((background dark)) (:background "grey25" :foreground "grey50"))))
  '(git-gutter:added ((t (:foreground "yellow green"))))
  '(git-gutter:deleted ((t (:foreground "tomato"))))
