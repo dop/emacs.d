@@ -178,6 +178,7 @@
 
 (use-package string-edit-at-point)
 (use-package wgrep)
+(use-package external-completion :pin gnu)
 (use-package eglot :load-path "~/.emacs.d/lisp/eglot")
 (use-package olivetti :defer t)
 (use-package csv-mode :mode "\\.csv\\'")
