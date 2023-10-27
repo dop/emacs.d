@@ -33,6 +33,8 @@
   :config
   (advice-add 'risky-local-variable-p :override #'ignore)
 
+  (advice-add 'project-find-regexp :override #'deadgrep)
+
   (defun project-compilation-default-buffer-name (&rest ignore)
     (concat "*" (file-name-nondirectory (directory-file-name (project-root (project-current)))) " compilation*"))
 
