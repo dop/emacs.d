@@ -72,19 +72,21 @@ Otherwise, call `backward-kill-word'."
   (interactive)
   (occur "\\<\\(x\\|f\\)?\\(describe\\|it\\)\\(\\.\\(skip\\|only\\|todo\\|each\\)\\)?\\>("))
 
+(defun download-call-back (status callback with-headers)
+  (unless with-headers
+    (goto-char (point-min))
+    (kill-region (point-min) (progn (forward-paragraph 1) (point)))
+    (kill-line))
+  (funcall callback (buffer-string)))
+
 (defun download-as-string (url callback &optional with-headers)
   "Downloads URL and call CALLBACK with result string."
-  (url-retrieve url (lambda (status)
-                      (unless with-headers
-                        (goto-char (point-min))
-                        (kill-region (point-min) (progn (forward-paragraph 1) (point)))
-                        (kill-line))
-                      (apply callback (buffer-string)))))
+  (url-retrieve url #'download-call-back (list callback with-headers)))
 
 (defun download-to-buffer (url buf &optional with-headers)
   "Downloads URL into buffer BUF."
-  (download-as-string url (lambda (data)
-                            (save-excursion (insert data))) with-headers))
+  (download-as-string url (lambda (str) (with-current-buffer buf (insert str)))
+                      with-headers))
 
 (defun download-to-current-buffer (with-headers url)
   "Downloads URL into current buffer."
