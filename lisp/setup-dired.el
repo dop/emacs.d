@@ -11,7 +11,8 @@
          (dired-mode . hl-line-mode))
   :bind (:map dired-mode-map
               ("i" . dired-subtree-insert)
-              ("r" . dired-subtree-remove)))
+              ("r" . dired-subtree-remove))
+  :init (require 'ls-lisp))
 
 (use-package dired-subtree
   :commands (dired-subtree-insert))
