@@ -215,7 +215,7 @@
  '(cursor ((((background light)) (:background "red")) (((background dark)) (:background "green"))))
  '(eglot-highlight-symbol-face ((t (:inherit highlight))))
  '(eglot-mode-line ((t (:inherit font-lock-constant-face))))
- '(font-lock-comment-face ((t (:slant italic))))
+ '(font-lock-comment-face ((t (:inherit shadow :slant italic))))
  '(fringe ((((background light)) (:background "grey95" :foreground "grey50")) (((background dark)) (:background "grey25" :foreground "grey50"))))
  '(git-gutter:added ((t (:foreground "yellow green"))))
  '(git-gutter:deleted ((t (:foreground "tomato"))))
