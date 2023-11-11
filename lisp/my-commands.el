@@ -301,7 +301,7 @@ To be used with `markdown-live-preview-window-function'."
 
 (defun scratch-file (mode-name)
   (interactive (list (completing-read "Mode: " (list-unique-modes) nil t)))
-  (files--ensure-directory scratch-file-directory)
+  (make-directory scratch-file-directory t)
   (with-current-buffer (find-file
                         (expand-file-name (concat "scratch." (string-replace "-mode" "" mode-name))
                                           scratch-file-directory))
