@@ -179,7 +179,12 @@
 (use-package string-edit-at-point)
 (use-package wgrep)
 (use-package external-completion :pin gnu)
-(use-package eglot :load-path "~/.emacs.d/lisp/eglot")
+(use-package eglot
+  :commands (eglot eglot-ensure)
+  :load-path "~/.emacs.d/lisp/eglot"
+  :config
+  (when-let ((config (find 'typescript-mode eglot-server-programs :key (-compose #'-list #'car) :test #'find)))
+    (pushnew 'tsx-mode (car config))))
 (use-package olivetti :defer t)
 (use-package csv-mode :mode "\\.csv\\'")
 (use-package restclient :mode "\\.rest\\'")
