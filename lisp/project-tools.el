@@ -17,11 +17,4 @@
   (when (project-has-node-script-p project script)
     (concat "npx --no-install " script)))
 
-(if (fboundp 'project-name)
-    (warn "`project-name' is available, no need to re-define.")
-  (cl-defgeneric project-name (project)
-    "A human-readable name for the project.
-Nominally unique, but not enforced."
-    (file-name-nondirectory (directory-file-name (project-root project)))))
-
 (provide 'project-tools)

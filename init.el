@@ -179,12 +179,21 @@
 (use-package string-edit-at-point)
 (use-package wgrep)
 (use-package external-completion :pin gnu)
+
+(if (fboundp 'project-name)
+    (warn "`project-name' is available, no need to re-define.")
+  (cl-defgeneric project-name (project)
+    "A human-readable name for the project.
+Nominally unique, but not enforced."
+    (file-name-nondirectory (directory-file-name (project-root project)))))
+
 (use-package eglot
   :commands (eglot eglot-ensure)
   :load-path "~/.emacs.d/lisp/eglot"
   :config
   (when-let ((config (find 'typescript-mode eglot-server-programs :key (-compose #'-list #'car) :test #'find)))
     (pushnew 'tsx-mode (car config))))
+
 (use-package olivetti :defer t)
 (use-package csv-mode :mode "\\.csv\\'")
 (use-package restclient :mode "\\.rest\\'")
@@ -288,7 +297,7 @@
 
 (defvar project-name-mode-line
   '(:propertize (:eval (when-let ((project (project-current)))
-                         (format "%s/" (file-name-base (directory-file-name (project-root project))))))))
+                         (format "%s/" (project-name project))))))
 
 (put 'project-name-mode-line 'risky-local-variable t)
 
