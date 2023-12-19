@@ -255,8 +255,9 @@ Nominally unique, but not enforced."
               ("z x" . vc-git-stash-delete)
               ("z s" . vc-git-stash-show)))
 
-(use-package git-gutter
-  :hook (prog-mode . git-gutter-mode))
+;; ;; Can get very slow.
+;; (use-package git-gutter
+;;   :hook (prog-mode . git-gutter-mode))
 
 (use-package git-gutter-fringe
   :config
