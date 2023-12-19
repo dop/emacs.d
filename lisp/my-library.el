@@ -93,6 +93,14 @@ usage: (cond-let ((VAR TEST) BODY...))."
  (equal '(1) (collecting x (x 1))))
 
 
+(defun alist-hash-table (alist &rest table-keyword-args)
+  "Construct an a hash table from ALIST."
+  (let ((table (apply #'make-hash-table table-keyword-args)))
+    (mapc (pcase-lambda (`(,key . ,value))
+            (setf (gethash key table) value))
+          alist)
+    table))
+
 (defun hash-table-alist (table)
   "Construct an alist from a TABLE hash table."
   (let ((alist nil))
@@ -147,5 +155,9 @@ usage: (cond-let ((VAR TEST) BODY...))."
                         (let ((body (buffer-substring (point) (point-max))))
                           (with-current-buffer buf (funcall callback body))))
                   cbargs silent inhibit-cookies)))
+
+(defun ressoc (k v alist)
+  (cons (cons k v)
+        (cl-remove k alist :key #'car)))
 
 (provide 'my-library)
