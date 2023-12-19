@@ -23,11 +23,10 @@
 
 ;; Nice colors for tools that produce color escape codes.
 (use-package xterm-color
-  :after commint
   :hook ((compilation-filter . xterm-color-compilation-filter))
   :config
   (add-hook 'comint-preoutput-filter-functions #'xterm-color-filter 0)
   (add-hook 'comint-preoutput-filter-functions #'ansi-escape-codes-filter 1)
-  (remove-hook 'comint-output-filter-functions 'ansi-color-process-output))
+  (add-hook 'comint-output-filter-functions #'ansi-color-process-output))
 
 (provide 'setup-xterm-color)
