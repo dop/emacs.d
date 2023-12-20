@@ -172,7 +172,9 @@
 
 (use-package editorconfig :config (editorconfig-mode t))
 
-(use-package js :config (add-to-list 'auto-mode-alist '("\\.mjs\\'" . js-mode)))
+(use-package js :config
+  (add-to-list 'auto-mode-alist '("\\.mjs\\'" . js-mode))
+  (add-to-list 'auto-mode-alist '("tsconfig.json\\'" . js-json-mode)))
 (use-package typescript-mode :mode "\\.tsx\\'")
 (require 'tsx-mode)
 
