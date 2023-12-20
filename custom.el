@@ -71,6 +71,7 @@
  '(fast-but-imprecise-scrolling t)
  '(flymake-eslint-defer-binary-check t)
  '(flymake-eslint-prefer-json-diagnostics t)
+ '(fold-this-overlay-text "...")
  '(frame-inhibit-implied-resize t)
  '(gc-cons-threshold 268435456)
  '(grep-find-ignored-directories
@@ -128,7 +129,7 @@
  '(ns-use-srgb-colorspace t)
  '(ns-use-thin-smoothing t t)
  '(nvm-dir "/Users/donatasp/software/nvm")
- '(olivetti-body-width 80)
+ '(olivetti-body-width 120)
  '(olivetti-minimum-body-width 78)
  '(olivetti-style 'fancy)
  '(org-babel-lisp-eval-fn 'slime-eval)
