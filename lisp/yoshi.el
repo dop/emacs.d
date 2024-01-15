@@ -76,8 +76,6 @@ clear when mode is turned off.")
 (defun yoshi--setup-typescript (project)
   (yoshi-set
    eglot-stay-out-of '(flymake-diagnostic-functions)
-   eglot-server-programs `(((typescript-mode tsx-mode) "typescript-language-server" "--stdio"
-                            "--tsserver-path" ,(yoshi--locate-typescript-lib project)))
    flymake-eslint-executable-name (yoshi--locate-eslint project)
    flymake-diagnostic-functions '(flymake-eslint--checker eglot-flymake-backend))
   (when (yoshi--locate-prettier project)
