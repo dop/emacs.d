@@ -313,4 +313,8 @@ To be used with `markdown-live-preview-window-function'."
   (interactive (list (completing-read "Mode: " (list-unique-modes)  nil t)))
   (get-mode-scratch-buffer-create (intern mode)))
 
+(defun uuid ()
+  (interactive)
+  (insert (org-id-uuid)))
+
 (provide 'my-commands)
