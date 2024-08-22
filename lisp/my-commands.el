@@ -70,7 +70,7 @@ Otherwise, call `backward-kill-word'."
 
 (defun spec-overview ()
   (interactive)
-  (occur "\\<\\(x\\|f\\)?\\(describe\\|it\\)\\(\\.\\(skip\\|only\\|todo\\|each\\)\\)?\\>("))
+  (occur "\\<\\(x\\|f\\)?\\(describe\\|it\\|test\\)\\(\\.\\(skip\\|only\\|todo\\|each\\)\\)?\\>("))
 
 (defun download-call-back (status callback with-headers)
   (unless with-headers
