@@ -103,6 +103,8 @@
 (require 'setup-dired)
 (require 'setup-ibuffer)
 
+(use-package modus-themes)
+
 (use-package sql-indent
   :hook (sql-mode . sqlind-minor-mode))
 
