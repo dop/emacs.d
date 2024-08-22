@@ -197,7 +197,7 @@ Nominally unique, but not enforced."
   :load-path "~/.emacs.d/lisp/eglot"
   :config
   (when-let ((config (cl-find "typescript-language-server" eglot-server-programs :key #'cadr :test #'equal)))
-    (cl-pushnew '(tsx-mode :language-id "typescriptreact") (car config))))
+    (cl-pushnew '(tsx-mode :language-id "typescriptreact") (car config) :test #'equal)))
 
 (use-package olivetti :defer t)
 (use-package csv-mode :mode "\\.csv\\'")
