@@ -231,14 +231,16 @@ Nominally unique, but not enforced."
   (bind-key "C-c C-j" #'rps-sly-eval-last-expression sly-editing-mode-map)
   (bind-key "C-c j" #'ps-last-expression sly-editing-mode-map))
 
-(use-package inf-clojure
-  :load-path "~/.emacs.d/lisp/inf-clojure"
-  :config (setq inf-clojure-enable-eldoc nil))
-
 (use-package clojure-mode
   :hook ((clojure-mode . paredit-mode)
          ;; (clojure-mode . inf-clojure-eldoc-setup)
          ))
+
+(use-package inf-clojure
+  :load-path "~/.emacs.d/lisp/inf-clojure"
+  :config (setq inf-clojure-enable-eldoc nil))
+
+
 (use-package cider
   :commands cider-jack-in
   :hook ((cider-repl-mode . paredit-mode)
