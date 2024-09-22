@@ -216,7 +216,7 @@ Nominally unique, but not enforced."
 ;; (use-package consult :pin gnu :ensure t)
 (use-package vertico :defer t :init (vertico-mode t))
 
-(use-package paren-face :hook ((lisp-data-mode . paren-face-mode)))
+(use-package paren-face :hook ((lisp-data-mode . paren-face-mode) (clojure-mode . paren-face-mode)))
 
 (use-package sly
   :hook ((lisp-mode . sly-editing-mode))
@@ -240,8 +240,18 @@ Nominally unique, but not enforced."
   (bind-key "C-c C-j" #'rps-sly-eval-last-expression sly-editing-mode-map)
   (bind-key "C-c j" #'ps-last-expression sly-editing-mode-map))
 
-(use-package clojure-mode :hook ((clojure-mode . paredit-mode)))
-(use-package cider :commands cider-jack-in :hook ((cider-repl-mode . paredit-mode)))
+(use-package inf-clojure
+  :load-path "~/.emacs.d/lisp/inf-clojure"
+  :config (setq inf-clojure-enable-eldoc nil))
+
+(use-package clojure-mode
+  :hook ((clojure-mode . paredit-mode)
+         ;; (clojure-mode . inf-clojure-eldoc-setup)
+         ))
+(use-package cider
+  :commands cider-jack-in
+  :hook ((cider-repl-mode . paredit-mode)
+         (clojure-mode . cider-eldoc-setup)))
 
 (use-package imenu-list :commands imenu-list)
 
@@ -287,13 +297,6 @@ Nominally unique, but not enforced."
      "?=" "?." "??" ";;" "/*" "/=" "/>" "//" "__" "~~" "(*" "*)"
      "\\\\" "://")))
 
-(use-package inf-clojure
-  :load-path "~/.emacs.d/lisp/inf-clojure"
-  :config (setq inf-clojure-enable-eldoc nil))
-
-(use-package clojure-mode
-  :hook ((clojure-mode . inf-clojure-eldoc-setup)))
-
 ;; Work around the issue of Emacs EPG and GPG >2.0 talking past each other.
 ;; https://dev.gnupg.org/T6481#170760
 (fset 'epg-wait-for-status 'ignore)
@@ -302,8 +305,10 @@ Nominally unique, but not enforced."
   :mode "\\.env\\(\\.local\\)?\\'")
 
 (defvar project-name-mode-line
-  '(:propertize (:eval (when-let ((project (project-current)))
-                         (format "%s/" (project-name project))))))
+  '(:propertize (:eval (when-let ((project (project-current))
+                                  (name (project-name project)))
+                         (unless (string-search name (buffer-name))
+                           (format "%s/" (project-name project)))))))
 
 (put 'project-name-mode-line 'risky-local-variable t)
 
