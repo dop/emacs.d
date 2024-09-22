@@ -18,7 +18,7 @@
  '(create-lockfiles nil)
  '(css-indent-offset 2)
  '(csv-separators '("," "\11" ";"))
- '(custom-enabled-themes '(modus-operandi-deuteranopia))
+ '(custom-enabled-themes '(dop))
  '(custom-safe-themes nil)
  '(custom-theme-directory "~/.emacs.d/themes/")
  '(debug-on-error nil)
@@ -166,7 +166,7 @@
  '(org-todo-keywords
    '((sequence "TODO(t)" "WAIT(w@)" "|" "DONE(d!)" "CANCELLED(c@)")))
  '(package-selected-packages
-   '(modus-themes diff-hl web-mode vue-mode magit neotree org-download git-gutter-fringe git-gutter graphviz-dot-mode plantuml-mode string-inflection markdown-preview-mode jq-mode async php-mode org-modern dired-collapse dired-subtree string-edit-at-point keyfreq rainbow-mode sly marginalia vertico paren-face deadgrep sql-indent ox-slack seq edit-indirect flow-js2-mode browse-kill-ring ox-jira scala-mode ox-gfm imenu-list macrostep flymake-proselint jsonrpc flymake eldoc json-mode editorconfig prettier paredit-menu exec-path-from-shell markdown-mode nodejs-repl typescript-mode wgrep xterm-color flymake-eslint olivetti ns-auto-titlebar cider paredit-everywhere slime-company whitespace-cleanup-mode use-package undo-tree restclient protobuf-mode paredit hungry-delete dictionary csv-mode))
+   '(diff-hl web-mode vue-mode magit neotree org-download graphviz-dot-mode plantuml-mode string-inflection markdown-preview-mode jq-mode async php-mode org-modern dired-collapse dired-subtree string-edit-at-point keyfreq rainbow-mode sly marginalia vertico paren-face deadgrep sql-indent ox-slack seq edit-indirect browse-kill-ring ox-jira scala-mode ox-gfm flymake-proselint jsonrpc flymake eldoc json-mode editorconfig prettier paredit-menu exec-path-from-shell markdown-mode nodejs-repl typescript-mode wgrep xterm-color flymake-eslint olivetti ns-auto-titlebar cider paredit-everywhere slime-company whitespace-cleanup-mode use-package undo-tree restclient protobuf-mode paredit hungry-delete dictionary csv-mode))
  '(paredit-lighter " ParEd" t)
  '(plantuml-default-exec-mode 'jar)
  '(plantuml-indent-level 4)
@@ -213,11 +213,3 @@
  '(visible-bell t)
  '(window-sides-slots '(1 0 2 2))
  '(xref-search-program 'ripgrep))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :extend nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight regular :height 120 :width normal :foundry "nil" :family "Source Code Pro"))))
- '(cursor ((t (:background "red"))))
- '(variable-pitch ((t (:weight light :family "SF Pro Display")))))
