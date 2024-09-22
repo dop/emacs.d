@@ -19,7 +19,8 @@
  '(css-indent-offset 2)
  '(csv-separators '("," "\11" ";"))
  '(custom-enabled-themes '(dop))
- '(custom-safe-themes nil)
+ '(custom-safe-themes
+   '("c9b3d4fc1cd2cde456ff4174d5f4cd4b47f1a944071384fb7883d983c75310f7"))
  '(custom-theme-directory "~/.emacs.d/themes/")
  '(debug-on-error nil)
  '(delete-by-moving-to-trash t)
@@ -213,3 +214,9 @@
  '(visible-bell t)
  '(window-sides-slots '(1 0 2 2))
  '(xref-search-program 'ripgrep))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
