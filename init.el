@@ -82,21 +82,11 @@
 (package-activate 'use-package)
 (require 'use-package)
 
-(defvar *install-package-if-used* nil
-  "Install package when `use-package' is called.")
-
 (defun activate-before-use-package (name &rest args)
   "Activate package before `use-package' is run."
   (package-activate name))
 
-(defun install-before-use-package (name &rest args)
-  (when *install-package-if-used*
-    (ignore-errors
-      (unless (package-installed-p name)
-        (package-install name)))))
-
 (advice-add 'use-package :before #'activate-before-use-package)
-(advice-add 'use-package :before #'install-before-use-package)
 
 (add-hook 'eshell-mode-hook #'toggle-truncate-lines)
 (add-hook 'compilation-mode-hook #'toggle-truncate-lines)
