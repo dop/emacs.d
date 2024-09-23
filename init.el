@@ -304,6 +304,8 @@ Nominally unique, but not enforced."
 
 (keymap-global-set "C-c s" #'scratch-file)
 
+(use-package elfeed :commands elfeed)
+
 (server-start)
 
 ;; end of init.el

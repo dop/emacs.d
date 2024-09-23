@@ -69,6 +69,8 @@
  '(eglot-sync-connect nil)
  '(eldoc-minor-mode-string " doc")
  '(electric-pair-mode t)
+ '(elfeed-feeds
+   '("https://planet.emacslife.com/atom.xml" "https://irreal.org/blog/?feed=rss2" "https://nullprogram.com/feed/"))
  '(epa-pinentry-mode 'loopback)
  '(epg-pinentry-mode 'loopback)
  '(eshell-hist-ignoredups t)
