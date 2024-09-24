@@ -171,15 +171,7 @@
 
 (use-package string-edit-at-point)
 (use-package wgrep)
-(use-package external-completion :pin gnu)
-
-(with-eval-after-load "project"
-  (if (fboundp 'project-name)
-      (warn "`project-name' is available, no need to re-define.")
-    (cl-defgeneric project-name (project)
-      "A human-readable name for the project.
-Nominally unique, but not enforced."
-      (file-name-nondirectory (directory-file-name (project-root project))))))
+(use-package external-completion)
 
 (use-package jsonrpc)
 
