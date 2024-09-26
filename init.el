@@ -147,8 +147,6 @@
 (require 'setup-paredit)
 (require 'setup-org)
 
-(use-package git-timemachine)
-
 (use-package json-mode
   :pin gnu
   :mode "\\.\\(json\\|babelrc\\|jshintrc\\|eslintrc\\|bowerrc\\|json\\.erb\\|watchmanconfig\\)\\'")
@@ -238,7 +236,7 @@
   :hook ((cider-repl-mode . paredit-mode)
          (clojure-mode . cider-eldoc-setup)))
 
-(use-package imenu-list :commands imenu-list)
+(use-package imenu-list :disabled t :commands imenu-list)
 
 (use-package enumerated-windows :config (enumerated-windows-mode t))
 
@@ -257,6 +255,7 @@
   :hook (after-init . global-diff-hl-mode))
 
 (use-package ligature
+  :disabled t
   :hook (prog-mode . ligature-mode)
   :config
   (ligature-set-ligatures
