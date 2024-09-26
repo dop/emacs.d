@@ -16,7 +16,9 @@
  '(trailing-whitespace
    ((((background light)) :background "RosyBrown1")
     (((background dark)) :background "brown4")))
-
+ '(font-lock-comment-face
+   ((((background light)) :foreground "Firebrick" :slant italic)
+    (((background dark)) :foreground "chocolate1" :slant italic)))
  '(org-level-1 ((t :inherit outline-1 :height 1.3)))
  '(org-level-2 ((t :inherit outline-2 :height 1.2)))
  '(org-level-3 ((t :inherit outline-3 :height 1.1))))
