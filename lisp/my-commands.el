@@ -260,7 +260,9 @@ To be used with `markdown-live-preview-window-function'."
   (interactive)
   (set-face-attribute 'default nil
                       :foreground (face-attribute 'default :background)
-                      :background (face-attribute 'default :foreground)))
+                      :background (face-attribute 'default :foreground))
+  (dolist (face (face-list))
+    (face-spec-recalc face nil)))
 
 (defun nvm-read-nvmrc ()
   "Find .nvmrc and read its contents."
@@ -291,6 +293,9 @@ To be used with `markdown-live-preview-window-function'."
     (with-current-buffer buf
       (make-local-variable 'process-environment)
       (nvm-use version))))
+
+(defun eshell/nvm ()
+  (call-interactively #'nvm))
 
 (defun get-mode-scratch-buffer-create (&optional mode)
   (let* ((mode-name
@@ -329,5 +334,14 @@ To be used with `markdown-live-preview-window-function'."
 (defun uuid ()
   (interactive)
   (insert (org-id-uuid)))
+
+(defun github-search (query)
+  (interactive (list (if (region-active-p)
+                         (buffer-substring (region-beginning)
+                                           (region-end))
+                       (thing-at-point 'symbol)
+                       (read-string "Query: "))))
+  (browse-url (format "https://github.com/search?q=%s&type=code"
+                      (url-hexify-string (concat "org:wix-private " query)))))
 
 (provide 'my-commands)
