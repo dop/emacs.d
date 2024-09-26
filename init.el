@@ -186,8 +186,8 @@
 (use-package protobuf-mode :mode "\\.proto\\'")
 
 (use-package ns-auto-titlebar
-    :if (eq 'ns (window-system))
-    :init (ns-auto-titlebar-mode t))
+  :if (eq 'ns (window-system))
+  :init (ns-auto-titlebar-mode t))
 
 (when (functionp 'mac-auto-operator-composition-mode)
   (mac-auto-operator-composition-mode t))
@@ -229,7 +229,6 @@
 (use-package inf-clojure
   :load-path "~/.emacs.d/lisp/inf-clojure"
   :config (setq inf-clojure-enable-eldoc nil))
-
 
 (use-package cider
   :commands cider-jack-in
