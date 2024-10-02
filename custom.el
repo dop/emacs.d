@@ -76,6 +76,9 @@
  '(epg-pinentry-mode 'loopback)
  '(eshell-hist-ignoredups t)
  '(eshell-prompt-function 'my-eshell-prompt)
+ '(exec-path-from-shell-check-startup-files nil)
+ '(exec-path-from-shell-variables
+   '("PATH" "MANPATH" "FNM_LOGLEVEL" "FNM_COREPACK_ENABLED" "FNM_RESOLVE_ENGINES" "FNM_VERSION_FILE_STRATEGY" "FNM_MULTISHELL_PATH" "FNM_DIR" "FNM_NODE_DIST_MIRROR" "FNM_ARCH" "NODE_OPTIONS" "LATEST_JDK" "JAVA_HOME" "AUTOMATION_MASTER_KEY"))
  '(fast-but-imprecise-scrolling t)
  '(flymake-eslint-defer-binary-check t)
  '(flymake-eslint-prefer-json-diagnostics t)
@@ -211,6 +214,11 @@
  '(vc-annotate-very-old-color nil)
  '(vc-directory-exclusion-list
    '("SCCS" "RCS" "CVS" "MCVS" ".src" ".svn" ".git" ".hg" ".bzr" "_MTN" "_darcs" "{arch}" "node_modules" "dist" "bower_components" "coverage" "build"))
+ '(vc-git-root-log-format
+   '("%h %as %an: %s" "^\\(?:[*/\\| ]+ \\)?\\([0-9a-f]+\\) \\([0-9-]+\\) \\([^:]+\\): .+$"
+     ((1 'log-view-message)
+      (2 'change-log-date)
+      (3 'change-log-name))))
  '(version-control t)
  '(vertico-count-format '("%-6s " . "%s/%s"))
  '(vertico-mode t)
