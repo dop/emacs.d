@@ -15,7 +15,6 @@
   (with-eval-after-load 'tabulated-list
     (advice-add 'tabulated-list-print :after #'flymake-diagnostics-fit-window-to-buffer)))
 
-(add-to-list 'load-path "~/.emacs.d/lisp/flymake-eslint")
-(autoload 'flymake-eslint-enable (expand-file-name "~/.emacs.d/lisp/flymake-eslint.el"))
+(use-package flymake-eslint :pin melpa)
 
 (provide 'setup-flymake)
