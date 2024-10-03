@@ -2,6 +2,9 @@
 
 (custom-theme-set-faces
  'dop
+ '(default
+   ((((background light)) :background "white")
+    (((background dark)) :background "#222")))
  '(cursor
    ((((background light)) :background "red")
     (((background dark)) :background "green")))
