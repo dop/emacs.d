@@ -339,8 +339,12 @@ To be used with `markdown-live-preview-window-function'."
   (interactive (list (if (region-active-p)
                          (buffer-substring (region-beginning)
                                            (region-end))
-                       (thing-at-point 'symbol)
-                       (read-string "Query: "))))
+                       (read-string "Query: " (string-trim
+                                               (or (thing-at-point 'string)
+                                                   (thing-at-point 'symbol)
+                                                   "")
+                                               "['\" \t\n\r]+"
+                                               "['\" \t\n\r]+")))))
   (browse-url (format "https://github.com/search?q=%s&type=code"
                       (url-hexify-string (concat "org:wix-private " query)))))
 
