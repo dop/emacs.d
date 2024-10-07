@@ -340,7 +340,7 @@ To be used with `markdown-live-preview-window-function'."
                          (buffer-substring (region-beginning)
                                            (region-end))
                        (read-string "Query: " (string-trim
-                                               (or (thing-at-point 'string)
+                                               (or (ignore-errors (thing-at-point 'string))
                                                    (thing-at-point 'symbol)
                                                    "")
                                                "['\" \t\n\r]+"
