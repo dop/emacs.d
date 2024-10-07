@@ -20,7 +20,7 @@
  '(csv-separators '("," "\11" ";"))
  '(custom-enabled-themes '(dop))
  '(custom-safe-themes
-   '("2b4dcc9d6e5438c287fd64ca08e5ce5e4f9f6c0d4a7eb202220893dfcb71a36f"))
+   '("18c6c50612eca6e12da53c0aaf523f69e6326bdcbb0f2019f3960c34eb3e27a2"))
  '(custom-theme-directory "~/.emacs.d/themes/")
  '(debug-on-error nil)
  '(delete-by-moving-to-trash t)
