@@ -3,30 +3,29 @@
 (require 'zoom)
 (require 'my-commands)
 
-(global-set-key (kbd "C-z") nil)
+(keymap-global-set "C-z" nil)
+(keymap-global-set "C-x 1" #'zoom-dwim)
 
 ;; For terminal
-(global-set-key (kbd "C-c i") #'completion-at-point)
-(global-set-key (kbd "C-c C-m") #'execute-extended-command)
+(keymap-global-set "C-c i" #'completion-at-point)
+(keymap-global-set "C-c C-m" #'execute-extended-command)
 
-(global-set-key (kbd "C-w") #'kill-region-or-backward-word)
-(global-set-key (kbd "C-k") #'kill-region-or-line)
+(keymap-global-set "C-w" #'kill-region-or-backward-word)
+(keymap-global-set "C-k" #'kill-region-or-line)
 
-(global-set-key (kbd "M-l") #'downcase-dwim)
-(global-set-key (kbd "M-u") #'upcase-dwim)
+(keymap-global-set "M-l" #'downcase-dwim)
+(keymap-global-set "M-u" #'upcase-dwim)
 
-(global-set-key (kbd "C-x M-d") #'delete-this-buffer-and-file)
-(global-set-key (kbd "C-x M-r") #'rename-buffer-and-file)
-(global-set-key (kbd "C-x C-b") #'ibuffer)
-(global-set-key (kbd "C-c C-d") #'duplicate-dwim)
+(keymap-global-set "C-x M-d" #'delete-this-buffer-and-file)
+(keymap-global-set "C-x M-r" #'rename-buffer-and-file)
+(keymap-global-set "C-x C-b" #'ibuffer)
+(keymap-global-set "C-c C-d" #'duplicate-dwim)
 
-(global-set-key (kbd "C-x O") #'other-frame)
-(global-set-key (kbd "M-`") #'other-frame)
-
-(define-key project-prefix-map "C" #'project-compile-file)
+(keymap-global-set "C-x O" #'other-frame)
+(keymap-global-set "M-`" #'other-frame)
 
 (require 'mark-and-copy)
-(global-set-key (kbd "M-w") #'mark-and-copy)
-(global-set-key (kbd "M-W") #'mark-and-copy-mark)
+(keymap-global-set "M-w" #'mark-and-copy)
+(keymap-global-set "M-W" #'mark-and-copy-mark)
 
 (provide 'setup-key-bindings)

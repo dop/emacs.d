@@ -27,6 +27,7 @@
 (use-package project
   :pin gnu
   :bind (:map project-prefix-map
+              ("C" . project-compile-file)
               ("V" . project-vc-top-dir)
               ("F" . project-find-top-file)
               ("G" . project-find-top-regexp))
