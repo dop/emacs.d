@@ -20,7 +20,7 @@
  '(csv-separators '("," "\11" ";"))
  '(custom-enabled-themes '(dop))
  '(custom-safe-themes
-   '("18c6c50612eca6e12da53c0aaf523f69e6326bdcbb0f2019f3960c34eb3e27a2"))
+   '("08f7dcbc03480a2dd54555f585e2180202227741a0e492cb7b05ec3e0b5aae08"))
  '(custom-theme-directory "~/.emacs.d/themes/")
  '(debug-on-error nil)
  '(delete-by-moving-to-trash t)
@@ -71,7 +71,7 @@
  '(eldoc-minor-mode-string " doc")
  '(electric-pair-mode t)
  '(elfeed-feeds
-   '("https://planet.emacslife.com/atom.xml" "https://irreal.org/blog/?feed=rss2" "https://nullprogram.com/feed/"))
+   '("https://chrisdone.com/rss.xml" "https://planet.emacslife.com/atom.xml" "https://irreal.org/blog/?feed=rss2" "https://nullprogram.com/feed/"))
  '(epa-pinentry-mode 'loopback)
  '(epg-pinentry-mode 'loopback)
  '(eshell-hist-ignoredups t)
@@ -173,7 +173,7 @@
  '(org-todo-keywords
    '((sequence "TODO(t)" "WAIT(w@)" "|" "DONE(d!)" "CANCELLED(c@)")))
  '(package-selected-packages
-   '(elfeed diff-hl web-mode vue-mode magit neotree org-download graphviz-dot-mode plantuml-mode string-inflection markdown-preview-mode jq-mode async php-mode org-modern dired-collapse dired-subtree string-edit-at-point keyfreq rainbow-mode sly marginalia vertico paren-face deadgrep sql-indent ox-slack seq edit-indirect browse-kill-ring ox-jira scala-mode ox-gfm flymake-proselint jsonrpc flymake eldoc json-mode editorconfig prettier paredit-menu exec-path-from-shell markdown-mode nodejs-repl typescript-mode wgrep xterm-color flymake-eslint olivetti ns-auto-titlebar cider paredit-everywhere slime-company whitespace-cleanup-mode undo-tree restclient protobuf-mode paredit hungry-delete dictionary csv-mode))
+   '(buffer-env elfeed diff-hl web-mode vue-mode magit neotree org-download graphviz-dot-mode plantuml-mode string-inflection markdown-preview-mode jq-mode async php-mode org-modern dired-collapse dired-subtree string-edit-at-point keyfreq rainbow-mode sly marginalia vertico paren-face deadgrep sql-indent ox-slack seq edit-indirect browse-kill-ring ox-jira scala-mode ox-gfm flymake-proselint jsonrpc flymake eldoc json-mode editorconfig prettier paredit-menu exec-path-from-shell markdown-mode nodejs-repl typescript-mode wgrep xterm-color flymake-eslint olivetti ns-auto-titlebar cider paredit-everywhere slime-company whitespace-cleanup-mode use-package undo-tree restclient protobuf-mode paredit hungry-delete dictionary csv-mode))
  '(paredit-lighter " ParEd" t)
  '(plantuml-default-exec-mode 'jar)
  '(plantuml-indent-level 4)
