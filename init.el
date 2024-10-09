@@ -82,7 +82,7 @@
 
 ;; Activate and require `use-package' explicitly. We'll use it to
 ;; activate all the rest on demand.
-(package-activate 'use-package)
+;; (package-activate 'use-package)
 (require 'use-package)
 
 (defun activate-before-use-package (name &rest args)
@@ -94,16 +94,19 @@
 (add-hook 'eshell-mode-hook #'toggle-truncate-lines)
 (add-hook 'compilation-mode-hook #'toggle-truncate-lines)
 
+(use-package savehist
+  :hook (after-init . savehist-mode))
+
 (require 'setup-dired)
 (require 'setup-ibuffer)
 
 (use-package sql-indent
-  :hook (sql-mode . sqlind-minor-mode))
+  :config (add-hook 'sql-mode-hook #'sqlind-minor-mode))
 
 (use-package hl-line
-  :hook ((package-menu-mode . hl-line-mode)
-         (vc-dir-mode . hl-line-mode)
-         (vc-annotate-mode . hl-line-mode)))
+  :hook (package-menu-mode . hl-line-mode)
+  :hook (vc-dir-mode . hl-line-mode)
+  :hook (vc-annotate-mode . hl-line-mode))
 
 (use-package exec-path-from-shell
   :init
@@ -158,9 +161,7 @@
 
 (require 'setup-flymake)
 
-(use-package subword
-  :hook ((js-mode . subword-mode)
-         (typescript-mode . subword-mode)))
+(use-package subword :hook (js-mode typescript-mode))
 
 (use-package editorconfig :config (editorconfig-mode t))
 
@@ -178,7 +179,7 @@
 
 (use-package eglot
   :commands (eglot eglot-ensure)
-  :load-path "~/.emacs.d/lisp/eglot"
+  ;; :load-path "~/.emacs.d/lisp/eglot"
   :config
   (when-let ((config (cl-find "typescript-language-server" eglot-server-programs :key #'cadr :test #'equal)))
     (cl-pushnew '(tsx-mode :language-id "typescriptreact") (car config) :test #'equal)))
@@ -200,10 +201,11 @@
 ;; (use-package consult :pin gnu :ensure t)
 (use-package vertico :defer t :init (vertico-mode t))
 
-(use-package paren-face :hook ((lisp-data-mode . paren-face-mode) (clojure-mode . paren-face-mode)))
+(use-package paren-face
+  :hook (lisp-data-mode clojure-mode))
 
 (use-package sly
-  :hook ((lisp-mode . sly-editing-mode))
+  :hook (lisp-mode . sly-editing-mode)
   :config
   (defun rps-sly-eval-last-expression ()
     (interactive)
@@ -225,9 +227,10 @@
   (bind-key "C-c j" #'ps-last-expression sly-editing-mode-map))
 
 (use-package clojure-mode
-  :hook ((clojure-mode . paredit-mode)
-         ;; (clojure-mode . inf-clojure-eldoc-setup)
-         ))
+  :config
+  (add-hook 'clojure-mode-hook #'paredit-mode)
+  ;; (add-hook 'clojure-mode #'inf-clojure-eldoc-setup)
+  )
 
 (use-package inf-clojure
   :load-path "~/.emacs.d/lisp/inf-clojure"
@@ -235,8 +238,9 @@
 
 (use-package cider
   :commands cider-jack-in
-  :hook ((cider-repl-mode . paredit-mode)
-         (clojure-mode . cider-eldoc-setup)))
+  :config
+  (add-hook 'cider-repl-mode-hook #'paredit-mode)
+  (add-hook 'clojure-mode-hook #'cider-eldoc-setup))
 
 (use-package imenu-list :disabled t :commands imenu-list)
 
