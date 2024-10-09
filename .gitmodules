@@ -1,9 +1,3 @@
-[submodule "eglot"]
-	path = lisp/eglot
-	url = git@github.com:dop/eglot.git
-[submodule "flymake-eslint"]
-	path = lisp/flymake-eslint
-	url = git@github.com:dop/flymake-eslint.git
 [submodule "lisp/inf-clojure"]
 	path = lisp/inf-clojure
 	url = git@github.com:dop/inf-clojure.git
