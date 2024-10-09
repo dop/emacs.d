@@ -19,6 +19,8 @@
 (unless (eq window-system 'ns)
   (menu-bar-mode -1))
 
+(savehist-mode t)
+
 (put 'downcase-region 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
