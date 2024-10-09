@@ -20,6 +20,7 @@
   (menu-bar-mode -1))
 
 (savehist-mode t)
+(recentf-mode t)
 
 (put 'downcase-region 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
