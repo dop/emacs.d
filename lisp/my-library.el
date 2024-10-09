@@ -11,7 +11,7 @@
 Encodes bytes from /dev/random using `base64-encode-string' and
 returns at SIZE length string consisting of alphanumeric
 characters."
-  (let* ((size (or size 12))
+  (let* ((size (or size 16))
          (command (format "head -c %d /dev/random" (+ 2 size)))
          (base64 (base64-encode-string
                   (encode-coding-string (shell-command-to-string command)
