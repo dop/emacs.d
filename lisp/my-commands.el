@@ -180,16 +180,7 @@ To be used with `markdown-live-preview-window-function'."
 
 (setq markdown-live-preview-window-function 'markdown-live-preview-window-browser)
 
-(defvar my-eshell-prompt-limit 20)
-
-(defun shorten-path (path limit prefix)
-  (let ((limited nil))
-    (cl-loop for part in (reverse (split-string path "/" t))
-             while (< (seq-reduce #'+ (mapcar #'length limited) 0) limit)
-             do (push part limited))
-    (let ((trimmed (mapconcat #'identity limited "/")))
-      (concat (if (/= (length trimmed) (length path)) prefix "")
-              trimmed))))
+(defvar my-eshell-prompt-limit 30)
 
 (defun my-eshell-prompt ()
   (let ((path (abbreviate-file-name (eshell/pwd)))
@@ -197,7 +188,9 @@ To be used with `markdown-live-preview-window-function'."
         (limited nil)
         (project (project-current)))
     (let* ((shortened-path
-            (shorten-path path my-eshell-prompt-limit "…"))
+            (if (> (length path) my-eshell-prompt-limit)
+                (concat "…" (substring path (- (length path) my-eshell-prompt-limit) (length path)))
+              path))
            (branch
             (car (vc-git-branches)))
            (suffix
@@ -208,10 +201,14 @@ To be used with `markdown-live-preview-window-function'."
               (when branch (princ " ") (princ branch))
               (princ suffix))))
       (when branch
-        (put-text-property (1+ (length shortened-path))
-                           (+ 1 (length shortened-path)
-                              (length branch))
-                           'face '(eshell-prompt underline) prompt))
+        (put-text-property (+ 1 (length shortened-path))
+                           (+ 1 (length shortened-path) (length branch))
+                           'face '(eshell-prompt underline)
+                           prompt)
+        (put-text-property (+ 3 (length shortened-path) (length branch))
+                           (+ 4 (length shortened-path) (length branch))
+                           'face '(default)
+                           prompt))
       prompt)))
 
 (defun overlay-get-eslint-message (overlay)
@@ -310,7 +307,7 @@ To be used with `markdown-live-preview-window-function'."
       (pop-to-buffer buffer))))
 
 (defun list-unique-modes ()
-  (-uniq (mapcar #'cdr auto-mode-alist)))
+  (cl-remove-duplicates (mapcar #'cdr auto-mode-alist)))
 
 (defcustom scratch-file-directory "~/.emacs.d/scratch"
   "Directory to place and open scratch files."

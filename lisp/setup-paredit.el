@@ -23,31 +23,25 @@
 
 (use-package paredit
   :commands paredit-mode
-  :hook
-  ((lisp-data-mode . paredit-mode)
-   (inferior-emacs-lisp-mode . repl-paredit-mode)
-   (sly-mrepl-mode . repl-paredit-mode)
-   (eval-expression-minibuffer-setup . repl-paredit-mode))
+  :hook (lisp-data-mode . paredit-mode)
+  :hook (inferior-emacs-lisp-mode . repl-paredit-mode)
+  :hook (sly-mrepl-mode . repl-paredit-mode)
+  :hook (eval-expression-minibuffer-setup . repl-paredit-mode)
+  :bind (:map paredit-mode-map
+              ("C-j" . paredit-newline)
+              ("RET" . paredit-newline)
+              ("C-w" . paredit-backward-kill-word)
+              ("C-c [" . paredit-forward-slurp-sexp)
+              ("C-c ]" . paredit-forward-barf-sexp)
+              ("M-[" . paredit-wrap-square)
+              ("M-{" . paredit-wrap-curly)
+              ("{" . paredit-open-curly)
+              ("[" . paredit-open-square))
   :config
-
-  (keymap-set paredit-mode-map "C-j" 'paredit-newline)
-  (keymap-set paredit-mode-map "RET" 'paredit-newline)
-
-  (keymap-set paredit-mode-map "C-w" 'paredit-backward-kill-word)
-  (keymap-set paredit-mode-map "C-c [" 'paredit-forward-slurp-sexp)
-  (keymap-set paredit-mode-map "C-c ]" 'paredit-forward-barf-sexp)
-
-  (keymap-set paredit-mode-map "M-[" 'paredit-wrap-square)
-  (keymap-set paredit-mode-map "M-{" 'paredit-wrap-curly)
-
-  (keymap-set paredit-mode-map "{" 'paredit-open-curly)
-  (keymap-set paredit-mode-map "[" 'paredit-open-square)
-
   (advice-add 'paredit-kill :around #'paredit-kill-dwim)
   (advice-add 'paredit-backward-kill-word :around #'paredit-kill-dwim)
   (advice-add 'paredit-forward-delete :around #'paredit-forward-delete-whitespace)
   (advice-add 'paredit-backward-delete :around #'paredit-backward-delete-whitespace)
-
   (define-minor-mode repl-paredit-mode "Paredit in the REPL."
     :keymap (let ((map (copy-keymap paredit-mode-map)))
               (keymap-unset map "RET" t)
@@ -61,8 +55,8 @@
          (js-mode . paredit-everywhere-mode)
          (typescript-ts-mode . paredit-everywhere-mode)
          (tsx-ts-mode . paredit-everywhere-mode))
-  :config
-  (keymap-set paredit-everywhere-mode-map "M-[" 'paredit-wrap-square)
-  (keymap-set paredit-everywhere-mode-map "M-{" 'paredit-wrap-curly))
+  :bind (:map paredit-everywhere-mode-map
+              ("M-[" . paredit-wrap-square)
+              ("M-{" . paredit-wrap-curly)))
 
 (provide 'setup-paredit)

@@ -114,6 +114,10 @@
 
 (use-package hungry-delete :init (global-hungry-delete-mode t))
 
+(use-package macrostep
+  :commands (macrostep macrostep-expand)
+  :init (defalias 'macrostep 'macrostep-expand))
+
 (use-package undo-tree
   :bind (:map undo-tree-map ("C-x u" . undo-tree-visualize))
   :hook (after-init . global-undo-tree-mode))
@@ -156,7 +160,8 @@
   :pin gnu
   :mode "\\.\\(json\\|babelrc\\|jshintrc\\|eslintrc\\|bowerrc\\|json\\.erb\\|watchmanconfig\\)\\'")
 
-(use-package prettier)
+(use-package prettier
+  :commands (prettier-mode prettier-prettify prettier-prettify-region))
 
 (require 'setup-flymake)
 
@@ -164,6 +169,10 @@
   :hook (js-mode . subword-mode)
   :hook (typescript-ts-mode . subword-mode)
   :hook (tsx-ts-mode . subword-mode))
+
+(use-package typescript-ts-mode
+  :mode ("\\.ts\\'" . typescript-ts-mode)
+  :mode ("\\.tsx\\'" . tsx-ts-mode))
 
 (use-package editorconfig :config (editorconfig-mode t))
 
@@ -173,7 +182,24 @@
 
 (use-package string-edit-at-point :commands string-edit-at-point)
 (use-package wgrep :commands wgrep-change-to-wgrep-mode)
-(use-package eglot :commands eglot)
+(use-package eglot
+  :commands eglot
+  :config
+  (defun eglot-rename (newname)
+    "Rename the current symbol to NEWNAME."
+    (interactive
+     (list (read-from-minibuffer
+            (format "Rename `%s' to: " (or (thing-at-point 'symbol t)
+                                           "unknown symbol"))
+            (thing-at-point 'symbol t)
+            nil nil nil
+            (symbol-name (symbol-at-point)))))
+    (eglot--server-capable-or-lose :renameProvider)
+    (eglot--apply-workspace-edit
+     (jsonrpc-request (eglot--current-server-or-lose)
+                      :textDocument/rename `(,@(eglot--TextDocumentPositionParams)
+                                             :newName ,newname))
+     current-prefix-arg)))
 
 (use-package olivetti :commands olivetti-mode)
 (use-package csv-mode :mode "\\.csv\\'")
