@@ -20,7 +20,7 @@
  '(csv-separators '("," "\11" ";"))
  '(custom-enabled-themes '(dop))
  '(custom-safe-themes
-   '("08f7dcbc03480a2dd54555f585e2180202227741a0e492cb7b05ec3e0b5aae08"))
+   '("b87509a246c36477715801609ee7cb257afa1128d6ae98c6b6310e21b15613ad"))
  '(custom-theme-directory "~/.emacs.d/themes/")
  '(debug-on-error nil)
  '(delete-by-moving-to-trash t)
@@ -173,7 +173,7 @@
  '(org-todo-keywords
    '((sequence "TODO(t)" "WAIT(w@)" "|" "DONE(d!)" "CANCELLED(c@)")))
  '(package-selected-packages
-   '(buffer-env elfeed diff-hl web-mode vue-mode magit neotree org-download graphviz-dot-mode plantuml-mode string-inflection markdown-preview-mode jq-mode async php-mode org-modern dired-collapse dired-subtree string-edit-at-point keyfreq rainbow-mode sly marginalia vertico paren-face deadgrep sql-indent ox-slack seq edit-indirect browse-kill-ring ox-jira scala-mode ox-gfm flymake-proselint jsonrpc flymake eldoc json-mode editorconfig prettier paredit-menu exec-path-from-shell markdown-mode nodejs-repl typescript-mode wgrep xterm-color flymake-eslint olivetti ns-auto-titlebar cider paredit-everywhere slime-company whitespace-cleanup-mode use-package undo-tree restclient protobuf-mode paredit hungry-delete dictionary csv-mode))
+   '(orderless treesit-auto buffer-env elfeed diff-hl web-mode vue-mode magit neotree org-download graphviz-dot-mode plantuml-mode jq-mode async php-mode org-modern dired-collapse dired-subtree keyfreq rainbow-mode sly paren-face sql-indent ox-slack seq edit-indirect browse-kill-ring ox-jira scala-mode ox-gfm flymake-proselint flymake eldoc json-mode prettier paredit-menu exec-path-from-shell xterm-color flymake-eslint ns-auto-titlebar cider paredit-everywhere slime-company whitespace-cleanup-mode use-package undo-tree restclient protobuf-mode paredit hungry-delete dictionary csv-mode))
  '(paredit-lighter " ParEd" t)
  '(plantuml-default-exec-mode 'jar)
  '(plantuml-indent-level 4)
@@ -204,6 +204,8 @@
  '(text-scale-mode-step 1.1)
  '(transient-save-history nil)
  '(trash-directory "~/.Trash")
+ '(treesit-auto-install 'prompt)
+ '(treesit-font-lock-level 4)
  '(typescript-indent-level 2)
  '(undo-tree-auto-save-history nil)
  '(undo-tree-enable-undo-in-region t)
@@ -219,6 +221,7 @@
      ((1 'log-view-message)
       (2 'change-log-date)
       (3 'change-log-name))))
+ '(vc-make-backup-files t)
  '(version-control t)
  '(vertico-count-format '("%-6s " . "%s/%s"))
  '(vertico-mode t)

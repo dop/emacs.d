@@ -126,7 +126,7 @@ of killed text."
    (yoshi-project-mode
     (when-let ((project (project-current)))
       (yoshi--setup-compilation project)
-      (when (derived-mode-p 'typescript-mode)
+      (when (derived-mode-p 'typescript-ts-base-mode)
         (yoshi--setup-typescript project))))
    (t
     (mapc #'kill-local-variable yoshi-local-project-overrides))))

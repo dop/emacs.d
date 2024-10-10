@@ -58,7 +58,9 @@
 
 (use-package paredit-everywhere
   :hook ((typescript-mode . paredit-everywhere-mode)
-         (js-mode . paredit-everywhere-mode))
+         (js-mode . paredit-everywhere-mode)
+         (typescript-ts-mode . paredit-everywhere-mode)
+         (tsx-ts-mode . paredit-everywhere-mode))
   :config
   (keymap-set paredit-everywhere-mode-map "M-[" 'paredit-wrap-square)
   (keymap-set paredit-everywhere-mode-map "M-{" 'paredit-wrap-curly))

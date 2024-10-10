@@ -25,6 +25,9 @@
     (((background dark)) :background "brown4")))
  '(font-lock-comment-face
    ((((background light)) :foreground "Firebrick" :slant italic)
-    (((background dark)) :foreground "chocolate1" :slant italic))))
+    (((background dark)) :foreground "chocolate1" :slant italic)))
+ '(eshell-prompt
+   ((((background light)) :background "grey95" :foreground "red" :overline "grey80")
+    (((background dark)) :background "grey25" :foreground "pink" :overline "grey40"))))
 
 (provide-theme 'dop)

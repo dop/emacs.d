@@ -109,17 +109,17 @@
   :hook (vc-annotate-mode . hl-line-mode))
 
 (use-package exec-path-from-shell
-  :init
-  (when (memq window-system '(mac ns x))
-    (exec-path-from-shell-initialize)))
+  :unless (memq system-type '(ms-dos windows-nt))
+  :hook (after-init . exec-path-from-shell-initialize))
 
 (use-package hungry-delete :init (global-hungry-delete-mode t))
 
 (use-package undo-tree
   :bind (:map undo-tree-map ("C-x u" . undo-tree-visualize))
-  :init (global-undo-tree-mode t))
+  :hook (after-init . global-undo-tree-mode))
 
 (use-package ispell
+  :defer t
   :config (setq ispell-program-name (executable-find "aspell")))
 
 (use-package deadgrep
@@ -134,10 +134,9 @@
   (add-hook 'markdown-mode-hook #'visual-line-mode)
   (add-hook 'markdown-mode-hook #'flyspell-mode))
 
-(use-package markdown-preview-mode
-  :commands markdown-preview-mode)
+(use-package markdown-preview-mode :commands markdown-preview-mode)
 
-(use-package nodejs-repl)
+(use-package nodejs-repl :commands nodejs-repl)
 
 (require 'setup-project)
 (require 'setup-xterm-color)
@@ -161,48 +160,41 @@
 
 (require 'setup-flymake)
 
-(use-package subword :hook (js-mode typescript-mode))
+(use-package subword
+  :hook (js-mode . subword-mode)
+  :hook (typescript-ts-mode . subword-mode)
+  :hook (tsx-ts-mode . subword-mode))
 
 (use-package editorconfig :config (editorconfig-mode t))
 
-(use-package js :config
-  (add-to-list 'auto-mode-alist '("\\.mjs\\'" . js-mode))
-  (add-to-list 'auto-mode-alist '("tsconfig.json\\'" . js-json-mode)))
-(use-package typescript-mode :mode "\\.tsx\\'")
-(require 'tsx-mode)
+(use-package js
+  :mode ("\\.m?js\\'" . js-st-mode)
+  :mode ("tsconfig.json\\'" . js-json-mode))
 
-(use-package string-edit-at-point)
-(use-package wgrep)
-(use-package external-completion)
+(use-package string-edit-at-point :commands string-edit-at-point)
+(use-package wgrep :commands wgrep-change-to-wgrep-mode)
+(use-package eglot :commands eglot)
 
-(use-package jsonrpc)
-
-(use-package eglot
-  :commands (eglot eglot-ensure)
-  ;; :load-path "~/.emacs.d/lisp/eglot"
-  :config
-  (when-let ((config (cl-find "typescript-language-server" eglot-server-programs :key #'cadr :test #'equal)))
-    (cl-pushnew '(tsx-mode :language-id "typescriptreact") (car config) :test #'equal)))
-
-(use-package olivetti :defer t)
+(use-package olivetti :commands olivetti-mode)
 (use-package csv-mode :mode "\\.csv\\'")
 (use-package restclient :mode "\\.rest\\'")
 (use-package protobuf-mode :mode "\\.proto\\'")
 
 (use-package ns-auto-titlebar
-  :if (eq 'ns (window-system))
-  :init (ns-auto-titlebar-mode t))
+  :when (eq 'ns window-system)
+  :hook (after-init . ns-auto-titlebar-mode))
 
 (when (functionp 'mac-auto-operator-composition-mode)
   (mac-auto-operator-composition-mode t))
 
-(use-package marginalia :defer t :init (marginalia-mode t))
+(use-package marginalia :hook (after-init . marginalia-mode))
 ;; (use-package orderless :pin gnu :ensure t)
 ;; (use-package consult :pin gnu :ensure t)
-(use-package vertico :defer t :init (vertico-mode t))
+(use-package vertico :hook (after-init . vertico-mode))
 
 (use-package paren-face
-  :hook (lisp-data-mode clojure-mode))
+  :hook (lisp-data-mode . paren-face-mode)
+  :hook (clojure-mode . paren-face-mode))
 
 (use-package sly
   :hook (lisp-mode . sly-editing-mode)
@@ -227,8 +219,7 @@
   (bind-key "C-c j" #'ps-last-expression sly-editing-mode-map))
 
 (use-package clojure-mode
-  :config
-  (add-hook 'clojure-mode-hook #'paredit-mode)
+  :hook (clojure-mode . paredit-mode)
   ;; (add-hook 'clojure-mode #'inf-clojure-eldoc-setup)
   )
 
@@ -238,22 +229,26 @@
 
 (use-package cider
   :commands cider-jack-in
-  :config
-  (add-hook 'cider-repl-mode-hook #'paredit-mode)
-  (add-hook 'clojure-mode-hook #'cider-eldoc-setup))
+  :hook (cider-repl-mode . paredit-mode)
+  :hook (clojure-mode . cider-eldoc-setup))
 
 (use-package imenu-list :disabled t :commands imenu-list)
 
-(use-package enumerated-windows :config (enumerated-windows-mode t))
+(use-package enumerated-windows :hook (after-init . enumerated-windows-mode))
 
 (use-package yoshi :commands yoshi-project-mode)
 
-(use-package keyfreq :init (keyfreq-mode 1) (keyfreq-autosave-mode 1))
+(use-package keyfreq
+  :hook (after-init . keyfreq-mode)
+  :hook (after-init . keyfreq-autosave-mode))
 
-(use-package plantuml-mode :mode "\\.puml\\'")
+(use-package plantuml-mode
+  :disabled t
+  :mode "\\.puml\\'")
 
 (use-package vc-git
   :bind (:map vc-dir-git-mode-map
+              ("z c" . vc-git-stash-snapshot)
               ("z x" . vc-git-stash-delete)
               ("z s" . vc-git-stash-show)))
 
@@ -287,17 +282,8 @@
 (use-package conf-mode
   :mode "\\.env\\(\\.local\\)?\\'")
 
-(defvar project-name-mode-line
-  '(:propertize (:eval (when-let ((project (project-current))
-                                  (name (project-name project)))
-                         (unless (string-search name (buffer-name))
-                           (format "%s/" (project-name project)))))))
-
-(put 'project-name-mode-line 'risky-local-variable t)
-
-(unless (cl-position 'project-name-mode-line mode-line-format)
-  (let ((i (cl-position 'mode-line-buffer-identification mode-line-format)))
-    (push 'project-name-mode-line (nthcdr i mode-line-format))))
+(use-package treesit-auto
+  :hook (after-init . global-treesit-auto-mode))
 
 (keymap-global-set "C-c s" #'scratch-file)
 
