@@ -201,14 +201,9 @@ To be used with `markdown-live-preview-window-function'."
               (when branch (princ " ") (princ branch))
               (princ suffix))))
       (when branch
-        (put-text-property (+ 1 (length shortened-path))
-                           (+ 1 (length shortened-path) (length branch))
-                           'face '(eshell-prompt underline)
-                           prompt)
-        (put-text-property (+ 3 (length shortened-path) (length branch))
-                           (+ 4 (length shortened-path) (length branch))
-                           'face '(default)
-                           prompt))
+        (let ((pos (1+ (cl-search (format " %s " branch) prompt))))
+          (put-text-property pos (+ pos (length branch)) 'face '(eshell-prompt underline) prompt)))
+      (put-text-property (1+ (cl-position ?$ prompt)) (length prompt) 'face '(default) prompt)
       prompt)))
 
 (defun overlay-get-eslint-message (overlay)

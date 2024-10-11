@@ -134,11 +134,15 @@
 
 (use-package markdown-mode
   :mode "\\.md\\'"
-  :config
-  (add-hook 'markdown-mode-hook #'visual-line-mode)
-  (add-hook 'markdown-mode-hook #'flyspell-mode))
+  :hook (markdown-mode . visual-line-mode)
+  :hook (markdown-mode . flyspell-mode)
+  :bind (:map markdown-mode-map ("C-c C-c p" . markdown-preview-mode)))
 
-(use-package markdown-preview-mode :commands markdown-preview-mode)
+(use-package markdown-preview-mode
+  :commands markdown-preview-mode
+  :config (let ((stylesheet (expand-file-name "github-markdown.css" user-emacs-directory)))
+            (setq markdown-preview-stylesheets
+                  `(,(format "<style>%s</style>" (file-contents-string stylesheet))))))
 
 (use-package nodejs-repl :commands nodejs-repl)
 
@@ -177,7 +181,7 @@
 (use-package editorconfig :config (editorconfig-mode t))
 
 (use-package js
-  :mode ("\\.m?js\\'" . js-st-mode)
+  :mode ("\\.m?js\\'" . js-ts-mode)
   :mode ("tsconfig.json\\'" . js-json-mode))
 
 (use-package string-edit-at-point :commands string-edit-at-point)

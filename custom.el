@@ -141,7 +141,7 @@
  '(ns-use-srgb-colorspace t)
  '(ns-use-thin-smoothing nil t)
  '(nvm-dir "/Users/donatasp/software/nvm")
- '(olivetti-body-width 120)
+ '(olivetti-body-width 80)
  '(olivetti-minimum-body-width 78)
  '(olivetti-style 'fancy)
  '(org-babel-lisp-eval-fn 'slime-eval)

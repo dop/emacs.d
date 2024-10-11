@@ -160,4 +160,9 @@ usage: (cond-let ((VAR TEST) BODY...))."
   (cons (cons k v)
         (cl-remove k alist :key #'car)))
 
+(defun file-contents-string (filename)
+  (with-temp-buffer
+    (insert-file-contents-literally filename)
+    (buffer-string)))
+
 (provide 'my-library)
