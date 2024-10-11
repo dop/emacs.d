@@ -20,7 +20,7 @@
  '(csv-separators '("," "\11" ";"))
  '(custom-enabled-themes '(dop))
  '(custom-safe-themes
-   '("fcaa2fa574b2f03e92b685bfb3de1a5de1ce6f95474fbdac7371ec665d9298de" "b87509a246c36477715801609ee7cb257afa1128d6ae98c6b6310e21b15613ad"))
+   '("4b7d23f316c64a000799b42a1065f590442051d2c8e516d4b5235ba48b0b255b"))
  '(custom-theme-directory "~/.emacs.d/themes/")
  '(debug-on-error nil)
  '(delete-by-moving-to-trash t)
@@ -173,7 +173,7 @@
  '(org-todo-keywords
    '((sequence "TODO(t)" "WAIT(w@)" "|" "DONE(d!)" "CANCELLED(c@)")))
  '(package-selected-packages
-   '(orderless treesit-auto buffer-env elfeed diff-hl web-mode vue-mode magit neotree org-download graphviz-dot-mode plantuml-mode jq-mode async php-mode org-modern dired-collapse dired-subtree keyfreq rainbow-mode sly paren-face sql-indent ox-slack seq edit-indirect browse-kill-ring ox-jira scala-mode ox-gfm flymake-proselint flymake eldoc json-mode prettier paredit-menu exec-path-from-shell xterm-color flymake-eslint ns-auto-titlebar cider paredit-everywhere slime-company whitespace-cleanup-mode use-package undo-tree restclient protobuf-mode paredit hungry-delete dictionary csv-mode))
+   '(buffer-env macrostep orderless treesit-auto elfeed diff-hl web-mode vue-mode magit neotree org-download graphviz-dot-mode plantuml-mode jq-mode async php-mode org-modern dired-collapse dired-subtree keyfreq rainbow-mode sly paren-face sql-indent ox-slack seq edit-indirect browse-kill-ring ox-jira scala-mode ox-gfm flymake-proselint flymake eldoc json-mode prettier paredit-menu exec-path-from-shell xterm-color flymake-eslint ns-auto-titlebar cider paredit-everywhere slime-company whitespace-cleanup-mode use-package undo-tree restclient protobuf-mode paredit hungry-delete dictionary csv-mode))
  '(paredit-lighter " ParEd" t)
  '(plantuml-default-exec-mode 'jar)
  '(plantuml-indent-level 4)
