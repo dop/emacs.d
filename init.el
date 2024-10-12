@@ -103,6 +103,35 @@
 (use-package sql-indent
   :config (add-hook 'sql-mode-hook #'sqlind-minor-mode))
 
+(defvar my-eshell-prompt-limit 30)
+
+(defun my-eshell-prompt ()
+  (let ((path (abbreviate-file-name (eshell/pwd)))
+        (limit my-eshell-prompt-limit)
+        (limited nil)
+        (project (project-current)))
+    (let* ((shortened-path
+            (if (> (length path) my-eshell-prompt-limit)
+                (concat "…" (substring path (- (length path) my-eshell-prompt-limit) (length path)))
+              path))
+           (branch
+            (car (vc-git-branches)))
+           (suffix ?$)
+           (prompt
+            (with-output-to-string
+              (princ shortened-path)
+              (when branch (princ " ") (princ branch))
+              (princ (format " %c " suffix)))))
+      (when branch
+        (let ((pos (1+ (cl-search (format " %s " branch) prompt))))
+          (put-text-property pos (+ pos (length branch)) 'face '(eshell-prompt underline) prompt)))
+      (put-text-property (1+ (cl-position suffix prompt)) (length prompt) 'face '(default) prompt)
+      prompt)))
+
+(use-package eshell
+  :defer t
+  :config (require 'vc-git))
+
 (use-package hl-line
   :hook (package-menu-mode . hl-line-mode)
   :hook (vc-dir-mode . hl-line-mode)
@@ -134,6 +163,7 @@
 
 (use-package markdown-mode
   :mode "\\.md\\'"
+  :mode ("README\\.md\\'" . gfm-mode)
   :hook (markdown-mode . visual-line-mode)
   :hook (markdown-mode . flyspell-mode)
   :bind (:map markdown-mode-map ("C-c C-c p" . markdown-preview-mode)))
@@ -145,6 +175,11 @@
                   `(,(format "<style>%s</style>" (file-contents-string stylesheet))))))
 
 (use-package nodejs-repl :commands nodejs-repl)
+
+(use-package buffer-env
+  :hook (hack-local-variables . buffer-env-update)
+  :hook (comint-mode . buffer-env-update)
+  :hook (eshell-mode . buffer-env-update))
 
 (require 'setup-project)
 (require 'setup-xterm-color)

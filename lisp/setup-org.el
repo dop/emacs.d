@@ -16,7 +16,7 @@
 (use-package org-writing :commands org-writing-mode)
 
 (use-package org-download
-  :commands (org-download-screenshot)
+  :commands org-download-screenshot
   :custom
   (org-download-method 'directory)
   (org-download-image-dir "images")

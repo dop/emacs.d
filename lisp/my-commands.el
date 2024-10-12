@@ -173,39 +173,6 @@ Every item of FUNCTIONS can be either function or arguments to
 ;;       (let ((new (substring-no-properties (car (diff-hunk-file-names)))))
 ;;         (cons new (file-exists-p new))))))
 
-(defun markdown-live-preview-window-browser (file)
-  "Preview FILE with browser.
-To be used with `markdown-live-preview-window-function'."
-  (browse-url file))
-
-(setq markdown-live-preview-window-function 'markdown-live-preview-window-browser)
-
-(defvar my-eshell-prompt-limit 30)
-
-(defun my-eshell-prompt ()
-  (let ((path (abbreviate-file-name (eshell/pwd)))
-        (limit my-eshell-prompt-limit)
-        (limited nil)
-        (project (project-current)))
-    (let* ((shortened-path
-            (if (> (length path) my-eshell-prompt-limit)
-                (concat "…" (substring path (- (length path) my-eshell-prompt-limit) (length path)))
-              path))
-           (branch
-            (car (vc-git-branches)))
-           (suffix
-            (if (= (user-uid) 0) " # " " $ "))
-           (prompt
-            (with-output-to-string
-              (princ shortened-path)
-              (when branch (princ " ") (princ branch))
-              (princ suffix))))
-      (when branch
-        (let ((pos (1+ (cl-search (format " %s " branch) prompt))))
-          (put-text-property pos (+ pos (length branch)) 'face '(eshell-prompt underline) prompt)))
-      (put-text-property (1+ (cl-position ?$ prompt)) (length prompt) 'face '(default) prompt)
-      prompt)))
-
 (defun overlay-get-eslint-message (overlay)
   "Get text message from OVERLAY if it is from `flymake-eslint--checker' backend."
   (when-let ((diagnostics (and (overlayp overlay)

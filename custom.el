@@ -71,7 +71,7 @@
  '(eldoc-minor-mode-string " doc")
  '(electric-pair-mode t)
  '(elfeed-feeds
-   '("https://chrisdone.com/rss.xml" "https://planet.emacslife.com/atom.xml" "https://irreal.org/blog/?feed=rss2" "https://nullprogram.com/feed/"))
+   '("https://howardism.org/index.xml" "https://chrisdone.com/rss.xml" "https://planet.emacslife.com/atom.xml" "https://irreal.org/blog/?feed=rss2" "https://nullprogram.com/feed/"))
  '(epa-pinentry-mode 'loopback)
  '(epg-pinentry-mode 'loopback)
  '(eshell-hist-ignoredups t)
