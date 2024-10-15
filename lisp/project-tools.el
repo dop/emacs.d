@@ -5,6 +5,10 @@
   (when-let ((project (project-current)))
     (project-root project)))
 
+(defun project-current-name ()
+  (when-let ((project (project-current)))
+    (project-name project)))
+
 (defun project-has-file-p (project filepath)
   (let* ((directory (project-root project))
          (expanded (expand-file-name filepath directory)))
