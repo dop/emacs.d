@@ -74,7 +74,7 @@
  '(eldoc-minor-mode-string " doc")
  '(electric-pair-mode t)
  '(elfeed-feeds
-   '("https://howardism.org/index.xml" "https://chrisdone.com/rss.xml" "https://planet.emacslife.com/atom.xml" "https://irreal.org/blog/?feed=rss2" "https://nullprogram.com/feed/"))
+   '("https://atthis.link/rss.xml" "https://howardism.org/index.xml" "https://chrisdone.com/rss.xml" "https://planet.emacslife.com/atom.xml" "https://irreal.org/blog/?feed=rss2" "https://nullprogram.com/feed/"))
  '(elfeed-search-filter "@1-months-ago +unread")
  '(elfeed-show-entry-delete 'delete-window)
  '(elfeed-show-entry-switch 'pop-to-buffer)
