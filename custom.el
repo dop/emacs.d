@@ -74,6 +74,7 @@
    '("https://howardism.org/index.xml" "https://chrisdone.com/rss.xml" "https://planet.emacslife.com/atom.xml" "https://irreal.org/blog/?feed=rss2" "https://nullprogram.com/feed/"))
  '(epa-pinentry-mode 'loopback)
  '(epg-pinentry-mode 'loopback)
+ '(eshell-banner-message "")
  '(eshell-hist-ignoredups t)
  '(eshell-prompt-function 'my-eshell-prompt)
  '(exec-path-from-shell-check-startup-files nil)
