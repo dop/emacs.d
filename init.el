@@ -147,9 +147,8 @@
   :commands (macrostep macrostep-expand)
   :init (defalias 'macrostep 'macrostep-expand))
 
-(use-package undo-tree
-  :bind (:map undo-tree-map ("C-x u" . undo-tree-visualize))
-  :hook (after-init . global-undo-tree-mode))
+(use-package vundo
+  :bind (:map global-map ("C-x u" . vundo)))
 
 (use-package ispell
   :defer t
@@ -184,6 +183,7 @@
 (require 'setup-project)
 (require 'setup-xterm-color)
 (require 'setup-compile)
+(require 'setup-scratch)
 
 (with-eval-after-load 'log-edit
   (add-hook 'log-edit-mode-hook #'flyspell-mode))
@@ -239,6 +239,10 @@
                       :textDocument/rename `(,@(eglot--TextDocumentPositionParams)
                                              :newName ,newname))
      current-prefix-arg)))
+
+(use-package dumb-jump
+  :commands dumb-jump-xref-activate
+  :init (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
 
 (use-package olivetti :commands olivetti-mode)
 (use-package csv-mode :mode "\\.csv\\'")
@@ -311,11 +315,33 @@
   :disabled t
   :mode "\\.puml\\'")
 
+(defun vc-dir-up ()
+  (interactive)
+  (let ((buf (current-buffer)))
+    (vc-dir (up-directory default-directory))
+    (kill-buffer buf)))
+
+(use-package vc-dir
+  :bind (:map vc-dir-mode-map ("^" . vc-dir-up)))
+
+(defun vc-git-rebase (branch)
+  (interactive
+   (list (pcase-let ((`(,current . ,options) (vc-git-branches)))
+           (completing-read "Rebase on top: " options nil t))))
+  (when-let ((root (vc-git-root default-directory))
+             (current (car (vc-git-branches))))
+    (vc-git--call nil "checkout" name)
+    (vc-git--call nil "pull" "-n" name)
+    (vc-git--call nil "checkout" current)
+    (vc-git--call nil "rebase" name)
+    (vc-resynch-buffer root t t)))
+
 (use-package vc-git
   :bind (:map vc-dir-git-mode-map
-              ("z c" . vc-git-stash-snapshot)
+              ("z c" . vc-git-stash)
               ("z x" . vc-git-stash-delete)
-              ("z s" . vc-git-stash-show)))
+              ("z s" . vc-git-stash-snapshot)
+              ("r b" . vc-git-rebase)))
 
 (use-package diff-hl
   :hook (after-init . global-diff-hl-mode))
@@ -349,8 +375,6 @@
 
 (use-package treesit-auto
   :hook (after-init . global-treesit-auto-mode))
-
-(keymap-global-set "C-c s" #'scratch-file)
 
 (use-package elfeed :commands elfeed)
 

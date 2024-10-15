@@ -98,11 +98,6 @@ Otherwise, call `backward-kill-word'."
     (advice-mapc (lambda (&rest args) (push args x)) symbol)
     list))
 
-(defun project-compile-file (file)
-  (interactive (list (or (buffer-file-name) (read-file-name "File: "))))
-  (let ((compile-command (concat compile-command file)))
-    (call-interactively #'project-compile)))
-
 (defmacro with-project-buffers (options &rest body)
   (declare (indent 1))
   (let ((filter (gensym "filter"))
@@ -255,40 +250,6 @@ Every item of FUNCTIONS can be either function or arguments to
 
 (defun eshell/nvm ()
   (call-interactively #'nvm))
-
-(defun get-mode-scratch-buffer-create (&optional mode)
-  (let* ((mode-name
-          (string-replace "-mode" "" (symbol-name mode)))
-         (buffer-name
-          (format "*scratch %s*" mode-name))
-         (buffer
-          (get-buffer-create buffer-name)))
-    (with-current-buffer buffer
-      (unless (eq mode major-mode)
-        (funcall mode))
-      (pop-to-buffer buffer))))
-
-(defun list-unique-modes ()
-  (cl-remove-duplicates (mapcar #'cdr auto-mode-alist)))
-
-(defcustom scratch-file-directory "~/.emacs.d/scratch"
-  "Directory to place and open scratch files."
-  :type 'string
-  :risky t)
-
-(defun scratch-file (mode-name)
-  (interactive (list (completing-read "Mode: " (list-unique-modes) nil t)))
-  (make-directory scratch-file-directory t)
-  (with-current-buffer (find-file
-                        (expand-file-name (concat "scratch." (string-replace "-mode" "" mode-name))
-                                          scratch-file-directory))
-    (let ((mode (intern mode-name)))
-      (unless (eq major-mode mode)
-        (funcall mode)))))
-
-(defun create-scratch-buffer (mode)
-  (interactive (list (completing-read "Mode: " (list-unique-modes)  nil t)))
-  (get-mode-scratch-buffer-create (intern mode)))
 
 (defun uuid ()
   (interactive)

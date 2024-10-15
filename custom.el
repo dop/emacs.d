@@ -20,7 +20,7 @@
  '(csv-separators '("," "\11" ";"))
  '(custom-enabled-themes '(dop))
  '(custom-safe-themes
-   '("4b7d23f316c64a000799b42a1065f590442051d2c8e516d4b5235ba48b0b255b"))
+   '("4833d7629f96ba21231054356234d59cd89d806798ab12c56cb9942fc89fb069"))
  '(custom-theme-directory "~/.emacs.d/themes/")
  '(debug-on-error nil)
  '(delete-by-moving-to-trash t)
@@ -57,6 +57,7 @@
  '(display-time-day-and-date t)
  '(display-time-default-load-average nil)
  '(display-time-mode t)
+ '(dumb-jump-force-searcher 'rg)
  '(editorconfig-mode-lighter " ec")
  '(ef-themes-mixed-fonts t)
  '(ef-themes-variable-pitch-ui t)
@@ -174,7 +175,7 @@
  '(org-todo-keywords
    '((sequence "TODO(t)" "WAIT(w@)" "|" "DONE(d!)" "CANCELLED(c@)")))
  '(package-selected-packages
-   '(buffer-env macrostep orderless treesit-auto elfeed diff-hl web-mode vue-mode magit neotree org-download graphviz-dot-mode plantuml-mode jq-mode async php-mode org-modern dired-collapse dired-subtree keyfreq rainbow-mode sly paren-face sql-indent ox-slack seq edit-indirect browse-kill-ring ox-jira scala-mode ox-gfm flymake-proselint flymake eldoc json-mode prettier paredit-menu exec-path-from-shell xterm-color flymake-eslint ns-auto-titlebar cider paredit-everywhere slime-company whitespace-cleanup-mode use-package undo-tree restclient protobuf-mode paredit hungry-delete dictionary csv-mode))
+   '(dumb-jump macrostep vundo project orderless treesit-auto buffer-env elfeed diff-hl web-mode vue-mode magit neotree org-download graphviz-dot-mode plantuml-mode jq-mode async php-mode org-modern dired-collapse dired-subtree keyfreq rainbow-mode sly paren-face sql-indent ox-slack seq edit-indirect browse-kill-ring ox-jira scala-mode ox-gfm flymake-proselint flymake eldoc json-mode prettier paredit-menu exec-path-from-shell xterm-color flymake-eslint ns-auto-titlebar cider paredit-everywhere slime-company whitespace-cleanup-mode restclient protobuf-mode paredit hungry-delete dictionary csv-mode))
  '(paredit-lighter " ParEd" t)
  '(plantuml-default-exec-mode 'jar)
  '(plantuml-indent-level 4)

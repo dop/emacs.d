@@ -32,8 +32,6 @@
               ("F" . project-find-top-file)
               ("G" . project-find-top-regexp))
   :config
-  (advice-add 'risky-local-variable-p :override #'ignore)
-
   (advice-add 'project-find-regexp :override #'deadgrep)
 
   (defun project-compilation-default-buffer-name (&rest ignore)
@@ -69,6 +67,23 @@
     (mapcar (lambda (dir) (concat dir "/"))
             vc-directory-exclusion-list))
 
-  (add-hook 'project-find-functions #'project-npm-project))
+  (add-hook 'project-find-functions #'project-npm-project)
+
+  (defun project-envrc-project (dir)
+    (let* ((resolve-root
+            (cl-case project-preferred-root-resolution
+              (top #'locate-top-dominating-file)
+              (t   #'locate-dominating-file)))
+           (root (funcall resolve-root dir ".envrc")))
+      (and root (cons 'envrc root))))
+
+  (cl-defmethod project-roots ((project (head envrc)))
+    (list (cdr project)))
+
+  (cl-defmethod project-ignores ((project (head envrc)) dir)
+    (mapcar (lambda (dir) (concat dir "/"))
+            vc-directory-exclusion-list))
+
+  (add-hook 'project-find-functions #'project-envrc-project))
 
 (provide 'setup-project)

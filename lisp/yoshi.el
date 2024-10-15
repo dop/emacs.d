@@ -56,7 +56,7 @@ clear when mode is turned off.")
     (yoshi-set
      compilation-error-regexp-alist '(jest typescript-tsc-pretty typescript-tsc)
      compile-command (if (locate-dominating-file "." "sled.json")
-                         (concat sled " local -f ")
+                         (concat sled " remote -f ")
                        (concat (yoshi--test-command project) " ")))))
 
 (defun yoshi--locate-outer-dominating-file (project file)
