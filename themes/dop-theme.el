@@ -4,7 +4,7 @@
  'dop
  '(default
    ((((background light)) :background "white")
-    (((background dark)) :background "#222")))
+    (((background dark)) :background "#292b29")))
  '(cursor
    ((((background light)) :background "red")
     (((background dark)) :background "green")))
