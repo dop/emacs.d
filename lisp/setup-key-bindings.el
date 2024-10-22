@@ -20,6 +20,7 @@
 (keymap-global-set "C-x M-r" #'rename-buffer-and-file)
 (keymap-global-set "C-x C-b" #'ibuffer)
 (keymap-global-set "C-c C-d" #'duplicate-dwim)
+(keymap-global-set "C-c C-k" #'kill-whole-line)
 
 (keymap-global-set "C-x O" #'other-frame)
 (keymap-global-set "M-`" #'other-frame)

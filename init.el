@@ -124,7 +124,7 @@
               (princ (format " %c " suffix)))))
       (when branch
         (let ((pos (1+ (cl-search (format " %s " branch) prompt))))
-          (put-text-property pos (+ pos (length branch)) 'face '(eshell-prompt underline) prompt)))
+          (put-text-property pos (+ pos (length branch)) 'face '(eshell-prompt italic) prompt)))
       (put-text-property (1+ (cl-position suffix prompt)) (length prompt) 'face '(default) prompt)
       prompt)))
 
@@ -344,7 +344,7 @@
               ("z c" . vc-git-stash)
               ("z x" . vc-git-stash-delete)
               ("z s" . vc-git-stash-snapshot)
-              ("r b" . vc-git-rebase)))
+              ("b r" . vc-git-rebase)))
 
 (use-package diff-hl
   :hook (after-init . global-diff-hl-mode))

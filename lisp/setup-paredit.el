@@ -56,6 +56,7 @@
          (typescript-ts-mode . paredit-everywhere-mode)
          (tsx-ts-mode . paredit-everywhere-mode))
   :bind (:map paredit-everywhere-mode-map
+              ("C-k" . paredit-kill)
               ("M-[" . paredit-wrap-square)
               ("M-{" . paredit-wrap-curly)))
 
