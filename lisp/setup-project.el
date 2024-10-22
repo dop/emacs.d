@@ -39,6 +39,7 @@
 
   (setq project-compilation-buffer-name-function #'project-compilation-default-buffer-name)
 
+  ;; dir-locals project
   (defun project-dir-locals-project (dir)
     (let ((root (locate-dominating-file dir ".dir-locals.el")))
       (and root (cons 'dir-locals root))))
@@ -50,8 +51,7 @@
     (mapcar (lambda (dir) (concat dir "/"))
             vc-directory-exclusion-list))
 
-  (add-hook 'project-find-functions #'project-dir-locals-project)
-
+  ;; NPM project
   (defun project-npm-project (dir)
     (let* ((resolve-root
             (cl-case project-preferred-root-resolution
@@ -67,8 +67,7 @@
     (mapcar (lambda (dir) (concat dir "/"))
             vc-directory-exclusion-list))
 
-  (add-hook 'project-find-functions #'project-npm-project)
-
+  ;; .envrc project
   (defun project-envrc-project (dir)
     (let* ((resolve-root
             (cl-case project-preferred-root-resolution
@@ -84,6 +83,8 @@
     (mapcar (lambda (dir) (concat dir "/"))
             vc-directory-exclusion-list))
 
-  (add-hook 'project-find-functions #'project-envrc-project))
+  (add-hook 'project-find-functions #'project-dir-locals-project)
+  (add-hook 'project-find-functions #'project-envrc-project)
+  (add-hook 'project-find-functions #'project-npm-project))
 
 (provide 'setup-project)
