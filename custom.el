@@ -20,7 +20,7 @@
  '(csv-separators '("," "\11" ";"))
  '(custom-enabled-themes '(dop))
  '(custom-safe-themes
-   '("dd123230b60f5fce36d6a3b76a8756dd867373487c34db40fd1eaceaa84b5319"))
+   '("e2221dc447de3c62f0b0ebcfbaea698d1b6d8076effeb756de451740a0d3a633"))
  '(custom-theme-directory "~/.emacs.d/themes/")
  '(debug-on-error nil)
  '(delete-by-moving-to-trash t)
@@ -75,6 +75,10 @@
  '(electric-pair-mode t)
  '(elfeed-feeds
    '("https://howardism.org/index.xml" "https://chrisdone.com/rss.xml" "https://planet.emacslife.com/atom.xml" "https://irreal.org/blog/?feed=rss2" "https://nullprogram.com/feed/"))
+ '(elfeed-search-filter "@1-months-ago +unread")
+ '(elfeed-show-entry-delete 'delete-window)
+ '(elfeed-show-entry-switch 'pop-to-buffer)
+ '(elfeed-show-unique-buffers t)
  '(epa-pinentry-mode 'loopback)
  '(epg-pinentry-mode 'loopback)
  '(eshell-banner-message "")
@@ -240,5 +244,4 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:weight normal :family "Menlo" :height 120))))
  '(variable-pitch ((t (:weight normal :family "SF Pro Display")))))
