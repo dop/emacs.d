@@ -135,13 +135,15 @@
 (use-package hl-line
   :hook (package-menu-mode . hl-line-mode)
   :hook (vc-dir-mode . hl-line-mode)
-  :hook (vc-annotate-mode . hl-line-mode))
+  :hook (vc-annotate-mode . hl-line-mode)
+  :hook (log-view-mode . hl-line-mode))
 
 (use-package exec-path-from-shell
   :unless (memq system-type '(ms-dos windows-nt))
   :hook (after-init . exec-path-from-shell-initialize))
 
-(use-package hungry-delete :init (global-hungry-delete-mode t))
+(use-package hungry-delete
+  :hook (after-init . global-hungry-delete-mode))
 
 (use-package macrostep
   :commands (macrostep macrostep-expand)
@@ -324,16 +326,17 @@
 (use-package vc-dir
   :bind (:map vc-dir-mode-map ("^" . vc-dir-up)))
 
-(defun vc-git-rebase (branch)
+(defun vc-git-rebase (ontop)
   (interactive
    (list (pcase-let ((`(,current . ,options) (vc-git-branches)))
            (completing-read "Rebase on top: " options nil t))))
   (when-let ((root (vc-git-root default-directory))
              (current (car (vc-git-branches))))
-    (vc-git--call nil "checkout" name)
-    (vc-git--call nil "pull" "-n" name)
-    (vc-git--call nil "checkout" current)
-    (vc-git--call nil "rebase" name)
+    (let ((buf (get-buffer "*vc*")))
+      (vc-git--call buf "checkout" ontop)
+      (vc-git--call buf "pull" "-n" ontop)
+      (vc-git--call buf "checkout" current)
+      (vc-git--call buf "rebase" ontop))
     (vc-resynch-buffer root t t)))
 
 (use-package vc-git
@@ -347,7 +350,6 @@
   :hook (after-init . global-diff-hl-mode))
 
 (use-package ligature
-  :disabled t
   :hook (prog-mode . ligature-mode)
   :config
   (ligature-set-ligatures
@@ -378,6 +380,8 @@
 
 (use-package elfeed :commands elfeed)
 
+(set-frame-size nil 120 48)
+(set-frame-parameter nil 'internal-border-width 12)
 (server-start)
 
 ;; end of init.el
