@@ -20,11 +20,12 @@
  '(csv-separators '("," "\11" ";"))
  '(custom-enabled-themes '(dop))
  '(custom-safe-themes
-   '("4833d7629f96ba21231054356234d59cd89d806798ab12c56cb9942fc89fb069"))
+   '("dd123230b60f5fce36d6a3b76a8756dd867373487c34db40fd1eaceaa84b5319"))
  '(custom-theme-directory "~/.emacs.d/themes/")
  '(debug-on-error nil)
  '(delete-by-moving-to-trash t)
  '(delete-old-versions t)
+ '(dictionary-server "dict.org")
  '(diff-hl-draw-borders nil)
  '(dired-dwim-target t)
  '(dired-free-space nil)
@@ -55,7 +56,8 @@
  '(display-line-numbers-grow-only t)
  '(display-time-24hr-format t)
  '(display-time-day-and-date t)
- '(display-time-default-load-average nil)
+ '(display-time-default-load-average 1)
+ '(display-time-format "%Y-%m-%d")
  '(display-time-mode t)
  '(dumb-jump-force-searcher 'rg)
  '(editorconfig-mode-lighter " ec")
@@ -82,6 +84,9 @@
  '(exec-path-from-shell-variables
    '("PATH" "MANPATH" "FNM_LOGLEVEL" "FNM_COREPACK_ENABLED" "FNM_RESOLVE_ENGINES" "FNM_VERSION_FILE_STRATEGY" "FNM_MULTISHELL_PATH" "FNM_DIR" "FNM_NODE_DIST_MIRROR" "FNM_ARCH" "NODE_OPTIONS" "LATEST_JDK" "JAVA_HOME" "AUTOMATION_MASTER_KEY"))
  '(fast-but-imprecise-scrolling t)
+ '(ffap-ftp-regexp nil)
+ '(ffap-lax-url nil)
+ '(ffap-machine-p-known 'reject)
  '(flymake-eslint-defer-binary-check t)
  '(flymake-eslint-prefer-json-diagnostics t)
  '(fold-this-overlay-text "...")
@@ -175,7 +180,7 @@
  '(org-todo-keywords
    '((sequence "TODO(t)" "WAIT(w@)" "|" "DONE(d!)" "CANCELLED(c@)")))
  '(package-selected-packages
-   '(dumb-jump macrostep vundo project orderless treesit-auto buffer-env elfeed diff-hl web-mode vue-mode magit neotree org-download graphviz-dot-mode plantuml-mode jq-mode async php-mode org-modern dired-collapse dired-subtree keyfreq rainbow-mode sly paren-face sql-indent ox-slack seq edit-indirect browse-kill-ring ox-jira scala-mode ox-gfm flymake-proselint flymake eldoc json-mode prettier paredit-menu exec-path-from-shell xterm-color flymake-eslint ns-auto-titlebar cider paredit-everywhere slime-company whitespace-cleanup-mode restclient protobuf-mode paredit hungry-delete dictionary csv-mode))
+   '(ligature dumb-jump macrostep vundo project orderless treesit-auto buffer-env elfeed diff-hl web-mode vue-mode magit neotree org-download graphviz-dot-mode plantuml-mode jq-mode async php-mode org-modern dired-collapse dired-subtree keyfreq rainbow-mode sly paren-face sql-indent ox-slack seq edit-indirect browse-kill-ring ox-jira scala-mode ox-gfm flymake-proselint flymake eldoc json-mode prettier paredit-menu exec-path-from-shell xterm-color flymake-eslint ns-auto-titlebar cider paredit-everywhere slime-company whitespace-cleanup-mode restclient protobuf-mode paredit hungry-delete dictionary csv-mode))
  '(paredit-lighter " ParEd" t)
  '(plantuml-default-exec-mode 'jar)
  '(plantuml-indent-level 4)
@@ -214,7 +219,7 @@
  '(undo-tree-history-directory-alist nil)
  '(undo-tree-mode-lighter " ut")
  '(vc-annotate-background nil)
- '(vc-annotate-background-mode nil)
+ '(vc-annotate-background-mode t)
  '(vc-annotate-very-old-color nil)
  '(vc-directory-exclusion-list
    '("SCCS" "RCS" "CVS" "MCVS" ".src" ".svn" ".git" ".hg" ".bzr" "_MTN" "_darcs" "{arch}" "node_modules" "dist" "bower_components" "coverage" "build"))
@@ -235,4 +240,5 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(default ((t (:weight normal :family "Menlo" :height 120))))
+ '(variable-pitch ((t (:weight normal :family "SF Pro Display")))))

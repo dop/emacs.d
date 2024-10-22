@@ -3,8 +3,8 @@
 (custom-theme-set-faces
  'dop
  '(default
-   ((((background light)) :background "white")
-    (((background dark)) :background "#292b29")))
+   ((((background light)) :foreground "black" :background "ivory")
+    (((background dark)) :foreground "ivory" :background "#15273b")))
  '(cursor
    ((((background light)) :background "red")
     (((background dark)) :background "green")))
@@ -17,17 +17,15 @@
  '(eglot-highlight-symbol-face
    ((t :inherit highlight)))
  '(mode-line
-   ((t :inherit variable-pitch
-       :background "LightSteelBlue2" :foreground "black"
-       :box (:line-width 3 :style flat-button :color "LightSteelBlue2")
-       :height 1.0)))
+   ((t
+     :inherit variable-pitch
+     :foreground "black"
+     :background "grey"
+     :box (:line-width 3 :style flat-button :color "grey"))))
  '(mode-line-inactive
-   ((((background light))
-     :inherit mode-line :background "LightSteelBlue1" :foreground "grey50"
-     :box (:line-width 3 :style flat-button :color "LightSteelBlue1"))
-    (((background dark))
-     :inherit mode-line :background "LightSteelBlue4" :foreground "grey20"
-     :box (:line-width 3 :style flat-button :color "LightSteelBlue4"))))
+   ((t
+     :inherit mode-line
+     :foreground "grey30")))
  '(diff-hl-change
    ((((background light)) :background "light blue")
     (((background dark)) :background "royal blue")))
@@ -45,6 +43,10 @@
     (((background dark)) :foreground "chocolate1" :slant italic)))
  '(eshell-prompt
    ((((background light)) :background "grey95" :foreground "red" :overline "grey80")
-    (((background dark)) :background "grey25" :foreground "pink" :overline "grey40"))))
+    (((background dark)) :background "grey25" :foreground "pink" :overline "grey40")))
+ '(dictionary-reference-face ((t (:inherit variable-pitch :foreground "blue"))))
+ '(dictionary-word-entry-face ((((type x)) (:italic t))
+                               (((type tty) (class color)) (:foreground "green"))
+                               (t (:inherit variable-pitch :inverse t)))))
 
 (provide-theme 'dop)
