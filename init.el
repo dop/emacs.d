@@ -212,14 +212,14 @@
   :hook (tsx-ts-mode . subword-mode))
 
 (use-package typescript-ts-mode
-  :mode ("\\.ts\\'" . typescript-ts-mode)
-  :mode ("\\.tsx\\'" . tsx-ts-mode))
+  :mode ("\\.m?ts\\'" . typescript-ts-mode)
+  :mode ("\\.m?tsx\\'" . tsx-ts-mode))
 
 (use-package editorconfig :config (editorconfig-mode t))
 
 (use-package js
   :mode ("\\.m?js\\'" . js-ts-mode)
-  :mode ("tsconfig.json\\'" . js-json-mode))
+  :mode ("tsconfig\\.json\\'" . js-json-mode))
 
 (use-package string-edit-at-point :commands string-edit-at-point)
 (use-package wgrep :commands wgrep-change-to-wgrep-mode)
