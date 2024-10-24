@@ -347,6 +347,7 @@
               ("b r" . vc-git-rebase)))
 
 (use-package diff-hl
+  :bind (:map diff-hl-mode-map ("C-x v k" . diff-hl-revert-hunk))
   :hook (after-init . global-diff-hl-mode))
 
 (use-package ligature

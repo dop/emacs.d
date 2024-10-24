@@ -20,7 +20,7 @@
  '(csv-separators '("," "\11" ";"))
  '(custom-enabled-themes '(dop))
  '(custom-safe-themes
-   '("e2221dc447de3c62f0b0ebcfbaea698d1b6d8076effeb756de451740a0d3a633"))
+   '("1d755609de9262d14bbf1c85b7765a409bfa498805ee151fbd47ed7cc874f0a6" "2b84744180e3520b7761ade1a7e1456904e09c358a0fef875cfac9eef9b89ab9"))
  '(custom-theme-directory "~/.emacs.d/themes/")
  '(debug-on-error nil)
  '(delete-by-moving-to-trash t)
@@ -137,6 +137,20 @@
  '(ls-lisp-ignore-case t)
  '(ls-lisp-use-insert-directory-program nil)
  '(mode-line-compact t)
+ '(mode-line-format
+   '((:propertize " " display
+                  (raise 0.2))
+     "%e" mode-line-front-space
+     (:propertize
+      ("" mode-line-mule-info mode-line-client mode-line-modified mode-line-remote)
+      display
+      (min-width
+       (5.0)))
+     mode-line-frame-identification enumerated-windows-mode-line-number mode-line-buffer-identification "   " mode-line-position
+     (vc-mode vc-mode)
+     "  " mode-line-modes mode-line-misc-info mode-line-end-spaces
+     (:propertize " " display
+                  (raise -0.2))))
  '(mode-require-final-newline t)
  '(modus-themes-variable-pitch-ui t)
  '(monkeytype-mode-hook '((lambda nil (electric-pair-local-mode -1))))

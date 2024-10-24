@@ -70,19 +70,6 @@ returns a WINDOW with index N."
                    (format "%d " (1+ i))))))
 (put 'enumerated-windows-mode-line-number 'risky-local-variable t)
 
-(defvar enumerated-windows-add-mode-line-number-before
-  'mode-line-buffer-identification)
-
-(defun enumerated-windows--add-window-number-to-mode-line ()
-  (unless (cl-position 'enumerated-windows-mode-line-number mode-line-format)
-    (let ((i (cl-position enumerated-windows-add-mode-line-number-before mode-line-format)))
-      (push 'enumerated-windows-mode-line-number (nthcdr i mode-line-format)))))
-
-(defun enumerated-windows--remove-window-number-from-mode-line ()
-  (when-let ((i (cl-position 'enumerated-windows-mode-line-number mode-line-format)))
-    (setf (cdr (nthcdr (1- i) mode-line-format))
-          (cdr (nthcdr i mode-line-format)))))
-
 (defvar enumerated-windows-prefix-map
   (let ((map (make-sparse-keymap))
         (digits (cl-loop for d from ?1 to ?9 collect d)))
@@ -100,11 +87,6 @@ returns a WINDOW with index N."
 (define-minor-mode enumerated-windows-mode
   "Enumerate windows."
   :keymap `((,enumerated-windows-prefix . ,enumerated-windows-prefix-map))
-  :global t
-  (cond
-   (enumerated-windows-mode
-    (enumerated-windows--add-window-number-to-mode-line))
-   (t
-    (enumerated-windows--remove-window-number-from-mode-line))))
+  :global t)
 
 (provide 'enumerated-windows)
