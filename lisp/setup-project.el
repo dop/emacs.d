@@ -1,5 +1,6 @@
 ;; -*- lexical-binding: t; -*-
 
+(require 'project-tools)
 (defcustom project-preferred-root-resolution 'default
   "Choose how project root is resolved."
   :type 'symbol
@@ -23,6 +24,13 @@
   (interactive)
   (let ((project-preferred-root-resolution 'top))
     (call-interactively #'project-find-file)))
+
+(defun project-compile-file (file)
+  (interactive (list (or (buffer-file-name) (read-file-name "File: "))))
+  (let* ((root (expand-file-name (project-current-root)))
+         (compile-command (concat compile-command (string-replace root "" file))))
+    (message "root: %s, file: %s" root file)
+    (call-interactively #'project-compile)))
 
 (use-package project
   :pin gnu

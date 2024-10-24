@@ -24,9 +24,9 @@
    '(fringe
      ((((background light)) :inherit default :foreground "grey70")
       (((background dark)) :inherit default :foreground "grey40")))
-   '(vertical-border
-     ((((background light)) :foreground "grey80")
-      (((background dark)) :foreground "grey40")))
+   `(vertical-border
+     ((((background light)) :foreground ,acme-yellow)
+      (((background dark)) :foreground ,acme-blue)))
    '(eglot-highlight-symbol-face
      ((t :inherit highlight)))
    `(mode-line
@@ -34,23 +34,23 @@
        :inherit variable-pitch
        :foreground "black"
        :background ,acme-cyan-light
-       :box (:line-width 2 :style flat-button :color ,acme-cyan))
+       :box (:line-width 2 :style released-button :color ,acme-cyan-light))
       (((background dark))
        :inherit variable-pitch
        :foreground "black"
        :background "SkyBlue1"
-       :box (:line-width 2 :style flat-button :color "SkyBlue1"))))
+       :box (:line-width 2 :style released-button :color "SkyBlue1"))))
    '(mode-line-inactive
      ((((background light))
        :inherit mode-line
        :foreground "grey30"
        :background "grey90"
-       :box (:line-width 2 :style flat-button :color "grey90"))
+       :box (:line-width 2 :style released-button :color "grey90"))
       (((background dark))
        :inherit mode-line
        :foreground "grey20"
        :background "grey50"
-       :box (:line-width 2 :style flat-button :color "grey50"))))
+       :box (:line-width 2 :style released-button :color "grey50"))))
    '(eglot-mode-line
      ((t :weight bold)))
    '(diff-hl-change
@@ -76,4 +76,5 @@
                                  (((type tty) (class color)) (:foreground "green"))
                                  (t (:inherit variable-pitch
                                               :inverse t))))))
+
 (provide-theme 'dop)

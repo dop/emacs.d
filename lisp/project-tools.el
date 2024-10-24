@@ -21,11 +21,4 @@
   (when (project-has-node-script-p project script)
     (concat "npx --no-install " script)))
 
-(defun project-compile-file (file)
-  (interactive (list (or (buffer-file-name) (read-file-name "File: "))))
-  (let* ((root (expand-file-name (project-current-root)))
-         (compile-command (concat compile-command (string-replace root "" file))))
-    (message "root: %s, file: %s" root file)
-    (call-interactively #'project-compile)))
-
 (provide 'project-tools)

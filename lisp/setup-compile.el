@@ -7,11 +7,12 @@
 (defvar notify--fail-sound "Blow")
 
 (defun notify-on-compilation-finish (buf msg)
-  (let ((sound (if (string-match-p "exited abnormally" msg)
-                   notify--fail-sound
-                 notify--ok-sound)))
-    (do-applescript (format "display notification \"%s\" with title \"%s\" sound name \"%s\""
-                            msg (buffer-name buf) sound))))
+  (let* ((title (string-trim (buffer-name buf) "*" "*"))
+         (status (if (string-match-p "exited abnormally"  msg) :fail :ok))
+         (sound (if (eq :fail status) "Sosumi" "Glass")))
+    (with-current-buffer buf
+      (do-applescript (format "display notification \"%s\" with title \"%s\" sound name \"%s\""
+                              compile-command title sound)))))
 
 (use-package compile
   :defer t
