@@ -36,10 +36,12 @@
       (unless (eq major-mode mode)
         (funcall mode)))))
 
-(defun create-scratch-buffer (mode &optional name)
+(defun create-scratch-buffer (mode &optional project)
   (interactive (list (completing-read "Mode: " (list-unique-modes)  nil t)
-                     (project-current-name)))
-  (get-mode-scratch-buffer-create (intern mode) name))
+                     (project-current)))
+  (let ((default-directory (if project (project-root project) default-directory))
+        (name (and project (project-name project))))
+    (get-mode-scratch-buffer-create (intern mode) name)))
 
 (defun create-scratch-org-buffer (&optional name)
   (interactive (list (project-current-name)))
