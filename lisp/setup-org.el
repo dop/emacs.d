@@ -7,6 +7,7 @@
   :hook (org-mode . org-indent-mode)
   :hook (org-mode . flyspell-mode)
   :hook (org-mode . turn-off-local-electric-pair-mode)
+  :hook (org-mode . electric-pair-local-mode)
   :config
   (org-babel-do-load-languages 'org-babel-load-languages
                                '((emacs-lisp . t) (shell . t) (lisp . t) (plantuml . t))))
