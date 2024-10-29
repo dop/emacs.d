@@ -20,7 +20,7 @@
  '(csv-separators '("," "\11" ";"))
  '(custom-enabled-themes '(dop))
  '(custom-safe-themes
-   '("680e7346d9672e3f1853f3d9d97a7d508e72d83b52b69883386e77dbed85e2dc" "1d755609de9262d14bbf1c85b7765a409bfa498805ee151fbd47ed7cc874f0a6" "2b84744180e3520b7761ade1a7e1456904e09c358a0fef875cfac9eef9b89ab9"))
+   '("6f7317519013c42e3394cdc6005bf29d2c632420d17bb9a521ac8207063ee994"))
  '(custom-theme-directory "~/.emacs.d/themes/")
  '(debug-on-error nil)
  '(delete-by-moving-to-trash t)
@@ -258,4 +258,5 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(default ((t (:weight regular :family "SF Mono"))))
  '(variable-pitch ((t (:weight normal :family "SF Pro Display")))))

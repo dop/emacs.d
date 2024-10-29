@@ -37,10 +37,10 @@
        :box (:line-width 2 :style released-button :color ,acme-cyan-light))
       (((background dark))
        :inherit variable-pitch
-       :foreground "black"
-       :background "SkyBlue1"
-       :box (:line-width 2 :style released-button :color "SkyBlue1"))))
-   '(mode-line-inactive
+       :foreground ,acme-blue-light
+       :background "royal blue"
+       :box (:line-width 2 :style released-button :color ,acme-blue))))
+   `(mode-line-inactive
      ((((background light))
        :inherit mode-line
        :foreground "grey30"
@@ -48,9 +48,9 @@
        :box (:line-width 2 :style released-button :color "grey90"))
       (((background dark))
        :inherit mode-line
-       :foreground "grey20"
-       :background "grey50"
-       :box (:line-width 2 :style released-button :color "grey50"))))
+       :foreground "grey70"
+       :background "grey40"
+       :box (:line-width 2 :style released-button :color "grey40"))))
    '(eglot-mode-line
      ((t :weight bold)))
    '(diff-hl-change
