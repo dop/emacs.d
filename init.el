@@ -294,6 +294,15 @@
   ;; (add-hook 'clojure-mode #'inf-clojure-eldoc-setup)
   )
 
+(use-package image-mode
+  :init
+  (defun image-ns-copy-to-clipboard ()
+    (interactive)
+    (ns-do-applescript (format "set the clipboard to (read (POSIX file \"%s\") as «class PNGf»)" buffer-file-name)))
+  :bind (:map image-mode-map
+              ("y" . image-ns-copy-to-clipboard)
+              ("c" . image-ns-copy-to-clipboard)))
+
 (use-package inf-clojure
   :load-path "~/.emacs.d/lisp/inf-clojure"
   :config (setq inf-clojure-enable-eldoc nil))
