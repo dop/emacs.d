@@ -20,7 +20,7 @@
  '(csv-separators '("," "\11" ";"))
  '(custom-enabled-themes '(dop))
  '(custom-safe-themes
-   '("6f7317519013c42e3394cdc6005bf29d2c632420d17bb9a521ac8207063ee994"))
+   '("5062520b36a928a3e0438464a88e760c96b1e65b045d1a4da196309f677f735e"))
  '(custom-theme-directory "~/.emacs.d/themes/")
  '(debug-on-error nil)
  '(delete-by-moving-to-trash t)
@@ -151,6 +151,7 @@
      "  " mode-line-modes mode-line-misc-info mode-line-end-spaces
      (:propertize " " display
                   (raise -0.2))))
+ '(mode-line-position-column-line-format '(" %l:%c"))
  '(mode-require-final-newline t)
  '(modus-themes-variable-pitch-ui t)
  '(monkeytype-mode-hook '((lambda nil (electric-pair-local-mode -1))))
@@ -224,6 +225,7 @@
  '(savehist-mode t)
  '(scroll-error-top-bottom t)
  '(search-highlight t)
+ '(size-indication-mode nil)
  '(sly-command-switch-to-existing-lisp 'always)
  '(sly-highlight-suppressed-forms t)
  '(text-scale-mode-step 1.1)
@@ -258,5 +260,5 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:weight regular :family "SF Mono"))))
+ '(default ((t (:weight regular :family "Monaco"))))
  '(variable-pitch ((t (:weight normal :family "SF Pro Display")))))
