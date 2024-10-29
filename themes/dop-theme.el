@@ -60,14 +60,20 @@
      ((t :background "tomato")))
    '(diff-hl-insert
      ((t :background "DarkOliveGreen2")))
+   `(diff-header
+     ((t (:inherit shadow :background nil))))
+   `(diff-file-header
+     ((((background light))
+       (:inherit shadow :foreground "black" :weight bold))
+      (((background dark))
+       (:inherit shadow :foreground "white" :weight bold))))
    '(fixed-pitch
      ((t :inherit default)))
    '(trailing-whitespace
      ((((background light)) :background "RosyBrown1")
       (((background dark)) :background "brown4")))
    '(font-lock-comment-face
-     ((((background light)) :foreground "Firebrick" :slant italic)
-      (((background dark)) :foreground "chocolate1" :slant italic)))
+     ((t :inherit shadow :foreground nil :slant italic)))
    '(eshell-prompt
      ((((background light)) :foreground "red" :overline "grey80")
       (((background dark)) :foreground "pink" :overline "grey40")))
