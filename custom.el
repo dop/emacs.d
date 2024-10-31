@@ -206,6 +206,13 @@
  '(plantuml-jar-path "/opt/local/share/java/plantuml/plantuml.jar")
  '(prettier-inline-errors-flag t)
  '(prettier-lighter " Pr")
+ '(project-switch-commands
+   '((project-find-file "Find file" nil)
+     (project-find-regexp "Find regexp" nil)
+     (project-find-dir "Find directory" nil)
+     (project-vc-dir "VC-Dir" nil)
+     (project-eshell "Eshell" nil)
+     (project-compile "Compile" nil)))
  '(query-replace-highlight t)
  '(quick-peek-add-spacer nil)
  '(quick-peek-position 'below)
