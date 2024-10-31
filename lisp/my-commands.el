@@ -195,19 +195,20 @@ Every item of FUNCTIONS can be either function or arguments to
                    (eslint-message-get-rule "Rule in scoped package [@typescript-eslint/rule]"))))
 
 (defun overlay-get-current-eslint-messages ()
-  (mapcar #'overlay-get-eslint-message (overlays-at (point))))
+  (let ((messages (seq-map #'overlay-get-eslint-message (overlays-at (point)))))
+    (seq-remove #'null messages)))
 
 (defun ignore-eslint-rules ()
   "Insert eslint-disable-next-line rule pragma for overlay warning on current point."
   (interactive)
-  (when-let ((rules (cl-loop for msg in (overlay-get-current-eslint-messages)
-                             when msg
-                             collect (eslint-message-get-rule msg))))
-    (previous-line)
-    (end-of-line)
-    (newline-and-indent)
-    (call-interactively #'comment-dwim)
-    (insert "eslint-disable-next-line " (mapconcat #'identity rules " "))))
+  (when-let ((rules (seq-map #'eslint-message-get-rule
+                             (overlay-get-current-eslint-messages))))
+    (save-excursion
+      (beginning-of-line)
+      (newline-and-indent)
+      (previous-line)
+      (call-interactively #'comment-dwim)
+      (insert "eslint-disable-next-line " (mapconcat #'identity rules " ")))))
 
 (defun dark-mode ()
   "This seems to be good enough."
