@@ -5,6 +5,7 @@
  ;; If there is more than one, they won't work right.
  '(backup-by-copying t)
  '(backup-directory-alist '(("." . "~/.emacs.d/backups")))
+ '(blink-cursor-blinks 3)
  '(comint-eol-on-send t)
  '(comint-input-ignoredups t)
  '(comint-move-point-for-output nil)
@@ -18,9 +19,10 @@
  '(create-lockfiles nil)
  '(css-indent-offset 2)
  '(csv-separators '("," "\11" ";"))
+ '(cursor-in-non-selected-windows nil)
  '(custom-enabled-themes '(dop))
  '(custom-safe-themes
-   '("5062520b36a928a3e0438464a88e760c96b1e65b045d1a4da196309f677f735e"))
+   '("d04f9405db0b0529717657068a5b3005ef81c5a4f552d0c21b4444f5c023c740" "05e9c686544b340ab285a0edc5e1c6fe193181dbe500bd3d0427a9aacc573bbb" "5062520b36a928a3e0438464a88e760c96b1e65b045d1a4da196309f677f735e"))
  '(custom-theme-directory "~/.emacs.d/themes/")
  '(debug-on-error nil)
  '(delete-by-moving-to-trash t)
@@ -98,6 +100,8 @@
  '(gc-cons-threshold 268435456)
  '(grep-find-ignored-directories
    '("SCCS" "RCS" "CVS" "MCVS" ".src" ".svn" ".git" ".hg" ".bzr" "_MTN" "_darcs" "{arch}" "node_modules" "dist" "brower_components" "coverage" "build" ".angular"))
+ '(grep-find-ignored-files
+   '(".#*" "*.o" "*~" "*.bin" "*.lbin" "*.so" "*.a" "*.ln" "*.blg" "*.bbl" "*.elc" "*.lof" "*.glo" "*.idx" "*.lot" "*.fmt" "*.tfm" "*.class" "*.fas" "*.lib" "*.mem" "*.x86f" "*.sparcf" "*.dfsl" "*.pfsl" "*.d64fsl" "*.p64fsl" "*.lx64fsl" "*.lx32fsl" "*.dx64fsl" "*.dx32fsl" "*.fx64fsl" "*.fx32fsl" "*.sx64fsl" "*.sx32fsl" "*.wx64fsl" "*.wx32fsl" "*.fasl" "*.ufsl" "*.fsl" "*.dxl" "*.lo" "*.la" "*.gmo" "*.mo" "*.toc" "*.aux" "*.cp" "*.fn" "*.ky" "*.pg" "*.tp" "*.vr" "*.cps" "*.fns" "*.kys" "*.pgs" "*.tps" "*.vrs" "*.pyc" "*.pyo" "*.js.map"))
  '(ibuffer-formats
    '((mark modified read-only locked " "
            (name 32 32 :left :elide)
@@ -138,9 +142,7 @@
  '(ls-lisp-use-insert-directory-program nil)
  '(mode-line-compact t)
  '(mode-line-format
-   '((:propertize " " display
-                  (raise 0.2))
-     "%e" mode-line-front-space
+   '("%e" mode-line-front-space
      (:propertize
       ("" mode-line-mule-info mode-line-client mode-line-modified mode-line-remote)
       display
@@ -148,9 +150,7 @@
        (5.0)))
      mode-line-frame-identification enumerated-windows-mode-line-number mode-line-buffer-identification "   " mode-line-position
      (vc-mode vc-mode)
-     "  " mode-line-modes mode-line-misc-info mode-line-end-spaces
-     (:propertize " " display
-                  (raise -0.2))))
+     "  " mode-line-modes mode-line-misc-info mode-line-end-spaces))
  '(mode-line-position-column-line-format '(" %l:%c"))
  '(mode-require-final-newline t)
  '(modus-themes-variable-pitch-ui t)

@@ -9,11 +9,14 @@
 (defun notify-on-compilation-finish (buf msg)
   (let* ((title (string-trim (buffer-name buf) "*" "*"))
          (status (if (string-match-p "exited abnormally"  msg) :fail :ok))
-         (icon (if (eq :fail status) "❌" "✅"))
-         (sound (if (eq :fail status) "Sosumi" "Glass")))
-    (with-current-buffer buf
-      (do-applescript (format "display notification \"%s\" with title \"%s %s\" sound name \"%s\""
-                              compile-command icon title sound)))))
+         (icon (if (eq :fail status) "[×]" "[✓]"))
+         (sound (if (eq :fail status) "FAIL" "OK"))
+         (command (with-current-buffer buf
+                    (save-excursion
+                      (goto-line 4)
+                      (buffer-substring-no-properties (point-at-bol) (point-at-eol))))))
+    (do-applescript (format "display notification \"%s\" with title \"%s %s\" sound name \"%s\""
+                            command icon title sound))))
 
 (use-package compile
   :defer t

@@ -1,5 +1,7 @@
 (deftheme dop)
 
+(require 'color)
+
 (let ((acme-cyan            "#007777")
       (acme-cyan-light      "#A8EFEB")
       (acme-red             "#880000")
@@ -12,7 +14,8 @@
       (acme-blue            "#1054AF")
       (acme-blue-light      "#E1FAFF")
       (acme-purple          "#555599")
-      (acme-purple-light    "#FFEAFF"))
+      (acme-purple-light    "#FFEAFF")
+      (dark-background "#15273b"))
   (custom-theme-set-faces
    'dop
    `(default
@@ -29,6 +32,9 @@
       (((background dark)) :foreground ,acme-blue)))
    '(eglot-highlight-symbol-face
      ((t :inherit highlight)))
+   `(hl-line
+     ((((background light)) :background ,(color-darken-name acme-yellow-light 10))
+      (((background dark)) :background ,(color-lighten-name dark-background 40))))
    `(mode-line
      ((((background light))
        :inherit variable-pitch
@@ -61,7 +67,7 @@
    '(diff-hl-insert
      ((t :background "DarkOliveGreen2")))
    `(diff-header
-     ((t (:inherit shadow :background nil))))
+     ((t (:inherit shadow :background unspecified))))
    `(diff-file-header
      ((((background light))
        (:inherit shadow :foreground "black" :weight bold))
@@ -73,7 +79,7 @@
      ((((background light)) :background "RosyBrown1")
       (((background dark)) :background "brown4")))
    '(font-lock-comment-face
-     ((t :inherit shadow :foreground nil :slant italic)))
+     ((t :inherit shadow :foreground unspecified :slant italic)))
    '(eshell-prompt
      ((((background light)) :foreground "red" :overline "grey80")
       (((background dark)) :foreground "pink" :overline "grey40")))
