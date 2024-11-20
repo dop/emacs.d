@@ -20,7 +20,7 @@
    'dop
    `(default
      ((((background light)) :foreground "black" :background ,acme-yellow-light)
-      (((background dark)) :foreground ,acme-yellow-light :background "#15273b")))
+      (((background dark)) :foreground ,acme-yellow-light :background ,(color-darken-name acme-purple 50))))
    '(cursor
      ((((background light)) :background "red")
       (((background dark)) :background "green")))
@@ -43,9 +43,9 @@
        :box (:line-width 2 :style released-button :color ,acme-cyan-light))
       (((background dark))
        :inherit variable-pitch
-       :foreground ,acme-blue-light
-       :background "royal blue"
-       :box (:line-width 2 :style released-button :color ,acme-blue))))
+       :foreground ,acme-purple-light
+       :background ,acme-purple
+       :box (:line-width 2 :style released-button :color ,acme-purple))))
    `(mode-line-inactive
      ((((background light))
        :inherit mode-line

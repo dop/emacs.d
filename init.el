@@ -94,6 +94,13 @@
 (add-hook 'eshell-mode-hook #'toggle-truncate-lines)
 (add-hook 'compilation-mode-hook #'toggle-truncate-lines)
 
+(defun set-hbar-cursor-type ()
+  (setq cursor-type 'hbar))
+
+(add-hook 'eshell-mode-hook #'set-hbar-cursor-type)
+(add-hook 'comint-mode-hook #'set-hbar-cursor-type)
+(add-hook 'minibuffer-setup-hook #'set-hbar-cursor-type)
+
 (use-package savehist
   :hook (after-init . savehist-mode))
 

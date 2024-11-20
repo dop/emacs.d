@@ -22,7 +22,7 @@
  '(cursor-in-non-selected-windows nil)
  '(custom-enabled-themes '(dop))
  '(custom-safe-themes
-   '("d04f9405db0b0529717657068a5b3005ef81c5a4f552d0c21b4444f5c023c740" "05e9c686544b340ab285a0edc5e1c6fe193181dbe500bd3d0427a9aacc573bbb" "5062520b36a928a3e0438464a88e760c96b1e65b045d1a4da196309f677f735e"))
+   '("fd8bb49510fdc0ff31eee5f4c19d3de8fc4a18bccbf5599ee625521e16d763be"))
  '(custom-theme-directory "~/.emacs.d/themes/")
  '(debug-on-error nil)
  '(delete-by-moving-to-trash t)
@@ -140,6 +140,7 @@
  '(ls-lisp-emulation nil)
  '(ls-lisp-ignore-case t)
  '(ls-lisp-use-insert-directory-program nil)
+ '(markdown-command "pandoc")
  '(mode-line-compact t)
  '(mode-line-format
    '("%e" mode-line-front-space
@@ -267,5 +268,5 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:weight regular :family "Monaco"))))
+ '(default ((t (:weight regular :family "Menlo"))))
  '(variable-pitch ((t (:weight normal :family "SF Pro Display")))))
