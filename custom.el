@@ -22,7 +22,7 @@
  '(cursor-in-non-selected-windows nil)
  '(custom-enabled-themes '(dop))
  '(custom-safe-themes
-   '("fd8bb49510fdc0ff31eee5f4c19d3de8fc4a18bccbf5599ee625521e16d763be"))
+   '("76fde7c0c6cf00d20ef5e00da5f768008c72448425f11986ecbf21e312e65e2c"))
  '(custom-theme-directory "~/.emacs.d/themes/")
  '(debug-on-error nil)
  '(delete-by-moving-to-trash t)
