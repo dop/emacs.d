@@ -404,6 +404,8 @@
 
 (use-package elfeed :commands elfeed)
 
+(when (file-exists-p "~/work/config.el") (load "~/work/config.el"))
+
 (set-frame-size nil 120 48)
 (set-frame-parameter nil 'internal-border-width 12)
 (server-start)
