@@ -1,5 +1,11 @@
 ;; -*- lexical-binding: t; -*-
 
+(add-hook 'after-init-hook
+          (lambda ()
+            (let ((diff (time-subtract (current-time) before-init-time)))
+              (message "Initialized in %fs." (float-time diff))))
+          100)
+
 (setenv "TERM" "dumb")
 (setenv "PAGER" "cat")
 (setenv "EDITOR" "emacsclient")
@@ -76,9 +82,8 @@
 (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/"))
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 
-;; Initialize package system, but not installed packages. I usually
-;; have installed more than I actually use.
-(package-initialize 'no-activate)
+(package-initialize)
+(package-install-selected-packages)
 
 ;; Activate and require `use-package' explicitly. We'll use it to
 ;; activate all the rest on demand.
