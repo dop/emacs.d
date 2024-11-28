@@ -217,7 +217,7 @@
  '(org-todo-keywords
    '((sequence "TODO(t)" "WAIT(w@)" "|" "DONE(d!)" "CANCELLED(c@)")))
  '(package-selected-packages
-   '(deadgrep markdown-preview-mode markdown-mode ligature dumb-jump macrostep vundo project orderless treesit-auto buffer-env elfeed diff-hl web-mode vue-mode neotree org-download graphviz-dot-mode jq-mode async php-mode org-modern dired-collapse dired-subtree keyfreq rainbow-mode sly paren-face sql-indent ox-slack seq edit-indirect browse-kill-ring ox-jira scala-mode ox-gfm flymake-proselint flymake eldoc json-mode prettier exec-path-from-shell xterm-color flymake-eslint ns-auto-titlebar cider paredit-everywhere whitespace-cleanup-mode restclient protobuf-mode paredit hungry-delete dictionary csv-mode))
+   '(olivetti deadgrep markdown-preview-mode markdown-mode ligature dumb-jump macrostep vundo project orderless treesit-auto buffer-env elfeed diff-hl web-mode vue-mode neotree org-download graphviz-dot-mode jq-mode async php-mode org-modern dired-collapse dired-subtree keyfreq rainbow-mode sly paren-face sql-indent ox-slack seq edit-indirect browse-kill-ring ox-jira scala-mode ox-gfm flymake-proselint flymake eldoc json-mode prettier exec-path-from-shell xterm-color flymake-eslint ns-auto-titlebar cider paredit-everywhere whitespace-cleanup-mode restclient protobuf-mode paredit hungry-delete dictionary csv-mode))
  '(paredit-lighter " ParEd" t)
  '(plantuml-default-exec-mode 'jar)
  '(plantuml-indent-level 4)
