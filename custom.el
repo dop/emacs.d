@@ -22,7 +22,7 @@
  '(cursor-in-non-selected-windows nil)
  '(custom-enabled-themes '(dop))
  '(custom-safe-themes
-   '("76fde7c0c6cf00d20ef5e00da5f768008c72448425f11986ecbf21e312e65e2c"))
+   '("387cef91a2a5e9cc4e1b37f809d17ddc85e04bb9397f14798b15e7998a02aa62"))
  '(custom-theme-directory "~/.emacs.d/themes/")
  '(debug-on-error nil)
  '(delete-by-moving-to-trash t)
@@ -36,11 +36,9 @@
  '(display-battery-mode t)
  '(display-buffer-alist
    '(("\\*\\(.*eshell\\|sly-mrepl for.*\\)\\*"
-      (display-buffer-reuse-window display-buffer-in-previous-window display-buffer-at-bottom)
-      (window-height . 0.375))
-     ("\\*Flymake diagnostics"
-      (display-buffer-reuse-window display-buffer-in-previous-window display-buffer-at-bottom)
-      (window-height . 0.375))
+      (display-buffer-reuse-window display-buffer-in-previous-window display-buffer-in-side-window)
+      (window-height . 0.375)
+      (side . bottom))
      ("\\*\\(Async Shell Command\\|Shell Command Output\\)\\*"
       (display-buffer-reuse-window display-buffer-in-previous-window display-buffer-at-bottom)
       (window-height . 0.375))
@@ -51,10 +49,15 @@
      ("\\*Completions\\*"
       (display-buffer-reuse-window display-buffer-in-previous-window display-buffer-at-bottom)
       (window-height . shrink-window-if-larger-than-buffer))
-     ("\\*\\(NeoTree\\|Ilist\\)\\*"
+     ("compilation\\*"
+      (display-buffer-reuse-window display-buffer-in-previous-window display-buffer-in-side-window)
+      (window-width . 0.375)
+      (side . right))
+     ((or "\\*\\(NeoTree\\|Ilist\\)\\*" (derived-mode . dired-mode))
       (display-buffer-reuse-window display-buffer-in-previous-window display-buffer-in-side-window)
       (window-width . 0.2)
-      (side . left))))
+      (side . left))
+     (t (display-buffer-use-some-window))))
  '(display-line-numbers-grow-only t)
  '(display-time-24hr-format t)
  '(display-time-day-and-date t)
