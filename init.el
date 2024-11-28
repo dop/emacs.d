@@ -405,6 +405,7 @@
 (use-package elfeed :commands elfeed)
 
 (when (file-exists-p "~/work/config.el") (load "~/work/config.el"))
+(when (file-exists-p "~/work/utils.el") (load "~/work/utils.el"))
 
 (set-frame-size nil 120 48)
 (set-frame-parameter nil 'internal-border-width 12)
