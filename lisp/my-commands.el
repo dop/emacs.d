@@ -282,8 +282,8 @@ returning."
                       (let ((parameters
                              (seq-mapcat (lambda (pair) (format "%s:%s " (car pair) (cdr pair)))
                                          github-search-default-params
-                                         'string))))
-                      (url-hexify-string (concat parameters query)))))
+                                         'string)))
+                        (url-hexify-string (concat parameters query))))))
 
 (defun git-show (commit)
   (interactive (list (read-string-at-point)))
