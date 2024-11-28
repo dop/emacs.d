@@ -274,10 +274,16 @@ returning."
           (read-string prompt string-at-point)
         string-at-point))))
 
+(defvar github-search-default-params nil)
+
 (defun github-search (query)
-  (interactive (list (read-thing-at-point "Query: ")))
+  (interactive (list (read-string-at-point "Query: ")))
   (browse-url (format "https://github.com/search?q=%s&type=code"
-                      (url-hexify-string (concat "org:wix-private " query)))))
+                      (let ((parameters
+                             (seq-mapcat (lambda (pair) (format "%s:%s " (car pair) (cdr pair)))
+                                         github-search-default-params
+                                         'string))))
+                      (url-hexify-string (concat parameters query)))))
 
 (defun git-show (commit)
   (interactive (list (read-string-at-point)))
@@ -286,6 +292,7 @@ returning."
     (read-only-mode -1)
     (erase-buffer)
     (insert (shell-command-to-string (format "git show %s" commit)))
-    (read-only-mode t)))
+    (read-only-mode t)
+    (display-buffer "*diff*")))
 
 (provide 'my-commands)
