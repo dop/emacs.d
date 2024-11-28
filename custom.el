@@ -35,31 +35,43 @@
  '(dired-subtree-use-backgrounds nil)
  '(display-battery-mode t)
  '(display-buffer-alist
-   '(("\\*\\(.*eshell\\|sly-mrepl for.*\\)\\*"
+   '(((or "e?shell\\*" "\\*sly-mrepl for")
       (display-buffer-reuse-window display-buffer-in-previous-window display-buffer-in-side-window)
       (window-height . 0.375)
-      (side . bottom))
+      (side . bottom)
+      (dedicated . t)
+      (window-parameters
+       (no-delete-other-windows)))
      ("\\*\\(Async Shell Command\\|Shell Command Output\\)\\*"
       (display-buffer-reuse-window display-buffer-in-previous-window display-buffer-at-bottom)
       (window-height . 0.375))
      ("\\*\\([Hh]elp\\|Backtrace\\|Warnings\\|Messages\\|info\\|Apropos\\|vc-diff\\)\\*"
       (display-buffer-reuse-window display-buffer-in-previous-window display-buffer-pop-up-window display-buffer-same-window)
       (window-height . 0.375)
-      (window-width . 0.375))
+      (window-width . 0.375)
+      (window-min-width . 80))
      ("\\*Completions\\*"
       (display-buffer-reuse-window display-buffer-in-previous-window display-buffer-at-bottom)
       (window-height . shrink-window-if-larger-than-buffer))
      ("compilation\\*"
       (display-buffer-reuse-window display-buffer-in-previous-window display-buffer-in-side-window)
       (window-width . 0.375)
-      (side . right))
+      (window-min-width . 80)
+      (dedicated . t)
+      (side . right)
+      (window-parameters
+       (no-delete-other-windows)))
      ((or "\\*\\(NeoTree\\|Ilist\\)\\*"
           (derived-mode . dired-mode))
       (display-buffer-reuse-window display-buffer-in-previous-window display-buffer-in-side-window)
       (window-width . 0.2)
-      (side . left))
+      (dedicated . t)
+      (side . left)
+      (window-parameters
+       (no-delete-other-windows)))
      (t
-      (display-buffer-use-some-window))))
+      (display-buffer-reuse-window display-buffer-reuse-mode-window display-buffer-use-some-window)
+      (window-min-width . 120))))
  '(display-line-numbers-grow-only t)
  '(display-time-24hr-format t)
  '(display-time-day-and-date t)
@@ -206,7 +218,7 @@
  '(org-todo-keywords
    '((sequence "TODO(t)" "WAIT(w@)" "|" "DONE(d!)" "CANCELLED(c@)")))
  '(package-selected-packages
-   '(ligature dumb-jump macrostep vundo project orderless treesit-auto buffer-env elfeed diff-hl web-mode vue-mode neotree org-download graphviz-dot-mode jq-mode async php-mode org-modern dired-collapse dired-subtree keyfreq rainbow-mode sly paren-face sql-indent ox-slack seq edit-indirect browse-kill-ring ox-jira scala-mode ox-gfm flymake-proselint flymake eldoc json-mode prettier exec-path-from-shell xterm-color flymake-eslint ns-auto-titlebar cider paredit-everywhere whitespace-cleanup-mode restclient protobuf-mode paredit hungry-delete dictionary csv-mode))
+   '(markdown-mode ligature dumb-jump macrostep vundo project orderless treesit-auto buffer-env elfeed diff-hl web-mode vue-mode neotree org-download graphviz-dot-mode jq-mode async php-mode org-modern dired-collapse dired-subtree keyfreq rainbow-mode sly paren-face sql-indent ox-slack seq edit-indirect browse-kill-ring ox-jira scala-mode ox-gfm flymake-proselint flymake eldoc json-mode prettier exec-path-from-shell xterm-color flymake-eslint ns-auto-titlebar cider paredit-everywhere whitespace-cleanup-mode restclient protobuf-mode paredit hungry-delete dictionary csv-mode))
  '(paredit-lighter " ParEd" t)
  '(plantuml-default-exec-mode 'jar)
  '(plantuml-indent-level 4)
