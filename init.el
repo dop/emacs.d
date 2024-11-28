@@ -199,7 +199,7 @@
   (add-hook 'log-edit-mode-hook #'flyspell-mode))
 
 (use-package whitespace-cleanup-mode
-  :init (global-whitespace-cleanup-mode t)
+  :hook (after-init . global-whitespace-cleanup-mode)
   :config (setf (cdr (assoc 'whitespace-cleanup-mode minor-mode-alist)) (list " wsc")))
 
 (require 'setup-paredit)
