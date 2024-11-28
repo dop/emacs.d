@@ -256,17 +256,36 @@ Every item of FUNCTIONS can be either function or arguments to
   (interactive)
   (insert (org-id-uuid)))
 
+(defun read-string-at-point (&optional prompt)
+  "Read string or thing at point.
+
+If PROMPT is specified, use it to prompt to edit the value before
+returning."
+  (if (region-active-p)
+      (buffer-substring (region-beginning)
+                        (region-end))
+    (let ((string-at-point (string-trim
+                            (or (ignore-errors (thing-at-point 'string))
+                                (thing-at-point 'symbol)
+                                "")
+                            "['\" \t\n\r]+"
+                            "['\" \t\n\r]+")))
+      (if prompt
+          (read-string prompt string-at-point)
+        string-at-point))))
+
 (defun github-search (query)
-  (interactive (list (if (region-active-p)
-                         (buffer-substring (region-beginning)
-                                           (region-end))
-                       (read-string "Query: " (string-trim
-                                               (or (ignore-errors (thing-at-point 'string))
-                                                   (thing-at-point 'symbol)
-                                                   "")
-                                               "['\" \t\n\r]+"
-                                               "['\" \t\n\r]+")))))
+  (interactive (list (read-thing-at-point "Query: ")))
   (browse-url (format "https://github.com/search?q=%s&type=code"
                       (url-hexify-string (concat "org:wix-private " query)))))
+
+(defun git-show (commit)
+  (interactive (list (read-string-at-point)))
+  (with-current-buffer (get-buffer-create "*diff*")
+    (unless (eq major-mode 'diff-mode) (diff-mode))
+    (read-only-mode -1)
+    (erase-buffer)
+    (insert (shell-command-to-string (format "git show %s" commit)))
+    (read-only-mode t)))
 
 (provide 'my-commands)
