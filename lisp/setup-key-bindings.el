@@ -4,7 +4,7 @@
 (require 'my-commands)
 
 (keymap-global-set "C-z" nil)
-(keymap-global-set "C-x 1" #'zoom-dwim)
+(keymap-global-set "C-x 1" #'delete-other-windows)
 
 ;; For terminal
 (keymap-global-set "C-c i" #'completion-at-point)
