@@ -15,6 +15,7 @@
 (use-package org-tempo :after org)
 (use-package org-modern :commands org-modern-mode)
 (use-package org-writing :commands org-writing-mode)
+(use-package ox-gfm :after org)
 
 (use-package org-download
   :commands org-download-screenshot
