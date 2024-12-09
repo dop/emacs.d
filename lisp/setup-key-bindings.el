@@ -25,6 +25,8 @@
 (keymap-global-set "C-x O" #'other-frame)
 (keymap-global-set "M-`" #'other-frame)
 
+(keymap-global-set "<f5>" #'recompile)
+
 (require 'mark-and-copy)
 (keymap-global-set "M-w" #'mark-and-copy)
 (keymap-global-set "M-W" #'mark-and-copy-mark)
