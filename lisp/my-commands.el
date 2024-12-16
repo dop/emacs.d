@@ -254,7 +254,14 @@ Every item of FUNCTIONS can be either function or arguments to
 
 (defun uuid ()
   (interactive)
-  (insert (org-id-uuid)))
+  (insert
+   (if (fboundp 'org-id-uuid)
+       (org-id-uuid)
+     (string-trim (shell-command-to-string "uuid")))))
+
+(defun uuid0 ()
+  (interactive)
+  (insert "00000000-0000-0000-0000-000000000000"))
 
 (defun read-string-at-point (&optional prompt)
   "Read string or thing at point.
