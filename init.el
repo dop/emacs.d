@@ -10,6 +10,9 @@
 (setenv "PAGER" "cat")
 (setenv "EDITOR" "emacsclient")
 
+(setq read-process-output-max (* 64 1024 1024))
+(setq process-adaptive-read-buffering nil)
+
 (load-file (setq custom-file "~/.emacs.d/custom.el"))
 (add-to-list 'load-path "~/.emacs.d/lisp")
 
@@ -60,6 +63,7 @@
 
 (add-hook 'prog-mode-hook #'turn-on-show-trailing-whitespace)
 (add-hook 'prog-mode-hook #'turn-off-bidi-display-reordering)
+(add-hook 'prog-mode-hook #'display-line-numbers-mode)
 (add-hook 'html-mode-hook #'turn-on-show-trailing-whitespace)
 (add-hook 'css-mode-hook #'turn-on-show-trailing-whitespace)
 
@@ -193,7 +197,15 @@
 (use-package buffer-env
   :hook (hack-local-variables . buffer-env-update)
   :hook (comint-mode . buffer-env-update)
-  :hook (eshell-mode . buffer-env-update))
+  :hook (eshell-mode . buffer-env-update)
+  :config
+  (defun unset-eshell-path-env-list ()
+    (setq eshell-path-env-list nil))
+  (advice-add 'buffer-env-update :after #'unset-eshell-path-env-list)
+  ;; setup environemnt after vc-setup-buffer call, because it calls
+  ;; kill-all-local-variables.
+  (defun buffer-env-update-no-file (&rest ignore) (buffer-env-update))
+  (advice-add 'vc-setup-buffer :after #'buffer-env-update-no-file))
 
 (require 'setup-project)
 (require 'setup-xterm-color)
@@ -232,7 +244,7 @@
 
 (use-package js
   :mode ("\\.m?js\\'" . js-ts-mode)
-  :mode ("tsconfig\\.json\\'" . js-json-mode))
+  :mode ("tsconfig\\.json\\'" . jsonc-mode))
 
 (use-package string-edit-at-point :commands string-edit-at-point)
 (use-package wgrep :commands wgrep-change-to-wgrep-mode)
@@ -407,8 +419,6 @@
 (when (file-exists-p "~/work/config.el") (load "~/work/config.el"))
 (when (file-exists-p "~/work/utils.el") (load "~/work/utils.el"))
 
-(set-frame-size nil 120 48)
-(set-frame-parameter nil 'internal-border-width 12)
 (server-start)
 
 ;; end of init.el

@@ -219,39 +219,6 @@ Every item of FUNCTIONS can be either function or arguments to
   (dolist (face (face-list))
     (face-spec-recalc face nil)))
 
-(defun nvm-read-nvmrc ()
-  "Find .nvmrc and read its contents."
-  (if-let ((nvmrc-directory
-            (locate-dominating-file "." ".nvmrc")))
-      (with-temp-buffer
-        (insert-file-contents-literally (expand-file-name ".nvmrc" nvmrc-directory))
-        (string-trim (buffer-string)))
-    (error "Cannot find .nvmrc.")))
-
-(defun eshell/nvm-use (&optional version)
-  "Update eshell environment to use node version according to .nvmrc."
-  (if-let ((version-string
-            (or (and version (cond ((stringp version) version)
-                                   ((numberp version) (number-to-string version))
-                                   (t (warn "%s is not a string or number." version) nil)))
-                (nvm-read-nvmrc))))
-      (nvm-use version-string
-               (lambda ()
-                 (eshell-set-path (string-join exec-path ":"))
-                 (message "Switched to node %s." nvm-current-version)))
-    (message "Provide a version.")))
-
-(defun nvm (version)
-  "Update environment for all project buffers to use node version from .nvmrc file."
-  (interactive (list (nvm-read-nvmrc)))
-  (dolist (buf (project-buffers (project-current)))
-    (with-current-buffer buf
-      (make-local-variable 'process-environment)
-      (nvm-use version))))
-
-(defun eshell/nvm ()
-  (call-interactively #'nvm))
-
 (defun uuid ()
   (interactive)
   (insert
@@ -294,12 +261,14 @@ returning."
 
 (defun git-show (commit)
   (interactive (list (read-string-at-point)))
-  (with-current-buffer (get-buffer-create "*diff*")
-    (unless (eq major-mode 'diff-mode) (diff-mode))
-    (read-only-mode -1)
-    (erase-buffer)
-    (insert (shell-command-to-string (format "git show %s" commit)))
-    (read-only-mode t)
-    (display-buffer "*diff*")))
+  (let ((directory default-directory))
+    (with-current-buffer (get-buffer-create "*diff*")
+      (unless (eq major-mode 'diff-mode) (diff-mode))
+      (read-only-mode -1)
+      (erase-buffer)
+      (insert (let ((default-directory directory))
+                (shell-command-to-string (format "git show %s" commit))))
+      (read-only-mode t)
+      (display-buffer "*diff*"))))
 
 (provide 'my-commands)

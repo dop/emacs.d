@@ -1,6 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
 (use-package flymake-proselint
+  :disabled t
   :commands flymake-proselint-setup)
 
 (use-package flymake

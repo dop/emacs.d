@@ -15,13 +15,13 @@
        (acme-blue-light      "#E1FAFF")
        (acme-purple          "#555599")
        (acme-purple-light    "#FFEAFF")
-       (dark-bg (color-darken-name acme-purple 50)))
-
+       (dark-bg (color-darken-name acme-purple 50))
+       (light-bg acme-yellow-light))
   (custom-theme-set-faces
    'dop
    `(default
-     ((((background light)) :foreground "black" :background ,acme-yellow-light)
-      (((background dark)) :foreground ,acme-yellow-light :background ,dark-bg)))
+     ((((background light)) :foreground "black" :background ,light-bg)
+      (((background dark)) :foreground ,light-bg :background ,dark-bg)))
    '(cursor
      ((((background light)) :background "red")
       (((background dark)) :background "green")))
@@ -34,7 +34,7 @@
    '(eglot-highlight-symbol-face
      ((t :inherit highlight)))
    `(hl-line
-     ((((background light)) :background ,(color-darken-name acme-yellow-light 20))
+     ((((background light)) :background ,(color-darken-name light-bg 20))
       (((background dark)) :background ,(color-lighten-name dark-bg 50))))
    `(mode-line
      ((((background light))

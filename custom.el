@@ -22,7 +22,7 @@
  '(cursor-in-non-selected-windows nil)
  '(custom-enabled-themes '(dop))
  '(custom-safe-themes
-   '("387cef91a2a5e9cc4e1b37f809d17ddc85e04bb9397f14798b15e7998a02aa62"))
+   '( "937401a2e532f2c8c881b6b3f20d9d4b6b9405bccf72ea6289c9d3f4507eb1ab"))
  '(custom-theme-directory "~/.emacs.d/themes/")
  '(debug-on-error nil)
  '(delete-by-moving-to-trash t)
@@ -36,17 +36,13 @@
  '(display-battery-mode t)
  '(display-buffer-alist
    '(((or "e?shell\\*" "\\*sly-mrepl for")
-      (display-buffer-reuse-window display-buffer-in-previous-window display-buffer-in-side-window)
-      (window-height . 0.375)
-      (side . bottom)
-      (dedicated . t)
-      (window-parameters
-       (no-delete-other-windows)))
+      (display-buffer-reuse-window display-buffer-in-previous-window display-buffer-at-bottom)
+      (window-height . 0.375))
      ("\\*\\(Async Shell Command\\|Shell Command Output\\)\\*"
       (display-buffer-reuse-window display-buffer-in-previous-window display-buffer-at-bottom)
       (window-height . 0.375))
      ("\\*\\([Hh]elp\\|Backtrace\\|Warnings\\|Messages\\|info\\|Apropos\\|vc-diff\\)\\*"
-      (display-buffer-reuse-window display-buffer-in-previous-window display-buffer-pop-up-window display-buffer-same-window)
+      (display-buffer-reuse-window display-buffer-in-previous-window display-buffer-same-window display-buffer-pop-up-window)
       (window-height . 0.375)
       (window-width . 0.375)
       (window-min-width . 80))
@@ -54,19 +50,9 @@
       (display-buffer-reuse-window display-buffer-in-previous-window display-buffer-at-bottom)
       (window-height . shrink-window-if-larger-than-buffer))
      ("compilation\\*"
-      (display-buffer-reuse-window display-buffer-in-previous-window display-buffer-in-side-window)
+      (display-buffer-reuse-window display-buffer-in-previous-window display-buffer-at-bottom)
       (window-width . 0.375)
       (window-min-width . 80)
-      (dedicated . t)
-      (side . right)
-      (window-parameters
-       (no-delete-other-windows)))
-     ((or "\\*\\(NeoTree\\|Ilist\\)\\*"
-          (derived-mode . dired-mode))
-      (display-buffer-reuse-window display-buffer-in-previous-window display-buffer-in-side-window)
-      (window-width . 0.2)
-      (dedicated . t)
-      (side . left)
       (window-parameters
        (no-delete-other-windows)))))
  '(display-buffer-base-action
@@ -104,7 +90,7 @@
  '(eshell-prompt-function 'my-eshell-prompt)
  '(exec-path-from-shell-check-startup-files nil)
  '(exec-path-from-shell-variables
-   '("PATH" "MANPATH" "FNM_LOGLEVEL" "FNM_COREPACK_ENABLED" "FNM_RESOLVE_ENGINES" "FNM_VERSION_FILE_STRATEGY" "FNM_MULTISHELL_PATH" "FNM_DIR" "FNM_NODE_DIST_MIRROR" "FNM_ARCH" "NODE_OPTIONS" "LATEST_JDK" "JAVA_HOME" "AUTOMATION_MASTER_KEY"))
+   '("PATH" "MANPATH" "FNM_LOGLEVEL" "FNM_COREPACK_ENABLED" "FNM_RESOLVE_ENGINES" "FNM_VERSION_FILE_STRATEGY" "FNM_MULTISHELL_PATH" "FNM_DIR" "FNM_NODE_DIST_MIRROR" "FNM_ARCH" "NODE_OPTIONS" "LATEST_JDK" "JAVA_HOME" "AUTOMATION_MASTER_KEY" "NVM_DIR"))
  '(fast-but-imprecise-scrolling t)
  '(ffap-ftp-regexp nil)
  '(ffap-lax-url nil)
@@ -157,6 +143,21 @@
  '(ls-lisp-emulation nil)
  '(ls-lisp-ignore-case t)
  '(ls-lisp-use-insert-directory-program nil)
+ '(markdown-code-lang-modes
+   '(("ocaml" . tuareg-mode)
+     ("elisp" . emacs-lisp-mode)
+     ("ditaa" . artist-mode)
+     ("asymptote" . asy-mode)
+     ("dot" . fundamental-mode)
+     ("sqlite" . sql-mode)
+     ("calc" . fundamental-mode)
+     ("C" . c-mode)
+     ("cpp" . c++-mode)
+     ("C++" . c++-mode)
+     ("screen" . shell-script-mode)
+     ("shell" . sh-mode)
+     ("bash" . sh-mode)
+     ("ts" . typescript-ts-mode)))
  '(markdown-command "pandoc")
  '(mode-line-compact t)
  '(mode-line-format
@@ -184,7 +185,6 @@
  '(ns-command-modifier 'meta)
  '(ns-use-srgb-colorspace t)
  '(ns-use-thin-smoothing nil t)
- '(nvm-dir "/Users/donatasp/software/nvm")
  '(olivetti-body-width 80)
  '(olivetti-minimum-body-width 78)
  '(olivetti-style 'fancy)
@@ -217,7 +217,7 @@
  '(org-todo-keywords
    '((sequence "TODO(t)" "WAIT(w@)" "|" "DONE(d!)" "CANCELLED(c@)")))
  '(package-selected-packages
-   '(olivetti deadgrep markdown-preview-mode markdown-mode ligature dumb-jump macrostep vundo project orderless treesit-auto buffer-env elfeed diff-hl web-mode vue-mode neotree org-download graphviz-dot-mode jq-mode async php-mode org-modern dired-collapse dired-subtree keyfreq rainbow-mode sly paren-face sql-indent ox-slack seq edit-indirect browse-kill-ring ox-jira scala-mode ox-gfm flymake-proselint flymake eldoc json-mode prettier exec-path-from-shell xterm-color flymake-eslint ns-auto-titlebar cider paredit-everywhere whitespace-cleanup-mode restclient protobuf-mode paredit hungry-delete dictionary csv-mode))
+   '(copilot modus-themes string-inflection yaml-mode string-edit-at-point nodejs-repl olivetti deadgrep markdown-preview-mode markdown-mode ligature dumb-jump macrostep vundo project orderless treesit-auto buffer-env elfeed diff-hl web-mode vue-mode neotree org-download graphviz-dot-mode jq-mode async php-mode org-modern dired-collapse dired-subtree keyfreq rainbow-mode sly paren-face sql-indent ox-slack seq edit-indirect browse-kill-ring ox-jira scala-mode ox-gfm flymake-proselint flymake eldoc json-mode prettier exec-path-from-shell xterm-color flymake-eslint ns-auto-titlebar cider paredit-everywhere whitespace-cleanup-mode restclient protobuf-mode paredit hungry-delete dictionary csv-mode))
  '(paredit-lighter " ParEd" t)
  '(plantuml-default-exec-mode 'jar)
  '(plantuml-indent-level 4)
@@ -239,7 +239,9 @@
  '(require-final-newline t)
  '(ring-bell-function nil)
  '(safe-local-variable-values
-   '((project-preferred-root-resolution . top)
+   '((eval eglot-ensure)
+     (eval auto-revert-mode t)
+     (project-preferred-root-resolution . top)
      (olivetti-body-width . 120)
      (diff-add-log-use-relative-names . t)
      (vc-git-annotate-switches . "-w")
@@ -253,6 +255,8 @@
  '(size-indication-mode nil)
  '(sly-command-switch-to-existing-lisp 'always)
  '(sly-highlight-suppressed-forms t)
+ '(switch-to-buffer-in-dedicated-window 'pop)
+ '(switch-to-buffer-obey-display-actions nil)
  '(text-scale-mode-step 1.1)
  '(transient-save-history nil)
  '(trash-directory "~/.Trash")
@@ -286,4 +290,5 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:weight regular :family "Menlo"))))
+ '(fixed-pitch ((t (:inherit default))))
  '(variable-pitch ((t (:weight normal :family "SF Pro Display")))))
