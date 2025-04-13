@@ -53,8 +53,8 @@
 (use-package paredit-everywhere
   :hook ((typescript-mode . paredit-everywhere-mode)
          (js-mode . paredit-everywhere-mode)
-         (typescript-ts-mode . paredit-everywhere-mode)
-         (tsx-ts-mode . paredit-everywhere-mode))
+         (js-ts-mode . paredit-everywhere-mode)
+         (typescript-ts-base-mode . paredit-everywhere-mode))
   :bind (:map paredit-everywhere-mode-map
               ("C-k" . paredit-kill)
               ("M-[" . paredit-wrap-square)
