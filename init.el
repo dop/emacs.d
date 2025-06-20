@@ -416,6 +416,16 @@
 
 (use-package elfeed :commands elfeed)
 
+(use-package gptel
+  :config
+  (setq gptel-modal 'devstral:latest
+        gptel-backend (gptel-make-ollama "ollama"
+                        :host "localhost:11434"
+                        :stream t
+                        :models '(gemma3:latest
+                                  deepseek-r1:latest
+                                  devstral:latest))))
+
 (when (file-exists-p "~/work/config.el") (load "~/work/config.el"))
 (when (file-exists-p "~/work/utils.el") (load "~/work/utils.el"))
 
