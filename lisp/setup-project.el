@@ -40,42 +40,18 @@
               ("F" . project-find-top-file)
               ("G" . project-find-top-regexp))
   :config
-  (advice-add 'project-find-regexp :override #'deadgrep)
+  (advice-add 'project-find-regexp :override #'deadgrep))
 
-  (defun project-compilation-default-buffer-name (&rest ignore)
-    (concat "*" (file-name-nondirectory (directory-file-name (project-root (project-current)))) " compilation*"))
+(with-eval-after-load "project"
+  (defun project-prefixed-buffer-name (mode)
+    (concat "*"
+            (project-name (project-current))
+            "-"
+            (downcase mode)
+            "*")))
 
-  (setq project-compilation-buffer-name-function #'project-compilation-default-buffer-name)
-
-  ;; dir-locals project
-  (defun project-dir-locals-project (dir)
-    (let ((root (locate-dominating-file dir ".dir-locals.el")))
-      (and root (cons 'dir-locals root))))
-
-  (cl-defmethod project-roots ((project (head dir-locals)))
-    (list (cdr project)))
-
-  (cl-defmethod project-ignores ((project (head dir-locals)) dir)
-    (mapcar (lambda (dir) (concat dir "/"))
-            vc-directory-exclusion-list))
-
-  ;; NPM project
-  (defun project-npm-project (dir)
-    (let* ((resolve-root
-            (cl-case project-preferred-root-resolution
-              (top #'locate-top-dominating-file)
-              (t   #'locate-dominating-file)))
-           (root (funcall resolve-root dir "package.json")))
-      (and root (cons 'npm root))))
-
-  (cl-defmethod project-roots ((project (head npm)))
-    (list (cdr project)))
-
-  (cl-defmethod project-ignores ((project (head npm)) dir)
-    (mapcar (lambda (dir) (concat dir "/"))
-            vc-directory-exclusion-list))
-
-  ;; .envrc project
+;; .envrc project
+(with-eval-after-load "project"
   (defun project-envrc-project (dir)
     (let* ((resolve-root
             (cl-case project-preferred-root-resolution
@@ -91,8 +67,52 @@
     (mapcar (lambda (dir) (concat dir "/"))
             vc-directory-exclusion-list))
 
-  (add-hook 'project-find-functions #'project-dir-locals-project)
-  (add-hook 'project-find-functions #'project-envrc-project)
+  (add-hook 'project-find-functions #'project-envrc-project))
+
+;; dir-locals project
+(with-eval-after-load "project"
+  (defun project-dir-locals-project (dir)
+    (let ((root (locate-dominating-file dir ".dir-locals.el")))
+      (and root (cons 'dir-locals root))))
+
+  (cl-defmethod project-roots ((project (head dir-locals)))
+    (list (cdr project)))
+
+  (cl-defmethod project-ignores ((project (head dir-locals)) dir)
+    (mapcar (lambda (dir) (concat dir "/"))
+            vc-directory-exclusion-list))
+  (add-hook 'project-find-functions #'project-dir-locals-project))
+
+;; NPM project
+(with-eval-after-load "project"
+  (defvar project-npm--name-cache (make-hash-table))
+
+  (defun project-npm--get-and-cache-package-name (dir)
+    (let ((name (gethash dir project-npm--name-cache)))
+      (unless name
+        (setq name (let-alist (json-read-file (f-join root "package.json")) .name))
+        (setf (gethash dir project-npm--name-cache) name))
+      name))
+
+  (defun project-npm-project (dir)
+    (let* ((resolve-root
+            (cl-case project-preferred-root-resolution
+              (top #'locate-top-dominating-file)
+              (t   #'locate-dominating-file)))
+           (root (funcall resolve-root dir "package.json")))
+      (when root
+        (list 'npm (project-npm--get-and-cache-package-name root) root))))
+
+  (cl-defmethod project-name ((project (head npm)))
+    (cadr project))
+
+  (cl-defmethod project-roots ((project (head npm)))
+    (last project))
+
+  (cl-defmethod project-ignores ((project (head npm)) dir)
+    (mapcar (lambda (dir) (concat dir "/"))
+            vc-directory-exclusion-list))
+
   (add-hook 'project-find-functions #'project-npm-project))
 
 (provide 'setup-project)
