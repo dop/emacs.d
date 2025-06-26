@@ -90,7 +90,7 @@
   (defun project-npm--get-and-cache-package-name (dir)
     (let ((name (gethash dir project-npm--name-cache)))
       (unless name
-        (setq name (let-alist (json-read-file (f-join root "package.json")) .name))
+        (setq name (let-alist (json-read-file (expand-file-name "package.json" dir)) .name))
         (setf (gethash dir project-npm--name-cache) name))
       name))
 
