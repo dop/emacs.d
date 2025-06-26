@@ -226,6 +226,7 @@
  '(plantuml-jar-path "/opt/local/share/java/plantuml/plantuml.jar")
  '(prettier-inline-errors-flag t)
  '(prettier-lighter " Pr")
+ '(project-compilation-buffer-name-function 'project-prefixed-buffer-name)
  '(project-switch-commands
    '((project-find-file "Find file" nil)
      (project-find-regexp "Find regexp" nil)
