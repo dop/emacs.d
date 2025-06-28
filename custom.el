@@ -11,7 +11,6 @@
  '(comint-move-point-for-output nil)
  '(comint-process-echoes t)
  '(comint-scroll-show-maximum-output nil)
- '(comint-scroll-to-bottom-on-output nil)
  '(company-tooltip-align-annotations t)
  '(compilation-always-kill t)
  '(compilation-ask-about-save nil)
@@ -36,27 +35,32 @@
  '(display-battery-mode t)
  '(display-buffer-alist
    '(((or "e?shell\\*" "\\*sly-mrepl for")
-      (display-buffer-reuse-window display-buffer-in-previous-window display-buffer-at-bottom)
+      (display-buffer-reuse-window display-buffer-in-previous-window
+                                   display-buffer-at-bottom)
       (window-height . 0.375))
      ("\\*\\(Async Shell Command\\|Shell Command Output\\)\\*"
-      (display-buffer-reuse-window display-buffer-in-previous-window display-buffer-at-bottom)
+      (display-buffer-reuse-window display-buffer-in-previous-window
+                                   display-buffer-at-bottom)
       (window-height . 0.375))
      ("\\*\\([Hh]elp\\|Backtrace\\|Warnings\\|Messages\\|info\\|Apropos\\|vc-diff\\)\\*"
-      (display-buffer-reuse-window display-buffer-in-previous-window display-buffer-same-window display-buffer-pop-up-window)
-      (window-height . 0.375)
-      (window-width . 0.375)
+      (display-buffer-reuse-window display-buffer-in-previous-window
+                                   display-buffer-same-window
+                                   display-buffer-pop-up-window)
+      (window-height . 0.375) (window-width . 0.375)
       (window-min-width . 80))
      ("\\*Completions\\*"
-      (display-buffer-reuse-window display-buffer-in-previous-window display-buffer-at-bottom)
+      (display-buffer-reuse-window display-buffer-in-previous-window
+                                   display-buffer-at-bottom)
       (window-height . shrink-window-if-larger-than-buffer))
      ("compilation\\*"
-      (display-buffer-reuse-window display-buffer-in-previous-window display-buffer-at-bottom)
-      (window-width . 0.375)
-      (window-min-width . 80)
-      (window-parameters
-       (no-delete-other-windows)))))
+      (display-buffer-reuse-window display-buffer-in-previous-window
+                                   display-buffer-at-bottom)
+      (window-width . 0.375) (window-min-width . 80)
+      (window-parameters (no-delete-other-windows)))))
  '(display-buffer-base-action
-   '(display-buffer-reuse-window display-buffer-reuse-mode-window display-buffer-same-window display-buffer-in-previous-window))
+   '(display-buffer-reuse-window display-buffer-reuse-mode-window
+                                 display-buffer-same-window
+                                 display-buffer-in-previous-window))
  '(display-line-numbers-grow-only t)
  '(display-time-24hr-format t)
  '(display-time-day-and-date t)
@@ -78,7 +82,11 @@
  '(eldoc-minor-mode-string " doc")
  '(electric-pair-mode t)
  '(elfeed-feeds
-   '("https://atthis.link/rss.xml" "https://howardism.org/index.xml" "https://chrisdone.com/rss.xml" "https://planet.emacslife.com/atom.xml" "https://irreal.org/blog/?feed=rss2" "https://nullprogram.com/feed/"))
+   '("https://atthis.link/rss.xml" "https://howardism.org/index.xml"
+     "https://chrisdone.com/rss.xml"
+     "https://planet.emacslife.com/atom.xml"
+     "https://irreal.org/blog/?feed=rss2"
+     "https://nullprogram.com/feed/"))
  '(elfeed-search-filter "@1-months-ago +unread")
  '(elfeed-show-entry-delete 'delete-window)
  '(elfeed-show-entry-switch 'pop-to-buffer)
@@ -90,7 +98,11 @@
  '(eshell-prompt-function 'my-eshell-prompt)
  '(exec-path-from-shell-check-startup-files nil)
  '(exec-path-from-shell-variables
-   '("PATH" "MANPATH" "FNM_LOGLEVEL" "FNM_COREPACK_ENABLED" "FNM_RESOLVE_ENGINES" "FNM_VERSION_FILE_STRATEGY" "FNM_MULTISHELL_PATH" "FNM_DIR" "FNM_NODE_DIST_MIRROR" "FNM_ARCH" "NODE_OPTIONS" "LATEST_JDK" "JAVA_HOME" "AUTOMATION_MASTER_KEY" "NVM_DIR"))
+   '("PATH" "MANPATH" "FNM_LOGLEVEL" "FNM_COREPACK_ENABLED"
+     "FNM_RESOLVE_ENGINES" "FNM_VERSION_FILE_STRATEGY"
+     "FNM_MULTISHELL_PATH" "FNM_DIR" "FNM_NODE_DIST_MIRROR" "FNM_ARCH"
+     "NODE_OPTIONS" "LATEST_JDK" "JAVA_HOME" "AUTOMATION_MASTER_KEY"
+     "NVM_DIR"))
  '(fast-but-imprecise-scrolling t)
  '(ffap-ftp-regexp nil)
  '(ffap-lax-url nil)
@@ -100,23 +112,32 @@
  '(fold-this-overlay-text "...")
  '(frame-inhibit-implied-resize t)
  '(gc-cons-threshold 268435456)
+ '(gptel-backend
+   #s(gptel-ollama "ollama" "localhost:11434" nil "http" t "/api/chat"
+                   nil (gemma3n:latest)
+                   "http://localhost:11434/api/chat" nil nil nil))
  '(gptel-log-level 'debug)
+ '(gptel-model 'gemma3n:latest)
  '(gptel-track-media nil)
  '(grep-find-ignored-directories
-   '("SCCS" "RCS" "CVS" "MCVS" ".src" ".svn" ".git" ".hg" ".bzr" "_MTN" "_darcs" "{arch}" "node_modules" "dist" "brower_components" "coverage" "build" ".angular"))
+   '("SCCS" "RCS" "CVS" "MCVS" ".src" ".svn" ".git" ".hg" ".bzr" "_MTN"
+     "_darcs" "{arch}" "node_modules" "dist" "brower_components"
+     "coverage" "build" ".angular"))
  '(grep-find-ignored-files
-   '(".#*" "*.o" "*~" "*.bin" "*.lbin" "*.so" "*.a" "*.ln" "*.blg" "*.bbl" "*.elc" "*.lof" "*.glo" "*.idx" "*.lot" "*.fmt" "*.tfm" "*.class" "*.fas" "*.lib" "*.mem" "*.x86f" "*.sparcf" "*.dfsl" "*.pfsl" "*.d64fsl" "*.p64fsl" "*.lx64fsl" "*.lx32fsl" "*.dx64fsl" "*.dx32fsl" "*.fx64fsl" "*.fx32fsl" "*.sx64fsl" "*.sx32fsl" "*.wx64fsl" "*.wx32fsl" "*.fasl" "*.ufsl" "*.fsl" "*.dxl" "*.lo" "*.la" "*.gmo" "*.mo" "*.toc" "*.aux" "*.cp" "*.fn" "*.ky" "*.pg" "*.tp" "*.vr" "*.cps" "*.fns" "*.kys" "*.pgs" "*.tps" "*.vrs" "*.pyc" "*.pyo" "*.js.map"))
+   '(".#*" "*.o" "*~" "*.bin" "*.lbin" "*.so" "*.a" "*.ln" "*.blg"
+     "*.bbl" "*.elc" "*.lof" "*.glo" "*.idx" "*.lot" "*.fmt" "*.tfm"
+     "*.class" "*.fas" "*.lib" "*.mem" "*.x86f" "*.sparcf" "*.dfsl"
+     "*.pfsl" "*.d64fsl" "*.p64fsl" "*.lx64fsl" "*.lx32fsl"
+     "*.dx64fsl" "*.dx32fsl" "*.fx64fsl" "*.fx32fsl" "*.sx64fsl"
+     "*.sx32fsl" "*.wx64fsl" "*.wx32fsl" "*.fasl" "*.ufsl" "*.fsl"
+     "*.dxl" "*.lo" "*.la" "*.gmo" "*.mo" "*.toc" "*.aux" "*.cp"
+     "*.fn" "*.ky" "*.pg" "*.tp" "*.vr" "*.cps" "*.fns" "*.kys"
+     "*.pgs" "*.tps" "*.vrs" "*.pyc" "*.pyo" "*.js.map"))
  '(ibuffer-formats
-   '((mark modified read-only locked " "
-           (name 32 32 :left :elide)
-           " "
-           (size 9 -1 :right)
-           " "
-           (mode 16 16 :left :elide)
-           " " filename-and-process)
-     (mark " "
-           (name 16 -1)
-           " " filename)))
+   '((mark modified read-only locked " " (name 32 32 :left :elide) " "
+           (size 9 -1 :right) " " (mode 16 16 :left :elide) " "
+           filename-and-process)
+     (mark " " (name 16 -1) " " filename)))
  '(ibuffer-saved-filter-groups nil)
  '(indent-tabs-mode nil)
  '(indicate-buffer-boundaries 'left)
@@ -127,15 +148,10 @@
  '(inhibit-startup-screen t)
  '(initial-scratch-message nil)
  '(ispell-local-dictionary-alist
-   '((nil "[a-zA-Z]" "[^a-zA-Z]" "[']" nil
-          ("-l" "en")
-          nil utf-8)
-     ("english" "[a-zA-Z]" "[^a-zA-Z]" "[']" nil
-      ("-l" "en")
-      nil utf-8)
-     ("lithuanian" "[a-zA-ZąčęėįšųūžĄČĘĖĮŠŲŪŽ]" "[^a-zA-ZąčęėįšųūžĄČĘĖĮŠŲŪŽ]" "" nil
-      ("-l" "lt")
-      nil utf-8)))
+   '((nil "[a-zA-Z]" "[^a-zA-Z]" "[']" nil ("-l" "en") nil utf-8)
+     ("english" "[a-zA-Z]" "[^a-zA-Z]" "[']" nil ("-l" "en") nil utf-8)
+     ("lithuanian" "[a-zA-ZąčęėįšųūžĄČĘĖĮŠŲŪŽ]"
+      "[^a-zA-ZąčęėįšųūžĄČĘĖĮŠŲŪŽ]" "" nil ("-l" "lt") nil utf-8)))
  '(jit-lock-defer-time 0)
  '(js-indent-level 2)
  '(kept-new-versions 6)
@@ -146,32 +162,26 @@
  '(ls-lisp-ignore-case t)
  '(ls-lisp-use-insert-directory-program nil)
  '(markdown-code-lang-modes
-   '(("ocaml" . tuareg-mode)
-     ("elisp" . emacs-lisp-mode)
-     ("ditaa" . artist-mode)
-     ("asymptote" . asy-mode)
-     ("dot" . fundamental-mode)
-     ("sqlite" . sql-mode)
-     ("calc" . fundamental-mode)
-     ("C" . c-mode)
-     ("cpp" . c++-mode)
-     ("C++" . c++-mode)
-     ("screen" . shell-script-mode)
-     ("shell" . sh-mode)
-     ("bash" . sh-mode)
+   '(("ocaml" . tuareg-mode) ("elisp" . emacs-lisp-mode)
+     ("ditaa" . artist-mode) ("asymptote" . asy-mode)
+     ("dot" . fundamental-mode) ("sqlite" . sql-mode)
+     ("calc" . fundamental-mode) ("C" . c-mode) ("cpp" . c++-mode)
+     ("C++" . c++-mode) ("screen" . shell-script-mode)
+     ("shell" . sh-mode) ("bash" . sh-mode)
      ("ts" . typescript-ts-mode)))
  '(markdown-command "pandoc")
  '(mode-line-compact t)
  '(mode-line-format
    '("%e" mode-line-front-space
      (:propertize
-      ("" mode-line-mule-info mode-line-client mode-line-modified mode-line-remote)
-      display
-      (min-width
-       (5.0)))
-     mode-line-frame-identification enumerated-windows-mode-line-number mode-line-buffer-identification "   " mode-line-position
-     (vc-mode vc-mode)
-     "  " mode-line-modes mode-line-misc-info mode-line-end-spaces))
+      ("" mode-line-mule-info mode-line-client mode-line-modified
+       mode-line-remote)
+      display (min-width (5.0)))
+     mode-line-frame-identification
+     enumerated-windows-mode-line-number
+     mode-line-buffer-identification "   " mode-line-position
+     (vc-mode vc-mode) "  " mode-line-modes mode-line-misc-info
+     mode-line-end-spaces))
  '(mode-line-position-column-line-format '(" %l:%c"))
  '(mode-require-final-newline t)
  '(modus-themes-variable-pitch-ui t)
@@ -199,27 +209,27 @@
  '(org-plantuml-jar-path "/opt/local/share/java/plantuml/plantuml.jar")
  '(org-startup-folded t)
  '(org-structure-template-alist
-   '(("a" . "export ascii")
-     ("c" . "center")
-     ("C" . "comment")
-     ("e" . "example")
-     ("E" . "export")
-     ("h" . "export html")
-     ("l" . "export latex")
-     ("q" . "quote")
-     ("s" . "src")
-     ("v" . "verse")
-     ("n" . "note")))
+   '(("a" . "export ascii") ("c" . "center") ("C" . "comment")
+     ("e" . "example") ("E" . "export") ("h" . "export html")
+     ("l" . "export latex") ("q" . "quote") ("s" . "src")
+     ("v" . "verse") ("n" . "note")))
  '(org-tags-column 0)
  '(org-todo-keyword-faces
-   '(("TODO" org-todo)
-     ("WAIT" :foreground "orange" :weight bold)
-     ("DONE" org-done)
-     ("CANCELLED" :foreground "grey" :weight bold)))
+   '(("TODO" org-todo) ("WAIT" :foreground "orange" :weight bold)
+     ("DONE" org-done) ("CANCELLED" :foreground "grey" :weight bold)))
  '(org-todo-keywords
    '((sequence "TODO(t)" "WAIT(w@)" "|" "DONE(d!)" "CANCELLED(c@)")))
  '(package-selected-packages
-   '(restclient wgrep string-inflection yaml-mode string-edit-at-point nodejs-repl olivetti deadgrep markdown-preview-mode markdown-mode ligature dumb-jump macrostep vundo project orderless treesit-auto buffer-env elfeed diff-hl neotree org-download graphviz-dot-mode jq-mode async php-mode org-modern dired-collapse dired-subtree keyfreq rainbow-mode sly paren-face sql-indent seq edit-indirect browse-kill-ring scala-mode ox-gfm flymake-proselint flymake eldoc json-mode prettier exec-path-from-shell xterm-color flymake-eslint ns-auto-titlebar cider paredit-everywhere whitespace-cleanup-mode protobuf-mode paredit hungry-delete dictionary csv-mode gptel))
+   '(restclient wgrep string-inflection yaml-mode string-edit-at-point
+                nodejs-repl markdown-preview-mode ligature macrostep
+                project treesit-auto buffer-env elfeed neotree
+                graphviz-dot-mode jq-mode php-mode dired-collapse
+                dired-subtree keyfreq rainbow-mode sql-indent seq
+                edit-indirect browse-kill-ring scala-mode ox-gfm
+                flymake-proselint flymake eldoc json-mode prettier
+                exec-path-from-shell xterm-color ns-auto-titlebar
+                cider paredit-everywhere whitespace-cleanup-mode
+                protobuf-mode hungry-delete dictionary csv-mode gptel))
  '(paredit-lighter " ParEd" t)
  '(plantuml-default-exec-mode 'jar)
  '(plantuml-indent-level 4)
@@ -231,8 +241,7 @@
    '((project-find-file "Find file" nil)
      (project-find-regexp "Find regexp" nil)
      (project-find-dir "Find directory" nil)
-     (project-vc-dir "VC-Dir" nil)
-     (project-eshell "Eshell" nil)
+     (project-vc-dir "VC-Dir" nil) (project-eshell "Eshell" nil)
      (project-compile "Compile" nil)))
  '(query-replace-highlight t)
  '(quick-peek-add-spacer nil)
@@ -242,13 +251,10 @@
  '(require-final-newline t)
  '(ring-bell-function nil)
  '(safe-local-variable-values
-   '((eval eglot-ensure)
-     (eval auto-revert-mode t)
+   '((eval eglot-ensure) (eval auto-revert-mode t)
      (project-preferred-root-resolution . top)
-     (olivetti-body-width . 120)
-     (diff-add-log-use-relative-names . t)
-     (vc-git-annotate-switches . "-w")
-     (eval org-writing-mode t)
+     (olivetti-body-width . 120) (diff-add-log-use-relative-names . t)
+     (vc-git-annotate-switches . "-w") (eval org-writing-mode t)
      (eval yoshi-project-mode t)))
  '(save-interprogram-paste-before-kill t)
  '(save-place-mode t)
@@ -274,12 +280,13 @@
  '(vc-annotate-background-mode t)
  '(vc-annotate-very-old-color nil)
  '(vc-directory-exclusion-list
-   '("SCCS" "RCS" "CVS" "MCVS" ".src" ".svn" ".git" ".hg" ".bzr" "_MTN" "_darcs" "{arch}" "node_modules" "dist" "bower_components" "coverage" "build"))
+   '("SCCS" "RCS" "CVS" "MCVS" ".src" ".svn" ".git" ".hg" ".bzr" "_MTN"
+     "_darcs" "{arch}" "node_modules" "dist" "bower_components"
+     "coverage" "build"))
  '(vc-git-root-log-format
-   '("%h %as %an: %s" "^\\(?:[*/\\| ]+ \\)?\\([0-9a-f]+\\) \\([0-9-]+\\) \\([^:]+\\): .+$"
-     ((1 'log-view-message)
-      (2 'change-log-date)
-      (3 'change-log-name))))
+   '("%h %as %an: %s"
+     "^\\(?:[*/\\| ]+ \\)?\\([0-9a-f]+\\) \\([0-9-]+\\) \\([^:]+\\): .+$"
+     ((1 'log-view-message) (2 'change-log-date) (3 'change-log-name))))
  '(vc-make-backup-files t)
  '(version-control t)
  '(vertico-count-format '("%-6s " . "%s/%s"))
