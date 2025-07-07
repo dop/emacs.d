@@ -31,6 +31,7 @@
  '(dired-dwim-target t)
  '(dired-free-space nil)
  '(dired-listing-switches "-ahl")
+ '(dired-omit-files "\\`\\(\\.\\|#\\)")
  '(dired-subtree-use-backgrounds nil)
  '(display-battery-mode t)
  '(display-buffer-alist
@@ -112,10 +113,6 @@
  '(fold-this-overlay-text "...")
  '(frame-inhibit-implied-resize t)
  '(gc-cons-threshold 268435456)
- '(gptel-backend
-   #s(gptel-ollama "ollama" "localhost:11434" nil "http" t "/api/chat"
-                   nil (gemma3n:latest)
-                   "http://localhost:11434/api/chat" nil nil nil))
  '(gptel-log-level 'debug)
  '(gptel-model 'gemma3n:latest)
  '(gptel-track-media nil)
@@ -236,7 +233,6 @@
  '(plantuml-jar-path "/opt/local/share/java/plantuml/plantuml.jar")
  '(prettier-inline-errors-flag t)
  '(prettier-lighter " Pr")
- '(project-compilation-buffer-name-function 'project-prefixed-buffer-name)
  '(project-switch-commands
    '((project-find-file "Find file" nil)
      (project-find-regexp "Find regexp" nil)
@@ -299,5 +295,4 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(fixed-pitch ((t (:inherit default))))
  '(variable-pitch ((t (:weight normal :family "SF Pro Display")))))

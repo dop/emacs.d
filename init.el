@@ -224,7 +224,8 @@
 
 (use-package json-mode
   :pin gnu
-  :mode "\\.\\(json\\|babelrc\\|jshintrc\\|eslintrc\\|bowerrc\\|json\\.erb\\|watchmanconfig\\)\\'")
+  :mode "\\.\\(json\\|babelrc\\|jshintrc\\|eslintrc\\|bowerrc\\|json\\.erb\\|watchmanconfig\\)\\'"
+  :mode ("tsconfig\\.json\\'" . jsonc-mode))
 
 (use-package prettier
   :commands (prettier-mode prettier-prettify prettier-prettify-region))
@@ -243,8 +244,7 @@
 (use-package editorconfig :config (editorconfig-mode t))
 
 (use-package js
-  :mode ("\\.m?js\\'" . js-ts-mode)
-  :mode ("tsconfig\\.json\\'" . jsonc-mode))
+  :mode ("\\.m?js\\'" . js-ts-mode))
 
 (use-package string-edit-at-point :commands string-edit-at-point)
 (use-package wgrep :commands wgrep-change-to-wgrep-mode)
@@ -417,13 +417,18 @@
 (use-package elfeed :commands elfeed)
 
 (use-package gptel
+  :bind (:map gptel-mode-map
+              ("C-c C-k" . gptel-abort)
+              ("C-c C-p" . gptel-system-prompt))
   :config
   (setq gptel-modal 'devstral:latest
         gptel-backend (gptel-make-ollama "ollama"
                         :host "localhost:11434"
                         :stream t
                         :models '(gemma3:latest
+                                  gemma3n:latest
                                   deepseek-r1:latest
+                                  qwen3:latest
                                   devstral:latest))))
 
 (when (file-exists-p "~/work/config.el") (load "~/work/config.el"))
