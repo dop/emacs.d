@@ -16,25 +16,25 @@
        (acme-purple          "#555599")
        (acme-purple-light    "#FFEAFF")
        (dark-bg (color-darken-name acme-purple 50))
-       (light-bg acme-yellow-light))
+       (light-bg "white"))
   (custom-theme-set-faces
    'dop
    `(default
      ((((background light)) :foreground "black" :background ,light-bg)
       (((background dark)) :foreground ,light-bg :background ,dark-bg)))
-   '(cursor
+   `(cursor
      ((((background light)) :background "red")
       (((background dark)) :background "green")))
-   '(fringe
+   `(fringe
      ((((background light)) :inherit default :foreground "grey70")
       (((background dark)) :inherit default :foreground "grey40")))
    `(vertical-border
      ((((background light)) :foreground ,acme-yellow)
       (((background dark)) :foreground ,acme-blue)))
-   '(eglot-highlight-symbol-face
+   `(eglot-highlight-symbol-face
      ((t :inherit highlight)))
    `(hl-line
-     ((((background light)) :background ,(color-darken-name light-bg 20))
+     ((((background light)) :background ,(color-darken-name acme-yellow-light 10))
       (((background dark)) :background ,(color-lighten-name dark-bg 50))))
    `(mode-line
      ((((background light))
@@ -58,14 +58,14 @@
        :foreground "grey70"
        :background "grey40"
        :box (:line-width 2 :style flat-button :color "grey40"))))
-   '(eglot-mode-line
+   `(eglot-mode-line
      ((t :weight bold)))
-   '(diff-hl-change
+   `(diff-hl-change
      ((((background light)) :background "light blue")
       (((background dark)) :background "royal blue")))
-   '(diff-hl-delete
+   `(diff-hl-delete
      ((t :background "tomato")))
-   '(diff-hl-insert
+   `(diff-hl-insert
      ((t :background "DarkOliveGreen2")))
    `(diff-header
      ((t (:inherit shadow :background unspecified))))
@@ -74,18 +74,18 @@
        (:inherit shadow :foreground "black" :weight bold))
       (((background dark))
        (:inherit shadow :foreground "white" :weight bold))))
-   '(fixed-pitch
+   `(fixed-pitch
      ((t :inherit default)))
-   '(trailing-whitespace
+   `(trailing-whitespace
      ((((background light)) :background "RosyBrown1")
       (((background dark)) :background "brown4")))
-   '(font-lock-comment-face
+   `(font-lock-comment-face
      ((t :inherit shadow :foreground unspecified :slant italic)))
-   '(eshell-prompt
+   `(eshell-prompt
      ((((background light)) :foreground "red" :overline "grey80")
       (((background dark)) :foreground "pink" :overline "grey40")))
-   '(dictionary-reference-face ((t (:inherit variable-pitch :foreground "blue"))))
-   '(dictionary-word-entry-face ((((type x)) (:italic t))
+   `(dictionary-reference-face ((t (:inherit variable-pitch :foreground "blue"))))
+   `(dictionary-word-entry-face ((((type x)) (:italic t))
                                  (((type tty) (class color)) (:foreground "green"))
                                  (t (:inherit variable-pitch
                                               :inverse t))))))
