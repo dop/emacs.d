@@ -18,6 +18,7 @@
   :commands (dired-subtree-insert))
 
 (use-package dired-collapse
+  :disabled t
   :hook ((dired-mode . dired-collapse-mode)))
 
 (provide 'setup-dired)
