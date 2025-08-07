@@ -21,7 +21,8 @@
  '(cursor-in-non-selected-windows nil)
  '(custom-enabled-themes '(dop))
  '(custom-safe-themes
-   '("9158f03997c0d661bc641cc5a9cdc1f07fff258a610a1cfef4c455697ca3726a"))
+   '("9947d4128fadd9c9dc6b51f566e5631ee649e8909d763e1f8c67067e4aba2afc"
+     "9158f03997c0d661bc641cc5a9cdc1f07fff258a610a1cfef4c455697ca3726a"))
  '(custom-theme-directory "~/.emacs.d/themes/")
  '(debug-on-error nil)
  '(delete-by-moving-to-trash t)
@@ -217,16 +218,19 @@
  '(org-todo-keywords
    '((sequence "TODO(t)" "WAIT(w@)" "|" "DONE(d!)" "CANCELLED(c@)")))
  '(package-selected-packages
-   '(restclient wgrep string-inflection yaml-mode string-edit-at-point
-                nodejs-repl markdown-preview-mode ligature macrostep
-                project treesit-auto buffer-env elfeed neotree
-                graphviz-dot-mode jq-mode php-mode dired-collapse
-                dired-subtree keyfreq rainbow-mode sql-indent seq
-                edit-indirect browse-kill-ring scala-mode ox-gfm
-                flymake-proselint flymake eldoc json-mode prettier
-                exec-path-from-shell xterm-color ns-auto-titlebar
-                cider paredit-everywhere whitespace-cleanup-mode
-                protobuf-mode hungry-delete dictionary csv-mode gptel))
+   '(browse-kill-ring buffer-env cider csv-mode dictionary
+                      dired-auto-readme dired-collapse dired-git-info
+                      dired-subtree edit-indirect eldoc elfeed
+                      exec-path-from-shell flymake flymake-proselint
+                      gptel graphviz-dot-mode hungry-delete jq-mode
+                      json-mode keyfreq ligature macrostep
+                      markdown-preview-mode neotree nodejs-repl
+                      ns-auto-titlebar ox-gfm paredit-everywhere
+                      php-mode prettier project protobuf-mode
+                      rainbow-mode restclient scala-mode seq
+                      sql-indent string-edit-at-point
+                      string-inflection treesit-auto wgrep
+                      whitespace-cleanup-mode xterm-color yaml-mode))
  '(paredit-lighter " ParEd" t)
  '(plantuml-default-exec-mode 'jar)
  '(plantuml-indent-level 4)
