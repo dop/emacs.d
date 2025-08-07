@@ -21,4 +21,10 @@
   :disabled t
   :hook ((dired-mode . dired-collapse-mode)))
 
+(use-package dired-auto-readme
+  :hook ((dired-mode . dired-auto-readme-mode)))
+
+(use-package dired-git-info
+  :hook ((dired-after-readin . dired-git-info-auto-enable)))
+
 (provide 'setup-dired)
