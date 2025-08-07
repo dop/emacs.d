@@ -417,19 +417,21 @@
 (use-package elfeed :commands elfeed)
 
 (use-package gptel
+  :commands (gptel gptel-send gptel-rewrite)
   :bind (:map gptel-mode-map
               ("C-c C-k" . gptel-abort)
               ("C-c C-p" . gptel-system-prompt))
   :config
-  (setq gptel-modal 'devstral:latest
-        gptel-backend (gptel-make-ollama "ollama"
-                        :host "localhost:11434"
-                        :stream t
-                        :models '(gemma3:latest
-                                  gemma3n:latest
-                                  deepseek-r1:latest
-                                  qwen3:latest
-                                  devstral:latest))))
+  (let* ((ollama-list
+          (cdr (string-split (shell-command-to-string "ollama list") "\n" t)))
+         (models (mapcar (lambda (line)
+                           (intern (car (string-split line))))
+                         ollama-list)))
+    (setq gptel-modal (car models)
+          gptel-backend (gptel-make-ollama "ollama"
+                          :host "localhost:11434"
+                          :stream t
+                          :models models))))
 
 (when (file-exists-p "~/work/config.el") (load "~/work/config.el"))
 (when (file-exists-p "~/work/utils.el") (load "~/work/utils.el"))
