@@ -21,4 +21,18 @@
   (when (project-has-node-script-p project script)
     (concat "npx --no-install " script)))
 
+(defun project-forget-node_module-projects ()
+  "Forget all known projects that reside inside node_modules."
+  (interactive)
+  (dolist (proj (project-known-project-roots))
+    (when (string-match-p "/node_modules/" proj)
+      (project-forget-project proj))))
+
+(defun project-forget-tmp-projects ()
+  "Forget all known projects that reside inside node_modules."
+  (interactive)
+  (dolist (proj (project-known-project-roots))
+    (when (string-match-p "^~/tmp/" proj)
+      (project-forget-project proj))))
+
 (provide 'project-tools)
