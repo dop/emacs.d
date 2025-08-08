@@ -373,12 +373,17 @@
       (vc-git--call buf "rebase" ontop))
     (vc-resynch-buffer root t t)))
 
+(defun hack-apply-local-variables-to-current-buffer (&rest ignore)
+  (hack-local-variables))
+
 (use-package vc-git
   :bind (:map vc-dir-git-mode-map
               ("z c" . vc-git-stash)
               ("z x" . vc-git-stash-delete)
               ("z s" . vc-git-stash-snapshot)
-              ("b r" . vc-git-rebase)))
+              ("b r" . vc-git-rebase))
+  :config
+  (advice-add 'vc-setup-buffer :after #'hack-apply-local-variables-to-current-buffer))
 
 (use-package diff-hl
   :bind (:map diff-hl-mode-map ("C-x v k" . diff-hl-revert-hunk))
