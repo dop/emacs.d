@@ -438,8 +438,8 @@
                           :stream t
                           :models models))))
 
-(when (file-exists-p "~/work/config.el") (load "~/work/config.el"))
-(when (file-exists-p "~/work/utils.el") (load "~/work/utils.el"))
+(load "~/work/config.el" 'noerror)
+(load "~/work/utils.el" 'noerror)
 
 (server-start)
 
