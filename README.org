@@ -53,7 +53,3 @@ Trigger disabled hotkey to take effect:
 #+begin_src shell
 /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
 #+end_src
-* TODOs
-- Figure out better monorepo workflow: how to choose if to run command in current project or top?
-  - Option A: introduce top versions of commands, e.g. =project-top-eshell= to open shell on super-project (e.g. in monorepo), bind it to =C-x p E=.
-  - Option B: introduce state/prefix which would switch how project root is calculated before running project command, e.g. =C-x p u C-x p e=.
