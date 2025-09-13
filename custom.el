@@ -21,8 +21,7 @@
  '(cursor-in-non-selected-windows nil)
  '(custom-enabled-themes '(dop))
  '(custom-safe-themes
-   '("9947d4128fadd9c9dc6b51f566e5631ee649e8909d763e1f8c67067e4aba2afc"
-     "9158f03997c0d661bc641cc5a9cdc1f07fff258a610a1cfef4c455697ca3726a"))
+   '("79900811c7e237166c3c24efbb3b9de80538064978ca2ccfa9865f8ac1a84db7"))
  '(custom-theme-directory "~/.emacs.d/themes/")
  '(debug-on-error nil)
  '(delete-by-moving-to-trash t)
@@ -218,7 +217,7 @@
  '(org-todo-keywords
    '((sequence "TODO(t)" "WAIT(w@)" "|" "DONE(d!)" "CANCELLED(c@)")))
  '(package-selected-packages
-   '(browse-kill-ring buffer-env cider csv-mode dictionary
+   '(browse-kill-ring buffer-env cider csv-mode devdocs dictionary
                       dired-auto-readme dired-collapse dired-git-info
                       dired-subtree edit-indirect eldoc elfeed
                       exec-path-from-shell flymake flymake-proselint
@@ -229,8 +228,9 @@
                       php-mode prettier project protobuf-mode
                       rainbow-mode restclient scala-mode seq
                       sql-indent string-edit-at-point
-                      string-inflection treesit-auto wgrep
-                      whitespace-cleanup-mode xterm-color yaml-mode))
+                      string-inflection treesit-auto treesit-fold
+                      treesit-ispell wgrep whitespace-cleanup-mode
+                      xterm-color yaml-mode))
  '(paredit-lighter " ParEd" t)
  '(plantuml-default-exec-mode 'jar)
  '(plantuml-indent-level 4)

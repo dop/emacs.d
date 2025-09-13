@@ -16,12 +16,14 @@
        (acme-purple          "#555599")
        (acme-purple-light    "#FFEAFF")
        (dark-bg (color-darken-name acme-purple 50))
-       (light-bg "white"))
+       (light-bg "white")
+       (dark-fg light-bg)
+       (light-fg "black"))
   (custom-theme-set-faces
    'dop
    `(default
-     ((((background light)) :foreground "black" :background ,light-bg)
-      (((background dark)) :foreground ,light-bg :background ,dark-bg)))
+     ((((background light)) :foreground ,light-fg :background ,light-bg)
+      (((background dark)) :foreground ,dark-fg :background ,dark-bg)))
    `(cursor
      ((((background light)) :background "red")
       (((background dark)) :background "green")))
@@ -84,6 +86,9 @@
    `(eshell-prompt
      ((((background light)) :foreground "red" :overline "grey80")
       (((background dark)) :foreground "pink" :overline "grey40")))
+   `(treesit-fold-replacement-face
+     ((((background light)) :foreground ,light-fg :background ,(color-darken-name light-bg 20))
+      (((background dark)) :foreground ,dark-fg :background ,(color-lighten-name dark-bg 60))))
    `(dictionary-reference-face ((t (:inherit variable-pitch :foreground "blue"))))
    `(dictionary-word-entry-face ((((type x)) (:italic t))
                                  (((type tty) (class color)) (:foreground "green"))

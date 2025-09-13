@@ -419,6 +419,17 @@
 (use-package treesit-auto
   :hook (after-init . global-treesit-auto-mode))
 
+(use-package treesit-fold
+  :hook (prog-mode . treesit-fold-mode)
+  :bind (:map treesit-fold-mode-map
+              ("C-c f c" . treesit-fold-close)
+              ("C-c f C" . treesit-fold-close-all)
+              ("C-c f o" . treesit-fold-open)
+              ("C-c f O" . treesit-fold-open-all)))
+
+(use-package devdocs
+  :bind ("C-h D" . devdocs-lookup))
+
 (use-package elfeed :commands elfeed)
 
 (use-package gptel
