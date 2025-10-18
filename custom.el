@@ -119,8 +119,11 @@
  '(fold-this-overlay-text "...")
  '(frame-inhibit-implied-resize t)
  '(gc-cons-threshold 268435456)
+ '(gptel-default-mode 'org-mode)
+ '(gptel-include-reasoning nil)
  '(gptel-log-level 'debug)
  '(gptel-model 'gemma3n:latest)
+ '(gptel-temperature 0.4)
  '(gptel-track-media nil)
  '(grep-find-ignored-directories
    '("SCCS" "RCS" "CVS" "MCVS" ".src" ".svn" ".git" ".hg" ".bzr" "_MTN"
