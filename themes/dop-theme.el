@@ -22,8 +22,11 @@
   (custom-theme-set-faces
    'dop
    `(default
-     ((((background light)) :foreground ,light-fg :background ,light-bg)
-      (((background dark)) :foreground ,dark-fg :background ,dark-bg)))
+     ((((background light)) :foreground "textColor" :background "textBackgroundColor")
+      (((background dark)) :foreground "textBackgroundColor" :background "textColor")))
+   `(region
+     ((((background light)) :background "selectedTextBackgroundColor")
+      (((background dark)) :background "selectedContentBackgroundColor")))
    `(cursor
      ((((background light)) :background "red")
       (((background dark)) :background "green")))
@@ -61,16 +64,17 @@
    `(eglot-mode-line
      ((t :weight bold)))
    `(eglot-diagnostic-tag-unnecessary-face
-     ((t :inherit shadow :background ,acme-red-light)))
+     ((((background light)) :inherit shadow :background ,acme-red-light)
+      (((background dark)) :inherit shadow :background ,acme-red)))
    `(eglot-highlight-symbol-face
      ((t :inherit highlight)))
    `(diff-hl-change
      ((((background light)) :background "light blue")
       (((background dark)) :background "royal blue")))
    `(diff-hl-delete
-     ((t :background "tomato")))
+     ((((background light)) :background "tomato")))
    `(diff-hl-insert
-     ((t :background "DarkOliveGreen2")))
+     ((((background light)) :background "DarkOliveGreen2")))
    `(diff-header
      ((t (:inherit shadow :background unspecified))))
    `(diff-file-header
@@ -83,24 +87,36 @@
    `(trailing-whitespace
      ((((background light)) :background "RosyBrown1")
       (((background dark)) :background "brown4")))
-   `(font-lock-comment-face ((t :background "grey90")))
+   `(font-lock-comment-face
+     ((((background light)) :background "grey90")
+      (((background dark)) :background "grey40")))
    `(font-lock-function-call-face ((t )))
-   `(font-lock-variable-name-face ((t :foreground ,acme-purple)))
-   `(font-lock-function-name-face ((t :foreground ,acme-cyan)))
+   `(font-lock-variable-name-face
+     ((((background light)) :foreground ,acme-purple)
+      (((background dark)) :foreground ,acme-purple-light)))
+   `(font-lock-function-name-face
+     ((((background light)) :foreground ,acme-cyan)
+      (((background dark)) :foreground ,acme-cyan-light)))
    `(font-lock-keyword-face ((t :inherit shadow)))
    `(font-lock-type-face ((t )))
    `(font-lock-constant-face ((t )))
    `(font-lock-property-name-face ((t )))
    `(font-lock-property-use-face ((t )))
-   `(font-lock-string-face ((t  :foreground ,acme-green-alt)))
-   `(font-lock-number-face ((t  :foreground ,acme-green-alt)))
+   `(font-lock-string-face
+     ((((background light))  :foreground ,acme-green-alt)
+      (((background dark))  :foreground ,acme-green-light)))
+   `(font-lock-number-face
+     ((((background light))  :foreground ,acme-green-alt)
+      (((background dark))  :foreground ,acme-green-light)))
    `(font-lock-bracket-face ((t :inherit shadow)))
+   `(font-lock-delimiter-face ((t :inherit shadow)))
    `(typescript-ts-jsx-attribute-face ((t )))
    `(eshell-prompt
      ((((background light)) :inherit shadow :overline "grey80")
       (((background dark)) :inherit shadow :overline "grey40")))
    `(dictionary-reference-face
-     ((t (:inherit variable-pitch :foreground "blue"))))
+     ((((background light)) (:inherit variable-pitch :foreground "blue"))
+      (((background dark)) (:inherit variable-pitch :foreground "sky blue"))))
    `(dictionary-word-entry-face
      ((((type x)) (:italic t))
       (((type tty) (class color)) (:foreground "green"))
