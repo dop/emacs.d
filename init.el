@@ -230,7 +230,10 @@
   :mode ("tsconfig\\.json\\'" . jsonc-mode))
 
 (use-package prettier
+  :disabled t
   :commands (prettier-mode prettier-prettify prettier-prettify-region))
+
+(use-package prettier-js)
 
 (require 'setup-flymake)
 
@@ -318,9 +321,7 @@
   (bind-key "C-c j" #'ps-last-expression sly-editing-mode-map))
 
 (use-package clojure-mode
-  :hook (clojure-mode . paredit-mode)
-  ;; (add-hook 'clojure-mode #'inf-clojure-eldoc-setup)
-  )
+  :hook (clojure-mode . paredit-mode))
 
 (use-package image-mode
   :init
@@ -331,11 +332,8 @@
               ("y" . image-ns-copy-to-clipboard)
               ("c" . image-ns-copy-to-clipboard)))
 
-(use-package inf-clojure
-  :load-path "~/.emacs.d/lisp/inf-clojure"
-  :config (setq inf-clojure-enable-eldoc nil))
-
 (use-package cider
+  :disabled t
   :commands cider-jack-in
   :hook (cider-repl-mode . paredit-mode)
   :hook (clojure-mode . cider-eldoc-setup))
@@ -345,10 +343,6 @@
 (use-package enumerated-windows :hook (after-init . enumerated-windows-mode))
 
 (use-package yoshi :commands yoshi-project-mode)
-
-(use-package keyfreq
-  :hook (after-init . keyfreq-mode)
-  :hook (after-init . keyfreq-autosave-mode))
 
 (use-package plantuml-mode
   :disabled t

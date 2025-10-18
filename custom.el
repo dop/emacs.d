@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -22,7 +23,7 @@
  '(cursor-in-non-selected-windows nil)
  '(custom-enabled-themes '(dop))
  '(custom-safe-themes
-   '("4026e314d41b0e50621a5dc520d59821acedf0895d383d3fbaea8b580688daf7"))
+   '("c56ed4398e4f8e22340cf660750fbdd585ad9f77acce6eb8cf993695644b0a12"))
  '(custom-theme-directory "~/.emacs.d/themes/")
  '(debug-on-error nil)
  '(delete-by-moving-to-trash t)
@@ -77,6 +78,8 @@
  '(ef-themes-variable-pitch-ui t)
  '(eglot-autoreconnect nil)
  '(eglot-autoshutdown t)
+ '(eglot-code-action-indications nil)
+ '(eglot-code-action-indicator "?")
  '(eglot-confirm-server-edits nil)
  '(eglot-confirm-server-initiated-edits nil)
  '(eglot-connect-timeout 10)
@@ -221,15 +224,13 @@
    '((sequence "TODO(t)" "WAIT(w@)" "|" "DONE(d!)" "CANCELLED(c@)")))
  '(package-selected-packages
    '(ascii-art-to-unicode bazel browse-kill-ring buffer-env cider
-                          csv-mode devdocs dictionary
-                          dired-auto-readme dired-collapse
-                          dired-git-info dired-subtree edit-indirect
-                          eldoc elfeed exec-path-from-shell flymake
-                          flymake-proselint gptel graphviz-dot-mode
-                          hungry-delete jq-mode json-mode keyfreq
-                          ligature macrostep markdown-preview-mode
-                          neotree nodejs-repl ns-auto-titlebar ox-gfm
-                          paredit-everywhere php-mode prettier project
+                          csv-mode devdocs dictionary dired-collapse
+                          dired-subtree edit-indirect eldoc
+                          exec-path-from-shell flymake gptel
+                          hungry-delete json-mode ligature macrostep
+                          markdown-preview-mode neotree nodejs-repl
+                          ns-auto-titlebar ox-gfm paredit-everywhere
+                          php-mode prettier-js project
                           protobuf-mode rainbow-mode restclient
                           scala-mode seq sql-indent
                           string-edit-at-point string-inflection
