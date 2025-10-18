@@ -47,7 +47,7 @@ usage: (cond-let ((VAR TEST) BODY...))."
                                   (progn
                                     ,@(cdr clause))))
                          (t
-                          `(when-let (,(car clause))
+                          `(when-let* (,(car clause))
                              (throw ',tag
                                     (progn
                                       ,@(cdr clause)))))))
@@ -139,8 +139,8 @@ usage: (cond-let ((VAR TEST) BODY...))."
   (file-name-directory (directory-file-name (file-name-as-directory file))))
 
 (defun locate-top-dominating-file (file name)
-  (when-let ((dominating-file
-              (locate-dominating-file file name)))
+  (when-let* ((dominating-file
+               (locate-dominating-file file name)))
     (or (locate-top-dominating-file (up-directory dominating-file) name)
         dominating-file)))
 

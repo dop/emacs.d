@@ -170,8 +170,8 @@ Every item of FUNCTIONS can be either function or arguments to
 
 (defun overlay-get-eslint-message (overlay)
   "Get text message from OVERLAY if it is from `flymake-eslint--checker' backend."
-  (when-let ((diagnostics (and (overlayp overlay)
-                               (overlay-get overlay 'flymake-diagnostic))))
+  (when-let* ((diagnostics (and (overlayp overlay)
+                                (overlay-get overlay 'flymake-diagnostic))))
     (when (eq (flymake--diag-backend diagnostics) 'flymake-eslint--checker)
       (flymake--diag-text diagnostics))))
 
@@ -201,8 +201,8 @@ Every item of FUNCTIONS can be either function or arguments to
 (defun ignore-eslint-rules ()
   "Insert eslint-disable-next-line rule pragma for overlay warning on current point."
   (interactive)
-  (when-let ((rules (seq-map #'eslint-message-get-rule
-                             (overlay-get-current-eslint-messages))))
+  (when-let* ((rules (seq-map #'eslint-message-get-rule
+                              (overlay-get-current-eslint-messages))))
     (save-excursion
       (beginning-of-line)
       (newline-and-indent)
