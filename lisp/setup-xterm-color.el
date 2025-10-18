@@ -1,4 +1,4 @@
-;; Stripping non-color ANSI escape codes.
+;; Stripping non-color ANSI escape codes.  -*- lexical-binding: t; -*-
 ;;
 ;; from https://emacs.stackexchange.com/a/38531
 (defvar ansi-ignored-escape-codes

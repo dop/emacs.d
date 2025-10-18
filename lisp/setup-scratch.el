@@ -1,4 +1,4 @@
-;; setup-scratch.el
+;; setup-scratch.el  -*- lexical-binding: t; -*-
 
 (require 'cl-seq)
 

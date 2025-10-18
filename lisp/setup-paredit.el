@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 (defvar whitespace-characters
   '(?\n ?\r ?\t ?\ ))
 

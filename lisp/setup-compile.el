@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 (defun compile-with-local-compilation-error-regexp-alist (compile &rest args)
   (let ((alist compilation-error-regexp-alist))
     (with-current-buffer (apply compile args)
