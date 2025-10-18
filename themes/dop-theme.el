@@ -33,8 +33,6 @@
    `(vertical-border
      ((((background light)) :foreground ,acme-yellow)
       (((background dark)) :foreground ,acme-blue)))
-   `(eglot-highlight-symbol-face
-     ((t :inherit highlight)))
    `(hl-line
      ((((background light)) :background ,(color-darken-name acme-yellow-light 10))
       (((background dark)) :background ,(color-lighten-name dark-bg 50))))
@@ -62,6 +60,10 @@
        :box (:line-width 2 :style flat-button :color "grey40"))))
    `(eglot-mode-line
      ((t :weight bold)))
+   `(eglot-diagnostic-tag-unnecessary-face
+     ((t :inherit shadow :background ,acme-red-light)))
+   `(eglot-highlight-symbol-face
+     ((t :inherit highlight)))
    `(diff-hl-change
      ((((background light)) :background "light blue")
       (((background dark)) :background "royal blue")))
@@ -81,18 +83,28 @@
    `(trailing-whitespace
      ((((background light)) :background "RosyBrown1")
       (((background dark)) :background "brown4")))
-   `(font-lock-comment-face
-     ((t :inherit shadow :foreground unspecified :slant italic)))
+   `(font-lock-comment-face ((t :background "grey90")))
+   `(font-lock-function-call-face ((t )))
+   `(font-lock-variable-name-face ((t :foreground ,acme-purple)))
+   `(font-lock-function-name-face ((t :foreground ,acme-cyan)))
+   `(font-lock-keyword-face ((t :inherit shadow)))
+   `(font-lock-type-face ((t )))
+   `(font-lock-constant-face ((t )))
+   `(font-lock-property-name-face ((t )))
+   `(font-lock-property-use-face ((t )))
+   `(font-lock-string-face ((t  :foreground ,acme-green-alt)))
+   `(font-lock-number-face ((t  :foreground ,acme-green-alt)))
+   `(font-lock-bracket-face ((t :inherit shadow)))
+   `(typescript-ts-jsx-attribute-face ((t )))
    `(eshell-prompt
-     ((((background light)) :foreground "red" :overline "grey80")
-      (((background dark)) :foreground "pink" :overline "grey40")))
-   `(treesit-fold-replacement-face
-     ((((background light)) :foreground ,light-fg :background ,(color-darken-name light-bg 20))
-      (((background dark)) :foreground ,dark-fg :background ,(color-lighten-name dark-bg 60))))
-   `(dictionary-reference-face ((t (:inherit variable-pitch :foreground "blue"))))
-   `(dictionary-word-entry-face ((((type x)) (:italic t))
-                                 (((type tty) (class color)) (:foreground "green"))
-                                 (t (:inherit variable-pitch
-                                              :inverse t))))))
+     ((((background light)) :inherit shadow :overline "grey80")
+      (((background dark)) :inherit shadow :overline "grey40")))
+   `(dictionary-reference-face
+     ((t (:inherit variable-pitch :foreground "blue"))))
+   `(dictionary-word-entry-face
+     ((((type x)) (:italic t))
+      (((type tty) (class color)) (:foreground "green"))
+      (t (:inherit variable-pitch
+                   :inverse t))))))
 
 (provide-theme 'dop)

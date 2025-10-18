@@ -11,6 +11,7 @@
  '(comint-move-point-for-output nil)
  '(comint-process-echoes t)
  '(comint-scroll-show-maximum-output nil)
+ '(comment-multi-line t)
  '(company-tooltip-align-annotations t)
  '(compilation-always-kill t)
  '(compilation-ask-about-save nil)
@@ -21,7 +22,7 @@
  '(cursor-in-non-selected-windows nil)
  '(custom-enabled-themes '(dop))
  '(custom-safe-themes
-   '("79900811c7e237166c3c24efbb3b9de80538064978ca2ccfa9865f8ac1a84db7"))
+   '("4026e314d41b0e50621a5dc520d59821acedf0895d383d3fbaea8b580688daf7"))
  '(custom-theme-directory "~/.emacs.d/themes/")
  '(debug-on-error nil)
  '(delete-by-moving-to-trash t)
@@ -68,7 +69,9 @@
  '(display-time-default-load-average 1)
  '(display-time-format "%Y-%m-%d")
  '(display-time-mode t)
+ '(dumb-jump-debug nil)
  '(dumb-jump-force-searcher 'rg)
+ '(dumb-jump-prefer-searcher 'git-grep-plus-ag)
  '(editorconfig-mode-lighter " ec")
  '(ef-themes-mixed-fonts t)
  '(ef-themes-variable-pitch-ui t)
@@ -217,20 +220,22 @@
  '(org-todo-keywords
    '((sequence "TODO(t)" "WAIT(w@)" "|" "DONE(d!)" "CANCELLED(c@)")))
  '(package-selected-packages
-   '(browse-kill-ring buffer-env cider csv-mode devdocs dictionary
-                      dired-auto-readme dired-collapse dired-git-info
-                      dired-subtree edit-indirect eldoc elfeed
-                      exec-path-from-shell flymake flymake-proselint
-                      gptel graphviz-dot-mode hungry-delete jq-mode
-                      json-mode keyfreq ligature macrostep
-                      markdown-preview-mode neotree nodejs-repl
-                      ns-auto-titlebar ox-gfm paredit-everywhere
-                      php-mode prettier project protobuf-mode
-                      rainbow-mode restclient scala-mode seq
-                      sql-indent string-edit-at-point
-                      string-inflection treesit-auto treesit-fold
-                      treesit-ispell wgrep whitespace-cleanup-mode
-                      xterm-color yaml-mode))
+   '(ascii-art-to-unicode bazel browse-kill-ring buffer-env cider
+                          csv-mode devdocs dictionary
+                          dired-auto-readme dired-collapse
+                          dired-git-info dired-subtree edit-indirect
+                          eldoc elfeed exec-path-from-shell flymake
+                          flymake-proselint gptel graphviz-dot-mode
+                          hungry-delete jq-mode json-mode keyfreq
+                          ligature macrostep markdown-preview-mode
+                          neotree nodejs-repl ns-auto-titlebar ox-gfm
+                          paredit-everywhere php-mode prettier project
+                          protobuf-mode rainbow-mode restclient
+                          scala-mode seq sql-indent
+                          string-edit-at-point string-inflection
+                          treesit-auto treesit-fold wgrep
+                          whitespace-cleanup-mode xterm-color
+                          yaml-mode))
  '(paredit-lighter " ParEd" t)
  '(plantuml-default-exec-mode 'jar)
  '(plantuml-indent-level 4)

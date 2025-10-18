@@ -30,6 +30,10 @@
 
 (savehist-mode t)
 (recentf-mode t)
+(line-number-mode t)
+(column-number-mode t)
+(delete-selection-mode t)
+(auto-compression-mode t)
 
 (put 'downcase-region 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
@@ -43,14 +47,14 @@
 (set-selection-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
 
-(line-number-mode t)
-(column-number-mode t)
-(electric-pair-mode t)
-(delete-selection-mode t)
-(auto-compression-mode t)
+(defun turn-on-local-electric-pair-mode ()
+  (electric-pair-local-mode t))
 
 (defun turn-off-local-electric-pair-mode ()
   (electric-pair-local-mode -1))
+
+(defun turn-on-local-electric-indent-mode ()
+  (electric-indent-local-mode t))
 
 (defun turn-off-local-electric-indent-mode ()
   (electric-indent-local-mode -1))
@@ -64,10 +68,11 @@
 (add-hook 'prog-mode-hook #'turn-on-show-trailing-whitespace)
 (add-hook 'prog-mode-hook #'turn-off-bidi-display-reordering)
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
-(add-hook 'html-mode-hook #'turn-on-show-trailing-whitespace)
-(add-hook 'css-mode-hook #'turn-on-show-trailing-whitespace)
+(add-hook 'prog-mode-hook #'turn-on-local-electric-pair-mode)
+(add-hook 'prog-mode-hook #'turn-on-local-electric-indent-mode)
+(add-hook 'sgml-mode-hook #'turn-on-show-trailing-whitespace)
 
-(add-to-list 'auto-mode-alist '("\\.vue\\'" . mhtml-mode))
+(add-to-list 'auto-mode-alist '("\\.vue\\'" . vue-mode))
 
 (defun add-watchwords ()
   "Highlight FIXME, @fixme, TODO, @todo, XXX, @xxx."
@@ -89,9 +94,6 @@
 (package-initialize)
 (package-install-selected-packages)
 
-;; Activate and require `use-package' explicitly. We'll use it to
-;; activate all the rest on demand.
-;; (package-activate 'use-package)
 (require 'use-package)
 
 (defun activate-before-use-package (name &rest args)
@@ -251,6 +253,7 @@
 (use-package eglot
   :commands eglot
   :config
+  (setq eglot-stay-out-of '(flymake-diagnostic-functions))
   (defun eglot-rename (newname)
     "Rename the current symbol to NEWNAME."
     (interactive
@@ -440,14 +443,20 @@
   :config
   (let* ((ollama-list
           (cdr (string-split (shell-command-to-string "ollama list") "\n" t)))
-         (models (mapcar (lambda (line)
-                           (intern (car (string-split line))))
-                         ollama-list)))
-    (setq gptel-modal (car models)
-          gptel-backend (gptel-make-ollama "ollama"
-                          :host "localhost:11434"
-                          :stream t
-                          :models models))))
+         (ollama-models
+          (mapcar (lambda (line)
+                    (intern (car (string-split line))))
+                  ollama-list))
+         (ollama-backend
+          (gptel-make-ollama "ollama"
+            :host "localhost:11434"
+            :stream t
+            :models ollama-models)))
+    (setq gptel-model (car ollama-models)
+          gptel-backend ollama-backend)))
+
+(use-package devdocs
+  :bind (("C-h D" . devdocs-lookup)))
 
 (load "~/work/config.el" 'noerror)
 (load "~/work/utils.el" 'noerror)

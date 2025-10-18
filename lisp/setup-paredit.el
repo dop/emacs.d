@@ -42,6 +42,8 @@
   (advice-add 'paredit-backward-kill-word :around #'paredit-kill-dwim)
   (advice-add 'paredit-forward-delete :around #'paredit-forward-delete-whitespace)
   (advice-add 'paredit-backward-delete :around #'paredit-backward-delete-whitespace)
+  ;; Make sure electric pair mode is turned off. I usually add it to all prog and text modes.
+  (add-hook 'paredit-mode-hook #'turn-off-local-electric-pair-mode)
   (define-minor-mode repl-paredit-mode "Paredit in the REPL."
     :keymap (let ((map (copy-keymap paredit-mode-map)))
               (keymap-unset map "RET" t)
@@ -54,7 +56,8 @@
   :hook ((typescript-mode . paredit-everywhere-mode)
          (js-mode . paredit-everywhere-mode)
          (js-ts-mode . paredit-everywhere-mode)
-         (typescript-ts-base-mode . paredit-everywhere-mode))
+         (typescript-ts-base-mode . paredit-everywhere-mode)
+         (typescript-ts-base-mode . electric-pair-mode))
   :bind (:map paredit-everywhere-mode-map
               ("C-k" . paredit-kill)
               ("M-[" . paredit-wrap-square)
