@@ -90,20 +90,25 @@
      ((((background light)) :background "RosyBrown1")
       (((background dark)) :background "brown4")))
    `(font-lock-comment-face
-     ((((background light)) :background "grey90")
-      (((background dark)) :background "grey40")))
+     ((((background light)) :background "grey95")
+      (((background dark)) :background "grey35")))
    `(font-lock-function-call-face ((t )))
    `(font-lock-variable-name-face
      ((((background light)) :foreground ,acme-purple)
       (((background dark)) :foreground ,acme-purple-light)))
    `(font-lock-function-name-face
-     ((((background light)) :foreground ,acme-cyan)
+     ((((background light)) :foreground ,acme-cyan :background ,acme-blue-light)
       (((background dark)) :foreground ,acme-cyan-light)))
-   `(font-lock-keyword-face ((t :inherit shadow)))
+   `(font-lock-keyword-face ((t )))
    `(font-lock-type-face ((t )))
+   `(font-lock-variable-use-face ((t )))
    `(font-lock-constant-face ((t )))
+   `(font-lock-builtin-face ((t :inherit shadow)))
    `(font-lock-property-name-face ((t )))
    `(font-lock-property-use-face ((t )))
+   `(font-lock-doc-face
+     ((((background light)) :foreground ,acme-green-alt :background ,acme-green-light)
+      (((background dark)) :foreground ,acme-green-light :background ,acme-green-alt)))
    `(font-lock-string-face
      ((((background light))  :foreground ,acme-green-alt)
       (((background dark))  :foreground ,acme-green-light)))
@@ -111,7 +116,7 @@
      ((((background light))  :foreground ,acme-green-alt)
       (((background dark))  :foreground ,acme-green-light)))
    `(font-lock-bracket-face ((t :inherit shadow)))
-   `(font-lock-delimiter-face ((t :inherit shadow)))
+   `(font-lock-punctuation-face ((t :inherit shadow)))
    `(typescript-ts-jsx-attribute-face ((t )))
    `(eshell-prompt
      ((((background light)) :inherit shadow :overline "grey80")
