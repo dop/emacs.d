@@ -363,19 +363,6 @@
 (use-package vc-dir
   :bind (:map vc-dir-mode-map ("^" . vc-dir-up)))
 
-(defun vc-git-rebase (ontop)
-  (interactive
-   (list (pcase-let ((`(,current . ,options) (vc-git-branches)))
-           (completing-read "Rebase on top: " options nil t))))
-  (when-let ((root (vc-git-root default-directory))
-             (current (car (vc-git-branches))))
-    (let ((buf (get-buffer "*vc*")))
-      (vc-git--call buf "checkout" ontop)
-      (vc-git--call buf "pull" "-n" ontop)
-      (vc-git--call buf "checkout" current)
-      (vc-git--call buf "rebase" ontop))
-    (vc-resynch-buffer root t t)))
-
 (defun hack-apply-local-variables-to-current-buffer (&rest ignore)
   (hack-local-variables))
 
@@ -383,8 +370,7 @@
   :bind (:map vc-dir-git-mode-map
               ("z c" . vc-git-stash)
               ("z x" . vc-git-stash-delete)
-              ("z s" . vc-git-stash-snapshot)
-              ("b r" . vc-git-rebase))
+              ("z s" . vc-git-stash-snapshot))
   :config
   (advice-add 'vc-setup-buffer :after #'hack-apply-local-variables-to-current-buffer))
 
