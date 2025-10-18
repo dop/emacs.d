@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 (deftheme dop)
 
 (require 'color)
@@ -38,7 +40,7 @@
       (((background dark)) :foreground ,acme-blue)))
    `(hl-line
      ((((background light)) :background ,(color-darken-name acme-yellow-light 10))
-      (((background dark)) :background ,(color-lighten-name dark-bg 50))))
+      (((background dark)) :background ,dark-bg)))
    `(mode-line
      ((((background light))
        :inherit variable-pitch
