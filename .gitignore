@@ -21,3 +21,5 @@ bookmarks
 /multisession/
 /org-persist/
 /ielm-history.eld
+.emacs.desktop*
+/devdocs
