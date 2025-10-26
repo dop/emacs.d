@@ -6,7 +6,7 @@
  ;; If there is more than one, they won't work right.
  '(backup-by-copying t)
  '(backup-directory-alist '(("." . "~/.emacs.d/backups")))
- '(blink-cursor-blinks 3)
+ '(blink-cursor-blinks 0)
  '(comint-eol-on-send t)
  '(comint-input-ignoredups t)
  '(comint-move-point-for-output nil)
@@ -23,7 +23,8 @@
  '(cursor-in-non-selected-windows nil)
  '(custom-enabled-themes '(dop))
  '(custom-safe-themes
-   '("c56ed4398e4f8e22340cf660750fbdd585ad9f77acce6eb8cf993695644b0a12"))
+   '("5aa50e2a4269e9e6e92616e4d9bd67db534f76fd2b3c3698aca5b01c37e7dab7"
+     "66d5fc326176a3d988542e06d3f6fe9465140d048ee037beebe1bf890485808b"))
  '(custom-theme-directory "~/.emacs.d/themes/")
  '(debug-on-error nil)
  '(delete-by-moving-to-trash t)
@@ -85,7 +86,9 @@
  '(eglot-connect-timeout 10)
  '(eglot-events-buffer-size 0)
  '(eglot-override-flymake-diagnostic-functions nil)
+ '(eglot-prefer-plaintext t)
  '(eglot-sync-connect nil)
+ '(eldoc-echo-area-prefer-doc-buffer t)
  '(eldoc-minor-mode-string " doc")
  '(electric-pair-mode t)
  '(elfeed-feeds
@@ -139,6 +142,16 @@
      "*.dxl" "*.lo" "*.la" "*.gmo" "*.mo" "*.toc" "*.aux" "*.cp"
      "*.fn" "*.ky" "*.pg" "*.tp" "*.vr" "*.cps" "*.fns" "*.kys"
      "*.pgs" "*.tps" "*.vrs" "*.pyc" "*.pyo" "*.js.map"))
+ '(hippie-expand-try-functions-list
+   '(try-complete-file-name-partially try-complete-file-name
+                                      try-expand-all-abbrevs
+                                      try-expand-list
+                                      try-expand-dabbrev
+                                      try-expand-dabbrev-all-buffers
+                                      try-expand-dabbrev-from-kill
+                                      try-expand-line
+                                      try-complete-lisp-symbol-partially
+                                      try-complete-lisp-symbol))
  '(ibuffer-formats
    '((mark modified read-only locked " " (name 32 32 :left :elide) " "
            (size 9 -1 :right) " " (mode 16 16 :left :elide) " "
@@ -176,6 +189,7 @@
      ("shell" . sh-mode) ("bash" . sh-mode)
      ("ts" . typescript-ts-mode)))
  '(markdown-command "pandoc")
+ '(mode-line-collapse-minor-modes t)
  '(mode-line-compact t)
  '(mode-line-format
    '("%e" mode-line-front-space
@@ -230,15 +244,15 @@
                           csv-mode devdocs dictionary dired-collapse
                           dired-subtree edit-indirect eldoc
                           exec-path-from-shell flymake gptel
-                          hungry-delete json-mode ligature macrostep
-                          markdown-preview-mode neotree nodejs-repl
-                          ns-auto-titlebar ox-gfm paredit-everywhere
-                          php-mode prettier-js project
-                          protobuf-mode rainbow-mode restclient
-                          scala-mode seq sql-indent
-                          string-edit-at-point string-inflection
-                          treesit-auto treesit-fold wgrep
-                          whitespace-cleanup-mode xterm-color
+                          hungry-delete jq-mode json-mode ligature
+                          macrostep markdown-preview-mode neotree
+                          nodejs-repl ns-auto-titlebar ox-gfm
+                          paredit-everywhere php-mode prettier
+                          prettier-js project protobuf-mode
+                          rainbow-mode restclient scala-mode seq
+                          sql-indent string-edit-at-point
+                          string-inflection treesit-auto treesit-fold
+                          wgrep whitespace-cleanup-mode xterm-color
                           yaml-mode))
  '(paredit-lighter " ParEd" t)
  '(plantuml-default-exec-mode 'jar)
@@ -275,6 +289,7 @@
  '(sly-highlight-suppressed-forms t)
  '(switch-to-buffer-in-dedicated-window 'pop)
  '(switch-to-buffer-obey-display-actions nil)
+ '(tempo-interactive t)
  '(text-scale-mode-step 1.1)
  '(transient-save-history nil)
  '(trash-directory "~/.Trash")
@@ -285,6 +300,7 @@
  '(undo-tree-enable-undo-in-region t)
  '(undo-tree-history-directory-alist nil)
  '(undo-tree-mode-lighter " ut")
+ '(vc-allow-rewriting-published-history t)
  '(vc-annotate-background nil)
  '(vc-annotate-background-mode t)
  '(vc-annotate-very-old-color nil)
@@ -302,7 +318,8 @@
  '(vertico-mode t)
  '(visible-bell t)
  '(window-sides-slots '(1 0 2 2))
- '(xref-search-program 'ripgrep))
+ '(xref-search-program 'ripgrep)
+ '(xref-show-definitions-function 'xref-show-definitions-buffer-at-bottom))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

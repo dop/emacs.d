@@ -17,21 +17,18 @@
        (acme-blue-light      "#E1FAFF")
        (acme-purple          "#555599")
        (acme-purple-light    "#FFEAFF")
-       (dark-bg (color-darken-name acme-purple 50))
-       (light-bg "white")
-       (dark-fg light-bg)
-       (light-fg "black"))
+       (dark-bg (color-darken-name acme-purple 60)))
   (custom-theme-set-faces
    'dop
    `(default
-     ((((background light)) :foreground "textColor" :background "textBackgroundColor")
-      (((background dark)) :foreground "textBackgroundColor" :background "textColor")))
+     ((((background light)) :foreground "textColor" :background ,acme-yellow-light)
+      (((background dark)) :foreground "textBackgroundColor" :background ,dark-bg)))
    `(region
      ((((background light)) :background "selectedTextBackgroundColor")
       (((background dark)) :background "selectedContentBackgroundColor")))
    `(cursor
      ((((background light)) :background "red")
-      (((background dark)) :background "green")))
+      (((background dark)) :background "magenta")))
    `(fringe
      ((((background light)) :inherit default :foreground "grey70")
       (((background dark)) :inherit default :foreground "grey40")))
@@ -40,7 +37,7 @@
       (((background dark)) :foreground ,acme-blue)))
    `(hl-line
      ((((background light)) :background ,(color-darken-name acme-yellow-light 10))
-      (((background dark)) :background ,dark-bg)))
+      (((background dark)) :background ,(color-lighten-name dark-bg 10))))
    `(mode-line
      ((((background light))
        :inherit variable-pitch
@@ -89,16 +86,25 @@
    `(trailing-whitespace
      ((((background light)) :background "RosyBrown1")
       (((background dark)) :background "brown4")))
+   `(error
+     ((((background light)) :foreground "red" :weight bold)
+      (((background dark)) :foreground "red" :weight bold)))
+   `(warning
+     ((((background light)) :foreground "orange" :weight bold)
+      (((background dark)) :foreground "orange" :weight bold)))
+   `(font-lock-comment-delimiter-face
+     ((((background light)) :foreground ,(color-darken-name acme-yellow 10) :background ,(color-darken-name acme-yellow-light 10))
+      (((background dark)) :foreground ,(color-darken-name acme-red-light 30))))
    `(font-lock-comment-face
-     ((((background light)) :background "grey95")
-      (((background dark)) :background "grey35")))
+     ((((background light)) :foreground ,acme-yellow :background ,(color-darken-name acme-yellow-light 10))
+      (((background dark)) :foreground ,(color-darken-name acme-red-light 20))))
    `(font-lock-function-call-face ((t )))
    `(font-lock-variable-name-face
      ((((background light)) :foreground ,acme-purple)
-      (((background dark)) :foreground ,acme-purple-light)))
+      (((background dark)) :foreground ,(color-darken-name acme-purple-light 5))))
    `(font-lock-function-name-face
-     ((((background light)) :foreground ,acme-cyan :background ,acme-blue-light)
-      (((background dark)) :foreground ,acme-cyan-light)))
+     ((((background light)) :foreground ,acme-cyan)
+      (((background dark)) :foreground ,(color-darken-name acme-cyan-light 5))))
    `(font-lock-keyword-face ((t )))
    `(font-lock-type-face ((t )))
    `(font-lock-variable-use-face ((t )))
@@ -108,13 +114,13 @@
    `(font-lock-property-use-face ((t )))
    `(font-lock-doc-face
      ((((background light)) :foreground ,acme-green-alt :background ,acme-green-light)
-      (((background dark)) :foreground ,acme-green-light :background ,acme-green-alt)))
+      (((background dark)) :foreground ,(color-darken-name acme-green-light 20))))
    `(font-lock-string-face
-     ((((background light))  :foreground ,acme-green-alt)
-      (((background dark))  :foreground ,acme-green-light)))
+     ((((background light)) :foreground ,acme-green-alt)
+      (((background dark)) :foreground ,(color-darken-name acme-green-light 10))))
    `(font-lock-number-face
-     ((((background light))  :foreground ,acme-green-alt)
-      (((background dark))  :foreground ,acme-green-light)))
+     ((((background light)) :foreground ,acme-green-alt)
+      (((background dark)) :foreground ,(color-darken-name acme-green-light 5))))
    `(font-lock-bracket-face ((t :inherit shadow)))
    `(font-lock-punctuation-face ((t :inherit shadow)))
    `(typescript-ts-jsx-attribute-face ((t )))

@@ -173,7 +173,7 @@ Every item of FUNCTIONS can be either function or arguments to
   (when-let* ((diagnostics (and (overlayp overlay)
                                 (overlay-get overlay 'flymake-diagnostic))))
     (when (eq (flymake--diag-backend diagnostics) 'flymake-eslint--checker)
-      (flymake--diag-text diagnostics))))
+      (flymake--diag-message diagnostics))))
 
 (ert-deftest overlay-get-eslint-message ()
   "Tests basics of `overlay-get-eslint-message'."

@@ -25,6 +25,8 @@
 (keymap-global-set "C-x O" #'other-frame)
 (keymap-global-set "M-`" #'other-frame)
 
+(keymap-global-set "M-/" #'hippie-expand)
+
 (keymap-global-set "<f5>" #'recompile)
 
 (require 'mark-and-copy)

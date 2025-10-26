@@ -240,7 +240,8 @@
 (use-package subword
   :hook (js-mode . subword-mode)
   :hook (typescript-ts-mode . subword-mode)
-  :hook (tsx-ts-mode . subword-mode))
+  :hook (tsx-ts-mode . subword-mode)
+  :hook (css-base-mode . subword-mode))
 
 (use-package typescript-ts-mode
   :mode ("\\.m?ts\\'" . typescript-ts-mode)
@@ -253,25 +254,8 @@
 
 (use-package string-edit-at-point :commands string-edit-at-point)
 (use-package wgrep :commands wgrep-change-to-wgrep-mode)
-(use-package eglot
-  :commands eglot
-  :config
-  (setq eglot-stay-out-of '(flymake-diagnostic-functions))
-  (defun eglot-rename (newname)
-    "Rename the current symbol to NEWNAME."
-    (interactive
-     (list (read-from-minibuffer
-            (format "Rename `%s' to: " (or (thing-at-point 'symbol t)
-                                           "unknown symbol"))
-            (thing-at-point 'symbol t)
-            nil nil nil
-            (symbol-name (symbol-at-point)))))
-    (eglot--server-capable-or-lose :renameProvider)
-    (eglot--apply-workspace-edit
-     (jsonrpc-request (eglot--current-server-or-lose)
-                      :textDocument/rename `(,@(eglot--TextDocumentPositionParams)
-                                             :newName ,newname))
-     current-prefix-arg)))
+
+(require 'setup-eglot)
 
 (use-package dumb-jump
   :commands dumb-jump-xref-activate
@@ -403,6 +387,7 @@
   :hook (after-init . global-treesit-auto-mode))
 
 (use-package treesit-fold
+  :disabled t
   :hook (prog-mode . treesit-fold-mode)
   :bind (:map treesit-fold-mode-map
               ("C-c f c" . treesit-fold-close)
@@ -437,6 +422,8 @@
 
 (use-package devdocs
   :bind (("C-h D" . devdocs-lookup)))
+
+(require 'setup-tempo)
 
 (load "~/work/config.el" 'noerror)
 (load "~/work/utils.el" 'noerror)
