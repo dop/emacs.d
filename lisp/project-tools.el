@@ -1,13 +1,14 @@
 ;; -*- lexical-binding: t; -*-
+
 (require 'project)
 (require 'my-library)
 
 (defun project-current-root ()
-  (when-let ((project (project-current)))
+  (when-let* ((project (project-current)))
     (project-root project)))
 
 (defun project-current-name ()
-  (when-let ((project (project-current)))
+  (when-let* ((project (project-current)))
     (project-name project)))
 
 (defun project-has-file-p (project filepath)
