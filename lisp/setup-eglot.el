@@ -2,9 +2,9 @@
 
 (use-package eglot
   :commands eglot
-  :config (setq eglot-stay-out-of '(flymake-diagnostic-functions))
+  :config (setq eglot-stay-out-of '(flymake-diagnostic-functions)))
 
-  :init
+(with-eval-after-load "eglot"
   (defun eglot-rename (newname)
     "Rename the current symbol to NEWNAME."
     (interactive

@@ -17,12 +17,12 @@
        (acme-blue-light      "#E1FAFF")
        (acme-purple          "#555599")
        (acme-purple-light    "#FFEAFF")
-       (dark-bg (color-darken-name acme-purple 60)))
+       (dark-bg (color-darken-name acme-blue 60)))
   (custom-theme-set-faces
    'dop
    `(default
      ((((background light)) :foreground "textColor" :background ,acme-yellow-light)
-      (((background dark)) :foreground "textBackgroundColor" :background ,dark-bg)))
+      (((background dark)) :foreground "textBackgroundColor" :background ,(color-saturate-name dark-bg -20))))
    `(region
      ((((background light)) :background "selectedTextBackgroundColor")
       (((background dark)) :background "selectedContentBackgroundColor")))
@@ -134,6 +134,8 @@
      ((((type x)) (:italic t))
       (((type tty) (class color)) (:foreground "green"))
       (t (:inherit variable-pitch
-                   :inverse t))))))
+                   :inverse t))))
+   `(treesit-fold-replacement-face ((t (:inherit shadow))))
+   `(treesit-fold-replacement-mouse-face ((t (:inherit shadow))))))
 
 (provide-theme 'dop)

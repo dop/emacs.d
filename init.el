@@ -6,7 +6,8 @@
               (message "Initialized in %fs." (float-time diff))))
           100)
 
-(set-face-attribute 'default nil :family "PragmataPro Mono Liga")
+(set-face-attribute 'default nil :family "PragmataPro Mono Liga" :height 140)
+(setq truncate-string-ellipsis "")
 
 (setenv "TERM" "dumb")
 (setenv "PAGER" "cat")
@@ -72,11 +73,12 @@
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 (add-hook 'prog-mode-hook #'turn-on-local-electric-pair-mode)
 (add-hook 'prog-mode-hook #'turn-on-local-electric-indent-mode)
+(add-hook 'prog-mode-hook #'completion-preview-mode)
 (add-hook 'sgml-mode-hook #'turn-on-show-trailing-whitespace)
 
 (add-to-list 'auto-mode-alist '("\\.vue\\'" . vue-mode))
 
-(defun add-watchwords ()
+(defun font-lock-add-watchwords ()
   "Highlight FIXME, @fixme, TODO, @todo, XXX, @xxx."
   (font-lock-add-keywords
    nil '(("\\(\\B@todo\\|\\<TODO\\)\\(?:$\\|:\s\\|\s\\)" 1 'warning prepend)
@@ -84,7 +86,7 @@
          ("\\(\\B@xxx\\|\\<XXX\\)\\(?:$\\|:\s\\|\s\\)"  1 'error prepend)
          ("\\(\\B@note\\|\\<NOTE\\)\\(?:$\\|:\s\\|\s\\)"  1 'error prepend))))
 
-(add-hook 'prog-mode-hook #'add-watchwords)
+(add-hook 'prog-mode-hook #'font-lock-add-watchwords)
 
 ;; Useful in eshell.
 (defalias 'e 'find-file)
@@ -259,6 +261,11 @@
 
 (require 'setup-eglot)
 
+(with-eval-after-load "minibuffer"
+  (keymap-unset completion-in-region-mode-map "TAB")
+  (keymap-set completion-in-region-mode-map "M-n" #'minibuffer-next-completion)
+  (keymap-set completion-in-region-mode-map "M-p" #'minibuffer-previous-completion))
+
 (use-package dumb-jump
   :commands dumb-jump-xref-activate
   :init (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
@@ -358,61 +365,7 @@
   :bind (:map diff-hl-mode-map ("C-x v k" . diff-hl-revert-hunk))
   :hook (after-init . global-diff-hl-mode))
 
-(defun pipe-ligature-p (lig)
-  (string-prefix-p "|" lig))
-
-(defun ligature-adjust-pragmatapro-pipes (mode ligatures)
-  "https://github.com/fabrizioschiavi/pragmatapro/issues/293"
-  (let ((font (face-attribute 'default :font nil t)))
-    ;; We run only in our specific case:
-    ;;   - using PragamatPro Mono Liga
-    ;;   - concrete mode
-    ;;   - all ligatures are strings
-    ;;   - some ligatures start with pipe
-    ;;   - auto-compoisition-mode is enabled.
-    (when (and auto-composition-mode
-               (eq (font-get font :family) 'PragmataPro\ Mono\ Liga)
-               (symbolp mode)
-               (seq-every-p #'stringp ligatures)
-               (seq-some #'pipe-ligature-p ligatures))
-      (let ((pipe-ligatures (seq-filter #'pipe-ligature-p ligatures)))
-        (dolist (lig pipe-ligatures)
-          (let ((gs (composition-get-gstring 0 (length lig) font lig)))
-            ;; Glyph was not shaped yet if ID is nil
-            (unless (aref gs 1)
-              (with-temp-buffer
-                (funcall mode)
-                ;; Run through all ligatures, just in case.
-                (mapc (lambda (l) (insert l "\n")) pipe-ligatures)
-                ;; These 2 lines force glyphs to be shaped
-                (switch-to-buffer (current-buffer) 'norecord)
-                (redisplay)
-                (setq gs (composition-get-gstring 0 (length lig) font lig))))
-            (dotimes (i (lgstring-glyph-len gs))
-              (aset (lgstring-glyph gs i) 7 1)
-              (aset (lgstring-glyph gs i) 8 1))))))))
-
-(use-package ligature
-  :defer 2
-  :hook (prog-mode . ligature-mode)
-  :config
-  (advice-add 'ligature-set-ligatures :after #'ligature-adjust-pragmatapro-pipes)
-
-  (ligature-set-ligatures
-   'lisp-data-mode
-   '("=>" "->" "==>" "-->" "--" "#{" "#[" "#(" "#_" ";;" ";;;" ";;;;" "###"))
-
-  (ligature-set-ligatures 'sgml-mode '("<!-- -->"))
-
-  (let ((js-ligatures
-         '("=>" "===" "==" "!==" "!="
-           "<=" ">="
-           "+=" "|=" "*=" "&=" "?=" "^=" "%="
-           "?."
-           "/**"
-           "**" ">>" "<<" "||" "&&")))
-    (ligature-set-ligatures 'js-base-mode js-ligatures)
-    (ligature-set-ligatures 'typescript-ts-base-mode js-ligatures)))
+(require 'setup-ligatures)
 
 ;; Work around the issue of Emacs EPG and GPG >2.0 talking past each other.
 ;; https://dev.gnupg.org/T6481#170760
