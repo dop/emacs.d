@@ -33,7 +33,7 @@ Configure:
 #+end_sr
 ** MacOS
 
-Use [[https://www.macports.org/][MacPorts]] to install [[https://github.com/akheron/jansson][jansson]].
+For older versions of Emacs, use [[https://www.macports.org/][MacPorts]] to install [[https://github.com/akheron/jansson][jansson]].
 
 #+begin_src shell
   ./autogen.sh
@@ -52,4 +52,10 @@ Trigger disabled hotkey to take effect:
 
 #+begin_src shell
 /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
+#+end_src
+
+For crisper fonts:
+
+#+begin_src shell
+defaults write org.gnu.Emacs AppleFontSmoothing -int 0
 #+end_src
