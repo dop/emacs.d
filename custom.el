@@ -17,13 +17,16 @@
  '(compilation-always-kill t)
  '(compilation-ask-about-save nil)
  '(compilation-message-face 'default)
+ '(completion-preview-minimum-symbol-length 1)
+ '(completion-show-help nil)
  '(create-lockfiles nil)
  '(css-indent-offset 2)
  '(csv-separators '("," "\11" ";"))
  '(cursor-in-non-selected-windows nil)
  '(custom-enabled-themes '(dop))
  '(custom-safe-themes
-   '("5aa50e2a4269e9e6e92616e4d9bd67db534f76fd2b3c3698aca5b01c37e7dab7"
+   '("3d646aa6448b94ef44a909d872c7c94aa4e2cb05e1df41d4ea832c38091f0ea3"
+     "5aa50e2a4269e9e6e92616e4d9bd67db534f76fd2b3c3698aca5b01c37e7dab7"
      "66d5fc326176a3d988542e06d3f6fe9465140d048ee037beebe1bf890485808b"))
  '(custom-theme-directory "~/.emacs.d/themes/")
  '(debug-on-error nil)
@@ -240,25 +243,25 @@
  '(org-todo-keywords
    '((sequence "TODO(t)" "WAIT(w@)" "|" "DONE(d!)" "CANCELLED(c@)")))
  '(package-selected-packages
-   '(ascii-art-to-unicode bazel browse-kill-ring buffer-env cider
-                          csv-mode devdocs dictionary dired-collapse
-                          dired-subtree edit-indirect eldoc
-                          exec-path-from-shell flymake gptel
-                          hungry-delete jq-mode json-mode ligature
-                          macrostep markdown-preview-mode neotree
-                          nodejs-repl ns-auto-titlebar ox-gfm
+   '(ascii-art-to-unicode bazel browse-kill-ring buffer-env csv-mode
+                          dictionary dired-collapse dired-subtree
+                          edit-indirect eldoc exec-path-from-shell
+                          flymake hungry-delete jq-mode json-mode
+                          ligature macrostep markdown-preview-mode
+                          neotree nodejs-repl ns-auto-titlebar ox-gfm
                           paredit-everywhere php-mode prettier
                           prettier-js project protobuf-mode
-                          rainbow-mode restclient scala-mode seq
-                          sql-indent string-edit-at-point
-                          string-inflection treesit-auto treesit-fold
-                          wgrep whitespace-cleanup-mode xterm-color
+                          rainbow-mode scala-mode seq sql-indent
+                          string-edit-at-point string-inflection
+                          treesit-auto treesit-fold wgrep
+                          whitespace-cleanup-mode xterm-color
                           yaml-mode))
  '(paredit-lighter " ParEd" t)
  '(plantuml-default-exec-mode 'jar)
  '(plantuml-indent-level 4)
  '(plantuml-jar-path "/opt/local/share/java/plantuml/plantuml.jar")
  '(prettier-inline-errors-flag t)
+ '(prettier-js-show-errors 'buffer)
  '(prettier-lighter " Pr")
  '(project-switch-commands
    '((project-find-file "Find file" nil)
@@ -294,6 +297,8 @@
  '(transient-save-history nil)
  '(trash-directory "~/.Trash")
  '(treesit-auto-install 'prompt)
+ '(treesit-fold-line-count-show nil)
+ '(treesit-fold-summary-show nil)
  '(treesit-font-lock-level 4)
  '(typescript-indent-level 2)
  '(undo-tree-auto-save-history nil)
@@ -318,8 +323,9 @@
  '(vertico-mode t)
  '(visible-bell t)
  '(window-sides-slots '(1 0 2 2))
+ '(xref-auto-jump-to-first-definition t)
  '(xref-search-program 'ripgrep)
- '(xref-show-definitions-function 'xref-show-definitions-buffer-at-bottom))
+ '(xref-show-definitions-function 'xref-show-definitions-buffer))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
