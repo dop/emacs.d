@@ -85,7 +85,7 @@
 
 ;; NPM project
 (with-eval-after-load "project"
-  (defvar project-npm--name-cache (make-hash-table))
+  (defvar project-npm--name-cache (make-hash-table :test 'equal))
 
   (defun project-npm--get-and-cache-package-name (dir)
     (let ((name (gethash dir project-npm--name-cache)))
