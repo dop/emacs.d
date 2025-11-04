@@ -22,7 +22,7 @@
    'dop
    `(default
      ((((background light)) :foreground "textColor" :background ,acme-yellow-light)
-      (((background dark)) :foreground "textBackgroundColor" :background ,(color-saturate-name dark-bg -20))))
+      (((background dark)) :foreground "textBackgroundColor" :background ,(color-saturate-name dark-bg -50))))
    `(region
      ((((background light)) :background "selectedTextBackgroundColor")
       (((background dark)) :background "selectedContentBackgroundColor")))
