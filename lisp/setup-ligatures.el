@@ -40,16 +40,20 @@
   (advice-add 'ligature-set-ligatures :after #'ligature-adjust-pragmatapro-pipes)
 
   (ligature-set-ligatures
+   'fundamental-mode
+   '("=>" "->" "==>" "-->" "www"))
+
+  (ligature-set-ligatures
    'lisp-data-mode
    '("=>" "->" "==>" "-->" "--" "#{" "#[" "#(" "#_" ";;" ";;;" ";;;;" "##"))
 
   (ligature-set-ligatures 'sgml-mode '("<!-- -->"))
 
   (let ((js-ligatures
-         '("=>" "===" "==" "!==" "!="
+         '("=>" "===" "==" "!==" "!=" "->" "-->" "--" "++"
            "<=" ">="
            "+=" "|=" "*=" "&=" "?=" "^=" "%="
-           "?."
+           "?." "<>" "</>" "/>"
            "/**" "//"
            "**" "||" "&&")))
     (ligature-set-ligatures 'js-base-mode js-ligatures)

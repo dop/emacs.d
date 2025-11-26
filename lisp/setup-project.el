@@ -46,7 +46,7 @@
   (defun project-prefixed-buffer-name (mode)
     (concat "*"
             (project-name (project-current))
-            "-"
+            " "
             (downcase mode)
             "*")))
 
@@ -99,9 +99,15 @@
             (cl-case project-preferred-root-resolution
               (top #'locate-top-dominating-file)
               (t   #'locate-dominating-file)))
+           (suffix "")
            (root (funcall resolve-root dir "package.json")))
       (when root
-        (list 'npm (project-npm--get-and-cache-package-name root) root))))
+        ;; .git is a regular file in a worktree
+        (when (file-regular-p (expand-file-name ".git" (locate-dominating-file default-directory ".git")))
+          (setq suffix (concat " " (car (vc-git-branches)))))
+        (list 'npm
+              (concat (project-npm--get-and-cache-package-name root) suffix)
+              root))))
 
   (cl-defmethod project-name ((project (head npm)))
     (cadr project))

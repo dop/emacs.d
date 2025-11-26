@@ -25,9 +25,7 @@
  '(cursor-in-non-selected-windows nil)
  '(custom-enabled-themes '(dop))
  '(custom-safe-themes
-   '("3d646aa6448b94ef44a909d872c7c94aa4e2cb05e1df41d4ea832c38091f0ea3"
-     "5aa50e2a4269e9e6e92616e4d9bd67db534f76fd2b3c3698aca5b01c37e7dab7"
-     "66d5fc326176a3d988542e06d3f6fe9465140d048ee037beebe1bf890485808b"))
+   '("8937605989e56ae4b31e522b248b5a2907073ee9c5f8d0bb7259412034128daf"))
  '(custom-theme-directory "~/.emacs.d/themes/")
  '(debug-on-error nil)
  '(delete-by-moving-to-trash t)
@@ -246,15 +244,15 @@
    '(ascii-art-to-unicode bazel browse-kill-ring buffer-env csv-mode
                           dictionary dired-collapse dired-subtree
                           edit-indirect eldoc exec-path-from-shell
-                          flymake hungry-delete jq-mode json-mode
-                          ligature macrostep markdown-preview-mode
-                          neotree nodejs-repl ns-auto-titlebar ox-gfm
-                          paredit-everywhere php-mode prettier
-                          prettier-js project protobuf-mode
-                          rainbow-mode scala-mode seq sql-indent
-                          string-edit-at-point string-inflection
-                          treesit-auto treesit-fold wgrep
-                          whitespace-cleanup-mode xterm-color
+                          flymake gptel gptel-agent hungry-delete
+                          jq-mode json-mode ligature macrostep
+                          markdown-preview-mode neotree nodejs-repl
+                          ns-auto-titlebar ox-gfm paredit-everywhere
+                          php-mode prettier prettier-js project
+                          protobuf-mode rainbow-mode scala-mode seq
+                          sql-indent string-edit-at-point
+                          string-inflection treesit-auto treesit-fold
+                          wgrep whitespace-cleanup-mode xterm-color
                           yaml-mode))
  '(paredit-lighter " ParEd" t)
  '(plantuml-default-exec-mode 'jar)
@@ -276,12 +274,6 @@
  '(recentf-mode t)
  '(require-final-newline t)
  '(ring-bell-function nil)
- '(safe-local-variable-values
-   '((eval eglot-ensure) (eval auto-revert-mode t)
-     (project-preferred-root-resolution . top)
-     (olivetti-body-width . 120) (diff-add-log-use-relative-names . t)
-     (vc-git-annotate-switches . "-w") (eval org-writing-mode t)
-     (eval yoshi-project-mode t)))
  '(save-interprogram-paste-before-kill t)
  '(save-place-mode t)
  '(savehist-mode t)
@@ -297,6 +289,12 @@
  '(transient-save-history nil)
  '(trash-directory "~/.Trash")
  '(treesit-auto-install 'prompt)
+ '(treesit-auto-langs
+   '(awk bash bibtex blueprint c c-sharp clojure cmake commonlisp cpp css
+         dart dockerfile elixir glsl go gomod heex html java
+         javascript json julia kotlin lua magik make nix nu
+         org perl proto python r ruby rust scala sql surface toml tsx
+         typescript typst verilog vhdl vue wast wat wgsl yaml))
  '(treesit-fold-line-count-show nil)
  '(treesit-fold-summary-show nil)
  '(treesit-font-lock-level 4)
@@ -324,6 +322,7 @@
  '(visible-bell t)
  '(window-sides-slots '(1 0 2 2))
  '(xref-auto-jump-to-first-definition t)
+ '(xref-auto-jump-to-first-xref t)
  '(xref-search-program 'ripgrep)
  '(xref-show-definitions-function 'xref-show-definitions-buffer))
 (custom-set-faces

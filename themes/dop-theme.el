@@ -21,8 +21,8 @@
   (custom-theme-set-faces
    'dop
    `(default
-     ((((background light)) :foreground "textColor" :background ,acme-yellow-light)
-      (((background dark)) :foreground "textBackgroundColor" :background ,(color-saturate-name dark-bg -50))))
+     ((((background light)) :foreground "textColor" :background  ,(color-saturate-name acme-yellow-light -70))
+      (((background dark)) :foreground "textBackgroundColor" :background ,(color-saturate-name dark-bg -70))))
    `(region
      ((((background light)) :background "selectedTextBackgroundColor")
       (((background dark)) :background "selectedContentBackgroundColor")))
@@ -36,7 +36,7 @@
      ((((background light)) :foreground ,acme-yellow)
       (((background dark)) :foreground ,acme-blue)))
    `(hl-line
-     ((((background light)) :background ,(color-darken-name acme-yellow-light 10))
+     ((((background light)) :background ,acme-yellow-light)
       (((background dark)) :background ,(color-lighten-name dark-bg 10))))
    `(mode-line
      ((((background light))
