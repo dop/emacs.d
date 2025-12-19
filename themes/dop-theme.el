@@ -28,7 +28,7 @@
       (((background dark)) :background "selectedContentBackgroundColor")))
    `(cursor
      ((((background light)) :background "red")
-      (((background dark)) :background "magenta")))
+      (((background dark)) :background "green")))
    `(fringe
      ((((background light)) :inherit default :foreground "grey70")
       (((background dark)) :inherit default :foreground "grey40")))
