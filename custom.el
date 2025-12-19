@@ -60,7 +60,6 @@
      ("compilation\\*"
       (display-buffer-reuse-window display-buffer-in-previous-window
                                    display-buffer-at-bottom)
-      (window-width . 0.375) (window-min-width . 80)
       (window-parameters (no-delete-other-windows)))))
  '(display-buffer-base-action
    '(display-buffer-reuse-window display-buffer-reuse-mode-window
@@ -250,7 +249,7 @@
                           ns-auto-titlebar ox-gfm paredit-everywhere
                           php-mode prettier prettier-js project
                           protobuf-mode rainbow-mode scala-mode seq
-                          sql-indent string-edit-at-point
+                          sly sql-indent string-edit-at-point
                           string-inflection treesit-auto treesit-fold
                           wgrep whitespace-cleanup-mode xterm-color
                           yaml-mode))
