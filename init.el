@@ -6,8 +6,7 @@
               (message "Initialized in %fs." (float-time diff))))
           100)
 
-(set-face-attribute 'default nil :family "PragmataPro Mono Liga" :height 140)
-(setq truncate-string-ellipsis "")
+(setq truncate-string-ellipsis "…")
 
 (setenv "TERM" "dumb")
 (setenv "PAGER" "cat")
