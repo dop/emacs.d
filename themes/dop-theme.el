@@ -21,8 +21,8 @@
   (custom-theme-set-faces
    'dop
    `(default
-     ((((background light)) :foreground "textColor" :background  ,(color-saturate-name acme-yellow-light -70))
-      (((background dark)) :foreground "textBackgroundColor" :background ,(color-saturate-name dark-bg -70))))
+     ((((background light)) :foreground "black" :background  ,(color-saturate-name acme-yellow-light -70))
+      (((background dark)) :foreground "white" :background ,(color-saturate-name dark-bg -70))))
    `(region
      ((((background light)) :background "selectedTextBackgroundColor")
       (((background dark)) :background "selectedContentBackgroundColor")))
