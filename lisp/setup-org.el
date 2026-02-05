@@ -10,7 +10,7 @@
   :hook (org-mode . electric-pair-local-mode)
   :config
   (org-babel-do-load-languages 'org-babel-load-languages
-                               '((emacs-lisp . t) (shell . t) (lisp . t) (plantuml . t))))
+                               '((emacs-lisp . t) (shell . t) (lisp . t) (plantuml . t) (js . t))))
 
 (use-package org-tempo :after org)
 (use-package org-modern :commands org-modern-mode)
