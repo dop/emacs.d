@@ -121,6 +121,10 @@
 
 (require 'setup-eshell)
 
+(with-eval-after-load 'isearch
+  (keymap-set isearch-mode-map "M-s C-s" #'isearch-query-replace)
+  (keymap-set isearch-mode-map "M-s C-r" #'isearch-query-replace-regexp))
+
 (use-package sql-indent
   :config (add-hook 'sql-mode-hook #'sqlind-minor-mode))
 
