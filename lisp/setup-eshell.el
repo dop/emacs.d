@@ -29,9 +29,6 @@
   :defer t
   :config (require 'vc-git))
 
-(with-eval-after-load "buffer-env"
-  (add-hook 'eshell-mode-hook #'buffer-env-update))
-
 (add-hook 'eshell-mode-hook #'toggle-truncate-lines)
 (add-hook 'eshell-mode-hook #'set-hbar-cursor-type)
 
