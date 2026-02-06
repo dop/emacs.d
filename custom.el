@@ -247,7 +247,7 @@
  '(package-selected-packages
    '(alabaster-themes ascii-art-to-unicode bazel browse-kill-ring
                       buffer-env csv-mode dictionary dired-collapse
-                      dired-subtree edit-indirect eldoc
+                      dired-subtree edit-indirect eldoc embark
                       exec-path-from-shell flymake gptel gptel-agent
                       hungry-delete jq-mode json-mode ligature
                       macrostep markdown-preview-mode neotree

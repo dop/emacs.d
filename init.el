@@ -259,6 +259,7 @@
 ;; (use-package orderless :pin gnu :ensure t)
 ;; (use-package consult :pin gnu :ensure t)
 (use-package vertico :hook (after-init . vertico-mode))
+(use-package embark :bind ("C-c C-;" . embark-export))
 
 (use-package paren-face
   :hook (lisp-data-mode . paren-face-mode)
