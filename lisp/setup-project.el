@@ -32,15 +32,54 @@
     (message "root: %s, file: %s" root file)
     (call-interactively #'project-compile)))
 
+(defun project-top-compile ()
+  "Run `project-compile' in top project."
+  (interactive)
+  (let ((project-preferred-root-resolution 'top))
+    (call-interactively #'project-compile)))
+
+(defun project-read-script (project)
+  (let* ((scripts (project-scripts project))
+         (collection
+          (lambda (str pred flag)
+            (cond ((eq 'metadata flag)
+                   `(metadata
+                     (annotation-function . ,(lambda (cand)
+                                               (concat " " (alist-get (intern cand) scripts))))))
+                  (nil
+                   (try-completion str scripts pred))
+                  (t
+                   (all-completions str scripts pred))))))
+    (completing-read (format "%s script: " (project-name project))
+                     collection)))
+
+(defun project-run-command (command)
+  (interactive (list (project-read-script (project-current t))))
+  (project-run (project-current t) command))
+
+(defun project-run-top-command ()
+  (interactive)
+  (let ((project-preferred-root-resolution 'top))
+    (call-interactively #'project-run-command)))
+
 (use-package project
   :pin gnu
   :bind (:map project-prefix-map
-              ("C" . project-compile-file)
+              ("C" . project-top-compile)
               ("V" . project-vc-top-dir)
               ("F" . project-find-top-file)
-              ("G" . project-find-top-regexp))
+              ("G" . project-find-top-regexp)
+              ("r" . project-run-command)
+              ("R" . project-run-top-command))
   :config
   (advice-add 'project-find-regexp :override #'deadgrep))
+
+(with-eval-after-load "project"
+  (cl-defgeneric project-scripts (project)
+    "Returns an alist of (NAME . COMMAND) scripts that can be run in a project.")
+  (cl-defgeneric project-run (project command)
+    "Run COMMAND in PROJECT."
+    (error "Not implemented.")))
 
 (with-eval-after-load "project"
   (defun project-prefixed-buffer-name (mode)
@@ -49,6 +88,14 @@
             " "
             (downcase mode)
             "*")))
+
+(defun project-set-shell-command-buffer-name-async (fn &rest args)
+  (let ((shell-command-buffer-name-async
+         (format "*%s async command*" (project-name (project-current t)))))
+    (apply fn args)))
+
+(with-eval-after-load "project"
+  (advice-add 'project-async-shell-command :around #'project-set-shell-command-buffer-name-async))
 
 ;; .envrc project
 (with-eval-after-load "project"
@@ -85,14 +132,13 @@
 
 ;; NPM project
 (with-eval-after-load "project"
-  (defvar project-npm--name-cache (make-hash-table :test 'equal))
+  (defvar project-npm--package-cache (make-hash-table :test 'equal))
 
   (defun project-npm--get-and-cache-package-name (dir)
-    (let ((name (gethash dir project-npm--name-cache)))
-      (unless name
-        (setq name (let-alist (json-read-file (expand-file-name "package.json" dir)) .name))
-        (setf (gethash dir project-npm--name-cache) name))
-      name))
+    (let-alist (or (gethash dir project-npm--package-cache)
+                   (puthash dir (json-read-file (expand-file-name "package.json" dir))
+                            project-npm--package-cache))
+      .name))
 
   (defun project-npm-project (dir)
     (let* ((resolve-root
@@ -108,6 +154,17 @@
         (list 'npm
               (concat (project-npm--get-and-cache-package-name root) suffix)
               root))))
+
+  (cl-defmethod project-scripts ((project (head npm)))
+    (alist-get 'scripts (gethash (project-root project) project-npm--package-cache)))
+
+  (cl-defmethod project-run ((project (head npm)) command)
+    (let* ((name (project-name project))
+           (scripts (project-scripts project))
+           (shell-command-buffer-name-async (format "*%s %s*" name command)))
+      (async-shell-command (if (assq (intern command) scripts)
+                               (format "npm run %s" command)
+                             command))))
 
   (cl-defmethod project-name ((project (head npm)))
     (cadr project))
