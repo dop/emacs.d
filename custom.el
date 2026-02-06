@@ -25,7 +25,11 @@
  '(cursor-in-non-selected-windows nil)
  '(custom-enabled-themes '(dop))
  '(custom-safe-themes
-   '("8937605989e56ae4b31e522b248b5a2907073ee9c5f8d0bb7259412034128daf"))
+   '("68e9ab92a95e1ab84478c94a912766b00cf2b492b6b56db39f7e5d31c65498a2"
+     "59e54b18c77609cbfa88d1a9b48cb865e175fe1425f453dabec938d179f0ac0d"
+     "bbe58ef57bf5647a6c8f025f395b4440f05511c80b513e70b849c777518c81d3"
+     "8927324897fb3a82651e50778ec5afc7c11ae241face4120d7ffd17d3c46f485"
+     "8937605989e56ae4b31e522b248b5a2907073ee9c5f8d0bb7259412034128daf"))
  '(custom-theme-directory "~/.emacs.d/themes/")
  '(debug-on-error nil)
  '(delete-by-moving-to-trash t)
@@ -240,19 +244,19 @@
  '(org-todo-keywords
    '((sequence "TODO(t)" "WAIT(w@)" "|" "DONE(d!)" "CANCELLED(c@)")))
  '(package-selected-packages
-   '(ascii-art-to-unicode bazel browse-kill-ring buffer-env csv-mode
-                          dictionary dired-collapse dired-subtree
-                          edit-indirect eldoc exec-path-from-shell
-                          flymake gptel gptel-agent hungry-delete
-                          jq-mode json-mode ligature macrostep
-                          markdown-preview-mode neotree nodejs-repl
-                          ns-auto-titlebar ox-gfm paredit-everywhere
-                          php-mode prettier prettier-js project
-                          protobuf-mode rainbow-mode scala-mode seq
-                          sly sql-indent string-edit-at-point
-                          string-inflection treesit-auto treesit-fold
-                          wgrep whitespace-cleanup-mode xterm-color
-                          yaml-mode))
+   '(alabaster-themes ascii-art-to-unicode bazel browse-kill-ring
+                      buffer-env csv-mode dictionary dired-collapse
+                      dired-subtree edit-indirect eldoc
+                      exec-path-from-shell flymake gptel gptel-agent
+                      hungry-delete jq-mode json-mode ligature
+                      macrostep markdown-preview-mode neotree
+                      nodejs-repl ns-auto-titlebar ox-gfm
+                      paredit-everywhere php-mode prettier prettier-js
+                      project protobuf-mode rainbow-mode scala-mode
+                      seq sly sql-indent string-edit-at-point
+                      string-inflection treesit-auto treesit-fold
+                      wgrep whitespace-cleanup-mode xterm-color
+                      yaml-mode))
  '(paredit-lighter " ParEd" t)
  '(plantuml-default-exec-mode 'jar)
  '(plantuml-indent-level 4)
@@ -263,9 +267,10 @@
  '(project-switch-commands
    '((project-find-file "Find file" nil)
      (project-find-regexp "Find regexp" nil)
-     (project-find-dir "Find directory" nil)
      (project-vc-dir "VC-Dir" nil) (project-eshell "Eshell" nil)
-     (project-compile "Compile" nil)))
+     (project-compile "Compile" nil)
+     (project-async-shell-command "Async command" nil)
+     (project-run "Run" nil) (project-any-command "Other" nil)))
  '(query-replace-highlight t)
  '(quick-peek-add-spacer nil)
  '(quick-peek-position 'below)
@@ -291,8 +296,8 @@
  '(treesit-auto-langs
    '(awk bash bibtex blueprint c c-sharp clojure cmake commonlisp cpp css
          dart dockerfile elixir glsl go gomod heex html java
-         javascript json julia kotlin lua magik make nix nu
-         org perl proto python r ruby rust scala sql surface toml tsx
+         javascript json julia kotlin lua magik make nix nu org perl
+         proto python r ruby rust scala sql surface toml tsx
          typescript typst verilog vhdl vue wast wat wgsl yaml))
  '(treesit-fold-line-count-show nil)
  '(treesit-fold-summary-show nil)
