@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 ;; Depends on qrencode from:
 ;; - https://fukuchi.org/works/qrencode/
 ;; - https://github.com/fukuchi/libqrencode
