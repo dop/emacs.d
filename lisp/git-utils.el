@@ -38,4 +38,17 @@
            (completing-read-multiple "Delete branches: " options nil t)) ))
   (shell-command (format "git branch -D %s" (string-join branches " "))))
 
+(defun git-diff ()
+  (interactive)
+  (let ((diffbuf (get-buffer-create "*diff*"))
+        (gitdir (locate-dominating-file default-directory ".git")))
+    (with-current-buffer diffbuf
+      (let ((inhibit-read-only t))
+        (erase-buffer)
+        (let ((default-directory gitdir))
+          (shell-command "git diff master" diffbuf)))
+      (setq-local buffer-read-only t)
+      (diff-mode)
+      (pop-to-buffer diffbuf nil t))))
+
 (provide 'git-utils)
