@@ -26,7 +26,8 @@
  '(cursor-in-non-selected-windows nil)
  '(custom-enabled-themes '(dop))
  '(custom-safe-themes
-   '("68e9ab92a95e1ab84478c94a912766b00cf2b492b6b56db39f7e5d31c65498a2"
+   '("5ce31ca43f656a3fca504e9a84cde8f96c58d55ad7713fe525f8596d8a47363e"
+     "68e9ab92a95e1ab84478c94a912766b00cf2b492b6b56db39f7e5d31c65498a2"
      "59e54b18c77609cbfa88d1a9b48cb865e175fe1425f453dabec938d179f0ac0d"
      "bbe58ef57bf5647a6c8f025f395b4440f05511c80b513e70b849c777518c81d3"
      "8927324897fb3a82651e50778ec5afc7c11ae241face4120d7ffd17d3c46f485"
@@ -256,8 +257,8 @@
                       project protobuf-mode rainbow-mode scala-mode
                       seq sly sql-indent string-edit-at-point
                       string-inflection treesit-auto treesit-fold
-                      wgrep whitespace-cleanup-mode xterm-color
-                      yaml-mode))
+                      wgrep whitespace-cleanup-mode winpulse
+                      xterm-color yaml-mode))
  '(paredit-lighter " ParEd" t)
  '(plantuml-default-exec-mode 'jar)
  '(plantuml-indent-level 4)
@@ -326,6 +327,8 @@
  '(vertico-mode t)
  '(visible-bell t)
  '(window-sides-slots '(1 0 2 2))
+ '(winpulse-duration 0.5)
+ '(winpulse-step-interval 0.1)
  '(xref-auto-jump-to-first-definition t)
  '(xref-auto-jump-to-first-xref t)
  '(xref-search-program 'ripgrep)

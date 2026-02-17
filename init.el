@@ -391,6 +391,10 @@
 
 (require 'setup-tempo)
 
+(use-package winpulse
+  :vc (:url "https://github.com/dop/winpulse" :rev "less-flashing")
+  :config (winpulse-mode +1))
+
 (load "~/work/config.el" 'noerror)
 (load "~/work/utils.el" 'noerror)
 
