@@ -59,3 +59,36 @@ For crisper fonts:
 #+begin_src shell
 defaults write org.gnu.Emacs AppleFontSmoothing -int 0
 #+end_src
+
+Reading from TTY speed improvement.
+
+#+begin_src diff
+  diff --git a/src/sysdep.c b/src/sysdep.c
+  index 2f5572009fb..e70e4c3508d 100644
+  --- a/src/sysdep.c
+  +++ b/src/sysdep.c
+  @@ -2778,6 +2778,23 @@ emacs_intr_read (int fd, void *buf, ptrdiff_t nbyte, bool interruptible)
+       }
+     while (result < 0 && errno == EINTR);
+
+  +#ifdef DARWIN_OS
+  +  if ((result == 1024) && (nbyte > result) && isatty(fd))
+  +    {
+  +      ssize_t n;
+  +      do
+  +	{
+  +	  usleep (25);
+  +	  if (interruptible)
+  +	    maybe_quit ();
+  +	  n = read (fd, buf + result, nbyte - result);
+  +	  if (n > 0)
+  +	    result += n;
+  +	}
+  +      while ((n < 0 && errno == EINTR) || (n > 0));
+  +    }
+  +#endif
+  +
+     return result;
+   }
+
+#+end_src
