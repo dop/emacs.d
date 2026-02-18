@@ -12,7 +12,7 @@ Encodes bytes from /dev/random using `base64-encode-string' and
 returns at SIZE length string consisting of alphanumeric
 characters."
   (let* ((size (or size 16))
-         (command (format "head -c %d /dev/random" (+ 2 size)))
+         (command (format "dd bs=%s if=/dev/random count=1" size))
          (base64 (base64-encode-string
                   (encode-coding-string (shell-command-to-string command)
                                         'latin-1))))
@@ -22,7 +22,7 @@ characters."
 (ert-deftest random-alphanumeric-string ()
   "Tests basics of `random-alphanumeric-string'."
   (should (eq 'string (type-of (random-alphanumeric-string))))
-  (should (= 12 (length (random-alphanumeric-string))))
+  (should (= 16 (length (random-alphanumeric-string))))
   (should (= 5 (length (random-alphanumeric-string 5)))))
 
 (defun last1 (seq)

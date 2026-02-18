@@ -38,7 +38,7 @@
   (let ((project-preferred-root-resolution 'top))
     (call-interactively #'project-compile)))
 
-(defun project-read-script (project)
+(defun project-read-script (project &optional predicate)
   (let* ((scripts (project-scripts project))
          (collection
           (lambda (str pred flag)
@@ -51,7 +51,8 @@
                   (t
                    (all-completions str scripts pred))))))
     (completing-read (format "%s script: " (project-name project))
-                     collection)))
+                     collection
+                     predicate)))
 
 (defun project-run-command (command)
   (interactive (list (project-read-script (project-current t))))
@@ -62,6 +63,27 @@
   (let ((project-preferred-root-resolution 'top))
     (call-interactively #'project-run-command)))
 
+(defun project-relative-files (project)
+  (let ((absolute-root (expand-file-name (project-root project))))
+    (mapcar (lambda (file) (substring file (length absolute-root)))
+            (project-files project))))
+
+(defun project-run-test (file command)
+  (interactive (let* ((project (project-current t))
+                      (root (project-root project))
+                      (absolute-root (expand-file-name root))
+                      (initial-file-name (buffer-file-name)))
+                 (list (completing-read "Test file: " (project-relative-files project)
+                                        (lambda (file)
+                                          (string-match-p "\\.\\(spec\\|test\\)\\." file))
+                                        t
+                                        (and initial-file-name (concat "/" (file-name-nondirectory initial-file-name))))
+                       (project-read-script project
+                                            (lambda (candidate)
+                                              (or (string-search "test" (symbol-name (car candidate)))
+                                                  (string-search "test" (cdr candidate))))))))
+  (project-test (project-current t) (concat command " " file)))
+
 (use-package project
   :pin gnu
   :bind (:map project-prefix-map
@@ -70,7 +92,8 @@
               ("F" . project-find-top-file)
               ("G" . project-find-top-regexp)
               ("r" . project-run-command)
-              ("R" . project-run-top-command))
+              ("R" . project-run-top-command)
+              ("t" . project-run-test))
   :config
   (advice-add 'project-find-regexp :override #'deadgrep))
 
@@ -79,6 +102,9 @@
     "Returns an alist of (NAME . COMMAND) scripts that can be run in a project.")
   (cl-defgeneric project-run (project command)
     "Run COMMAND in PROJECT."
+    (error "Not implemented."))
+  (cl-defgeneric project-test (project command)
+    "Test FILE in PROJECT."
     (error "Not implemented.")))
 
 (with-eval-after-load "project"
@@ -161,10 +187,19 @@
   (cl-defmethod project-run ((project (head npm)) command)
     (let* ((name (project-name project))
            (scripts (project-scripts project))
-           (shell-command-buffer-name-async (format "*%s %s*" name command)))
+           (shell-command-buffer-name-async (format "*%s %s*" name command))
+           (default-directory (project-root project)))
       (async-shell-command (if (assq (intern command) scripts)
                                (format "npm run %s" command)
                              command))))
+
+  (cl-defmethod project-test ((project (head npm)) command)
+    (let* ((name (project-name project))
+           (default-directory (project-root project))
+           (compilation-buffer-name-function
+            (lambda (&rest ignore)
+              (concat "*" name " " command "*"))))
+      (compile (concat "yarn " command))))
 
   (cl-defmethod project-name ((project (head npm)))
     (cadr project))

@@ -6,7 +6,12 @@
 (defun insert-random-string (size)
   "Insert random alphanumeric string."
   (interactive "p")
-  (insert (random-alphanumeric-string (if (> size 1) size nil))))
+  (insert (random-alphanumeric-string (if (and size (plusp size)) size nil))))
+
+(defun copy-random-string (size)
+  "Put random alphanumeric string into a kill-ring."
+  (interactive "p")
+  (kill-new (random-alphanumeric-string (if (and size (plusp size)) size nil))))
 
 (defalias 'rename-buffer-and-file #'rename-visited-file)
 (defalias 'rename-file-and-buffer #'rename-visited-file)

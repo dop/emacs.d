@@ -37,4 +37,18 @@
     (when (string-match-p "^~/tmp/" proj)
       (project-forget-project proj))))
 
+(defun project-forget-junk ()
+  (interactive)
+  (project-forget-zombie-projects)
+  (project-forget-tmp-projects)
+  (project-forget-node_module-projects)
+  (dolist (dir safe-local-variable-directories)
+    (unless (file-directory-p dir)
+      (setq safe-local-variable-directories (remove dir safe-local-variable-directories)))))
+
+(defun project-mark-safe! ()
+  (interactive)
+  (add-to-list 'safe-local-variable-directories
+               (expand-file-name (project-root (project-current t)))))
+
 (provide 'project-tools)

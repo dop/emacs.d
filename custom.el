@@ -247,11 +247,11 @@
    '((sequence "TODO(t)" "WAIT(w@)" "|" "DONE(d!)" "CANCELLED(c@)")))
  '(package-selected-packages
    '(alabaster-themes ascii-art-to-unicode bazel browse-kill-ring
-                      buffer-env csv-mode dictionary dired-collapse
-                      dired-subtree edit-indirect eldoc embark
-                      exec-path-from-shell flymake gptel gptel-agent
-                      hungry-delete jq-mode json-mode ligature
-                      macrostep markdown-preview-mode neotree
+                      buffer-env csv-mode cycle-quotes dictionary
+                      dired-collapse dired-subtree edit-indirect eldoc
+                      embark exec-path-from-shell flymake gptel
+                      gptel-agent hungry-delete jq-mode json-mode
+                      ligature macrostep markdown-preview-mode neotree
                       nodejs-repl ns-auto-titlebar ox-gfm
                       paredit-everywhere php-mode prettier prettier-js
                       project protobuf-mode rainbow-mode scala-mode
@@ -270,9 +270,8 @@
    '((project-find-file "Find file" nil)
      (project-find-regexp "Find regexp" nil)
      (project-vc-dir "VC-Dir" nil) (project-eshell "Eshell" nil)
-     (project-compile "Compile" nil)
-     (project-async-shell-command "Async command" nil)
-     (project-run "Run" nil) (project-any-command "Other" nil)))
+     (project-compile "Compile" nil) (project-run-command "Run" nil)
+     (project-any-command "Other" nil)))
  '(query-replace-highlight t)
  '(quick-peek-add-spacer nil)
  '(quick-peek-position 'below)

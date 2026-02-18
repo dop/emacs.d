@@ -178,6 +178,7 @@
   :hook (hack-local-variables . buffer-env-update)
   :hook (comint-mode . buffer-env-update)
   :hook (eshell-mode . buffer-env-update)
+  :hook (compilation-mode . buffer-env-update)
   :config
   (defun unset-eshell-path-env-list ()
     (setq eshell-path-env-list nil))
