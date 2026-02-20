@@ -203,7 +203,7 @@ Every item of FUNCTIONS can be either function or arguments to
   (let ((messages (seq-map #'overlay-get-eslint-message (overlays-at (point)))))
     (seq-remove #'null messages)))
 
-(defun ignore-eslint-rules ()
+(defun eslint-ignore-rules ()
   "Insert eslint-disable-next-line rule pragma for overlay warning on current point."
   (interactive)
   (when-let* ((rules (seq-map #'eslint-message-get-rule
@@ -214,6 +214,28 @@ Every item of FUNCTIONS can be either function or arguments to
       (previous-line)
       (call-interactively #'comment-dwim)
       (insert "eslint-disable-next-line " (mapconcat #'identity rules " ")))))
+
+(defun eslint-extract-missing-dependencies (message)
+  (let (dependencies)
+    (with-temp-buffer
+      (insert message)
+      (goto-char 0)
+      (when (search-forward "missing dependencies: " nil t)
+        (while (re-search-forward "'[^']+'" nil t)
+          (push (string-trim (match-string-no-properties 0) "'" "'") dependencies))))
+    dependencies))
+
+(defun eslint-react-fix-missing-dependencies ()
+  (interactive)
+  (when-let* ((dependencies (mapcan #'eslint-extract-missing-dependencies (overlay-get-current-eslint-messages))))
+    (save-excursion
+      (search-forward "]")
+      (backward-char 2)
+      (let ((empty (looking-at "\\[")))
+        (forward-char)
+        (unless empty
+          (insert ", ")))
+      (insert (string-join dependencies ", ")))))
 
 (defun dark-mode ()
   "This seems to be good enough."
