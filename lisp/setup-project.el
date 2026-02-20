@@ -63,21 +63,22 @@
   (let ((project-preferred-root-resolution 'top))
     (call-interactively #'project-run-command)))
 
+(defun project-relative-path (project path)
+  (let ((root (expand-file-name (project-root project))))
+    (when (string-prefix-p root path)
+      (string-remove-prefix root path))))
+
 (defun project-relative-files (project)
-  (let ((absolute-root (expand-file-name (project-root project))))
-    (mapcar (lambda (file) (substring file (length absolute-root)))
-            (project-files project))))
+  (mapcar (apply-partially #'project-relative-path project)
+          (project-files project)))
 
 (defun project-run-test (file command)
-  (interactive (let* ((project (project-current t))
-                      (root (project-root project))
-                      (absolute-root (expand-file-name root))
-                      (initial-file-name (buffer-file-name)))
+  (interactive (let* ((project (project-current t)))
                  (list (completing-read "Test file: " (project-relative-files project)
                                         (lambda (file)
-                                          (string-match-p "\\.\\(spec\\|test\\)\\." file))
-                                        t
-                                        (and initial-file-name (concat "/" (file-name-nondirectory initial-file-name))))
+                                          (and file (string-match-p "\\(\\.\\(spec\\|test\\)\\.\\|__tests?__\\)" file)))
+                                        nil
+                                        (project-relative-path project (or (buffer-file-name) default-directory)))
                        (project-read-script project
                                             (lambda (candidate)
                                               (or (string-search "test" (symbol-name (car candidate)))
