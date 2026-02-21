@@ -215,27 +215,68 @@ Every item of FUNCTIONS can be either function or arguments to
       (call-interactively #'comment-dwim)
       (insert "eslint-disable-next-line " (mapconcat #'identity rules " ")))))
 
-(defun eslint-extract-missing-dependencies (message)
+(defun eslint-extract-missing-react-hook-dependencies (message)
   (let (dependencies)
     (with-temp-buffer
       (insert message)
       (goto-char 0)
-      (when (search-forward "missing dependencies: " nil t)
+      (when (search-forward "missing dependenc" nil t)
         (while (re-search-forward "'[^']+'" nil t)
           (push (string-trim (match-string-no-properties 0) "'" "'") dependencies))))
-    dependencies))
+    (reverse dependencies)))
 
-(defun eslint-react-fix-missing-dependencies ()
+(ert-deftest eslint-extract-missing-react-hook-dependencies ()
+  "Tests basics of `eslint-extract-missing-react-hook-dependencies'."
+  (should (equal '("a")
+                 (eslint-extract-missing-react-hook-dependencies "React Hook useMemo has a missing dependency: 'a'.")))
+  (should (equal '("a" "b")
+                 (eslint-extract-missing-react-hook-dependencies "React Hook useCallback has a missing dependencies: 'a' and 'b'.")))
+  (should (equal '("a" "b" "c")
+                 (eslint-extract-missing-react-hook-dependencies "React Hook useEffect has a missing dependencies: 'a', 'b', and 'c'."))))
+
+(defun eslint-extract-unnecessary-react-hook-dependencies (message)
+  (let (dependencies)
+    (with-temp-buffer
+      (insert message)
+      (goto-char 0)
+      (when (search-forward "unnecessary dependenc" nil t)
+        (while (re-search-forward "'[^']+'" nil t)
+          (push (string-trim (match-string-no-properties 0) "'" "'") dependencies))))
+    (reverse dependencies)))
+
+(ert-deftest eslint-extract-unnecessary-react-hook-dependencies ()
+  "Tests basics of `eslint-extract-unnecessary-react-hook-dependencies'."
+  (let ((uut #'eslint-extract-unnecessary-react-hook-dependencies))
+    (should (equal '("a")
+                   (funcall uut "React Hook useMemo has an unnecessary dependency: 'a'.")))
+    (should (equal '("a" "b")
+                   (funcall uut "React Hook useCallback has an unnecessary dependencies: 'a' and 'b'.")))
+    (should (equal '("a" "b" "c")
+                   (funcall uut "React Hook useEffect has an unnecessary dependencies: 'a', 'b', and 'c'.")))))
+
+(defun eslint-react-fix-dependencies ()
   (interactive)
-  (when-let* ((dependencies (mapcan #'eslint-extract-missing-dependencies (overlay-get-current-eslint-messages))))
-    (save-excursion
-      (search-forward "]")
-      (backward-char 2)
-      (let ((empty (looking-at "\\[")))
-        (forward-char)
-        (unless empty
-          (insert ", ")))
-      (insert (string-join dependencies ", ")))))
+  (let* ((messages (overlay-get-current-eslint-messages))
+         (missing (mapcan #'eslint-extract-missing-react-hook-dependencies messages))
+         (unnecessary (mapcan #'eslint-extract-unnecessary-react-hook-dependencies messages)))
+    (when missing
+      (save-excursion
+        (search-forward "]")
+        (backward-char 2)
+        (let ((empty (looking-at "\\[")))
+          (forward-char)
+          (unless empty
+            (insert ", ")))
+        (insert (string-join dependencies ", "))))
+    (when unnecessary
+      (save-excursion
+        (save-restriction
+          (search-forward "]")
+          (let ((end (point)))
+            (search-backward "[")
+            (narrow-to-region (point) end)
+            (while (re-search-forward (rx-to-string `(seq word-start (or ,@unnecessary) word-end (? ?,) (? " "))))
+              (replace-match ""))))))))
 
 (defun dark-mode ()
   "This seems to be good enough."
