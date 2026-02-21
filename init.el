@@ -203,10 +203,8 @@
 (require 'setup-paredit)
 (require 'setup-org)
 
-(use-package json-mode
-  :pin gnu
-  :mode "\\.\\(json\\|babelrc\\|jshintrc\\|eslintrc\\|bowerrc\\|json\\.erb\\|watchmanconfig\\)\\'"
-  :mode ("tsconfig\\.json\\'" . jsonc-mode))
+(use-package json-ts-mode
+  :mode "\\.\\(json\\|babelrc\\|jshintrc\\|eslintrc\\|bowerrc\\|json\\.erb\\|watchmanconfig\\)\\'")
 
 (use-package prettier
   :disabled t
