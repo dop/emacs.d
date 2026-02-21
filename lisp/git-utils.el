@@ -40,13 +40,11 @@
 
 (defun git-diff ()
   (interactive)
-  (let ((diffbuf (get-buffer-create "*diff*"))
-        (gitdir (locate-dominating-file default-directory ".git")))
+  (let ((diffbuf (get-buffer-create "*diff*")))
     (with-current-buffer diffbuf
       (let ((inhibit-read-only t))
         (erase-buffer)
-        (let ((default-directory gitdir))
-          (shell-command "git diff master" diffbuf)))
+        (shell-command "git diff master -- ." diffbuf))
       (setq-local buffer-read-only t)
       (diff-mode)
       (pop-to-buffer diffbuf nil t))))
