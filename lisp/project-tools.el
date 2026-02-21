@@ -19,10 +19,6 @@
 (defun project-has-node-script-p (project script)
   (project-has-file-p project (concat "node_modules/.bin/" script)))
 
-(defun project-npx (project script)
-  (when (project-has-node-script-p project script)
-    (concat "npx --no-install " script)))
-
 (defun project-forget-node_module-projects ()
   "Forget all known projects that reside inside node_modules."
   (interactive)
@@ -38,6 +34,7 @@
       (project-forget-project proj))))
 
 (defun project-forget-junk ()
+  "Run various project-forget-* functions to clean up known projects list."
   (interactive)
   (project-forget-zombie-projects)
   (project-forget-tmp-projects)
@@ -47,8 +44,11 @@
       (setq safe-local-variable-directories (remove dir safe-local-variable-directories)))))
 
 (defun project-mark-safe! ()
+  "Find .dir-locals.el starting at the project root and place it on
+`'safe-local-variable-directories'."
   (interactive)
-  (add-to-list 'safe-local-variable-directories
-               (expand-file-name (project-root (project-current t)))))
+  (when-let ((dir-locals-directory (locate-dominating-file (project-root (project-current t))
+                                                           ".dir-locals.el")))
+    (add-to-list 'safe-local-variable-directories dir-locals-directory)))
 
 (provide 'project-tools)
