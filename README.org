@@ -30,7 +30,8 @@ Configure:
               --with-imagemagick --with-json --with-harfbuzz --with-jpeg --with-png \
               --with-pdf --with-gif --with-tiff --with-xpm --with-gnutls \
               --with-native-compilation
-#+end_sr
+#+end_src
+
 ** MacOS
 
 For older versions of Emacs, use [[https://www.macports.org/][MacPorts]] to install [[https://github.com/akheron/jansson][jansson]].
