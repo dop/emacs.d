@@ -39,14 +39,23 @@
   (shell-command (format "git branch -D %s" (string-join branches " "))))
 
 (defun git-diff ()
+  "Create a buffer to see git diff between current staging and master
+branch."
   (interactive)
-  (let ((diffbuf (get-buffer-create "*diff*")))
-    (with-current-buffer diffbuf
-      (let ((inhibit-read-only t))
-        (erase-buffer)
-        (shell-command "git diff master -- ." diffbuf))
+  (let* ((project (project-current))
+         (buffer-name (concat "*diff" (if project (concat " " (project-name project)) "") "*"))
+         (buf (get-buffer-create buffer-name))
+         (populate-diff
+          (lambda (&rest ignore)
+            (with-current-buffer buf
+              (let ((inhibit-read-only t))
+                (erase-buffer)
+                (shell-command "git diff master -- ." buf))))))
+    (funcall populate-diff)
+    (with-current-buffer buf
       (setq-local buffer-read-only t)
       (diff-mode)
-      (pop-to-buffer diffbuf nil t))))
+      (setq-local revert-buffer-function populate-diff)
+      (pop-to-buffer buf nil t))))
 
 (provide 'git-utils)
