@@ -213,7 +213,7 @@ Every item of FUNCTIONS can be either function or arguments to
       (newline-and-indent)
       (previous-line)
       (call-interactively #'comment-dwim)
-      (insert "eslint-disable-next-line " (mapconcat #'identity rules " ")))))
+      (insert "eslint-disable-next-line " (string-join rules ", ")))))
 
 (defun eslint-extract-missing-react-hook-dependencies (message)
   (let (dependencies)
