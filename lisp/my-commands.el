@@ -267,7 +267,7 @@ Every item of FUNCTIONS can be either function or arguments to
           (forward-char)
           (unless empty
             (insert ", ")))
-        (insert (string-join dependencies ", "))))
+        (insert (string-join missing ", "))))
     (when unnecessary
       (save-excursion
         (save-restriction
