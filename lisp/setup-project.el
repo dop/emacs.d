@@ -157,6 +157,20 @@
             vc-directory-exclusion-list))
   (add-hook 'project-find-functions #'project-dir-locals-project))
 
+(with-eval-after-load "project"
+  (defun project-bazel-project (dir)
+    (let ((root (locate-dominating-file dir "BUILD.bazel")))
+      (and root (cons 'dir-locals root))))
+
+  (cl-defmethod project-roots ((project (head dir-locals)))
+    (list (cdr project)))
+
+  (cl-defmethod project-ignores ((project (head dir-locals)) dir)
+    (mapcar (lambda (dir) (concat dir "/"))
+            vc-directory-exclusion-list))
+
+  (add-hook 'project-find-functions #'project-bazel-project))
+
 ;; NPM project
 (with-eval-after-load "project"
   (defvar project-npm--package-cache (make-hash-table :test 'equal))
