@@ -175,11 +175,19 @@
 (with-eval-after-load "project"
   (defvar project-npm--package-cache (make-hash-table :test 'equal))
 
-  (defun project-npm--get-and-cache-package-name (dir)
-    (let-alist (or (gethash dir project-npm--package-cache)
-                   (puthash dir (json-read-file (expand-file-name "package.json" dir))
-                            project-npm--package-cache))
-      .name))
+  (defun project-npm--package-cache-get (dir)
+    (let* ((package-json (expand-file-name "package.json" dir))
+           (mod-time (file-attribute-modification-time (file-attributes package-json)))
+           (cached (gethash dir project-npm--package-cache))
+           (cached-time (alist-get 'time cached)))
+      (unless (and cached cached-time (time-less-p mod-time cached-time))
+        (setq cached `((value . ,(json-read-file package-json))
+                       (time . ,(current-time))))
+        (puthash dir cached project-npm--package-cache))
+      (alist-get 'value cached)))
+
+  (defun project-npm--package-name (dir)
+    (alist-get 'name (project-npm--package-cache-get dir)))
 
   (defun project-npm-project (dir)
     (let* ((resolve-root
@@ -193,11 +201,11 @@
         (when (file-regular-p (expand-file-name ".git" (locate-dominating-file default-directory ".git")))
           (setq suffix (concat " " (car (vc-git-branches)))))
         (list 'npm
-              (concat (project-npm--get-and-cache-package-name root) suffix)
+              (concat (project-npm--package-name root) suffix)
               root))))
 
   (cl-defmethod project-scripts ((project (head npm)))
-    (alist-get 'scripts (gethash (project-root project) project-npm--package-cache)))
+    (alist-get 'scripts (project-npm--package-cache-get (project-root project))))
 
   (cl-defmethod project-run ((project (head npm)) command)
     (let* ((name (project-name project))
