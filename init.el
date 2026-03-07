@@ -133,7 +133,8 @@
   :hook (vc-dir-mode . hl-line-mode)
   :hook (vc-annotate-mode . hl-line-mode)
   :hook (log-view-mode . hl-line-mode)
-  :hook (prog-mode . hl-line-mode))
+  ;; :hook (prog-mode . hl-line-mode)
+  )
 
 (use-package exec-path-from-shell
   :unless (memq system-type '(ms-dos windows-nt))
