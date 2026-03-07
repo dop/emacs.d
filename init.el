@@ -395,6 +395,13 @@
   :vc (:url "https://github.com/dop/winpulse" :rev "less-flashing")
   :config (winpulse-mode +1))
 
+(use-package restclient
+  :config
+  (defun restclient ()
+    (interactive)
+    (with-current-buffer (get-buffer-create "*restclient*")
+      (restclient-mode))))
+
 (load "~/work/config.el" 'noerror)
 (load "~/work/utils.el" 'noerror)
 
