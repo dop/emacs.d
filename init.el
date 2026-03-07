@@ -266,9 +266,32 @@
   :hook (lisp-data-mode . paren-face-mode)
   :hook (clojure-mode . paren-face-mode))
 
+(defun eww-open-plain-html-file-in-new-buffer (file &rest ignore)
+  "Similar to `eww-open-in-new-buffer', but restricts some of the HTML
+rendering."
+  (when (or (file-exists-p file)
+            (url-file-exists-p file))
+    (with-current-buffer (generate-new-buffer "*eww*")
+      (eww-mode)
+      (setq-local shr-use-colors nil
+                  shr-image-animate nil
+                  shr-inhibit-images t)
+      (eww file))))
+
+(defun hyperspec-browse-local-file (fn &rest args)
+  (let ((browse-url-browser-function 'eww-open-plain-html-file-in-new-buffer))
+    (apply fn args)))
+
 (use-package sly
   :hook (lisp-mode . sly-editing-mode)
+  :mode ("\\.sbclrc\\'" . lisp-mode)
   :config
+  (when-let* ((local-HyperSpec (expand-file-name ".local/share/doc/HyperSpec" "~"))
+              (_ (file-directory-p local-HyperSpec)))
+    (setq common-lisp-hyperspec-root (concat "file://" local-HyperSpec "/")
+          common-lisp-hyperspec-symbol-table (expand-file-name "Data/Symbol-Table.text" local-HyperSpec))
+    (advice-add 'common-lisp-hyperspec :around #'hyperspec-browse-local-file))
+
   (defun rps-sly-eval-last-expression ()
     (interactive)
     (sly-interactive-eval (format "(rps-user:run %s)" (sly-last-expression))))
