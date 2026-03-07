@@ -17,18 +17,14 @@
        (acme-blue-light      "#E1FAFF")
        (acme-purple          "#555599")
        (acme-purple-light    "#FFEAFF")
-       (dark-bg (color-darken-name acme-blue 60)))
+       (dark-bg (color-darken-name acme-yellow 60)))
   (custom-theme-set-faces
    'dop
    `(default
-     ((((background light)) :foreground "black" :background  ,(color-saturate-name acme-yellow-light -70))
+     ((((background light)) :foreground "black" :background  ,(color-saturate-name acme-yellow-light -20))
       (((background dark)) :foreground "white" :background ,(color-saturate-name dark-bg -70))))
-   `(region
-     ((((background light)) :background "selectedTextBackgroundColor")
-      (((background dark)) :background "selectedContentBackgroundColor")))
    `(cursor
-     ((((background light)) :background "red")
-      (((background dark)) :background "green")))
+     ((t :background "red")))
    `(fringe
      ((((background light)) :inherit default :foreground "grey70")
       (((background dark)) :inherit default :foreground "grey40")))
@@ -36,19 +32,11 @@
      ((((background light)) :foreground ,acme-yellow)
       (((background dark)) :foreground ,acme-blue)))
    `(hl-line
-     ((((background light)) :background ,acme-yellow-light)
-      (((background dark)) :background ,(color-lighten-name dark-bg 10))))
-   `(mode-line
-     ((((background light))
-       :inherit variable-pitch
-       :foreground "black"
-       :background ,acme-cyan-light
-       :box (:line-width 2 :style flat-button :color ,acme-cyan-light))
-      (((background dark))
-       :inherit variable-pitch
-       :foreground ,acme-purple-light
-       :background ,(color-lighten-name acme-purple 10)
-       :box (:line-width 2 :style flat-button :color ,(color-lighten-name acme-purple 10)))))
+     ((((background light)) :background ,(color-darken-name acme-yellow-light 8))
+      (((background dark)) :background ,(color-lighten-name dark-bg 2))))
+   '(mode-line
+     ((t
+       (:inherit variable-pitch :width condensed :background "grey75" :foreground "black" :box (:line-width (2 . 2) :style released-button)))))
    `(mode-line-inactive
      ((((background light))
        :inherit mode-line
@@ -66,7 +54,7 @@
      ((((background light)) :inherit shadow :background ,acme-red-light)
       (((background dark)) :inherit shadow :background ,acme-red)))
    `(eglot-highlight-symbol-face
-     ((t :inherit highlight)))
+     ((t :inherit match)))
    `(diff-hl-change
      ((((background light)) :background "light blue")
       (((background dark)) :background "royal blue")))
@@ -93,18 +81,17 @@
      ((((background light)) :foreground "orange" :weight bold)
       (((background dark)) :foreground "orange" :weight bold)))
    `(font-lock-comment-delimiter-face
-     ((((background light)) :foreground ,(color-darken-name acme-yellow 10) :background ,(color-darken-name acme-yellow-light 10))
-      (((background dark)) :foreground ,(color-darken-name acme-red-light 30))))
+     ((t :foreground "grey")))
    `(font-lock-comment-face
-     ((((background light)) :foreground ,acme-yellow :background ,(color-darken-name acme-yellow-light 10))
-      (((background dark)) :foreground ,(color-darken-name acme-red-light 20))))
+     ((((background light)) :foreground ,acme-blue)
+      (((background dark)) :foreground ,acme-cyan-light)))
    `(font-lock-function-call-face ((t )))
    `(font-lock-variable-name-face
      ((((background light)) :foreground ,acme-purple)
       (((background dark)) :foreground ,(color-darken-name acme-purple-light 5))))
    `(font-lock-function-name-face
      ((((background light)) :foreground ,acme-cyan)
-      (((background dark)) :foreground ,(color-darken-name acme-cyan-light 5))))
+      (((background dark)) :foreground ,(color-lighten-name "orange" 60))))
    `(font-lock-keyword-face ((t )))
    `(font-lock-type-face ((t )))
    `(font-lock-variable-use-face ((t )))
@@ -135,6 +122,7 @@
       (((type tty) (class color)) (:foreground "green"))
       (t (:inherit variable-pitch
                    :inverse t))))
+   '(shr-code ((t (:inherit fixed-pitch :box (:line-width (1 . 1) :color "grey50")))))
    `(treesit-fold-replacement-face ((t (:inherit shadow))))
    `(treesit-fold-replacement-mouse-face ((t (:inherit shadow))))))
 
