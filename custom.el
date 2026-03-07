@@ -26,12 +26,7 @@
  '(cursor-in-non-selected-windows nil)
  '(custom-enabled-themes '(dop))
  '(custom-safe-themes
-   '("5ce31ca43f656a3fca504e9a84cde8f96c58d55ad7713fe525f8596d8a47363e"
-     "68e9ab92a95e1ab84478c94a912766b00cf2b492b6b56db39f7e5d31c65498a2"
-     "59e54b18c77609cbfa88d1a9b48cb865e175fe1425f453dabec938d179f0ac0d"
-     "bbe58ef57bf5647a6c8f025f395b4440f05511c80b513e70b849c777518c81d3"
-     "8927324897fb3a82651e50778ec5afc7c11ae241face4120d7ffd17d3c46f485"
-     "8937605989e56ae4b31e522b248b5a2907073ee9c5f8d0bb7259412034128daf"))
+   )
  '(custom-theme-directory "~/.emacs.d/themes/")
  '(debug-on-error nil)
  '(delete-by-moving-to-trash t)
@@ -112,6 +107,9 @@
  '(eshell-banner-message "")
  '(eshell-hist-ignoredups t)
  '(eshell-prompt-function 'my-eshell-prompt)
+ '(eww-auto-rename-buffer 'title)
+ '(eww-retrieve-command nil)
+ '(eww-search-prefix "")
  '(exec-path-from-shell-check-startup-files nil)
  '(exec-path-from-shell-variables
    '("PATH" "MANPATH" "FNM_LOGLEVEL" "FNM_COREPACK_ENABLED"
@@ -246,16 +244,18 @@
  '(org-todo-keywords
    '((sequence "TODO(t)" "WAIT(w@)" "|" "DONE(d!)" "CANCELLED(c@)")))
  '(package-selected-packages
-   '(ascii-art-to-unicode bazel browse-kill-ring buffer-env csv-mode
-                          cycle-quotes dictionary dired-collapse
-                          dired-subtree edit-indirect eldoc embark
-                          exec-path-from-shell flymake hungry-delete
-                          jq-mode ligature macrostep
+   '(ascii-art-to-unicode bazel browse-kill-ring buffer-env
+                          clojure-ts-mode csv-mode cycle-quotes
+                          dictionary dired-collapse dired-subtree
+                          edit-indirect eldoc embark
+                          exec-path-from-shell flymake helpful
+                          hungry-delete jq-mode ligature macrostep
                           markdown-preview-mode neotree nodejs-repl
-                          ns-auto-titlebar ox-gfm paredit-everywhere
-                          php-mode prettier prettier-js project
-                          protobuf-mode rainbow-mode scala-mode seq
-                          sly sql-indent string-edit-at-point
+                          ns-auto-titlebar org-modern ox-gfm
+                          paredit-everywhere php-mode prettier
+                          prettier-js project protobuf-mode
+                          rainbow-mode restclient scala-mode seq sly
+                          sql-indent string-edit-at-point
                           string-inflection treesit-auto treesit-fold
                           wgrep whitespace-cleanup-mode winpulse
                           xterm-color yaml-mode))
@@ -272,9 +272,11 @@
  '(project-switch-commands
    '((project-find-file "Find file" nil)
      (project-find-regexp "Find regexp" nil)
-     (project-vc-dir "VC-Dir" nil) (project-eshell "Eshell" nil)
+     (project-vc-dir "VC-Dir" nil)
+     (project-eshell "Eshell" nil)
      (project-compile "Compile" nil)
-     (project-run "Run" nil) (project-any-command "Other" nil)))
+     (project-run "Run" nil)
+     (project-any-command "Other" nil)))
  '(query-replace-highlight t)
  '(quick-peek-add-spacer nil)
  '(quick-peek-position 'below)
@@ -311,6 +313,8 @@
  '(undo-tree-enable-undo-in-region t)
  '(undo-tree-history-directory-alist nil)
  '(undo-tree-mode-lighter " ut")
+ '(url-privacy-level '(email os lastloc cookies))
+ '(url-user-agent 'default)
  '(vc-allow-rewriting-published-history t)
  '(vc-annotate-background nil)
  '(vc-annotate-background-mode t)
@@ -333,11 +337,12 @@
  '(winpulse-step-interval 0.1)
  '(xref-auto-jump-to-first-definition t)
  '(xref-auto-jump-to-first-xref t)
- '(xref-search-program 'ripgrep)
- '(xref-show-definitions-function 'xref-show-definitions-buffer))
+ '(xref-search-program 'ripgrep))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(variable-pitch ((t (:weight normal :family "SF Pro Display")))))
+ '(default ((t :family "Input Mono Narrow")))
+ '(variable-pitch ((t (:family "Input Sans Narrow"))))
+ '(variable-pitch-text ((t (:inherit variable-pitch :height 1.0)))))
