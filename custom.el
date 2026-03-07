@@ -26,7 +26,7 @@
  '(cursor-in-non-selected-windows nil)
  '(custom-enabled-themes '(dop))
  '(custom-safe-themes
-   )
+   '("44290675d3a05837259290807e977e419a9806791a4b8803c8c5cad66bbec456"))
  '(custom-theme-directory "~/.emacs.d/themes/")
  '(debug-on-error nil)
  '(delete-by-moving-to-trash t)
@@ -272,10 +272,8 @@
  '(project-switch-commands
    '((project-find-file "Find file" nil)
      (project-find-regexp "Find regexp" nil)
-     (project-vc-dir "VC-Dir" nil)
-     (project-eshell "Eshell" nil)
-     (project-compile "Compile" nil)
-     (project-run "Run" nil)
+     (project-vc-dir "VC-Dir" nil) (project-eshell "Eshell" nil)
+     (project-compile "Compile" nil) (project-run "Run" nil)
      (project-any-command "Other" nil)))
  '(query-replace-highlight t)
  '(quick-peek-add-spacer nil)
