@@ -21,11 +21,8 @@
                     (save-excursion
                       (goto-line 4)
                       (buffer-substring-no-properties (point-at-bol) (point-at-eol))))))
-    (do-applescript (format "display notification \"%s\" with title \"%s %s\"%s"
-                            command icon title
-                            (if sound
-                                (format " sound name \"%s\"" sound)
-                              "")))))
+    (do-applescript (format "display notification %S with title %S %s" command (concat icon " " title)
+                            (if sound (format " sound name \"%s\"" sound) "")))))
 
 (use-package compile
   :defer t
