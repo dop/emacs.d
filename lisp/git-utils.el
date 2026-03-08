@@ -38,11 +38,36 @@
            (completing-read-multiple "Delete branches: " options nil t)) ))
   (shell-command (format "git branch -D %s" (string-join branches " "))))
 
-(defun git-diff ()
+(defun git-log-recents (&rest args &key limit)
+  (let* ((commits (shell-command-to-string (format "git log -n %d --format=\"%%h %%s -- %%an\"" (or limit 20))))
+         (pairs (mapcar (lambda (line)
+                          (let ((pos  (seq-position line 32)))
+                            (cons (seq-subseq line 0 pos)
+                                  (seq-subseq line (1+ pos)))))
+                        (string-split commits "\n" 'omit-nulls))))
+    pairs))
+
+(defun git-read-recent-commit ()
+  (let* ((vertico-sort-function nil)
+         (commits (git-log-recents))
+         (collection
+          (lambda (str pred flag)
+            (cond ((eq 'metadata flag)
+                   `(metadata
+                     (annotation-function . ,(lambda (cand)
+                                               (concat " " (alist-get cand commits nil nil #'equal))))))
+                  (nil
+                   (try-completion str commits pred))
+                  (t
+                   (all-completions str commits pred))))))
+    (completing-read "Commit: " collection)))
+
+(defun git-diff (&optional arg)
   "Create a buffer to see git diff between current staging and master
 branch."
-  (interactive)
-  (let* ((project (project-current))
+  (interactive "P")
+  (let* ((commit (if arg (git-read-recent-commit) "master"))
+         (project (project-current))
          (buffer-name (concat "*diff" (if project (concat " " (project-name project)) "") "*"))
          (buf (get-buffer-create buffer-name))
          (populate-diff
@@ -50,7 +75,7 @@ branch."
             (with-current-buffer buf
               (let ((inhibit-read-only t))
                 (erase-buffer)
-                (shell-command "git diff master -- ." buf))))))
+                (shell-command (format "git diff %s -- ." commit) buf))))))
     (funcall populate-diff)
     (with-current-buffer buf
       (setq-local buffer-read-only t)
