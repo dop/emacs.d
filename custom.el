@@ -273,7 +273,7 @@
    '((project-find-file "Find file" nil)
      (project-find-regexp "Find regexp" nil)
      (project-vc-dir "VC-Dir" nil) (project-eshell "Eshell" nil)
-     (project-compile "Compile" nil) (project-run "Run" nil)
+     (project-compile "Compile" nil) (project-run-command "Run" nil)
      (project-any-command "Other" nil)))
  '(query-replace-highlight t)
  '(quick-peek-add-spacer nil)
