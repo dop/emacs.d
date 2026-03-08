@@ -286,10 +286,11 @@ rendering."
   :hook (lisp-mode . sly-editing-mode)
   :mode ("\\.sbclrc\\'" . lisp-mode)
   :config
-  (when-let* ((local-HyperSpec (expand-file-name ".local/share/doc/HyperSpec" "~"))
-              (_ (file-directory-p local-HyperSpec)))
-    (setq common-lisp-hyperspec-root (concat "file://" local-HyperSpec "/")
-          common-lisp-hyperspec-symbol-table (expand-file-name "Data/Symbol-Table.text" local-HyperSpec))
+  ;; https://www.lispworks.com/downloads/documentation.html
+  (when-let* ((hyperspec-dir (expand-file-name ".local/share/doc/HyperSpec-7-0/HyperSpec" "~"))
+              (_ (file-directory-p hyperspec-dir)))
+    (setq common-lisp-hyperspec-root (concat "file://" hyperspec-dir "/")
+          common-lisp-hyperspec-symbol-table (expand-file-name "Data/Symbol-Table.text" hyperspec-dir))
     (advice-add 'common-lisp-hyperspec :around #'hyperspec-browse-local-file))
 
   (defun rps-sly-eval-last-expression ()
