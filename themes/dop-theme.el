@@ -83,8 +83,8 @@
    `(font-lock-comment-delimiter-face
      ((t :foreground "grey")))
    `(font-lock-comment-face
-     ((((background light)) :foreground ,acme-blue)
-      (((background dark)) :foreground ,acme-cyan-light)))
+     ((((background light)) :foreground ,acme-blue :slant italic)
+      (((background dark)) :foreground ,acme-cyan-light :slant italic)))
    `(font-lock-function-call-face ((t )))
    `(font-lock-variable-name-face
      ((((background light)) :foreground ,acme-purple)
@@ -122,7 +122,8 @@
       (((type tty) (class color)) (:foreground "green"))
       (t (:inherit variable-pitch
                    :inverse t))))
-   '(shr-code ((t (:inherit fixed-pitch :box (:line-width (1 . 1) :color "grey50")))))
+   `(shr-code ((t (:inherit fixed-pitch :box (:line-width (1 . 1) :color "grey50")))))
+   `(sly-reader-conditional-face ((t :inherit shadow)))
    `(treesit-fold-replacement-face ((t (:inherit shadow))))
    `(treesit-fold-replacement-mouse-face ((t (:inherit shadow))))))
 
