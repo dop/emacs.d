@@ -5,6 +5,19 @@
 (defun alphanumeric-char-p (c)
   (or (<= ?a c ?z) (<= ?A c ?Z) (<= ?0 c ?9)))
 
+(defun insert-random-bytes (size)
+  (call-process "dd"
+                nil
+                (list (current-buffer) nil)
+                nil
+                (format "bs=%d" size) "if=/dev/random" "count=1"))
+
+(defun random-base85-string (&optional size)
+  (with-temp-buffer
+    (insert-random-bytes (or size 32))
+    (shell-command-on-region (point-min) (point-max) "base85" (current-buffer) t)
+    (buffer-string)))
+
 (defun random-alphanumeric-string (&optional size)
   "Return random string consisting of alphanumeric characters.
 

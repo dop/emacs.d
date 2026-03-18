@@ -4,6 +4,11 @@
 (require 'my-library)
 
 (defun insert-random-string (size)
+  (interactive "p")
+  (let ((n (if (and size (< 1 size)) size 16)))
+    (insert (seq-subseq (random-base85-string n) 0 n))))
+
+(defun insert-random-alphanumeric-string (size)
   "Insert random alphanumeric string."
   (interactive "p")
   (insert (random-alphanumeric-string (if (and size (plusp size)) size nil))))
