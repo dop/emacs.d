@@ -330,6 +330,19 @@ rendering."
   :hook (cider-repl-mode . paredit-mode)
   :hook (clojure-mode . cider-eldoc-setup))
 
+(use-package scala-mode :mode "\\.scala\\'")
+
+(defun go-run ()
+  (interactive)
+  (basic-save-buffer)
+  (async-shell-command (format "go run %s" (buffer-file-name))))
+
+(use-package go-mode
+  :mode "\\.go\\'"
+  :config
+  (keymap-unset go-mode-map "C-c C-d")
+  (keymap-set go-mode-map "C-c C-c" #'go-run))
+
 (use-package imenu-list :disabled t :commands imenu-list)
 
 (use-package enumerated-windows :hook (after-init . enumerated-windows-mode))
