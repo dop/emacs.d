@@ -45,10 +45,10 @@
 
 (defun project-mark-safe! ()
   "Find .dir-locals.el starting at the project root and place it on
-`'safe-local-variable-directories'."
+`safe-local-variable-directories'."
   (interactive)
   (when-let ((dir-locals-directory (locate-dominating-file (project-root (project-current t))
                                                            ".dir-locals.el")))
-    (add-to-list 'safe-local-variable-directories dir-locals-directory)))
+    (add-to-list 'safe-local-variable-directories (expand-file-name dir-locals-directory))))
 
 (provide 'project-tools)
