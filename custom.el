@@ -18,6 +18,7 @@
  '(compilation-always-kill t)
  '(compilation-ask-about-save nil)
  '(compilation-message-face 'default)
+ '(compilation-scroll-output t)
  '(completion-preview-minimum-symbol-length 1)
  '(completion-show-help nil)
  '(create-lockfiles nil)
