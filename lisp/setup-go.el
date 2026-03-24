@@ -21,11 +21,14 @@
 ;;; Code:
 
 (defun go-run ()
+  "Run current file with 'go run'."
   (interactive)
   (basic-save-buffer)
-  (async-shell-command (format "go run %s" (buffer-file-name))))
+  (async-shell-command (format "go run -race %s" (buffer-file-name))))
 
 (defun go-format-buffer (&rest command)
+  "Run COMMAND on a current buffer (as standard input) and replace buffer's
+content with the output."
   (let* ((command-name (car command))
          (buf (current-buffer))
          (stdout (get-buffer-create (concat " *" command-name " out*")))
@@ -37,14 +40,17 @@
                               :stderr stderr
                               :command command
                               :sentinel (lambda (proc type)
-                                          (cond ((eq 'exit (process-status proc))
-                                                 (let ((formatted (with-current-buffer stdout
-                                                                    (buffer-string))))
-                                                   (with-current-buffer buf
-                                                     (let ((p (point)))
-                                                       (erase-buffer)
-                                                       (insert formatted)
-                                                       (goto-char p))))))))))
+                                          (when (eq 'exit (process-status proc))
+                                            (if (eq 0 (process-exit-status proc))
+                                                (let ((formatted (with-current-buffer stdout
+                                                                   (buffer-string))))
+                                                  (with-current-buffer buf
+                                                    (let ((p (point)))
+                                                      (erase-buffer)
+                                                      (insert formatted)
+                                                      (goto-char p))))
+                                              (with-current-buffer stderr
+                                                (message (car (string-lines (buffer-string)))))))))))
       (process-send-string proc (buffer-string))
       (process-send-eof proc))))
 
