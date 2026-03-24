@@ -3,6 +3,8 @@
 (require 'zoom)
 (require 'my-commands)
 
+(keymap-global-set "C-." #'repeat)
+
 (keymap-global-set "C-z" nil)
 (keymap-global-set "C-x 1" #'delete-other-windows)
 
@@ -25,6 +27,16 @@
 (keymap-global-set "C-x O" #'other-frame)
 (keymap-global-set "M-`" #'other-frame)
 
+(keymap-global-set "C-x w ^" #'enlarge-window)
+(keymap-global-set "C-x w >" #'enlarge-window-horizontally)
+(keymap-global-set "C-x w v" #'shrink-window)
+(keymap-global-set "C-x w <" #'shrink-window-horizontally)
+
+(keymap-global-set "C-x [" #'backward-paragraph)
+(keymap-global-set "C-x ]" #'forward-paragraph)
+(keymap-global-set "C-x {" #'backward-page)
+(keymap-global-set "C-x }" #'forward-page)
+
 (keymap-global-set "M-/" #'hippie-expand)
 
 (keymap-global-set "<f5>" #'recompile)
@@ -32,5 +44,8 @@
 (require 'mark-and-copy)
 (keymap-global-set "M-w" #'mark-and-copy)
 (keymap-global-set "M-W" #'mark-and-copy-mark)
+
+(keymap-global-unset "C-x C-p")
+(keymap-global-unset "C-x C-z")
 
 (provide 'setup-key-bindings)
