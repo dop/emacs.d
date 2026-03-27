@@ -64,11 +64,15 @@ content with the output."
   (interactive)
   (go-format-buffer "goimports"))
 
+(defun setup-go-mode ()
+  (setq tab-width 4))
+
 (use-package go-ts-mode
   :mode "\\.go\\'"
   :config
   (keymap-unset go-ts-mode-map "C-c C-d")
-  (keymap-set go-ts-mode-map "C-c C-c" #'go-run))
+  (keymap-set go-ts-mode-map "C-c C-c" #'go-run)
+  (add-hook 'go-ts-mode-hook #'setup-go-mode))
 
 (provide 'setup-go)
 ;;; setup-go.el ends here

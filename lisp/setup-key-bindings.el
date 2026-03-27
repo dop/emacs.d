@@ -48,4 +48,9 @@
 (keymap-global-unset "C-x C-p")
 (keymap-global-unset "C-x C-z")
 
+(dotimes (i 9)
+  (keymap-global-set (format "s-%d" (1+ i))
+                     (lambda () (interactive)
+                       (enumerated-windows-select i))))
+
 (provide 'setup-key-bindings)

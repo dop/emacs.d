@@ -18,7 +18,6 @@
  '(compilation-always-kill t)
  '(compilation-ask-about-save nil)
  '(compilation-message-face 'default)
- '(compilation-scroll-output t)
  '(completion-preview-minimum-symbol-length 1)
  '(completion-show-help nil)
  '(create-lockfiles nil)
@@ -76,6 +75,7 @@
  '(dumb-jump-debug nil)
  '(dumb-jump-force-searcher 'rg)
  '(dumb-jump-prefer-searcher 'git-grep-plus-ag)
+ '(echo-keystrokes 0.1)
  '(editorconfig-mode-lighter " ec")
  '(ef-themes-mixed-fonts t)
  '(ef-themes-variable-pitch-ui t)
@@ -127,6 +127,7 @@
  '(fold-this-overlay-text "...")
  '(frame-inhibit-implied-resize t)
  '(gc-cons-threshold 268435456)
+ '(go-ts-mode-indent-offset 4)
  '(gptel-default-mode 'org-mode)
  '(gptel-include-reasoning nil)
  '(gptel-log-level 'debug)
@@ -218,8 +219,11 @@
  '(neo-window-fixed-size nil)
  '(neo-window-width 30)
  '(next-screen-context-lines 10)
- '(ns-alternate-modifier 'super)
+ '(ns-alternate-modifier 'alt)
+ '(ns-antialias-text t)
  '(ns-command-modifier 'meta)
+ '(ns-right-alternate-modifier 'super)
+ '(ns-right-command-modifier 'super)
  '(ns-use-srgb-colorspace t)
  '(ns-use-thin-smoothing nil t)
  '(olivetti-body-width 80)
@@ -255,11 +259,11 @@
                           ns-auto-titlebar org-modern ox-gfm
                           paredit-everywhere php-mode prettier
                           prettier-js project protobuf-mode
-                          rainbow-mode restclient scala-mode seq sly
-                          sql-indent string-edit-at-point
-                          string-inflection treesit-auto treesit-fold
-                          wgrep whitespace-cleanup-mode winpulse
-                          xterm-color yaml-mode))
+                          rainbow-mode scala-mode seq sly sql-indent
+                          string-edit-at-point string-inflection
+                          treesit-auto treesit-fold wgrep
+                          whitespace-cleanup-mode winpulse xterm-color
+                          yaml-mode))
  '(package-vc-selected-packages
    '((winpulse :url "https://github.com/dop/winpulse" :branch
                "6508d026090a89fc2d95003055c18ddabe3d25a3")))
@@ -314,6 +318,7 @@
  '(undo-tree-mode-lighter " ut")
  '(url-privacy-level '(email os lastloc cookies))
  '(url-user-agent 'default)
+ '(use-short-answers t)
  '(vc-allow-rewriting-published-history t)
  '(vc-annotate-background nil)
  '(vc-annotate-background-mode t)

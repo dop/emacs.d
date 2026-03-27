@@ -21,8 +21,6 @@
 (with-eval-after-load 'info
   (add-to-list 'Info-additional-directory-list "~/.local/share/info"))
 
-(defalias 'yes-or-no-p 'y-or-n-p)
-
 (require 'my-commands)
 (require 'git-utils)
 (require 'setup-key-bindings)
