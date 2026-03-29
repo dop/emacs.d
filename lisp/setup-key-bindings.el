@@ -53,4 +53,6 @@
                      (lambda () (interactive)
                        (enumerated-windows-select i))))
 
+(keymap-global-set "A-e" "€")
+
 (provide 'setup-key-bindings)
