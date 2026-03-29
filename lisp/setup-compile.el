@@ -7,6 +7,11 @@
 (defvar notify--ok-sound "Glass")
 (defvar notify--fail-sound "Blow")
 
+(defun string-truncate-right (string len)
+  (if (< len (length string))
+      (concat (seq-subseq string 0 len) "...")
+    string))
+
 (defun notify-on-compilation-finish (buf msg)
   (let* ((title (string-trim (buffer-name buf) "*" "*"))
          (status (cond ((string-match-p "exited abnormally" msg) :fail)
@@ -21,7 +26,9 @@
                     (save-excursion
                       (goto-line 4)
                       (buffer-substring-no-properties (point-at-bol) (point-at-eol))))))
-    (do-applescript (format "display notification %S with title %S %s" command (concat icon " " title)
+    (do-applescript (format "display notification %S with title %S %s"
+                            (string-truncate-right command 40)
+                            (concat icon " " title)
                             (if sound (format " sound name \"%s\"" sound) "")))))
 
 (use-package compile
