@@ -1,11 +1,19 @@
 ;; -*- lexical-binding: t; -*-
 
 (require 'project-tools)
+
 (defcustom project-preferred-root-resolution 'default
   "Choose how project root is resolved."
   :type 'symbol
   :options '(default top)
   :safe t)
+
+(defun project-locate-dominating-file (file name)
+  "Wrapper for `locate-dominating-file' that takes `project-preferred-root-resolution' into account."
+  (funcall (cl-case project-preferred-root-resolution
+             (top #'locate-top-dominating-file)
+             (t   #'locate-dominating-file))
+           file name))
 
 (defun project-vc-top-dir ()
   "Run `project-vc-dir' in top project."
@@ -101,9 +109,22 @@
 (with-eval-after-load "project"
   (cl-defgeneric project-scripts (project)
     "Returns an alist of (NAME . COMMAND) scripts that can be run in a project.")
+
+  (cl-defgeneric project-runner (project)
+    "Return name of runner executable, e.g. \"make\", \"npm\", etc.")
+
   (cl-defgeneric project-run (project command)
     "Run COMMAND in PROJECT."
-    (error "Not implemented."))
+    (let ((runner (project-runner project))
+          (default-directory (project-root project)))
+      (when (and runner (not (executable-find runner)))
+        (error "Runner %S not found." runner))
+      (when (and (not runner) (not (executable-find command)))
+        (error "Command %S not found." command))
+      (async-shell-command (if runner
+                               (format "%s %s" runner command)
+                             command))))
+
   (cl-defgeneric project-test (project command)
     "Test FILE in PROJECT."
     (error "Not implemented.")))
@@ -124,52 +145,52 @@
 (with-eval-after-load "project"
   (advice-add 'project-async-shell-command :around #'project-set-shell-command-buffer-name-async))
 
+(cl-defmethod project-root (project)
+  "Default implementation."
+  (cdr project))
+
 ;; .envrc project
 (with-eval-after-load "project"
   (defun project-envrc-project (dir)
-    (let* ((resolve-root
-            (cl-case project-preferred-root-resolution
-              (top #'locate-top-dominating-file)
-              (t   #'locate-dominating-file)))
-           (root (funcall resolve-root dir ".envrc")))
-      (and root (cons 'envrc root))))
-
-  (cl-defmethod project-roots ((project (head envrc)))
-    (list (cdr project)))
-
-  (cl-defmethod project-ignores ((project (head envrc)) dir)
-    (mapcar (lambda (dir) (concat dir "/"))
-            vc-directory-exclusion-list))
+    (when-let* ((root (locate-dominating-file dir ".envrc")))
+      (cons 'envrc root)))
 
   (add-hook 'project-find-functions #'project-envrc-project))
 
 ;; dir-locals project
 (with-eval-after-load "project"
   (defun project-dir-locals-project (dir)
-    (let ((root (locate-dominating-file dir ".dir-locals.el")))
-      (and root (cons 'dir-locals root))))
+    (when-let* ((root (locate-dominating-file dir ".dir-locals.el")))
+      (cons 'dir-locals root)))
 
-  (cl-defmethod project-roots ((project (head dir-locals)))
-    (list (cdr project)))
-
-  (cl-defmethod project-ignores ((project (head dir-locals)) dir)
-    (mapcar (lambda (dir) (concat dir "/"))
-            vc-directory-exclusion-list))
   (add-hook 'project-find-functions #'project-dir-locals-project))
 
+;; bazel project
 (with-eval-after-load "project"
   (defun project-bazel-project (dir)
-    (let ((root (locate-dominating-file dir "BUILD.bazel")))
-      (and root (cons 'dir-locals root))))
-
-  (cl-defmethod project-roots ((project (head dir-locals)))
-    (list (cdr project)))
-
-  (cl-defmethod project-ignores ((project (head dir-locals)) dir)
-    (mapcar (lambda (dir) (concat dir "/"))
-            vc-directory-exclusion-list))
+    (when-let* ((root (locate-dominating-file dir "BUILD.bazel")))
+      (cons 'bazel root)))
 
   (add-hook 'project-find-functions #'project-bazel-project))
+
+;; Makefile project
+(with-eval-after-load "project"
+  (defun project-makefile-project (dir)
+    (when-let* ((root (locate-dominating-file dir "Makefile")))
+      (cons 'makefile root)))
+
+  (cl-defmethod project-runner ((project (head makefile))) "make")
+
+  (cl-defmethod project-scripts ((project (head makefile)))
+    (with-temp-buffer
+      (insert (file-contents-string
+               (expand-file-name "Makefile" (project-root project))))
+      (goto-char 0)
+      (collecting scripts
+        (while (search-forward-regexp "^\\([a-z0-9]+\\):" nil t)
+          (scripts (match-string 1))))))
+
+  (add-hook 'project-find-functions #'project-makefile-project))
 
 ;; NPM project
 (with-eval-after-load "project"
@@ -190,19 +211,14 @@
     (alist-get 'name (project-npm--package-cache-get dir)))
 
   (defun project-npm-project (dir)
-    (let* ((resolve-root
-            (cl-case project-preferred-root-resolution
-              (top #'locate-top-dominating-file)
-              (t   #'locate-dominating-file)))
-           (suffix "")
-           (root (funcall resolve-root dir "package.json")))
-      (when root
-        ;; .git is a regular file in a worktree
-        (when (file-regular-p (expand-file-name ".git" (locate-dominating-file default-directory ".git")))
-          (setq suffix (concat " " (car (vc-git-branches)))))
-        (list 'npm
-              (concat (project-npm--package-name root) suffix)
-              root))))
+    (when-let* ((suffix "")
+                (root (project-locate-dominating-file dir "package.json")))
+      ;; .git is a regular file in a worktree
+      (when (file-regular-p (expand-file-name ".git" (locate-dominating-file default-directory ".git")))
+        (setq suffix (concat " " (car (vc-git-branches)))))
+      (list 'npm
+            (concat (project-npm--package-name root) suffix)
+            root)))
 
   (cl-defmethod project-scripts ((project (head npm)))
     (alist-get 'scripts (project-npm--package-cache-get (project-root project))))
@@ -229,10 +245,6 @@
 
   (cl-defmethod project-roots ((project (head npm)))
     (last project))
-
-  (cl-defmethod project-ignores ((project (head npm)) dir)
-    (mapcar (lambda (dir) (concat dir "/"))
-            vc-directory-exclusion-list))
 
   (add-hook 'project-find-functions #'project-npm-project))
 
