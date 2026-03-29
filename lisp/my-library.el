@@ -86,6 +86,11 @@ usage: (cond-let ((VAR TEST) BODY...))."
  (eq 1 (cond-it (nil nil) (t 1))))
 
 (defmacro collecting (collectors &rest body)
+  "Return COLLECTORS when BODY returns.
+
+Symbol names of COLLECTORS is available in BODY. If only single
+collector is defined, its list value is returned. Otherwise a list of
+lists is returned in the same order as defined in COLLECTORS."
   (declare (indent 1))
   (let ((single (atom collectors))
         (value  (gensym "value")))
@@ -103,7 +108,8 @@ usage: (cond-let ((VAR TEST) BODY...))."
 (comment
  (macroexpand-1 '(collecting (a b c)
                    (a 1) (b 2) (c 3)))
- (equal '(1) (collecting x (x 1))))
+ (equal '(1 2) (collecting x (x 1) (x 2)))
+ (equal '((1 3) (2)) (collecting (x y) (x 1) (y 2) (x 3))))
 
 
 (defun alist-hash-table (alist &rest table-keyword-args)
