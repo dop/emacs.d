@@ -21,47 +21,46 @@
   (custom-theme-set-faces
    'dop
    `(default
-     ((((background light)) :foreground "black" :background  ,(color-saturate-name acme-yellow-light -20))
-      (((background dark)) :foreground "white" :background ,(color-saturate-name dark-bg -70))))
+     ((((background light))
+       (:foreground "black" :background  ,(color-saturate-name acme-yellow-light -20)))
+      (((background dark))
+       (:foreground "white" :background ,(color-saturate-name dark-bg -70)))))
    `(cursor
-     ((t :background "red")))
+     ((t (:background "red"))))
    `(fringe
-     ((((background light)) :inherit default :foreground "grey70")
-      (((background dark)) :inherit default :foreground "grey40")))
+     ((((background light))
+       (:inherit default :foreground "grey70"))
+      (((background dark))
+       (:inherit default :foreground "grey40"))))
    `(vertical-border
-     ((((background light)) :foreground ,acme-yellow)
-      (((background dark)) :foreground ,acme-blue)))
+     ((((background light))
+       (:foreground ,acme-yellow))
+      (((background dark))
+       (:foreground ,acme-blue))))
    `(hl-line
-     ((((background light)) :background ,(color-darken-name acme-yellow-light 8))
-      (((background dark)) :background ,(color-lighten-name dark-bg 2))))
+     ((((background light)) (:background ,(color-darken-name acme-yellow-light 8)))
+      (((background dark)) (:background ,(color-lighten-name dark-bg 2)))))
    '(mode-line
-     ((t
-       (:inherit variable-pitch :width condensed :background "grey75" :foreground "black" :box (:line-width (2 . 2) :style released-button)))))
+     ((t (:inherit variable-pitch :width condensed :background "grey75" :foreground "black" :box (:line-width (2 . 2) :style released-button)))))
    `(mode-line-inactive
      ((((background light))
-       :inherit mode-line
-       :foreground "grey30"
-       :background "grey90"
-       :box (:line-width 2 :style flat-button :color "grey90"))
+       (:inherit mode-line :foreground "grey30" :background "grey90" :box (:line-width 2 :style flat-button :color "grey90")))
       (((background dark))
-       :inherit mode-line
-       :foreground "grey70"
-       :background "grey40"
-       :box (:line-width 2 :style flat-button :color "grey40"))))
+       (:inherit mode-line :foreground "grey70" :background "grey40" :box (:line-width 2 :style flat-button :color "grey40")))))
    `(eglot-mode-line
-     ((t :weight bold)))
+     ((t (:weight bold))))
    `(eglot-diagnostic-tag-unnecessary-face
-     ((((background light)) :inherit shadow :background ,acme-red-light)
-      (((background dark)) :inherit shadow :background ,acme-red)))
+     ((((background light)) (:inherit shadow :background ,acme-red-light))
+      (((background dark)) (:inherit shadow :background ,acme-red))))
    `(eglot-highlight-symbol-face
-     ((t :inherit match)))
+     ((t (:inherit match))))
    `(diff-hl-change
-     ((((background light)) :background "light blue")
-      (((background dark)) :background "royal blue")))
+     ((((background light)) (:background "light blue"))
+      (((background dark)) (:background "royal blue"))))
    `(diff-hl-delete
-     ((((background light)) :background "tomato")))
+     ((((background light)) (:background "tomato"))))
    `(diff-hl-insert
-     ((((background light)) :background "DarkOliveGreen2")))
+     ((((background light)) (:background "DarkOliveGreen2"))))
    `(diff-header
      ((t (:inherit shadow :background unspecified))))
    `(diff-file-header
@@ -70,60 +69,59 @@
       (((background dark))
        (:inherit shadow :foreground "white" :weight bold))))
    `(fixed-pitch
-     ((t :inherit default)))
+     ((t (:inherit default))))
    `(trailing-whitespace
-     ((((background light)) :background "RosyBrown1")
-      (((background dark)) :background "brown4")))
+     ((((background light)) (:background "RosyBrown1"))
+      (((background dark)) (:background "brown4"))))
    `(error
-     ((((background light)) :foreground "red" :weight bold)
-      (((background dark)) :foreground "red" :weight bold)))
+     ((((background light)) (:foreground "red" :weight bold))
+      (((background dark)) (:foreground "red" :weight bold))))
    `(warning
-     ((((background light)) :foreground "orange" :weight bold)
-      (((background dark)) :foreground "orange" :weight bold)))
+     ((((background light)) (:foreground "orange" :weight bold))
+      (((background dark)) (:foreground "orange" :weight bold))))
    `(font-lock-comment-delimiter-face
-     ((t :foreground "grey")))
+     ((t (:foreground "grey"))))
    `(font-lock-comment-face
-     ((((background light)) :foreground ,acme-blue :slant italic)
-      (((background dark)) :foreground ,acme-cyan-light :slant italic)))
+     ((((background light)) (:foreground ,acme-blue :slant italic))
+      (((background dark)) (:foreground ,acme-cyan-light :slant italic))))
    `(font-lock-function-call-face ((t )))
    `(font-lock-variable-name-face
-     ((((background light)) :foreground ,acme-purple)
-      (((background dark)) :foreground ,(color-darken-name acme-purple-light 5))))
+     ((((background light)) (:foreground ,acme-purple))
+      (((background dark)) (:foreground ,(color-darken-name acme-purple-light 5)))))
    `(font-lock-function-name-face
-     ((((background light)) :foreground ,acme-cyan)
-      (((background dark)) :foreground ,(color-lighten-name "orange" 60))))
+     ((((background light)) (:foreground ,acme-cyan))
+      (((background dark)) (:foreground ,(color-lighten-name "orange" 60)))))
    `(font-lock-keyword-face ((t )))
    `(font-lock-type-face ((t )))
    `(font-lock-variable-use-face ((t )))
    `(font-lock-constant-face ((t )))
-   `(font-lock-builtin-face ((t :inherit shadow)))
+   `(font-lock-builtin-face ((t (:inherit shadow))))
    `(font-lock-property-name-face ((t )))
    `(font-lock-property-use-face ((t )))
    `(font-lock-doc-face
-     ((((background light)) :foreground ,acme-green-alt :background ,acme-green-light)
-      (((background dark)) :foreground ,(color-darken-name acme-green-light 20))))
+     ((((background light)) (:foreground ,acme-green-alt :background ,acme-green-light))
+      (((background dark)) (:foreground ,(color-darken-name acme-green-light 20)))))
    `(font-lock-string-face
-     ((((background light)) :foreground ,acme-green-alt)
-      (((background dark)) :foreground ,(color-darken-name acme-green-light 10))))
+     ((((background light)) (:foreground ,acme-green-alt))
+      (((background dark)) (:foreground ,(color-darken-name acme-green-light 10)))))
    `(font-lock-number-face
-     ((((background light)) :foreground ,acme-green-alt)
-      (((background dark)) :foreground ,(color-darken-name acme-green-light 5))))
-   `(font-lock-bracket-face ((t :inherit shadow)))
-   `(font-lock-punctuation-face ((t :inherit shadow)))
+     ((((background light)) (:foreground ,acme-green-alt))
+      (((background dark)) (:foreground ,(color-darken-name acme-green-light 5)))))
+   `(font-lock-bracket-face ((t (:inherit shadow))))
+   `(font-lock-punctuation-face ((t (:inherit shadow))))
    `(typescript-ts-jsx-attribute-face ((t )))
    `(eshell-prompt
-     ((((background light)) :inherit shadow :overline "grey80")
-      (((background dark)) :inherit shadow :overline "grey40")))
+     ((((background light)) (:inherit shadow :overline "grey80"))
+      (((background dark)) (:inherit shadow :overline "grey40"))))
    `(dictionary-reference-face
      ((((background light)) (:inherit variable-pitch :foreground "blue"))
       (((background dark)) (:inherit variable-pitch :foreground "sky blue"))))
    `(dictionary-word-entry-face
      ((((type x)) (:italic t))
       (((type tty) (class color)) (:foreground "green"))
-      (t (:inherit variable-pitch
-                   :inverse t))))
+      (t (:inherit variable-pitch :inverse t))))
    `(shr-code ((t (:inherit fixed-pitch :box (:line-width (1 . 1) :color "grey50")))))
-   `(sly-reader-conditional-face ((t :inherit shadow)))
+   `(sly-reader-conditional-face ((t (:inherit shadow))))
    `(treesit-fold-replacement-face ((t (:inherit shadow))))
    `(treesit-fold-replacement-mouse-face ((t (:inherit shadow))))))
 
