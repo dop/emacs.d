@@ -79,9 +79,12 @@
 
 (define-tempo post-header (org-mode)
   "Blog post header."
-  '("#+TITLE: " p n
+  '("#+TITLE: " (r "Title: " title) n
     "#+SUBTITLE: " n
     "#+OPTIONS: num:nil toc:nil" n
-    "#+PROPERTY: header-args :exports both :results scalar :noweb yes" n n))
+    "#+PROPERTY: header-args :exports both :results scalar :noweb yes" n
+    n
+    "* " (s title)
+    n n))
 
 (provide 'setup-tempo)
