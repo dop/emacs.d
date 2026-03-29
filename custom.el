@@ -319,6 +319,7 @@
  '(url-privacy-level '(email os lastloc cookies))
  '(url-user-agent 'default)
  '(use-short-answers t)
+ '(user-mail-address "dop@localhost")
  '(vc-allow-rewriting-published-history t)
  '(vc-annotate-background nil)
  '(vc-annotate-background-mode t)
@@ -347,6 +348,6 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t :family "Input Mono Narrow")))
+ '(default ((t (:family "Input Mono Narrow"))))
  '(variable-pitch ((t (:family "Input Sans Narrow"))))
  '(variable-pitch-text ((t (:inherit variable-pitch :height 1.0)))))
