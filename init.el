@@ -83,7 +83,9 @@
          ("\\(\\B@xxx\\|\\<XXX\\)\\(?:$\\|:\s\\|\s\\)"  1 'error prepend)
          ("\\(\\B@note\\|\\<NOTE\\)\\(?:$\\|:\s\\|\s\\)"  1 'error prepend))))
 
-(add-hook 'prog-mode-hook #'font-lock-add-watchwords)
+(defun font-lock-add-dangerous-control-flow ()
+  "Highlight continue, break, and return."
+  (font-lock-add-keywords nil '(("\\<\\(continue\\|break\\|return\\|throw\\)\\>" . 'error))))
 
 ;; Useful in eshell.
 (defalias 'e 'find-file)
