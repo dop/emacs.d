@@ -82,7 +82,7 @@
   '("#+TITLE: " (r "Title: " title) n
     "#+SUBTITLE: " n
     "#+OPTIONS: num:nil toc:nil" n
-    "#+PROPERTY: header-args :exports both :results scalar :noweb yes" n
+    "#+PROPERTY: header-args :eval no :exports both :results scalar :noweb yes" n
     n
     "* " (s title)
     n n))
