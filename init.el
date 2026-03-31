@@ -430,6 +430,21 @@ rendering."
     (with-current-buffer (get-buffer-create "*restclient*")
       (restclient-mode))))
 
+(defun return-back-current-to-point (fn &rest args)
+  (let ((empty (org--line-empty-p 0))
+        (p (point)))
+    (when empty
+      (open-line 1)
+      (next-line))
+    (apply fn args)
+    (goto-char p)))
+
+(with-eval-after-load "sgml-mode"
+  (advice-add 'sgml-close-tag :around #'return-back-current-to-point)
+  (keymap-unset sgml-mode-map "C-c C-d")
+  (keymap-set sgml-mode-map "C-c d" #'sgml-delete-tag)
+  (keymap-set sgml-mode-map "C-c e" #'sgml-close-tag))
+
 (load "~/work/config.el" 'noerror)
 (load "~/work/utils.el" 'noerror)
 
