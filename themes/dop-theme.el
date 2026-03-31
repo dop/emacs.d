@@ -16,17 +16,15 @@
        (acme-blue            "#1054AF")
        (acme-blue-light      "#E1FAFF")
        (acme-purple          "#555599")
-       (acme-purple-light    "#FFEAFF")
-       (dark-bg (color-darken-name acme-yellow 60)))
+       (acme-purple-light    "#FFEAFF"))
   (custom-theme-set-faces
    'dop
    `(default
-     ((((background light))
-       (:foreground "black" :background  ,(color-saturate-name acme-yellow-light -20)))
-      (((background dark))
-       (:foreground "white" :background ,(color-saturate-name dark-bg -70)))))
+     ((((background light)) :foreground "black" :background  ,(color-desaturate-name acme-yellow-light 20))
+      (((background dark)) :foreground "white" :background ,(color-darken-name acme-blue 50))))
    `(cursor
-     ((t (:background "red"))))
+     ((((background dark)) :background "magenta")
+      (((background light)) :background "red")))
    `(fringe
      ((((background light))
        (:inherit default :foreground "grey70"))
@@ -38,8 +36,8 @@
       (((background dark))
        (:foreground ,acme-blue))))
    `(hl-line
-     ((((background light)) (:background ,(color-darken-name acme-yellow-light 8)))
-      (((background dark)) (:background ,(color-lighten-name dark-bg 2)))))
+     ((((background light)) :background ,(color-darken-name acme-yellow-light 8))
+      (((background dark)) :background ,(color-darken-name acme-blue 30))))
    '(mode-line
      ((t (:inherit variable-pitch :width condensed :background "grey75" :foreground "black" :box (:line-width (2 . 2) :style released-button)))))
    `(mode-line-inactive
