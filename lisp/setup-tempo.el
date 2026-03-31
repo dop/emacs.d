@@ -41,8 +41,9 @@
                               ,(symbol-name template-name)
                               ,documentation
                               ',tag-list)
-       (define-abbrev ,abbrev-table ,(symbol-name template-name) ""
-         ',(intern (concat "tempo-template-" full-template-name))))))
+       (with-eval-after-load ',mode
+         (define-abbrev ,abbrev-table ,(symbol-name template-name) ""
+           ',(intern (concat "tempo-template-" full-template-name)))))))
 
 (define-tempo react-component (typescript-ts-base-mode)
   "interface ComponentProps and const Component: FC<ComponentProps> = ..."
@@ -56,8 +57,7 @@
   "function Component(props) { ... }"
   '("function " (r "Component name: " name) "(props) {" n
     > "return " p "null;" n
-    "}" >)
-  "fc")
+    "}" >))
 
 (define-tempo lambda (emacs-lisp-mode)
   "(lambda () ...)"
