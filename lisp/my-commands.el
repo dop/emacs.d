@@ -244,7 +244,7 @@ Every item of FUNCTIONS can be either function or arguments to
     (with-temp-buffer
       (insert message)
       (goto-char 0)
-      (when (search-forward "unnecessary dependenc" nil t)
+      (when (search-forward-regexp "\\(unnecessary\\|duplicate\\) dependenc" nil t)
         (while (re-search-forward "'[^']+'" nil t)
           (push (string-trim (match-string-no-properties 0) "'" "'") dependencies))))
     (reverse dependencies)))
@@ -257,7 +257,9 @@ Every item of FUNCTIONS can be either function or arguments to
     (should (equal '("a" "b")
                    (funcall uut "React Hook useCallback has an unnecessary dependencies: 'a' and 'b'.")))
     (should (equal '("a" "b" "c")
-                   (funcall uut "React Hook useEffect has an unnecessary dependencies: 'a', 'b', and 'c'.")))))
+                   (funcall uut "React Hook useEffect has an unnecessary dependencies: 'a', 'b', and 'c'.")))
+    (should (equal '("getOverlays")
+                   (funcall uut "React Hook useCallback has a duplicate dependency: 'getOverlays'.")))))
 
 (defun eslint-react-fix-dependencies ()
   (interactive)
