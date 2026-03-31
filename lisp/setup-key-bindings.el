@@ -17,6 +17,7 @@
 
 (keymap-global-set "M-l" #'downcase-dwim)
 (keymap-global-set "M-u" #'upcase-dwim)
+(keymap-global-set "M-z" #'zap-up-to-char)
 
 (keymap-global-set "C-x M-d" #'delete-this-buffer-and-file)
 (keymap-global-set "C-x M-r" #'rename-buffer-and-file)
