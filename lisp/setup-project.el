@@ -215,7 +215,7 @@
                 (root (project-locate-dominating-file dir "package.json")))
       ;; .git is a regular file in a worktree
       (when (file-regular-p (expand-file-name ".git" (locate-dominating-file default-directory ".git")))
-        (setq suffix (concat " " (car (vc-git-branches)))))
+        (setq suffix (concat " [" (car (vc-git-branches)) "]")))
       (list 'npm
             (concat (project-npm--package-name root) suffix)
             root)))
@@ -226,7 +226,7 @@
   (cl-defmethod project-run ((project (head npm)) command)
     (let* ((name (project-name project))
            (scripts (project-scripts project))
-           (shell-command-buffer-name-async (format "*%s %s*" name command))
+           (shell-command-buffer-name-async (format "*%s %s*" command name))
            (default-directory (project-root project)))
       (async-shell-command (if (assq (intern command) scripts)
                                (format "npm run %s" command)
@@ -237,7 +237,7 @@
            (default-directory (project-root project))
            (compilation-buffer-name-function
             (lambda (&rest ignore)
-              (concat "*" name " " command "*"))))
+              (concat "*" command " " name "*"))))
       (compile (concat "yarn " command))))
 
   (cl-defmethod project-name ((project (head npm)))
