@@ -121,9 +121,10 @@
         (error "Runner %S not found." runner))
       (when (and (not runner) (not (executable-find command)))
         (error "Command %S not found." command))
-      (async-shell-command (if runner
-                               (format "%s %s" runner command)
-                             command))))
+      (let* ((cmd (if runner (format "%s %s" runner command) command))
+             (shell-command-buffer-name-async
+              (concat "*" cmd " [" (project-name project) "]*")))
+        (async-shell-command cmd))))
 
   (cl-defgeneric project-test (project command)
     "Test FILE in PROJECT."
