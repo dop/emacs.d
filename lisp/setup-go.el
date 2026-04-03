@@ -29,12 +29,11 @@
     (basic-save-buffer)
     (async-shell-command cmd)))
 
-(defun go-format-make-sentinel (stderr)
+(defun go-format-make-sentinel (buf stdout stderr)
   (lambda (proc type)
     (when (eq 'exit (process-status proc))
       (if (eq 0 (process-exit-status proc))
-          (let* ((buf (process-buffer proc))
-                 (formatted (with-current-buffer buf (buffer-string))))
+          (let* ((formatted (with-current-buffer stdout (buffer-string))))
             (with-current-buffer buf
               (when-let* ((current (buffer-string))
                           (_ (not (equal (secure-hash 'sha1 current)
@@ -59,7 +58,7 @@ content with the output."
                               :buffer stdout
                               :stderr stderr
                               :command command
-                              :sentinel (go-format-make-sentinel stderr))))
+                              :sentinel (go-format-make-sentinel buf stdout stderr))))
       (process-send-string proc (buffer-string))
       (process-send-eof proc))))
 
