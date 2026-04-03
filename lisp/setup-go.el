@@ -20,11 +20,31 @@
 
 ;;; Code:
 
-(defun go-run ()
+(defun go-run (edit-args)
   "Run current file with 'go run'."
-  (interactive)
-  (basic-save-buffer)
-  (async-shell-command (format "go run -race %s" (buffer-file-name))))
+  (interactive "P")
+  (let ((cmd (format "go run -race %s" (buffer-file-name))))
+    (when edit-args
+      (setq cmd (read-from-minibuffer "Command: " cmd)))
+    (basic-save-buffer)
+    (async-shell-command cmd)))
+
+(defun go-format-make-sentinel (stderr)
+  (lambda (proc type)
+    (when (eq 'exit (process-status proc))
+      (if (eq 0 (process-exit-status proc))
+          (let* ((buf (process-buffer proc))
+                 (formatted (with-current-buffer buf (buffer-string))))
+            (with-current-buffer buf
+              (when-let* ((current (buffer-string))
+                          (_ (not (equal (secure-hash 'sha1 current)
+                                         (secure-hash 'sha1 formatted))))
+                          (p (point)))
+                (erase-buffer)
+                (insert formatted)
+                (goto-char p))))
+        (with-current-buffer stderr
+          (message (car (string-lines (buffer-string)))))))))
 
 (defun go-format-buffer (&rest command)
   "Run COMMAND on a current buffer (as standard input) and replace buffer's
@@ -39,18 +59,7 @@ content with the output."
                               :buffer stdout
                               :stderr stderr
                               :command command
-                              :sentinel (lambda (proc type)
-                                          (when (eq 'exit (process-status proc))
-                                            (if (eq 0 (process-exit-status proc))
-                                                (let ((formatted (with-current-buffer stdout
-                                                                   (buffer-string))))
-                                                  (with-current-buffer buf
-                                                    (let ((p (point)))
-                                                      (erase-buffer)
-                                                      (insert formatted)
-                                                      (goto-char p))))
-                                              (with-current-buffer stderr
-                                                (message (car (string-lines (buffer-string)))))))))))
+                              :sentinel (go-format-make-sentinel stderr))))
       (process-send-string proc (buffer-string))
       (process-send-eof proc))))
 
