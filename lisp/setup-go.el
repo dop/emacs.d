@@ -73,8 +73,17 @@ content with the output."
   (interactive)
   (go-format-buffer "goimports"))
 
+(defvar go-treesit-font-lock-settings
+  (treesit-font-lock-rules
+   :language 'go :feature 'keyword :override 'append
+   '((["continue" "break" "return" "defer"] @control-flow-keyword-face))
+   :language 'go :feature 'builtin :override 'append
+   '((call_expression function: (identifier) @control-flow-dangerous-keyword-face
+                      (:eq? @control-flow-dangerous-keyword-face "panic")))))
+
 (defun setup-go-mode ()
-  (setq tab-width 4))
+  (setq tab-width 4)
+  (treesit-add-font-lock-settings go-treesit-font-lock-settings))
 
 (use-package go-ts-mode
   :mode "\\.go\\'"

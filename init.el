@@ -83,9 +83,23 @@
          ("\\(\\B@xxx\\|\\<XXX\\)\\(?:$\\|:\s\\|\s\\)"  1 'error prepend)
          ("\\(\\B@note\\|\\<NOTE\\)\\(?:$\\|:\s\\|\s\\)"  1 'error prepend))))
 
-(defun font-lock-add-dangerous-control-flow ()
+(add-hook 'prog-mode-hook #'font-lock-add-watchwords)
+
+(defface control-flow-keyword-face
+  '((t (:inherit warning :weight normal)))
+  "Face to highlight special control flow keywords like return, break, continue, etc.")
+
+(defface control-flow-dangerous-keyword-face
+  '((t (:inherit error :weight normal)))
+  "Face to highlight dangerous control flow keywords like goto, throw, etc.")
+
+(defun font-lock-add-control-flow-keywords ()
   "Highlight continue, break, and return."
-  (font-lock-add-keywords nil '(("\\<\\(continue\\|break\\|return\\|throw\\)\\>" . 'error))))
+  (font-lock-add-keywords nil '(("\\<\\(continue\\|break\\|return\\)\\>" . 'control-flow-keyword-face))))
+
+(defun font-lock-add-dangerous-control-flow-keywords ()
+  "Highlight continue, break, and return."
+  (font-lock-add-keywords nil '(("\\<\\(throw\\)\\>" . 'control-flow-dangerous-keyword-face))))
 
 ;; Useful in eshell.
 (defalias 'e 'find-file)
@@ -104,6 +118,10 @@
   (package-activate name))
 
 (advice-add 'use-package :before #'activate-before-use-package)
+
+(with-eval-after-load "treesit"
+  (defun treesit-add-font-lock-settings (settings)
+    (setq treesit-font-lock-settings (append settings treesit-font-lock-settings))))
 
 (add-hook 'compilation-mode-hook #'toggle-truncate-lines)
 
@@ -221,9 +239,30 @@
   :hook (tsx-ts-mode . subword-mode)
   :hook (css-base-mode . subword-mode))
 
+(use-package js
+  :config
+  (add-hook 'js-base-mode-hook #'font-lock-add-control-flow-keywords)
+  (add-hook 'js-base-mode-hook #'font-lock-add-dangerous-control-flow-keywords))
+
+(defun typescript-treesit-font-lock-settings (language)
+  (treesit-font-lock-rules
+   :language language :feature 'keyword :override 'append
+   '((["continue" "break" "return" ] @control-flow-keyword-face))
+   :language language :feature 'keyword :override 'append
+   '((["throw"] @control-flow-dangerous-keyword-face))))
+
+(defun setup-typescript-mode ()
+  (treesit-add-font-lock-settings (typescript-treesit-font-lock-settings 'typescript)))
+
+(defun setup-tsx-mode ()
+  (treesit-add-font-lock-settings (typescript-treesit-font-lock-settings 'tsx)))
+
 (use-package typescript-ts-mode
   :mode ("\\.m?ts\\'" . typescript-ts-mode)
-  :mode ("\\.m?tsx\\'" . tsx-ts-mode))
+  :mode ("\\.m?tsx\\'" . tsx-ts-mode)
+  :config
+  (add-hook 'typescript-ts-mode-hook #'setup-typescript-mode)
+  (add-hook 'tsx-ts-mode-hook #'setup-tsx-mode))
 
 (use-package editorconfig :config (editorconfig-mode t))
 
