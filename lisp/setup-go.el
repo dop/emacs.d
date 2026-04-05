@@ -23,7 +23,8 @@
 (defun go-run (edit-args)
   "Run current file with 'go run'."
   (interactive "P")
-  (let ((cmd (format "go run -race %s" (buffer-file-name))))
+  (let ((async-shell-command-buffer 'confirm-kill-process)
+        (cmd (format "go run -race %s" (buffer-file-name))))
     (when edit-args
       (setq cmd (read-from-minibuffer "Command: " cmd)))
     (basic-save-buffer)

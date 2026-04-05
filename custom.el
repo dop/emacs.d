@@ -4,7 +4,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(async-shell-command-buffer 'confirm-kill-process)
+ '(async-shell-command-buffer 'new-buffer)
  '(backup-by-copying t)
  '(backup-directory-alist '(("." . "~/.emacs.d/backups")))
  '(blink-cursor-blinks 0)
