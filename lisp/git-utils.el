@@ -1,5 +1,16 @@
 ;; -*- lexical-binding: t; -*-
 
+(defvar git-possible-main-branches '("master" "main"))
+
+(defun git-has-branch-p (branch-name)
+  (not (string-empty-p (shell-command-to-string (concat "git rev-parse -q --verify " branch-name)))))
+
+(defun git-get-main-branch ()
+  (seq-find #'git-has-branch-p git-possible-main-branches))
+
+(defun git-merge-base (A B)
+  (string-trim (shell-command-to-string (format "git merge-base %s %s" A B))))
+
 (defun git-checkout (branch)
   "Checkout a branch."
   (interactive
@@ -62,12 +73,8 @@
                    (all-completions str commits pred))))))
     (completing-read "Commit: " collection)))
 
-(defun git-diff (&optional arg)
-  "Create a buffer to see git diff between current staging and master
-branch."
-  (interactive "P")
-  (let* ((commit (if arg (git-read-recent-commit) "master"))
-         (project (project-current))
+(defun project-run-diff (command)
+  (let* ((project (project-current))
          (buffer-name (concat "*diff" (if project (concat " " (project-name project)) "") "*"))
          (buf (get-buffer-create buffer-name))
          (populate-diff
@@ -75,12 +82,27 @@ branch."
             (with-current-buffer buf
               (let ((inhibit-read-only t))
                 (erase-buffer)
-                (shell-command (format "git diff %s -- ." commit) buf))))))
+                (shell-command command buf))))))
     (funcall populate-diff)
     (with-current-buffer buf
       (setq-local buffer-read-only t)
       (diff-mode)
       (setq-local revert-buffer-function populate-diff)
       (pop-to-buffer buf nil t))))
+
+(defun git-diff (&optional arg)
+  "Create a buffer to see git diff between current staging and master
+branch."
+  (interactive "P")
+  (let ((commit (if arg (git-read-recent-commit) "master")))
+    (project-run-diff (format "git diff %s -- ." commit))))
+
+(defun github-diff ()
+  "Create a buffer to see GitHub PR style diff between master and a branch."
+  (interactive)
+  (let* ((main-branch (git-get-main-branch))
+         (merge-base (git-merge-base main-branch "HEAD")))
+    (project-run-diff (format "git diff %s -- ."  merge-base))
+    (message (shell-command-to-string (format "git diff --shortstat %s -- ."  merge-base)))))
 
 (provide 'git-utils)
