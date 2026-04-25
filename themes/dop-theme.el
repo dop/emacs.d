@@ -4,12 +4,12 @@
 
 (require 'color)
 
-(let* ((acme-cyan            "#007777")
-       (acme-cyan-light      "#A8EFEB")
+(let* ((acme-cyan            "#9eeeee")
+       (acme-cyan-light      "#e9f6f6")
        (acme-red             "#880000")
        (acme-red-light       "#F8E8E8")
-       (acme-yellow          "#888838")
-       (acme-yellow-light    "#F8FCE8")
+       (acme-yellow          "#eeee9e")
+       (acme-yellow-light    "#ffffea")
        (acme-green           "#005500")
        (acme-green-alt       "#006600")
        (acme-green-light     "#E8FCE8")
@@ -87,7 +87,7 @@
      ((((background light)) (:foreground ,acme-purple))
       (((background dark)) (:foreground ,(color-darken-name acme-purple-light 5)))))
    `(font-lock-function-name-face
-     ((((background light)) (:foreground ,acme-cyan))
+     ((((background light)) (:foreground ,(color-darken-name acme-cyan 50)))
       (((background dark)) (:foreground ,(color-lighten-name "orange" 60)))))
    `(font-lock-keyword-face ((t )))
    `(font-lock-type-face ((t )))
