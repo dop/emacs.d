@@ -193,7 +193,8 @@ Every item of FUNCTIONS can be either function or arguments to
 
 (defun eslint-message-get-rule (text)
   "Extract rule name from eslint message."
-  (string-trim (car (s-match "[[@0-9a-z/-]+]$" text)) "\\[" "\\]"))
+  (when (string-match "[[@0-9a-z/-]+]$" text)
+    (string-trim (match-string 0 text) "\\[" "\\]")))
 
 (ert-deftest eslint-message-get-rule ()
   "Tests basics of `eslint-message-get-rule'."
