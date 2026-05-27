@@ -40,8 +40,9 @@
                           (_ (not (equal (secure-hash 'sha1 current)
                                          (secure-hash 'sha1 formatted))))
                           (p (point)))
-                (erase-buffer)
-                (insert formatted)
+                (save-excursion
+                  (erase-buffer)
+                  (insert formatted))
                 (goto-char p))))
         (with-current-buffer stderr
           (message (car (string-lines (buffer-string)))))))))
