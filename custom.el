@@ -87,6 +87,7 @@
  '(eglot-confirm-server-edits nil)
  '(eglot-confirm-server-initiated-edits nil)
  '(eglot-connect-timeout 10)
+ '(eglot-documentation-renderer t)
  '(eglot-events-buffer-size 0)
  '(eglot-override-flymake-diagnostic-functions nil)
  '(eglot-prefer-plaintext t)
@@ -227,7 +228,7 @@
  '(ns-right-command-modifier 'super)
  '(ns-use-srgb-colorspace t)
  '(ns-use-thin-smoothing nil t)
- '(olivetti-body-width 80)
+ '(olivetti-body-width 120)
  '(olivetti-minimum-body-width 78)
  '(olivetti-style 'fancy)
  '(org-babel-lisp-eval-fn 'slime-eval)
@@ -252,17 +253,20 @@
  '(package-selected-packages
    '(ascii-art-to-unicode bazel browse-kill-ring buffer-env
                           clojure-ts-mode csv-mode cycle-quotes
-                          dictionary dired-collapse dired-subtree
-                          edit-indirect eldoc embark
-                          exec-path-from-shell flymake helpful
-                          hungry-delete jq-mode ligature macrostep
-                          markdown-preview-mode neotree nodejs-repl
-                          ns-auto-titlebar org-modern ox-gfm
-                          paredit-everywhere php-mode prettier
-                          prettier-js project protobuf-mode
-                          rainbow-mode scala-mode seq sly sql-indent
+                          deadgrep dictionary diff-hl dired-collapse
+                          dired-subtree edit-indirect eldoc embark
+                          exec-path-from-shell flymake flymake-eslint
+                          gptel helpful hungry-delete jq-mode ligature
+                          macrostep marginalia markdown-mermaid
+                          markdown-preview-mode mermaid-mode
+                          mermaid-ts-mode modus-themes neotree
+                          nodejs-repl ns-auto-titlebar org-modern
+                          ox-gfm paredit-everywhere paren-face
+                          php-mode prettier prettier-js project
+                          protobuf-mode rainbow-mode restclient
+                          scala-mode seq sly sql-indent
                           string-edit-at-point string-inflection
-                          treesit-auto treesit-fold wgrep
+                          treesit-auto treesit-fold vertico wgrep
                           whitespace-cleanup-mode winpulse xterm-color
                           yaml-mode))
  '(package-vc-selected-packages
@@ -325,6 +329,7 @@
  '(vc-annotate-background nil)
  '(vc-annotate-background-mode t)
  '(vc-annotate-very-old-color nil)
+ '(vc-dir-process-output-limit 20000)
  '(vc-directory-exclusion-list
    '("SCCS" "RCS" "CVS" "MCVS" ".src" ".svn" ".git" ".hg" ".bzr" "_MTN"
      "_darcs" "{arch}" "node_modules" "dist" "bower_components"
