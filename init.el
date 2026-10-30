@@ -485,6 +485,12 @@ rendering."
   (keymap-set sgml-mode-map "C-c d" #'sgml-delete-tag)
   (keymap-set sgml-mode-map "C-c e" #'sgml-close-tag))
 
+(use-package foxglove-themes
+  :vc (:url "https://gitlab.com/vegasharmon/foxglove-themes"
+            :rev "f7a8e5c73964b2961993516399e3247e24fabca5")
+  :config
+  (load-theme 'foxglove :no-confirm))
+
 (load "~/work/config.el" 'noerror)
 (load "~/work/utils.el" 'noerror)
 
