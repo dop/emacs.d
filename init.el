@@ -467,7 +467,8 @@ rendering."
   (defun restclient ()
     (interactive)
     (with-current-buffer (get-buffer-create "*restclient*")
-      (restclient-mode))))
+      (restclient-mode)
+      (pop-to-buffer))))
 
 (defun return-back-current-to-point (fn &rest args)
   (let ((empty (org--line-empty-p 0))
